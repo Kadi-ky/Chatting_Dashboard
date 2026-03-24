@@ -685,15 +685,25 @@ function useSubscribers(creatorUuid) {
     setLoading(true)
     setError(null)
     try {
-      let q = supabase
-        .from('onlyfans_subscribers')
-        .select('*')
-        .eq('is_active', true)
-        .order('total_spent', { ascending: false })
-      if (creatorUuid) q = q.eq('creator_uuid', creatorUuid)
-      const { data, error: err } = await q
-      if (err) throw err
-      setSubscribers(data ?? [])
+      // Paginate past Supabase's 1000-row default limit
+      const PAGE = 1000
+      let allSubscribers = []
+      let from = 0
+      while (true) {
+        let q = supabase
+          .from('onlyfans_subscribers')
+          .select('*')
+          .eq('is_active', true)
+          .order('total_spent', { ascending: false })
+          .range(from, from + PAGE - 1)
+        if (creatorUuid) q = q.eq('creator_uuid', creatorUuid)
+        const { data, error: err } = await q
+        if (err) throw err
+        allSubscribers = allSubscribers.concat(data ?? [])
+        if (!data || data.length < PAGE) break
+        from += PAGE
+      }
+      setSubscribers(allSubscribers)
 
       // Get last sync time
       let syncQ = supabase
