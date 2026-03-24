@@ -787,17 +787,17 @@ function ChartTooltip({ active, payload, label }) {
 
 function Navbar({ creators, creatorUuid, onCreatorChange }) {
   return (
-    <nav id="dash-navbar" className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[20px] px-6 py-3.5 flex items-center justify-between">
-      <div className="flex items-center gap-8">
-        <div className="flex items-center gap-2.5">
+    <nav id="dash-navbar" className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[20px] px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between">
+      <div className="flex items-center gap-3 sm:gap-8">
+        <div className="flex items-center gap-2">
           {/* OnlyFans logo mark */}
-          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="w-8 h-8 sm:w-[34px] sm:h-[34px] flex-shrink-0" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="17" cy="17" r="17" fill="#00AFF0"/>
             <text x="17" y="22" textAnchor="middle" fill="white" fontSize="13" fontWeight="800" fontFamily="Inter, Arial, sans-serif">OF</text>
           </svg>
           <div className="leading-none">
-            <span className="font-extrabold text-white text-sm tracking-wide block">DOSS AGENCY</span>
-            <span className="text-[10px] text-[#00AFF0] font-semibold tracking-widest uppercase">OnlyFans</span>
+            <span className="font-extrabold text-white text-xs sm:text-sm tracking-wide block">DOSS AGENCY</span>
+            <span className="text-[9px] sm:text-[10px] text-[#00AFF0] font-semibold tracking-widest uppercase">OnlyFans</span>
           </div>
         </div>
         <div className="hidden md:flex items-center gap-6">
@@ -818,7 +818,7 @@ function Navbar({ creators, creatorUuid, onCreatorChange }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3">
         <div className="hidden sm:flex items-center bg-white/10 rounded-xl px-4 py-2 gap-2 w-56">
           <Search className="w-4 h-4 text-white/50 flex-shrink-0" />
           <input
@@ -827,16 +827,16 @@ function Navbar({ creators, creatorUuid, onCreatorChange }) {
             className="bg-transparent text-sm text-white/80 placeholder-white/30 outline-none flex-1"
           />
         </div>
-        <button className="p-2 text-slate-400 hover:text-slate-600 rounded-xl hover:bg-slate-100 transition-colors sm:hidden">
+        <button className="p-2 text-white/50 hover:text-white/80 rounded-xl hover:bg-white/10 transition-colors sm:hidden">
           <Search className="w-5 h-5" />
         </button>
         {creators.length > 0 && (
-          <div className="hidden sm:flex items-center gap-1.5 bg-white/10 rounded-xl px-3 py-1.5">
+          <div className="flex items-center gap-1.5 bg-white/10 rounded-xl px-2 sm:px-3 py-1.5">
             <User className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
             <select
               value={creatorUuid ?? ''}
               onChange={(e) => onCreatorChange(e.target.value || null)}
-              className="bg-transparent text-sm text-white/80 outline-none cursor-pointer max-w-[160px]"
+              className="bg-transparent text-xs sm:text-sm text-white/80 outline-none cursor-pointer max-w-[100px] sm:max-w-[160px]"
             >
               <option value="" className="bg-slate-800 text-white">All Creators</option>
               {creators.map((c) => (
@@ -851,7 +851,7 @@ function Navbar({ creators, creatorUuid, onCreatorChange }) {
         <button className="p-2 text-white/50 hover:text-white/80 rounded-xl hover:bg-white/10 transition-colors">
           <Bell className="w-5 h-5" />
         </button>
-        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-rose-500 ring-2 ring-white cursor-pointer" />
+        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-orange-400 to-rose-500 ring-2 ring-white cursor-pointer flex-shrink-0" />
       </div>
     </nav>
   )
@@ -984,14 +984,14 @@ function ChattersModal({ open, onClose, chattedList, paidList }) {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col"
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col mx-2 sm:mx-0"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
             <Users className="w-5 h-5 text-[#5B7BF8]" />
-            <h2 className="font-bold text-slate-800">Today's Chatters</h2>
+            <h2 className="font-bold text-slate-800 text-sm sm:text-base">Today's Chatters</h2>
             <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
               {allList.length} total
             </span>
@@ -1136,8 +1136,8 @@ function TodayMetrics({ creatorUuid, subscriberData }) {
 
   return (
     <div id="dash-metrics" className="flex flex-col">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-bold text-white">Today's Metrics</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+        <h2 className="text-base sm:text-lg font-bold text-white">Today's Metrics</h2>
         <div className="flex items-center gap-2">
           {/* Date pickers — entire box is clickable */}
           <div className="flex items-center gap-1">
@@ -1194,9 +1194,9 @@ function TodayMetrics({ creatorUuid, subscriberData }) {
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {/* Chatters Card */}
-        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[20px] p-4 shadow-lg flex flex-col" style={{ minHeight: 120 }}>
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 shadow-lg flex flex-col">
           <div className="flex items-center gap-2 min-h-[2.5rem]">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <MessageCircle className="w-4 h-4 text-white" />
@@ -1218,7 +1218,7 @@ function TodayMetrics({ creatorUuid, subscriberData }) {
         </div>
 
         {/* Paid Card */}
-        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[20px] p-4 shadow-lg flex flex-col" style={{ minHeight: 120 }}>
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 shadow-lg flex flex-col">
           <div className="flex items-center gap-2 min-h-[2.5rem]">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <DollarSign className="w-4 h-4 text-white" />
@@ -1240,7 +1240,7 @@ function TodayMetrics({ creatorUuid, subscriberData }) {
         </div>
 
         {/* Conversion Rate Card */}
-        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[20px] p-4 shadow-lg flex flex-col" style={{ minHeight: 120 }}>
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 shadow-lg flex flex-col">
           <div className="flex items-center gap-2 min-h-[2.5rem]">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <TrendingUp className="w-4 h-4 text-white" />
@@ -1258,7 +1258,7 @@ function TodayMetrics({ creatorUuid, subscriberData }) {
         </div>
 
         {/* Active Subscribers Card */}
-        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[20px] p-4 shadow-lg flex flex-col" style={{ minHeight: 120 }}>
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 shadow-lg flex flex-col">
           <div className="flex items-center gap-2 min-h-[2.5rem]">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <UserCheck className="w-4 h-4 text-white" />
@@ -1327,14 +1327,14 @@ function SubscribersModal({ open, onClose, subscribers, lastResetAt }) {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col"
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col mx-2 sm:mx-0"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
             <UserCheck className="w-5 h-5 text-emerald-500" />
-            <h2 className="font-bold text-slate-800">Active Subscribers</h2>
+            <h2 className="font-bold text-slate-800 text-sm sm:text-base">Active Subscribers</h2>
             <span className="text-xs bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">
               {subscribers.length} active
             </span>
@@ -1555,8 +1555,8 @@ function ConversionProgress({ weeklyData }) {
   const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
   return (
-    <div className="bg-gradient-to-br from-indigo-600 via-blue-700 to-[#00AFF0] rounded-[20px] p-6 shadow-lg">
-      <div className="flex items-center justify-between mb-5">
+    <div className="bg-gradient-to-br from-indigo-600 via-blue-700 to-[#00AFF0] rounded-[16px] sm:rounded-[20px] p-4 sm:p-6 shadow-lg">
+      <div className="flex items-center justify-between mb-3 sm:mb-5">
         <h3 className="font-bold text-white">Conversion Progress</h3>
         <span className="flex items-center gap-1.5 text-sm text-white/60">
           <Calendar className="w-3.5 h-3.5" />
@@ -1564,20 +1564,20 @@ function ConversionProgress({ weeklyData }) {
         </span>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white/10 rounded-xl p-3">
-          <p className="text-xs text-white/60 mb-1">Total Chatted</p>
-          <p className="text-2xl font-bold text-white">{totalChatted}</p>
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        <div className="bg-white/10 rounded-xl p-2 sm:p-3">
+          <p className="text-[10px] sm:text-xs text-white/60 mb-1">Total Chatted</p>
+          <p className="text-lg sm:text-2xl font-bold text-white">{totalChatted}</p>
           <SparkBars values={sparkChatted} accent="#ffffff" />
         </div>
-        <div className="bg-white/10 rounded-xl p-3">
-          <p className="text-xs text-white/60 mb-1">Total Paid</p>
-          <p className="text-2xl font-bold text-white">{totalPaid}</p>
+        <div className="bg-white/10 rounded-xl p-2 sm:p-3">
+          <p className="text-[10px] sm:text-xs text-white/60 mb-1">Total Paid</p>
+          <p className="text-lg sm:text-2xl font-bold text-white">{totalPaid}</p>
           <SparkBars values={sparkPaid} accent="#fbbf24" />
         </div>
-        <div className="bg-white/10 rounded-xl p-3">
-          <p className="text-xs text-white/60 mb-1">Avg Rate</p>
-          <p className="text-2xl font-bold text-white">{avgRate}%</p>
+        <div className="bg-white/10 rounded-xl p-2 sm:p-3">
+          <p className="text-[10px] sm:text-xs text-white/60 mb-1">Avg Rate</p>
+          <p className="text-lg sm:text-2xl font-bold text-white">{avgRate}%</p>
           <SparkBars values={sparkRate} accent="#34d399" />
         </div>
       </div>
@@ -1595,12 +1595,12 @@ export default function App() {
   const subscriberData = useSubscribers(creatorUuid)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1a1f3a] to-[#0f1729] p-5">
+    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1a1f3a] to-[#0f1729] p-3 sm:p-5">
       <div id="dash-root" className="max-w-[1320px] mx-auto">
         <Navbar creators={creators} creatorUuid={creatorUuid} onCreatorChange={setCreatorUuid} />
 
         {/* Main Row */}
-        <div className="mt-5 grid grid-cols-1 lg:grid-cols-5 gap-5">
+        <div className="mt-3 sm:mt-5 grid grid-cols-1 lg:grid-cols-5 gap-3 sm:gap-5">
           <div className="lg:col-span-3">
             <ConversionTracker weeklyData={weeklyData} todayIdx={todayIdx} weeklyLoading={weeklyLoading} />
           </div>
@@ -1610,7 +1610,7 @@ export default function App() {
         </div>
 
         {/* Bottom Row */}
-        <div id="dash-bottom" className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div id="dash-bottom" className="mt-3 sm:mt-5 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-5">
           <TopChatters paidList={paidList} loading={metricsLoading} />
           <ConversionProgress weeklyData={weeklyData} />
         </div>
