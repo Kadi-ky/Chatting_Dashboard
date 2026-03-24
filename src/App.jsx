@@ -442,39 +442,51 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
       const isoFrom = from.toISOString()
       const isoTo   = to.toISOString()
 
-      // ── 1. Fans who sent an inbound message in range ──
-      let intQ = supabase
-        .from('fan_interactions_onlyfans')
-        .select('fan_id, fans_onlyfans(display_name)')
-        .eq('direction', 'inbound')
-        .gte('created_at', isoFrom)
-        .lte('created_at', isoTo)
-      if (creatorUuid) intQ = intQ.eq('creatoruuid', creatorUuid)
-
-      const { data: interactions, error: err1 } = await intQ
-      if (err1) throw err1
-
+      // ── 1. Fans who sent an inbound message in range (paginated) ──
+      const PAGE = 1000
       const seenFans = new Map()
-      for (const row of interactions ?? []) {
-        if (row.fan_id && !seenFans.has(row.fan_id)) {
-          seenFans.set(row.fan_id, row.fans_onlyfans?.display_name ?? 'Unknown Fan')
+      let intFrom = 0
+      while (true) {
+        let intQ = supabase
+          .from('fan_interactions_onlyfans')
+          .select('fan_id, fans_onlyfans(display_name)')
+          .eq('direction', 'inbound')
+          .gte('created_at', isoFrom)
+          .lte('created_at', isoTo)
+          .range(intFrom, intFrom + PAGE - 1)
+        if (creatorUuid) intQ = intQ.eq('creatoruuid', creatorUuid)
+        const { data: interactions, error: err1 } = await intQ
+        if (err1) throw err1
+        for (const row of interactions ?? []) {
+          if (row.fan_id && !seenFans.has(row.fan_id)) {
+            seenFans.set(row.fan_id, row.fans_onlyfans?.display_name ?? 'Unknown Fan')
+          }
         }
+        if (!interactions || interactions.length < PAGE) break
+        intFrom += PAGE
       }
       setChattedList([...seenFans.entries()].map(([id, name]) => ({ id, name })))
 
-      // ── 2. Purchases in range ──
-      let purQ = supabase
-        .from('purchases_onlyfans')
-        .select('fan_uuid, amount')
-        .gte('purchased_at', isoFrom)
-        .lte('purchased_at', isoTo)
-      if (creatorUuid) purQ = purQ.eq('creator_uuid', creatorUuid)
-
-      const { data: purchases, error: err2 } = await purQ
-      if (err2) throw err2
+      // ── 2. Purchases in range (paginated) ──
+      let allPurchases = []
+      let purFrom = 0
+      while (true) {
+        let purQ = supabase
+          .from('purchases_onlyfans')
+          .select('fan_uuid, amount')
+          .gte('purchased_at', isoFrom)
+          .lte('purchased_at', isoTo)
+          .range(purFrom, purFrom + PAGE - 1)
+        if (creatorUuid) purQ = purQ.eq('creator_uuid', creatorUuid)
+        const { data: purchases, error: err2 } = await purQ
+        if (err2) throw err2
+        allPurchases = allPurchases.concat(purchases ?? [])
+        if (!purchases || purchases.length < PAGE) break
+        purFrom += PAGE
+      }
 
       // Get display names for each unique fan_uuid
-      const fanUuids = [...new Set((purchases ?? []).map((p) => p.fan_uuid).filter(Boolean))]
+      const fanUuids = [...new Set((allPurchases ?? []).map((p) => p.fan_uuid).filter(Boolean))]
       let fanNameMap = {}
       if (fanUuids.length > 0) {
         const { data: fans } = await supabase
@@ -488,7 +500,7 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
 
       // Aggregate by fan: sum all purchases from the same fan today
       const payMap = {}
-      for (const p of purchases ?? []) {
+      for (const p of allPurchases ?? []) {
         if (!p.fan_uuid) continue
         if (!payMap[p.fan_uuid]) {
           payMap[p.fan_uuid] = {
@@ -1567,9 +1579,12 @@ function ConversionProgress({ weeklyData }) {
   return (
     <div className="bg-gradient-to-br from-indigo-600 via-blue-700 to-[#00AFF0] rounded-[16px] sm:rounded-[20px] p-4 sm:p-6 shadow-lg">
       <div className="flex items-center justify-between mb-3 sm:mb-5">
-        <h3 className="font-bold text-white">Conversion Progress</h3>
-        <span className="flex items-center gap-1.5 text-sm text-white/60">
-          <Calendar className="w-3.5 h-3.5" />
+        <div>
+          <h3 className="font-bold text-white">Conversion Progress</h3>
+          <span className="text-[10px] text-white/50 font-medium tracking-wide uppercase">Last 7 days</span>
+        </div>
+        <span className="flex items-center gap-1 text-[11px] text-white/60 bg-white/10 rounded-lg px-2 py-1">
+          <Calendar className="w-3 h-3" />
           {dateStr}
         </span>
       </div>
