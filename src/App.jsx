@@ -572,21 +572,36 @@ function useWeeklyData(creatorUuid) {
     setLoading(true)
     try {
       const weekAgo = days[0].date.toISOString()
+      const todayEnd = new Date(now)
+      todayEnd.setHours(23, 59, 59, 999)
+      const nowEnd = todayEnd.toISOString()
 
-      // Chatted per day
-      let intQ = supabase
-        .from('fan_interactions_onlyfans')
-        .select('fan_id, created_at')
-        .eq('direction', 'inbound')
-        .gte('created_at', weekAgo)
-      if (creatorUuid) intQ = intQ.eq('creatoruuid', creatorUuid)
-      const { data: ints } = await intQ
+      // Chatted per day — paginate to get ALL rows (Supabase default limit is 1000)
+      let allInts = []
+      let from = 0
+      const PAGE = 1000
+      while (true) {
+        let intQ = supabase
+          .from('fan_interactions_onlyfans')
+          .select('fan_id, created_at')
+          .eq('direction', 'inbound')
+          .gte('created_at', weekAgo)
+          .lte('created_at', nowEnd)
+          .range(from, from + PAGE - 1)
+        if (creatorUuid) intQ = intQ.eq('creatoruuid', creatorUuid)
+        const { data: batch } = await intQ
+        allInts = allInts.concat(batch ?? [])
+        if (!batch || batch.length < PAGE) break
+        from += PAGE
+      }
+      const ints = allInts
 
       // Purchases per day
       let purQ = supabase
         .from('purchases_onlyfans')
         .select('fan_uuid, purchased_at')
         .gte('purchased_at', weekAgo)
+        .lte('purchased_at', nowEnd)
       if (creatorUuid) purQ = purQ.eq('creator_uuid', creatorUuid)
       const { data: purs } = await purQ
 
