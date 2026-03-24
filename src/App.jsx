@@ -591,19 +591,27 @@ function useWeeklyData(creatorUuid) {
       const { data: purs } = await purQ
 
       // Bucket interactions by day (unique fans per day)
+      const seenFansPerDay = {}
       for (const row of ints ?? []) {
         const d = new Date(row.created_at)
         d.setHours(0, 0, 0, 0)
         const ts = d.getTime()
+        const key = ts + '_' + row.fan_id
+        if (seenFansPerDay[key]) continue
+        seenFansPerDay[key] = true
         const dayEntry = days.find((dd) => dd.date.getTime() === ts)
         if (dayEntry) dayEntry.chatted++
       }
 
-      // Bucket purchases by day (count, not unique)
+      // Bucket purchases by day (unique fans per day)
+      const seenPaidPerDay = {}
       for (const row of purs ?? []) {
         const d = new Date(row.purchased_at)
         d.setHours(0, 0, 0, 0)
         const ts = d.getTime()
+        const key = ts + '_' + row.fan_uuid
+        if (seenPaidPerDay[key]) continue
+        seenPaidPerDay[key] = true
         const dayEntry = days.find((dd) => dd.date.getTime() === ts)
         if (dayEntry) dayEntry.paid++
       }
