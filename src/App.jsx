@@ -419,10 +419,12 @@ const MOCK_PAID = [
 ]
 
 function useTodayMetrics(creatorUuid, startDate, endDate) {
-  const [chattedList, setChattedList] = useState([])
-  const [paidList, setPaidList]       = useState([])
-  const [loading, setLoading]         = useState(true)
-  const [error, setError]             = useState(null)
+  const [chattedList, setChattedList]       = useState([])
+  const [paidList, setPaidList]             = useState([])
+  const [tipsTotal, setTipsTotal]           = useState(0)
+  const [subIncomeTotal, setSubIncomeTotal] = useState(0)
+  const [loading, setLoading]               = useState(true)
+  const [error, setError]                   = useState(null)
 
   const load = useCallback(async () => {
     // ── No credentials → use mock ──
@@ -512,6 +514,44 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
         payMap[p.fan_uuid].amount += Number(p.amount) || 0
       }
       setPaidList(Object.values(payMap))
+
+      // ── 3. Tips in range (paginated) ──
+      let tipsTotalAcc = 0
+      let tipsFrom = 0
+      while (true) {
+        let tipsQ = supabase
+          .from('tips_onlyfans')
+          .select('amount_gross')
+          .gte('tipped_at', isoFrom)
+          .lte('tipped_at', isoTo)
+          .range(tipsFrom, tipsFrom + PAGE - 1)
+        if (creatorUuid) tipsQ = tipsQ.eq('creator_uuid', creatorUuid)
+        const { data: tips, error: err3 } = await tipsQ
+        if (err3) throw err3
+        for (const t of tips ?? []) tipsTotalAcc += Number(t.amount_gross) || 0
+        if (!tips || tips.length < PAGE) break
+        tipsFrom += PAGE
+      }
+      setTipsTotal(tipsTotalAcc)
+
+      // ── 4. Subscription income in range (paginated) ──
+      let subTotalAcc = 0
+      let subFrom = 0
+      while (true) {
+        let subQ = supabase
+          .from('subscriptions_income_onlyfans')
+          .select('amount')
+          .gte('subscribed_at', isoFrom)
+          .lte('subscribed_at', isoTo)
+          .range(subFrom, subFrom + PAGE - 1)
+        if (creatorUuid) subQ = subQ.eq('creator_uuid', creatorUuid)
+        const { data: subs, error: err4 } = await subQ
+        if (err4) throw err4
+        for (const s of subs ?? []) subTotalAcc += Number(s.amount) || 0
+        if (!subs || subs.length < PAGE) break
+        subFrom += PAGE
+      }
+      setSubIncomeTotal(subTotalAcc)
     } catch (e) {
       console.error('[Dashboard] Supabase fetch error:', e)
       setError(e.message ?? 'Failed to load metrics')
@@ -522,7 +562,7 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
 
   useEffect(() => { load() }, [load])
 
-  // Realtime: re-fetch on any new interaction or purchase
+  // Realtime: re-fetch on any new interaction, purchase, tip, or subscription
   useEffect(() => {
     if (!supabase) return
     const ch1 = supabase
@@ -533,7 +573,20 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
       .channel('today-purchases')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'purchases_onlyfans' }, load)
       .subscribe()
-    return () => { supabase.removeChannel(ch1); supabase.removeChannel(ch2) }
+    const ch3 = supabase
+      .channel('today-tips')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'tips_onlyfans' }, load)
+      .subscribe()
+    const ch4 = supabase
+      .channel('today-subincome')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'subscriptions_income_onlyfans' }, load)
+      .subscribe()
+    return () => {
+      supabase.removeChannel(ch1)
+      supabase.removeChannel(ch2)
+      supabase.removeChannel(ch3)
+      supabase.removeChannel(ch4)
+    }
   }, [load])
 
   // Midnight reset: reload at start of next day so "today" window resets
@@ -545,7 +598,7 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
     return () => clearTimeout(t)
   }, [load])
 
-  return { chattedList, paidList, loading, error, refetch: load }
+  return { chattedList, paidList, tipsTotal, subIncomeTotal, loading, error, refetch: load }
 }
 
 // ── Weekly data hook (last 7 days) ──
@@ -1140,7 +1193,10 @@ function TodayMetrics({ creatorUuid, subscriberData }) {
   const [startDate, setStartDate] = useState(todayStr)
   const [endDate, setEndDate]     = useState(todayStr)
 
-  const { chattedList, paidList, loading, error, refetch } = useTodayMetrics(creatorUuid, startDate, endDate)
+  const { chattedList, paidList, tipsTotal, subIncomeTotal, loading, error, refetch } = useTodayMetrics(creatorUuid, startDate, endDate)
+
+  const ppvTotal      = paidList.reduce((s, p) => s + (p.amount || 0), 0)
+  const revenueTotal  = ppvTotal + tipsTotal + subIncomeTotal
   const { subscribers, activeCount, loading: subLoading, lastResetAt } = subscriberData
 
   const chattedCount = chattedList.length
@@ -1306,6 +1362,49 @@ function TodayMetrics({ creatorUuid, subscriberData }) {
               <span className="text-[10px] text-white/60">
                 Synced {new Date(lastResetAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Revenue Breakdown ── */}
+      <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 shadow-lg mt-3">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <DollarSign className="w-3.5 h-3.5 text-white" />
+            </div>
+            <h3 className="font-semibold text-white text-sm">Revenue</h3>
+          </div>
+          {loading ? (
+            <div className="h-5 w-16 bg-white/20 rounded animate-pulse" />
+          ) : (
+            <span className="text-lg font-bold text-white">${revenueTotal.toFixed(2)}</span>
+          )}
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <div className="bg-white/10 rounded-lg p-2">
+            <p className="text-[10px] text-white/60 mb-0.5">PPV</p>
+            {loading ? (
+              <div className="h-4 w-10 bg-white/20 rounded animate-pulse" />
+            ) : (
+              <p className="text-sm font-bold text-white">${ppvTotal.toFixed(2)}</p>
+            )}
+          </div>
+          <div className="bg-white/10 rounded-lg p-2">
+            <p className="text-[10px] text-white/60 mb-0.5">Tips</p>
+            {loading ? (
+              <div className="h-4 w-10 bg-white/20 rounded animate-pulse" />
+            ) : (
+              <p className="text-sm font-bold text-white">${tipsTotal.toFixed(2)}</p>
+            )}
+          </div>
+          <div className="bg-white/10 rounded-lg p-2">
+            <p className="text-[10px] text-white/60 mb-0.5">Subs</p>
+            {loading ? (
+              <div className="h-4 w-10 bg-white/20 rounded animate-pulse" />
+            ) : (
+              <p className="text-sm font-bold text-white">${subIncomeTotal.toFixed(2)}</p>
             )}
           </div>
         </div>
