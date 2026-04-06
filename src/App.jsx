@@ -2,7 +2,11 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import {
   BarChart,
   Bar,
+  LineChart,
+  Line,
   XAxis,
+  YAxis,
+  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
@@ -860,7 +864,7 @@ function ChartTooltip({ active, payload, label }) {
 
 // ━━━ Navbar ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-function Navbar({ creators, creatorUuid, onCreatorChange }) {
+function Navbar({ creators, creatorUuid, onCreatorChange, activeTab, onTabChange }) {
   return (
     <nav id="dash-navbar" className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[20px] px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between">
       <div className="flex items-center gap-3 sm:gap-8">
@@ -877,18 +881,23 @@ function Navbar({ creators, creatorUuid, onCreatorChange }) {
         </div>
         <div className="hidden md:flex items-center gap-6">
           {['Home', 'Messages', 'Discover', 'Wallet', 'Projects'].map(
-            (item) => (
-              <button
-                key={item}
-                className={`text-sm transition-colors ${
-                  item === 'Home'
-                    ? 'text-white font-semibold'
-                    : 'text-white/40 hover:text-white/70'
-                }`}
-              >
-                {item}
-              </button>
-            ),
+            (item) => {
+              const tabKey = item.toLowerCase()
+              const isActive = tabKey === activeTab
+              return (
+                <button
+                  key={item}
+                  onClick={() => (tabKey === 'home' || tabKey === 'messages') ? onTabChange(tabKey) : undefined}
+                  className={`text-sm transition-colors ${
+                    isActive
+                      ? 'text-white font-semibold'
+                      : 'text-white/40 hover:text-white/70'
+                  }`}
+                >
+                  {item}
+                </button>
+              )
+            },
           )}
         </div>
       </div>
@@ -1709,11 +1718,437 @@ function ConversionProgress({ weeklyData }) {
   )
 }
 
+// ━━━ Messages Analytics Hook ━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const RANGE_PRESETS = [
+  { label: '7 days',  value: 7 },
+  { label: '14 days', value: 14 },
+  { label: '30 days', value: 30 },
+  { label: '60 days', value: 60 },
+  { label: '90 days', value: 90 },
+  { label: 'All time', value: 0 },
+]
+
+function useMessagesAnalytics(creatorUuid, rangeDays) {
+  const [data, setData] = useState({
+    inboundCount: 0,
+    outboundCount: 0,
+    avgResponseTime: null,
+    dailyActivity: [],
+    dailyFansChatted: [],
+    uniqueFans: [],
+  })
+  const [loading, setLoading] = useState(true)
+
+  const load = useCallback(async () => {
+    if (!supabase) { setLoading(false); return }
+    setLoading(true)
+    try {
+      const now = new Date()
+      const endOfDay = new Date(now)
+      endOfDay.setHours(23, 59, 59, 999)
+      const isoTo = endOfDay.toISOString()
+
+      let isoFrom = null
+      let dayCount = rangeDays
+      if (rangeDays > 0) {
+        const from = new Date(now)
+        from.setDate(from.getDate() - rangeDays + 1)
+        from.setHours(0, 0, 0, 0)
+        isoFrom = from.toISOString()
+      }
+
+      // Paginate ALL interactions in range
+      const PAGE = 1000
+      let allRows = []
+      let offset = 0
+      while (true) {
+        let q = supabase
+          .from('fan_interactions_onlyfans')
+          .select('fan_id, direction, created_at, fans_onlyfans(display_name)')
+          .lte('created_at', isoTo)
+          .order('created_at', { ascending: true })
+          .range(offset, offset + PAGE - 1)
+        if (isoFrom) q = q.gte('created_at', isoFrom)
+        if (creatorUuid) q = q.eq('creatoruuid', creatorUuid)
+        const { data: batch, error } = await q
+        if (error) throw error
+        allRows = allRows.concat(batch ?? [])
+        if (!batch || batch.length < PAGE) break
+        offset += PAGE
+      }
+
+      // Counts
+      let inbound = 0, outbound = 0
+      for (const r of allRows) {
+        if (r.direction === 'inbound') inbound++
+        else if (r.direction === 'outbound') outbound++
+      }
+
+      // Build day buckets
+      const dayMap = {}
+      const fanDayMap = {}
+      const fanNameMap = new Map()
+
+      for (const r of allRows) {
+        const d = new Date(r.created_at)
+        d.setHours(0, 0, 0, 0)
+        const key = d.toISOString().slice(0, 10)
+        if (!dayMap[key]) dayMap[key] = { date: key, received: 0, sent: 0 }
+        if (r.direction === 'inbound') {
+          dayMap[key].received++
+          // Track unique fans per day
+          const fanDayKey = key + '_' + r.fan_id
+          if (!fanDayMap[fanDayKey]) {
+            fanDayMap[fanDayKey] = true
+            if (!dayMap[key].fans) dayMap[key].fans = 0
+            dayMap[key].fans++
+          }
+          if (r.fan_id && !fanNameMap.has(r.fan_id)) {
+            fanNameMap.set(r.fan_id, r.fans_onlyfans?.display_name ?? 'Unknown Fan')
+          }
+        } else if (r.direction === 'outbound') {
+          dayMap[key].sent++
+        }
+      }
+
+      // Sort days chronologically
+      const sortedDays = Object.values(dayMap).sort((a, b) => a.date.localeCompare(b.date))
+
+      // Format for charts
+      const dailyActivity = sortedDays.map(d => ({
+        date: d.date,
+        label: new Date(d.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        received: d.received,
+        sent: d.sent,
+      }))
+      const dailyFansChatted = sortedDays.map(d => ({
+        date: d.date,
+        label: new Date(d.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        fans: d.fans || 0,
+      }))
+
+      // Avg response time — pair inbound to next outbound per fan
+      const fanMessages = {}
+      for (const r of allRows) {
+        if (!r.fan_id) continue
+        if (!fanMessages[r.fan_id]) fanMessages[r.fan_id] = []
+        fanMessages[r.fan_id].push(r)
+      }
+      // Avg response time: consecutive inbound→outbound pairs per fan
+      let totalDelay = 0, pairCount = 0
+      for (const fanId of Object.keys(fanMessages)) {
+        const msgs = fanMessages[fanId] // already sorted by created_at asc
+        for (let i = 0; i < msgs.length - 1; i++) {
+          if (msgs[i].direction === 'inbound' && msgs[i + 1].direction === 'outbound') {
+            const delay = new Date(msgs[i + 1].created_at).getTime() - new Date(msgs[i].created_at).getTime()
+            if (delay > 0) { totalDelay += delay; pairCount++ }
+          }
+        }
+      }
+      const avgMs = pairCount > 0 ? totalDelay / pairCount : null
+
+      // Unique fans list (inbound only)
+      const uniqueFans = [...fanNameMap.entries()].map(([id, name]) => ({ id, name }))
+
+      setData({
+        inboundCount: inbound,
+        outboundCount: outbound,
+        avgResponseTime: avgMs,
+        dailyActivity,
+        dailyFansChatted,
+        uniqueFans,
+      })
+    } catch (e) {
+      console.error('[Messages] Analytics error:', e)
+    } finally {
+      setLoading(false)
+    }
+  }, [creatorUuid, rangeDays])
+
+  useEffect(() => { load() }, [load])
+
+  // Realtime refresh
+  useEffect(() => {
+    if (!supabase) return
+    const ch = supabase
+      .channel('messages-analytics')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'fan_interactions_onlyfans' }, load)
+      .subscribe()
+    return () => { supabase.removeChannel(ch) }
+  }, [load])
+
+  return { ...data, loading, refetch: load }
+}
+
+function formatDuration(ms) {
+  if (ms == null) return 'N/A'
+  const totalMin = Math.round(ms / 60000)
+  if (totalMin < 1) return '<1m'
+  if (totalMin < 60) return `${totalMin}m`
+  const h = Math.floor(totalMin / 60)
+  const m = totalMin % 60
+  return m > 0 ? `${h}h ${m}m` : `${h}h`
+}
+
+// ━━━ Messages Tab ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+function MsgChartTooltip({ active, payload, label }) {
+  if (!active || !payload?.length) return null
+  return (
+    <div className="bg-slate-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg">
+      <p className="font-semibold mb-0.5">{label}</p>
+      {payload.map((p, i) => (
+        <p key={i} className="text-slate-300">
+          {p.name === 'received' ? 'Received' : p.name === 'sent' ? 'Sent' : 'Fans'}:{' '}
+          <span className="text-white font-medium">{p.value}</span>
+        </p>
+      ))}
+    </div>
+  )
+}
+
+function FansChatModal({ open, onClose, fans }) {
+  const [search, setSearch] = useState('')
+  if (!open) return null
+  const filtered = search
+    ? fans.filter(f => f.name.toLowerCase().includes(search.toLowerCase()))
+    : fans
+
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center p-4" onClick={onClose}>
+      <div
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col mx-2 sm:mx-0"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100">
+          <div className="flex items-center gap-2.5">
+            <Users className="w-5 h-5 text-[#5B7BF8]" />
+            <h2 className="font-bold text-slate-800 text-sm sm:text-base">Fans Who Chatted</h2>
+            <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">{fans.length}</span>
+          </div>
+          <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded-lg transition-colors">
+            <X className="w-5 h-5 text-slate-400" />
+          </button>
+        </div>
+        <div className="px-4 sm:px-6 py-2 border-b border-slate-100">
+          <div className="flex items-center bg-slate-50 rounded-lg px-3 py-2 gap-2">
+            <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
+            <input
+              type="text"
+              placeholder="Search fans..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-transparent text-sm text-slate-700 placeholder-slate-400 outline-none flex-1"
+            />
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-3">
+          {filtered.length === 0 ? (
+            <p className="text-sm text-slate-400 text-center py-8">No fans found</p>
+          ) : (
+            <div className="space-y-1.5">
+              {filtered.map((fan) => (
+                <div key={fan.id} className="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+                    {initials(fan.name)}
+                  </div>
+                  <span className="text-sm text-slate-700 truncate">{fan.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MessagesTab({ creatorUuid }) {
+  const [rangeDays, setRangeDays] = useState(7)
+  const [showFansModal, setShowFansModal] = useState(false)
+  const {
+    inboundCount, outboundCount, avgResponseTime,
+    dailyActivity, dailyFansChatted, uniqueFans, loading,
+  } = useMessagesAnalytics(creatorUuid, rangeDays)
+
+  return (
+    <div className="mt-3 sm:mt-5 space-y-3 sm:space-y-5">
+      {/* Range Preset Dropdown */}
+      <div className="flex items-center gap-3">
+        <h2 className="text-lg font-bold text-white">Messages</h2>
+        <div className="flex items-center gap-1.5 bg-white/10 border border-white/10 rounded-xl px-3 py-1.5">
+          <Calendar className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
+          <select
+            value={rangeDays}
+            onChange={(e) => setRangeDays(Number(e.target.value))}
+            className="bg-transparent text-sm text-white/80 outline-none cursor-pointer [color-scheme:dark]"
+          >
+            {RANGE_PRESETS.map((p) => (
+              <option key={p.value} value={p.value} className="bg-slate-800 text-white">
+                {p.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Metric Cards Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {/* Messages Received */}
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 shadow-lg">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <MessageCircle className="w-4 h-4 text-white" />
+            </div>
+            <h3 className="font-semibold text-white text-sm">Messages Received</h3>
+          </div>
+          {loading ? (
+            <div className="h-7 w-16 bg-white/20 rounded animate-pulse" />
+          ) : (
+            <p className="text-2xl font-bold text-white">{inboundCount.toLocaleString()}</p>
+          )}
+          <button
+            onClick={() => setShowFansModal(true)}
+            className="text-[10px] text-[#00AFF0] hover:text-sky-300 font-semibold mt-1 transition-colors"
+          >
+            View fans ({uniqueFans.length})
+          </button>
+        </div>
+
+        {/* Messages Sent */}
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 shadow-lg">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <ArrowRight className="w-4 h-4 text-white" />
+            </div>
+            <h3 className="font-semibold text-white text-sm">Messages Sent</h3>
+          </div>
+          {loading ? (
+            <div className="h-7 w-16 bg-white/20 rounded animate-pulse" />
+          ) : (
+            <p className="text-2xl font-bold text-white">{outboundCount.toLocaleString()}</p>
+          )}
+          <p className="text-[10px] text-white/40 mt-1">Outbound replies</p>
+        </div>
+
+        {/* Avg Response Time */}
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 shadow-lg">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Clock className="w-4 h-4 text-white" />
+            </div>
+            <h3 className="font-semibold text-white text-sm">Avg Response Time</h3>
+          </div>
+          {loading ? (
+            <div className="h-7 w-16 bg-white/20 rounded animate-pulse" />
+          ) : (
+            <p className="text-2xl font-bold text-white">{formatDuration(avgResponseTime)}</p>
+          )}
+          <p className="text-[10px] text-white/40 mt-1">Inbound → first reply</p>
+        </div>
+      </div>
+
+      {/* Message Activity Bar Chart */}
+      <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-4 sm:p-6 shadow-lg">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+              <BarChart className="w-4 h-4 text-[#00AFF0]" />
+            </div>
+            <h3 className="text-lg font-bold text-white">Message Activity</h3>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1.5 text-xs text-white/50">
+              <span className="w-2.5 h-2.5 rounded-sm bg-[#5B7BF8]" /> Received
+            </span>
+            <span className="flex items-center gap-1.5 text-xs text-white/50">
+              <span className="w-2.5 h-2.5 rounded-sm bg-[#00AFF0]" /> Sent
+            </span>
+          </div>
+        </div>
+        <div className="h-[220px] sm:h-[260px]">
+          {loading ? (
+            <div className="h-full bg-white/5 rounded animate-pulse" />
+          ) : dailyActivity.length === 0 ? (
+            <div className="h-full flex items-center justify-center text-sm text-white/30">No data</div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={dailyActivity} barGap={2} barCategoryGap="25%">
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+                <XAxis
+                  dataKey="label"
+                  tick={{ fill: '#94A3B8', fontSize: 11 }}
+                  tickLine={false}
+                  axisLine={false}
+                  interval={Math.max(0, Math.floor(dailyActivity.length / 8))}
+                />
+                <YAxis tick={{ fill: '#94A3B8', fontSize: 11 }} tickLine={false} axisLine={false} width={35} />
+                <Tooltip content={<MsgChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
+                <Bar dataKey="received" fill="#5B7BF8" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="sent" fill="#00AFF0" radius={[3, 3, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+      </div>
+
+      {/* Fans Chatted Line Chart */}
+      <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[16px] sm:rounded-[20px] p-4 sm:p-6 shadow-lg">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                <Users className="w-4 h-4 text-[#00AFF0]" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Fans Chatted</h3>
+            </div>
+            <p className="text-[11px] text-white/40 ml-[42px] mt-0.5">Distinct fans who messaged during your shifts</p>
+          </div>
+        </div>
+        <div className="h-[200px] sm:h-[240px]">
+          {loading ? (
+            <div className="h-full bg-white/5 rounded animate-pulse" />
+          ) : dailyFansChatted.length === 0 ? (
+            <div className="h-full flex items-center justify-center text-sm text-white/30">No data</div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={dailyFansChatted}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+                <XAxis
+                  dataKey="label"
+                  tick={{ fill: '#94A3B8', fontSize: 11 }}
+                  tickLine={false}
+                  axisLine={false}
+                  interval={Math.max(0, Math.floor(dailyFansChatted.length / 8))}
+                />
+                <YAxis tick={{ fill: '#94A3B8', fontSize: 11 }} tickLine={false} axisLine={false} width={30} allowDecimals={false} />
+                <Tooltip content={<MsgChartTooltip />} cursor={{ stroke: 'rgba(255,255,255,0.2)' }} />
+                <Line
+                  type="monotone"
+                  dataKey="fans"
+                  stroke="#F97316"
+                  strokeWidth={2}
+                  dot={{ fill: '#F97316', r: 3, strokeWidth: 0 }}
+                  activeDot={{ r: 5, fill: '#F97316', stroke: '#fff', strokeWidth: 2 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+      </div>
+
+      <FansChatModal open={showFansModal} onClose={() => setShowFansModal(false)} fans={uniqueFans} />
+    </div>
+  )
+}
+
 // ━━━ App ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export default function App() {
   const creators = useCreators()
   const [creatorUuid, setCreatorUuid] = useState(null)
+  const [activeTab, setActiveTab] = useState('home')
   const { weeklyData, todayIdx, loading: weeklyLoading } = useWeeklyData(creatorUuid)
   const { chattedList, paidList, loading: metricsLoading } = useTodayMetrics(creatorUuid)
   const subscriberData = useSubscribers(creatorUuid)
@@ -1721,23 +2156,51 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1a1f3a] to-[#0f1729] p-3 sm:p-5">
       <div id="dash-root" className="max-w-[1320px] mx-auto">
-        <Navbar creators={creators} creatorUuid={creatorUuid} onCreatorChange={setCreatorUuid} />
+        <Navbar creators={creators} creatorUuid={creatorUuid} onCreatorChange={setCreatorUuid} activeTab={activeTab} onTabChange={setActiveTab} />
 
-        {/* Main Row */}
-        <div className="mt-3 sm:mt-5 grid grid-cols-1 lg:grid-cols-5 gap-3 sm:gap-5">
-          <div className="lg:col-span-3">
-            <ConversionTracker weeklyData={weeklyData} todayIdx={todayIdx} weeklyLoading={weeklyLoading} />
-          </div>
-          <div className="lg:col-span-2">
-            <TodayMetrics creatorUuid={creatorUuid} subscriberData={subscriberData} />
-          </div>
+        {/* Mobile tab switcher */}
+        <div className="flex md:hidden mt-3 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-1 gap-1">
+          {['Home', 'Messages'].map((item) => {
+            const tabKey = item.toLowerCase()
+            return (
+              <button
+                key={item}
+                onClick={() => setActiveTab(tabKey)}
+                className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-colors ${
+                  tabKey === activeTab
+                    ? 'bg-white/20 text-white'
+                    : 'text-white/40 hover:text-white/70'
+                }`}
+              >
+                {item}
+              </button>
+            )
+          })}
         </div>
 
-        {/* Bottom Row */}
-        <div id="dash-bottom" className="mt-3 sm:mt-5 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-5">
-          <TopChatters paidList={paidList} loading={metricsLoading} />
-          <ConversionProgress weeklyData={weeklyData} />
-        </div>
+        {activeTab === 'home' && (
+          <>
+            {/* Main Row */}
+            <div className="mt-3 sm:mt-5 grid grid-cols-1 lg:grid-cols-5 gap-3 sm:gap-5">
+              <div className="lg:col-span-3">
+                <ConversionTracker weeklyData={weeklyData} todayIdx={todayIdx} weeklyLoading={weeklyLoading} />
+              </div>
+              <div className="lg:col-span-2">
+                <TodayMetrics creatorUuid={creatorUuid} subscriberData={subscriberData} />
+              </div>
+            </div>
+
+            {/* Bottom Row */}
+            <div id="dash-bottom" className="mt-3 sm:mt-5 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-5">
+              <TopChatters paidList={paidList} loading={metricsLoading} />
+              <ConversionProgress weeklyData={weeklyData} />
+            </div>
+          </>
+        )}
+
+        {activeTab === 'messages' && (
+          <MessagesTab creatorUuid={creatorUuid} />
+        )}
       </div>
 
       <ScreenshotPanel />
