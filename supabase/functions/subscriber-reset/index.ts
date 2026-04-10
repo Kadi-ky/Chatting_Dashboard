@@ -51,7 +51,7 @@ async function fetchActiveFans(
     offset += PAGE_SIZE;
 
     // Respect rate limits — small delay between pages
-    if (hasMore) await new Promise((r) => setTimeout(r, 200));
+    if (hasMore) await new Promise((r) => setTimeout(r, 50));
   }
 
   return { fans, pageCount };
@@ -115,7 +115,9 @@ serve(async (req: Request) => {
     const results: any[] = [];
     const resetAt = new Date().toISOString();
 
-    for (const creator of creators) {
+    // Process all creators in PARALLEL so a slow/large roster for one creator
+    // does not block the other and push the total runtime past the 150 s limit.
+    await Promise.all(creators.map(async (creator) => {
       const { creator_uuid, onlyfans_account_id } = creator;
 
       // Insert sync-run audit row
@@ -151,37 +153,25 @@ serve(async (req: Request) => {
           }
         }
 
-        // 3. Mark subscribers NOT in today's fetch as inactive
-        const activeFanIds = fans.map((f) => f.id);
-        if (activeFanIds.length > 0) {
-          // Mark inactive: all rows for this creator that are currently active
-          // but were NOT returned in today's API response
-          const { error: deactivateErr } = await supabase
-            .from("onlyfans_subscribers")
-            .update({
-              is_active: false,
-              subscription_status: "expired",
-              last_source: "reset",
-              updated_at: resetAt,
-            })
-            .eq("creator_uuid", creator_uuid)
-            .eq("is_active", true)
-            .not("fan_id", "in", `(${activeFanIds.join(",")})`);
+        // 3. Mark subscribers NOT in today's fetch as inactive.
+        // We use last_reset_at timestamp comparison instead of a huge IN-list
+        // (which would exceed PostgREST's URL size limit for large rosters).
+        // All fans upserted above already have last_reset_at = resetAt,
+        // so any row still holding an older timestamp was not returned by the
+        // API and should be treated as unsubscribed.
+        const { error: deactivateErr } = await supabase
+          .from("onlyfans_subscribers")
+          .update({
+            is_active: false,
+            subscription_status: "expired",
+            last_source: "reset",
+            updated_at: resetAt,
+          })
+          .eq("creator_uuid", creator_uuid)
+          .eq("is_active", true)
+          .neq("last_reset_at", resetAt);
 
-          if (deactivateErr) throw deactivateErr;
-        } else {
-          // No fans returned → mark all inactive
-          await supabase
-            .from("onlyfans_subscribers")
-            .update({
-              is_active: false,
-              subscription_status: "expired",
-              last_source: "reset",
-              updated_at: resetAt,
-            })
-            .eq("creator_uuid", creator_uuid)
-            .eq("is_active", true);
-        }
+        if (deactivateErr) throw deactivateErr;
 
         // 4. Update sync run
         await supabase
@@ -217,7 +207,7 @@ serve(async (req: Request) => {
           error: err.message,
         });
       }
-    }
+    }));
 
     return new Response(JSON.stringify({ ok: true, results }), {
       headers: { "Content-Type": "application/json" },
