@@ -152,7 +152,7 @@ serve(async (req: Request) => {
       // ── Find or create today's running sync row ──
       let { data: runRow } = await supabase
         .from("onlyfans_subscriber_sync_runs")
-        .select("id, next_offset, fan_count, page_count")
+        .select("id, next_offset, fan_count, page_count, started_at")
         .eq("creator_uuid", creator_uuid)
         .eq("status", "running")
         .gte("started_at", todayISO)
@@ -172,7 +172,7 @@ serve(async (req: Request) => {
             fan_count: 0,
             page_count: 0,
           })
-          .select("id, next_offset, fan_count, page_count")
+          .select("id, next_offset, fan_count, page_count, started_at")
           .single();
         runRow = newRow;
       }
@@ -201,7 +201,10 @@ serve(async (req: Request) => {
         );
 
         // ── Upsert fetched fans ──
-        const resetAt = new Date().toISOString();
+        // Use the run's started_at as resetAt so it stays consistent across
+        // all chunks — otherwise the final deactivation would wrongly expire
+        // fans upserted in earlier chunks (which had different timestamps).
+        const resetAt = runRow.started_at;
         if (fans.length > 0) {
           const rows = fans.map((f) =>
             normalizeFan(f, creator_uuid, onlyfans_account_id, resetAt)
@@ -282,20 +285,6 @@ serve(async (req: Request) => {
 
         results.push({ creator_uuid, status: "error", error: err.message });
       }
-    }
-
-    // If any creator still has pages left, self-invoke immediately (fire & forget).
-    // This makes a single manual trigger run all the way to completion automatically.
-    // The 1-min cron acts as a safety net if this fails.
-    const anyInProgress = results.some((r) => r.status === "in_progress");
-    if (anyInProgress) {
-      fetch(`${SUPABASE_URL}/functions/v1/subscriber-reset`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-          "Content-Type": "application/json",
-        },
-      }).catch(() => {});
     }
 
     return new Response(JSON.stringify({ ok: true, results }), {
