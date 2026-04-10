@@ -76,6 +76,7 @@ function normalizeFan(
 ) {
   const subData = fan.subscribedOnData;
   const currentSub = subData?.subscribes?.find((s: any) => s.isCurrent);
+  const expireDate = currentSub?.expireDate || subData?.expiredAt || null;
 
   return {
     creator_uuid: creatorUuid,
@@ -84,9 +85,9 @@ function normalizeFan(
     name: fan.name || fan.displayName || null,
     username: fan.username || null,
     avatar: fan.avatarThumbs?.c144 || fan.avatar || null,
-    is_active: true,
+    is_active: !expireDate || new Date(expireDate) > new Date(),
     subscribed_on: currentSub?.startDate || subData?.subscribeAt || null,
-    expires_at: currentSub?.expireDate || subData?.expiredAt || null,
+    expires_at: expireDate,
     subscribe_price: fan.subscribePrice ?? null,
     total_spent: subData?.totalSumm ?? 0,
     last_seen_at: fan.lastSeen || null,
