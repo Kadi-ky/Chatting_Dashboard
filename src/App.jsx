@@ -442,9 +442,13 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
     setLoading(true)
     setError(null)
     try {
+      // Default to today if no date range provided
+      const todayStr = toLocalDateStr(new Date())
+      const resolvedStart = startDate || todayStr
+      const resolvedEnd   = endDate   || todayStr
       // Build ISO boundaries from the date strings (YYYY-MM-DD)
-      const from = new Date(startDate + 'T00:00:00')
-      const to   = new Date(endDate   + 'T23:59:59.999')
+      const from = new Date(resolvedStart + 'T00:00:00')
+      const to   = new Date(resolvedEnd   + 'T23:59:59.999')
       const isoFrom = from.toISOString()
       const isoTo   = to.toISOString()
 
