@@ -766,7 +766,7 @@ function useSubscribers(creatorUuid) {
         let q = supabase
           .from('onlyfans_subscribers')
           .select('*')
-          .eq('is_active', true)
+          .or('expires_at.is.null,expires_at.gt.' + new Date().toISOString())
           .order('total_spent', { ascending: false })
           .range(from, from + PAGE - 1)
         if (creatorUuid) q = q.eq('creator_uuid', creatorUuid)
