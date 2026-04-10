@@ -1198,15 +1198,11 @@ function toLocalDateStr(d) {
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0')
 }
 
-function TodayMetrics({ creatorUuid, subscriberData }) {
+function TodayMetrics({ creatorUuid, subscriberData, startDate, setStartDate, endDate, setEndDate, chattedList, paidList, tipsTotal, subIncomeTotal, loading, error, refetch }) {
   const [showModal, setShowModal] = useState(false)
   const [showSubModal, setShowSubModal] = useState(false)
 
   const todayStr = toLocalDateStr(new Date())
-  const [startDate, setStartDate] = useState(todayStr)
-  const [endDate, setEndDate]     = useState(todayStr)
-
-  const { chattedList, paidList, tipsTotal, subIncomeTotal, loading, error, refetch } = useTodayMetrics(creatorUuid, startDate, endDate)
 
   const ppvTotal      = paidList.reduce((s, p) => s + (p.amount || 0), 0)
   const revenueTotal  = ppvTotal + tipsTotal + subIncomeTotal
@@ -2154,8 +2150,12 @@ export default function App() {
   const [creatorUuid, setCreatorUuid] = useState(null)
   const [activeTab, setActiveTab] = useState('home')
   const { weeklyData, todayIdx, loading: weeklyLoading } = useWeeklyData(creatorUuid)
-  const { chattedList, paidList, loading: metricsLoading } = useTodayMetrics(creatorUuid)
   const subscriberData = useSubscribers(creatorUuid)
+
+  const todayStr = toLocalDateStr(new Date())
+  const [startDate, setStartDate] = useState(todayStr)
+  const [endDate, setEndDate]     = useState(todayStr)
+  const { chattedList, paidList, tipsTotal, subIncomeTotal, loading: metricsLoading, error: metricsError, refetch: metricsRefetch } = useTodayMetrics(creatorUuid, startDate, endDate)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1a1f3a] to-[#0f1729] p-3 sm:p-5">
@@ -2190,7 +2190,15 @@ export default function App() {
                 <ConversionTracker weeklyData={weeklyData} todayIdx={todayIdx} weeklyLoading={weeklyLoading} />
               </div>
               <div className="lg:col-span-2">
-                <TodayMetrics creatorUuid={creatorUuid} subscriberData={subscriberData} />
+                <TodayMetrics
+                  creatorUuid={creatorUuid}
+                  subscriberData={subscriberData}
+                  startDate={startDate} setStartDate={setStartDate}
+                  endDate={endDate}     setEndDate={setEndDate}
+                  chattedList={chattedList} paidList={paidList}
+                  tipsTotal={tipsTotal} subIncomeTotal={subIncomeTotal}
+                  loading={metricsLoading} error={metricsError} refetch={metricsRefetch}
+                />
               </div>
             </div>
 
