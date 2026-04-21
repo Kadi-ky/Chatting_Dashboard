@@ -35,6 +35,8 @@ import {
 } from 'lucide-react'
 import html2canvas from 'html2canvas'
 import { supabase } from './lib/supabase'
+import ConversationsTab from './components/ConversationsTab'
+import TestingGroundTab from './components/TestingGroundTab'
 
 // ━━━ Screenshot Configuration ━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -884,14 +886,15 @@ function Navbar({ creators, creatorUuid, onCreatorChange, activeTab, onTabChange
           </div>
         </div>
         <div className="hidden md:flex items-center gap-6">
-          {['Home', 'Messages', 'Discover', 'Wallet', 'Projects'].map(
+          {['Home', 'Messages', 'Conversations', 'Testing Ground', 'Wallet', 'Projects'].map(
             (item) => {
               const tabKey = item.toLowerCase()
               const isActive = tabKey === activeTab
+              const clickable = tabKey === 'home' || tabKey === 'messages' || tabKey === 'conversations' || tabKey === 'testing ground'
               return (
                 <button
                   key={item}
-                  onClick={() => (tabKey === 'home' || tabKey === 'messages') ? onTabChange(tabKey) : undefined}
+                  onClick={() => clickable ? onTabChange(tabKey) : undefined}
                   className={`text-sm transition-colors ${
                     isActive
                       ? 'text-white font-semibold'
@@ -2164,7 +2167,7 @@ export default function App() {
 
         {/* Mobile tab switcher */}
         <div className="flex md:hidden mt-3 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-1 gap-1">
-          {['Home', 'Messages'].map((item) => {
+          {['Home', 'Messages', 'Conversations', 'Testing Ground'].map((item) => {
             const tabKey = item.toLowerCase()
             return (
               <button
@@ -2212,6 +2215,14 @@ export default function App() {
 
         {activeTab === 'messages' && (
           <MessagesTab creatorUuid={creatorUuid} />
+        )}
+
+        {activeTab === 'conversations' && (
+          <ConversationsTab creatorUuid={creatorUuid} />
+        )}
+
+        {activeTab === 'testing ground' && (
+          <TestingGroundTab creatorUuid={creatorUuid} />
         )}
       </div>
 

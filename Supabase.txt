@@ -1,0 +1,306 @@
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
+CREATE TABLE public.auth_vault (
+  creator_name text NOT NULL,
+  access_token text,
+  refresh_token text,
+  updated_at timestamp without time zone DEFAULT now(),
+  id_token text,
+  creator_uuid uuid,
+  client_id character varying,
+  client_secret character varying,
+  cookie text,
+  CONSTRAINT auth_vault_pkey PRIMARY KEY (creator_name)
+);
+CREATE TABLE public.content_inventory (
+  script_number smallint NOT NULL,
+  script_name text,
+  preview_media_id text,
+  ppv1_media_id text,
+  ppv1_price integer DEFAULT 300,
+  ppv2_media_id text,
+  ppv2_price integer DEFAULT 301,
+  ppv3_media_id text,
+  ppv3_price integer DEFAULT 302,
+  ppv4_media_id text,
+  ppv4_price integer DEFAULT 303,
+  creator_uuid character varying,
+  creator_name text,
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  CONSTRAINT content_inventory_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.content_inventory_onlyfans (
+  script_number smallint NOT NULL,
+  script_name text,
+  preview_media_id text,
+  ppv1_media_id text,
+  ppv1_price integer DEFAULT 300,
+  ppv2_media_id text,
+  ppv2_price integer DEFAULT 301,
+  ppv3_media_id text,
+  ppv3_price integer DEFAULT 302,
+  ppv4_media_id text,
+  ppv4_price integer DEFAULT 303,
+  creator_uuid character varying,
+  creator_name text,
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  tag_creator text,
+  ppv1_description text,
+  ppv2_description text,
+  ppv3_description text,
+  ppv4_description text,
+  CONSTRAINT content_inventory_onlyfans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.creator_onlyfans_accounts (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  creator_uuid text NOT NULL UNIQUE,
+  creator_name text,
+  onlyfans_account_id text NOT NULL,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT creator_onlyfans_accounts_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.creator_vault_folders (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  creator_uuid text NOT NULL,
+  available_folders text
+);
+CREATE TABLE public.creator_vault_media (
+  id integer NOT NULL DEFAULT nextval('vault_inventory_onlyfans_id_seq'::regclass),
+  creator_uuid text NOT NULL,
+  category_keyword text NOT NULL,
+  media_id text NOT NULL,
+  price numeric NOT NULL,
+  CONSTRAINT creator_vault_media_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.fan_interactions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  fan_id uuid,
+  direction text CHECK (direction = ANY (ARRAY['inbound'::text, 'outbound'::text])),
+  embedding USER-DEFINED,
+  created_at timestamp with time zone DEFAULT now(),
+  session_id character varying,
+  message jsonb,
+  creatoruuid character varying,
+  CONSTRAINT fan_interactions_pkey PRIMARY KEY (id),
+  CONSTRAINT fan_interactions_fan_id_fkey FOREIGN KEY (fan_id) REFERENCES public.fans(id)
+);
+CREATE TABLE public.fan_interactions_onlyfans (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  fan_id uuid,
+  direction text CHECK (direction = ANY (ARRAY['inbound'::text, 'outbound'::text])),
+  embedding USER-DEFINED,
+  created_at timestamp with time zone DEFAULT now(),
+  session_id character varying,
+  message jsonb,
+  creatoruuid character varying,
+  CONSTRAINT fan_interactions_onlyfans_pkey PRIMARY KEY (id),
+  CONSTRAINT fan_interactions_onlyfans_fan_id_fkey FOREIGN KEY (fan_id) REFERENCES public.fans_onlyfans(id)
+);
+CREATE TABLE public.fans (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  fanvue_id text NOT NULL,
+  display_name text,
+  current_rapport_score integer DEFAULT 0,
+  current_mood_level text DEFAULT 'neutral'::text,
+  total_spent numeric DEFAULT 0,
+  conversation_summary text,
+  is_locked boolean DEFAULT false,
+  created_at timestamp with time zone DEFAULT now(),
+  current_mood_score integer DEFAULT 0,
+  creatoruuid character varying,
+  CONSTRAINT fans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.fans_onlyfans (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  fanvue_id text NOT NULL,
+  display_name text,
+  current_rapport_score integer DEFAULT 0,
+  current_mood_level text DEFAULT 'neutral'::text,
+  total_spent numeric DEFAULT 0,
+  conversation_summary text,
+  is_locked boolean DEFAULT false,
+  created_at timestamp with time zone DEFAULT now(),
+  current_mood_score integer DEFAULT 0,
+  creatoruuid character varying,
+  CONSTRAINT fans_onlyfans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.funnel_tracking (
+  fan_uuid text NOT NULL,
+  current_step smallint DEFAULT 1,
+  status text DEFAULT 'not_sent'::text,
+  last_attempt timestamp without time zone DEFAULT now(),
+  current_script smallint DEFAULT 1,
+  script_1 text,
+  script_2 text,
+  script_3 text,
+  script_4 text,
+  creatoruuid character varying NOT NULL,
+  chat_count_since_ppv integer DEFAULT 0,
+  current_ppv_messageuuid text,
+  ppv_1 text,
+  ppv_2 text,
+  ppv_3 text,
+  ppv_4 text,
+  display_name text,
+  previous_script smallint,
+  content_request_count integer DEFAULT 0,
+  CONSTRAINT funnel_tracking_pkey PRIMARY KEY (fan_uuid, creatoruuid)
+);
+CREATE TABLE public.funnel_tracking_onlyfans (
+  fan_uuid text NOT NULL,
+  current_step smallint DEFAULT 1,
+  status text DEFAULT 'not_sent'::text,
+  last_attempt timestamp without time zone DEFAULT now(),
+  current_script smallint DEFAULT 1,
+  script_1 text,
+  script_2 text,
+  script_3 text,
+  script_4 text,
+  creatoruuid character varying NOT NULL,
+  chat_count_since_ppv integer DEFAULT 0,
+  current_ppv_messageuuid text,
+  ppv_1 text,
+  ppv_2 text,
+  ppv_3 text,
+  ppv_4 text,
+  display_name text,
+  previous_script smallint,
+  content_request_count integer DEFAULT 0,
+  CONSTRAINT funnel_tracking_onlyfans_pkey PRIMARY KEY (fan_uuid, creatoruuid)
+);
+CREATE TABLE public.mass_captions_onlyfans (
+  id integer NOT NULL DEFAULT nextval('mass_captions_onlyfans_id_seq'::regclass),
+  content text NOT NULL,
+  creatoruuid text NOT NULL,
+  CONSTRAINT mass_captions_onlyfans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.mass_images_onlyfans (
+  id integer NOT NULL DEFAULT nextval('mass_images_onlyfans_id_seq'::regclass),
+  media_id text NOT NULL,
+  creatoruuid text NOT NULL,
+  CONSTRAINT mass_images_onlyfans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.mass_settings_onlyfans (
+  creatoruuid text NOT NULL,
+  last_caption_index integer DEFAULT 0,
+  last_image_index integer DEFAULT 0,
+  last_message_id text,
+  CONSTRAINT mass_settings_onlyfans_pkey PRIMARY KEY (creatoruuid)
+);
+CREATE TABLE public.message_cleanup_queue (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  creator_uuid text NOT NULL,
+  fan_uuid text NOT NULL,
+  message_uuid text NOT NULL,
+  sent_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT message_cleanup_queue_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.messages_queue (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  fan_id uuid,
+  scheduled_for timestamp with time zone,
+  message text DEFAULT 'pending'::text,
+  created_at timestamp with time zone DEFAULT now(),
+  creatoruuid character varying,
+  CONSTRAINT messages_queue_pkey PRIMARY KEY (id),
+  CONSTRAINT messages_queue_fan_id_fkey FOREIGN KEY (fan_id) REFERENCES public.fans(id)
+);
+CREATE TABLE public.messages_queue_onlyfans (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  fan_id uuid,
+  scheduled_for timestamp with time zone,
+  message text DEFAULT 'pending'::text,
+  created_at timestamp with time zone DEFAULT now(),
+  creatoruuid character varying,
+  CONSTRAINT messages_queue_onlyfans_pkey PRIMARY KEY (id),
+  CONSTRAINT messages_queue_onlyfans_fan_id_fkey FOREIGN KEY (fan_id) REFERENCES public.fans(id)
+);
+CREATE TABLE public.onlyfans_subscriber_sync_runs (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  creator_uuid text NOT NULL,
+  started_at timestamp with time zone NOT NULL DEFAULT now(),
+  finished_at timestamp with time zone,
+  fan_count integer DEFAULT 0,
+  page_count integer DEFAULT 0,
+  status text NOT NULL DEFAULT 'running'::text,
+  error_message text,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  next_offset integer NOT NULL DEFAULT 0,
+  CONSTRAINT onlyfans_subscriber_sync_runs_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.onlyfans_subscribers (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  creator_uuid text NOT NULL,
+  onlyfans_account_id text NOT NULL,
+  fan_id bigint NOT NULL,
+  name text,
+  username text,
+  avatar text,
+  is_active boolean NOT NULL DEFAULT true,
+  subscribed_on timestamp with time zone,
+  expires_at timestamp with time zone,
+  subscribe_price numeric,
+  total_spent numeric DEFAULT 0,
+  last_seen_at timestamp with time zone,
+  subscription_status text,
+  last_source text NOT NULL DEFAULT 'reset'::text,
+  last_reset_at timestamp with time zone,
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT onlyfans_subscribers_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.purchases (
+  id integer NOT NULL DEFAULT nextval('purchases_id_seq'::regclass),
+  fan_uuid text NOT NULL,
+  script_number smallint,
+  amount numeric,
+  purchased_at timestamp with time zone DEFAULT now(),
+  creator_uuid text,
+  CONSTRAINT purchases_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.purchases_onlyfans (
+  id integer NOT NULL DEFAULT nextval('purchases_id_seq'::regclass),
+  fan_uuid text NOT NULL,
+  script_number smallint,
+  amount numeric,
+  purchased_at timestamp with time zone DEFAULT now(),
+  creator_uuid text,
+  CONSTRAINT purchases_onlyfans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.subscriptions_income_onlyfans (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  event_id text NOT NULL UNIQUE,
+  creator_uuid text NOT NULL,
+  event_type text NOT NULL,
+  sub_type text,
+  fan_user_id text,
+  fan_name text,
+  fan_username text,
+  amount numeric NOT NULL DEFAULT 0,
+  subscribed_at timestamp with time zone NOT NULL,
+  inserted_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT subscriptions_income_onlyfans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.tips_onlyfans (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  event_id text NOT NULL UNIQUE,
+  creator_uuid text NOT NULL,
+  fan_user_id text,
+  fan_name text,
+  fan_username text,
+  amount_gross numeric NOT NULL DEFAULT 0,
+  amount_net numeric NOT NULL DEFAULT 0,
+  tipped_at timestamp with time zone NOT NULL,
+  inserted_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT tips_onlyfans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.vault_sent_history (
+  id integer NOT NULL DEFAULT nextval('vault_sent_history_id_seq'::regclass),
+  fan_uuid text NOT NULL,
+  creator_uuid text NOT NULL,
+  media_id text NOT NULL,
+  sent_at timestamp without time zone DEFAULT now(),
+  CONSTRAINT vault_sent_history_pkey PRIMARY KEY (id)
+);

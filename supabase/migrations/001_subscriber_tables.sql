@@ -65,37 +65,84 @@ create index if not exists idx_ossr_creator
 -- ============================================================
 -- 4. Enable Realtime on the subscribers table
 -- ============================================================
-alter publication supabase_realtime add table public.onlyfans_subscribers;
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'onlyfans_subscribers'
+  ) then
+    alter publication supabase_realtime add table public.onlyfans_subscribers;
+  end if;
+end
+$$;
 
 -- ============================================================
 -- 5. RLS — browser clients can read, only service-role can write
 -- ============================================================
 alter table public.onlyfans_subscribers enable row level security;
-
-create policy "anon_read_subscribers"
-  on public.onlyfans_subscribers
-  for select
-  to anon, authenticated
-  using (true);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'onlyfans_subscribers'
+      and policyname = 'anon_read_subscribers'
+  ) then
+    create policy "anon_read_subscribers"
+      on public.onlyfans_subscribers
+      for select
+      to anon, authenticated
+      using (true);
+  end if;
+end
+$$;
 
 -- Writes go through Edge Functions using the service_role key,
 -- which bypasses RLS automatically.
 
 alter table public.creator_onlyfans_accounts enable row level security;
 
-create policy "anon_read_creator_accounts"
-  on public.creator_onlyfans_accounts
-  for select
-  to anon, authenticated
-  using (true);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'creator_onlyfans_accounts'
+      and policyname = 'anon_read_creator_accounts'
+  ) then
+    create policy "anon_read_creator_accounts"
+      on public.creator_onlyfans_accounts
+      for select
+      to anon, authenticated
+      using (true);
+  end if;
+end
+$$;
 
 alter table public.onlyfans_subscriber_sync_runs enable row level security;
 
-create policy "anon_read_sync_runs"
-  on public.onlyfans_subscriber_sync_runs
-  for select
-  to anon, authenticated
-  using (true);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'onlyfans_subscriber_sync_runs'
+      and policyname = 'anon_read_sync_runs'
+  ) then
+    create policy "anon_read_sync_runs"
+      on public.onlyfans_subscriber_sync_runs
+      for select
+      to anon, authenticated
+      using (true);
+  end if;
+end
+$$;
 
 -- ============================================================
 -- 6. Cron job — runs daily at midnight UTC

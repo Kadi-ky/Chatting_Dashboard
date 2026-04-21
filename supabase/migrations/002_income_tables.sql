@@ -46,22 +46,67 @@ create index if not exists idx_subincome_creator_at
 -- ============================================================
 alter table public.tips_onlyfans enable row level security;
 
-create policy "anon_read_tips"
-  on public.tips_onlyfans
-  for select
-  to anon, authenticated
-  using (true);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'tips_onlyfans'
+      and policyname = 'anon_read_tips'
+  ) then
+    create policy "anon_read_tips"
+      on public.tips_onlyfans
+      for select
+      to anon, authenticated
+      using (true);
+  end if;
+end
+$$;
 
 alter table public.subscriptions_income_onlyfans enable row level security;
 
-create policy "anon_read_subincome"
-  on public.subscriptions_income_onlyfans
-  for select
-  to anon, authenticated
-  using (true);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'subscriptions_income_onlyfans'
+      and policyname = 'anon_read_subincome'
+  ) then
+    create policy "anon_read_subincome"
+      on public.subscriptions_income_onlyfans
+      for select
+      to anon, authenticated
+      using (true);
+  end if;
+end
+$$;
 
 -- ============================================================
 -- 4. Enable Realtime on both tables
 -- ============================================================
-alter publication supabase_realtime add table public.tips_onlyfans;
-alter publication supabase_realtime add table public.subscriptions_income_onlyfans;
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'tips_onlyfans'
+  ) then
+    alter publication supabase_realtime add table public.tips_onlyfans;
+  end if;
+
+  if not exists (
+    select 1
+    from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'subscriptions_income_onlyfans'
+  ) then
+    alter publication supabase_realtime add table public.subscriptions_income_onlyfans;
+  end if;
+end
+$$;
