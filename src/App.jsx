@@ -36,7 +36,7 @@ import {
 import html2canvas from 'html2canvas'
 import { supabase } from './lib/supabase'
 import ConversationsTab from './components/ConversationsTab'
-import TestingGroundTab from './components/TestingGroundTab'
+import V3TestingGroundTab from './components/V3TestingGroundTab'
 
 // ━━━ Screenshot Configuration ━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -886,11 +886,11 @@ function Navbar({ creators, creatorUuid, onCreatorChange, activeTab, onTabChange
           </div>
         </div>
         <div className="hidden md:flex items-center gap-6">
-          {['Home', 'Messages', 'Conversations', 'Testing Ground', 'Wallet', 'Projects'].map(
+          {['Home', 'Messages', 'Conversations', 'Onlyfans Chat Bot'].map(
             (item) => {
               const tabKey = item.toLowerCase()
               const isActive = tabKey === activeTab
-              const clickable = tabKey === 'home' || tabKey === 'messages' || tabKey === 'conversations' || tabKey === 'testing ground'
+              const clickable = tabKey === 'home' || tabKey === 'messages' || tabKey === 'conversations' || tabKey === 'onlyfans chat bot'
               return (
                 <button
                   key={item}
@@ -2167,7 +2167,7 @@ export default function App() {
 
         {/* Mobile tab switcher */}
         <div className="flex md:hidden mt-3 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-1 gap-1">
-          {['Home', 'Messages', 'Conversations', 'Testing Ground'].map((item) => {
+          {['Home', 'Messages', 'Conversations', 'Onlyfans Chat Bot'].map((item) => {
             const tabKey = item.toLowerCase()
             return (
               <button
@@ -2221,8 +2221,8 @@ export default function App() {
           <ConversationsTab creatorUuid={creatorUuid} />
         )}
 
-        {activeTab === 'testing ground' && (
-          <TestingGroundTab creatorUuid={creatorUuid} />
+        {activeTab === 'onlyfans chat bot' && (
+          <V3TestingGroundTab />
         )}
       </div>
 
