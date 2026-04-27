@@ -105,60 +105,96 @@ async function handle(
       return text(res, 403, "untrusted source");
     }
 
-    const rawBody = await readRawBody(req);
+    // Webhook ingress is BEST-EFFORT and ALWAYS returns 200 to OFAPI (unless
+    // signature/IP gate fails). Per-event failures (DB pool exhaustion, parse
+    // errors, queue add failures) are logged but don't surface as 500s,
+    // because:
+    //   1. A 500 makes OFAPI retry the same event up to 3x — multiplying load
+    //      under the exact pressure that caused the original failure.
+    //   2. Idempotency keys mean a successful retry would still de-dupe, so
+    //      retries don't help anyway when the issue is capacity.
+    //   3. We'd rather drop one occasional event than cascade-fail the queue.
+    let rawBody: string;
+    try {
+      rawBody = await readRawBody(req);
+    } catch (err) {
+      logger.error({ err: err instanceof Error ? err.message : err }, "webhook readRawBody failed");
+      return json(res, 200, { received: 0, error: "body_read_failed" });
+    }
+
     const adapter = getPlatformAdapter();
-    const events = adapter.parseWebhook({ rawBody, headers: req.headers });
+    let events;
+    try {
+      events = adapter.parseWebhook({ rawBody, headers: req.headers });
+    } catch (err) {
+      logger.error({ err: err instanceof Error ? err.message : err }, "webhook parseWebhook threw");
+      return json(res, 200, { received: 0, error: "parse_failed" });
+    }
     if (events === null) {
       return text(res, 401, "invalid signature");
     }
+
     let enqueued = 0;
     let autoCreated = 0;
     let unknownAccounts = 0;
     let blockedByAllowlist = 0;
+    let perEventErrors = 0;
     const allowlist = parseAllowlist();
     for (const event of events) {
-      // Allowlist guard: drop events for accounts we're not testing. This
-      // runs BEFORE auto-create / DB lookup so disallowed traffic costs us
-      // nothing and never lands a row. Critical when our tunnel is pointed
-      // at OFAPI alongside a different production bot that owns those other
-      // creators — we must not accidentally observe / log their conversations.
-      if (allowlist && !allowlist.has(event.platformAccountId)) {
-        blockedByAllowlist++;
-        continue;
-      }
-
-      let account = await loadAccountByPlatformId("onlyfans", event.platformAccountId);
-      if (!account) {
-        // SHADOW_MODE: auto-provision an account row so production traffic for
-        // any creator can land without manual setup. The created row is marked
-        // active with creator_uuid mirroring platform_account_id (OFAPI uses
-        // the same value on both sides). When NOT in shadow mode, an unknown
-        // account is dropped so we don't accidentally start replying as a
-        // creator we haven't been provisioned for.
-        if (env.SHADOW_MODE) {
-          account = await upsertShadowAccount({
-            platform: "onlyfans",
-            platformAccountId: event.platformAccountId,
-          });
-          autoCreated++;
-          logger.info(
-            { platformAccountId: event.platformAccountId, accountId: account.id },
-            "shadow auto-created account row for incoming webhook",
-          );
-        } else {
-          unknownAccounts++;
-          logger.warn({ platformAccountId: event.platformAccountId }, "webhook for unknown account");
+      try {
+        if (allowlist && !allowlist.has(event.platformAccountId)) {
+          blockedByAllowlist++;
           continue;
         }
+
+        let account = await loadAccountByPlatformId("onlyfans", event.platformAccountId);
+        if (!account) {
+          if (env.SHADOW_MODE) {
+            account = await upsertShadowAccount({
+              platform: "onlyfans",
+              platformAccountId: event.platformAccountId,
+            });
+            autoCreated++;
+            logger.info(
+              { platformAccountId: event.platformAccountId, accountId: account.id },
+              "shadow auto-created account row for incoming webhook",
+            );
+          } else {
+            unknownAccounts++;
+            logger.warn({ platformAccountId: event.platformAccountId }, "webhook for unknown account");
+            continue;
+          }
+        }
+        await inboundQueue().add(
+          event.kind,
+          { accountId: account.id, event: serializeEvent(event) },
+          { jobId: `${event.kind}-${event.externalId}` },
+        );
+        enqueued++;
+      } catch (err) {
+        // One event failed — log and continue with the rest. Most likely
+        // cause: Postgres pool exhaustion under burst load, or Redis hiccup.
+        perEventErrors++;
+        logger.error(
+          {
+            err: err instanceof Error ? err.message : err,
+            stack: err instanceof Error ? err.stack : undefined,
+            platformAccountId: event.platformAccountId,
+            eventKind: event.kind,
+            externalId: event.externalId,
+          },
+          "webhook event handling failed (continuing)",
+        );
       }
-      await inboundQueue().add(
-        event.kind,
-        { accountId: account.id, event: serializeEvent(event) },
-        { jobId: `${event.kind}-${event.externalId}` },
-      );
-      enqueued++;
     }
-    return json(res, 200, { received: events.length, enqueued, autoCreated, unknownAccounts, blockedByAllowlist });
+    return json(res, 200, {
+      received: events.length,
+      enqueued,
+      autoCreated,
+      unknownAccounts,
+      blockedByAllowlist,
+      ...(perEventErrors ? { errors: perEventErrors } : {}),
+    });
   }
 
   if (path.startsWith("/admin")) {
