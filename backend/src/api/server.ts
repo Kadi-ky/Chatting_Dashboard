@@ -399,18 +399,22 @@ async function loadThreads(): Promise<unknown> {
   const TEST_ACCOUNT_ID = "00000000-0000-0000-0000-00000000beef";
 
   const threads = rows.map((r) => {
-    const cfg = (r.account_config ?? {}) as Record<string, unknown>;
-    const isShadow = cfg.shadow === true;
+    // Source label tracks RUNTIME behavior — what's the bot actually doing
+    // for this account right now, not what mode the account was created in:
+    //   - "test"       = synthetic loop tester OR missing platform_account_id
+    //   - "shadow"     = SHADOW_MODE env is true → bot never sends replies
+    //   - "production" = SHADOW_MODE env is false → bot replies for real
+    // Reading env.SHADOW_MODE means the label flips correctly the moment we
+    // toggle the env var, even if the account row's config.shadow was set
+    // historically during a prior shadow-mode auto-create.
     const isTest = r.account_id === TEST_ACCOUNT_ID;
-    // "production" requires a real platform_account_id AND not shadow flag.
-    // Anything missing platform_account_id is a manual /admin/test/inject and
-    // gets bucketed as "test" so it doesn't pollute the production lane.
     const hasPlatformId = Boolean(r.platform_account_id);
-    const source: "test" | "shadow" | "production" = isShadow
-      ? "shadow"
-      : isTest || !hasPlatformId
+    const source: "test" | "shadow" | "production" =
+      isTest || !hasPlatformId
         ? "test"
-        : "production";
+        : env.SHADOW_MODE
+          ? "shadow"
+          : "production";
 
     return {
       conversationId: r.conversation_id,
