@@ -15,7 +15,7 @@ export class PlatformHttpError extends Error {
     public readonly path: string,
     public readonly body: string,
   ) {
-    super(`platform ${status} ${path}: ${body.slice(0, 200)}`);
+    super(`platform ${status} ${path}: ${body.slice(0, 500)}`);
     this.name = "PlatformHttpError";
   }
 }
@@ -64,7 +64,25 @@ export class PlatformHttpClient {
     const elapsed = Date.now() - started;
     if (!res.ok) {
       const text = await res.text().catch(() => "");
-      logger.warn({ path, status: res.status, elapsed }, "platform http error");
+      // Verbose error logging for debugging real production failures.
+      // Includes the response body (first 500 chars) and a hash of the
+      // request body for correlation. The full request body could contain
+      // sensitive content (fan-facing message text), so we hash it instead
+      // of logging raw — that's enough to correlate two failures of the
+      // same outbound retry.
+      logger.warn(
+        {
+          path,
+          method: opts.method ?? "GET",
+          status: res.status,
+          elapsed,
+          responseBody: text.slice(0, 500),
+          requestBodyKeys: opts.body && typeof opts.body === "object"
+            ? Object.keys(opts.body as Record<string, unknown>)
+            : undefined,
+        },
+        "platform http error",
+      );
       throw new PlatformHttpError(res.status, path, text);
     }
 
