@@ -359,6 +359,119 @@ async function handle(
       });
     }
 
+    // Unread fans on the platform — proxies OFAPI's chats?filter=unread for the
+    // allowlisted account so the dashboard can show fans who messaged but
+    // V3 didn't reply (dropped during 429 cascades, missed during outages,
+    // or arrived before our webhook URL was wired). Read-only.
+    if (method === "GET" && path === "/admin/unread-fans") {
+      const platformAccountId = env.PLATFORM_ACCOUNT_ALLOWLIST?.split(",")[0]?.trim();
+      if (!platformAccountId) {
+        return json(res, 400, { error: "no PLATFORM_ACCOUNT_ALLOWLIST set" });
+      }
+      try {
+        const apiBase = env.PLATFORM_API_BASE;
+        const apiKey = env.PLATFORM_API_KEY;
+        if (!apiBase || !apiKey) return json(res, 500, { error: "PLATFORM_API_BASE / PLATFORM_API_KEY missing" });
+        const r = await fetch(
+          `${apiBase}/api/${platformAccountId}/chats?filter=unread&limit=50&skip_users=none&order=recent`,
+          { headers: { Authorization: `Bearer ${apiKey}`, Accept: "application/json" } },
+        );
+        if (!r.ok) {
+          const errBody = await r.text().catch(() => "");
+          return json(res, 502, { error: `ofapi ${r.status}`, body: errBody.slice(0, 500) });
+        }
+        const data = (await r.json()) as { data?: Array<Record<string, unknown>> };
+        // Distill to just what the dashboard needs to render + decide.
+        const out = (data.data ?? []).map((chat) => {
+          const lastMessage = (chat.lastMessage ?? {}) as Record<string, unknown>;
+          const fan = (chat.fan ?? {}) as Record<string, unknown>;
+          const fromUser = (lastMessage.fromUser ?? {}) as Record<string, unknown>;
+          return {
+            fanExternalId: String(fan.id ?? fromUser.id ?? ""),
+            fanName: String(fan.name ?? fan.username ?? ""),
+            fanUsername: String(fan.username ?? ""),
+            fanAvatar: (fan.avatar as string | null) ?? null,
+            unreadCount: Number(chat.unreadMessagesCount ?? 0),
+            lastMessageId: String(lastMessage.id ?? ""),
+            lastMessageText: String(lastMessage.text ?? ""),
+            lastMessageAt: String(lastMessage.createdAt ?? ""),
+            // True if the message was sent BY the fan (not by the creator).
+            // unreadMessagesCount > 0 already implies fan-side, but include
+            // for clarity.
+            isFromFan: Number(fromUser.id ?? 0) === Number(fan.id ?? 0),
+          };
+        });
+        return json(res, 200, { unread: out });
+      } catch (err) {
+        return json(res, 500, { error: err instanceof Error ? err.message : String(err) });
+      }
+    }
+
+    // Trigger V3 to generate + send a reply for a real fan inbound that
+    // wasn't processed (e.g. dropped during 429 cascade). Synthesizes a
+    // messages.received event and runs it through the same pipeline as a
+    // real webhook — the dashboard wires this to a "Send V3 reply" button.
+    if (method === "POST" && path === "/admin/trigger-fan-reply") {
+      const body = await readBody(req);
+      const {
+        fanExternalId,
+        platformAccountId: pAcctId,
+        text: msgText,
+        messageId: msgIdInput,
+        fanName,
+      } = body as Record<string, unknown>;
+      if (typeof fanExternalId !== "string" || !fanExternalId) {
+        return json(res, 400, { error: "fanExternalId required" });
+      }
+      if (typeof msgText !== "string") {
+        return json(res, 400, { error: "text required" });
+      }
+      const platformAccountId =
+        typeof pAcctId === "string" && pAcctId.length > 0
+          ? pAcctId
+          : env.PLATFORM_ACCOUNT_ALLOWLIST?.split(",")[0]?.trim();
+      if (!platformAccountId) {
+        return json(res, 400, { error: "platformAccountId required (no allowlist default)" });
+      }
+
+      // Look up the internal account by platform id. If missing, refuse —
+      // this isn't shadow-mode auto-create territory.
+      const account = await loadAccountByPlatformId("onlyfans", platformAccountId);
+      if (!account) {
+        return json(res, 404, { error: `no account row for ${platformAccountId}` });
+      }
+
+      const event = serializeEvent({
+        externalId: `manual-trigger-${randomUUID()}`,
+        kind: "message.received",
+        platformAccountId,
+        subscriberExternalId: fanExternalId,
+        conversationExternalId: fanExternalId,
+        payload: {
+          // Mirror the fields parseWebhook normalises — already-extracted
+          // text + the original payload style for downstream tools that read
+          // payload.text.
+          text: msgText,
+          fromUser: { id: Number.isFinite(Number(fanExternalId)) ? Number(fanExternalId) : fanExternalId, name: fanName ?? "" },
+          id: typeof msgIdInput === "string" ? msgIdInput : `manual-${Date.now()}`,
+          createdAt: new Date().toISOString(),
+          isManualTrigger: true,
+        },
+        occurredAt: new Date(),
+      });
+
+      await inboundQueue().add(
+        event.kind,
+        { accountId: account.id, event },
+        { jobId: `${event.kind}-${event.externalId}` },
+      );
+      logger.info(
+        { fanExternalId, platformAccountId, accountId: account.id },
+        "manual fan-reply trigger enqueued",
+      );
+      return json(res, 200, { ok: true, externalId: event.externalId, accountId: account.id });
+    }
+
     if (method === "POST" && path === "/admin/test/inject") {
       const body = await readBody(req);
       const { subscriberExternalId, text: msgText, subscriberName, accountId: overrideAccountId } = body as Record<string, unknown>;

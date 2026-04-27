@@ -48,4 +48,16 @@ export const v3api = {
       method: 'POST',
       body: JSON.stringify({ conversationId, messageId }),
     }),
+  // Unread fans on the platform that V3 hasn't replied to yet (e.g. dropped
+  // during 429 cascades, missed during outages). Returns a list the dashboard
+  // can render with manual "Send V3 reply" / "Skip" buttons per fan.
+  listUnreadFans: () => call('/admin/unread-fans'),
+  // Manually trigger V3 to reply to a real fan inbound. Synthesizes a
+  // messages.received event under the hood and runs it through the normal
+  // pipeline (intent classify → generator → send).
+  triggerFanReply: ({ fanExternalId, text, messageId, fanName, platformAccountId }) =>
+    call('/admin/trigger-fan-reply', {
+      method: 'POST',
+      body: JSON.stringify({ fanExternalId, text, messageId, fanName, platformAccountId }),
+    }),
 }

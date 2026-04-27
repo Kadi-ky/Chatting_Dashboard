@@ -314,6 +314,14 @@ export default function V3TestingGroundTab() {
   // care about most. Switch to 'test' to see synthetic loop traffic, or 'all'
   // for everything mixed.
   const [sourceFilter, setSourceFilter] = useState('all')
+  // Unread fans (catch-up section): fans on OnlyFans who messaged but V3
+  // didn't reply (dropped during rate-limit cascades, missed during outages).
+  // Manual control — operator clicks "Send V3 reply" or "Skip" per fan.
+  const [unreadFans, setUnreadFans] = useState([])
+  const [loadingUnread, setLoadingUnread] = useState(false)
+  const [unreadError, setUnreadError] = useState(null)
+  const [triggeringFanId, setTriggeringFanId] = useState(null)
+  const [skippedFanIds, setSkippedFanIds] = useState(new Set())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [sending, setSending] = useState(false)
@@ -337,6 +345,51 @@ export default function V3TestingGroundTab() {
     } finally {
       setLoading(false)
     }
+  }, [])
+
+  // Load fans on OnlyFans whose latest message has no V3 reply. Manual click;
+  // we don't auto-poll because the OFAPI call costs credits and can return
+  // tens of fans, which we don't want to render unless the user asks.
+  const loadUnread = useCallback(async () => {
+    if (!v3Configured) return
+    setLoadingUnread(true)
+    setUnreadError(null)
+    try {
+      const { unread } = await v3api.listUnreadFans()
+      setUnreadFans(unread || [])
+    } catch (err) {
+      setUnreadError(err.message)
+    } finally {
+      setLoadingUnread(false)
+    }
+  }, [])
+
+  // "Send V3 reply" button: synthesise a webhook for the fan's latest message
+  // and run it through V3's normal pipeline. Optimistically remove from the
+  // unread list on success.
+  const triggerReply = useCallback(async (fan) => {
+    setTriggeringFanId(fan.fanExternalId)
+    try {
+      // text is left as-is; V3's parseWebhook strips HTML server-side
+      await v3api.triggerFanReply({
+        fanExternalId: fan.fanExternalId,
+        text: fan.lastMessageText,
+        messageId: fan.lastMessageId,
+        fanName: fan.fanName,
+      })
+      // Remove from list — the next /admin/unread-fans poll will exclude it
+      // anyway once V3 marks the chat as read on send, but visual feedback
+      // matters.
+      setUnreadFans((prev) => prev.filter((f) => f.fanExternalId !== fan.fanExternalId))
+    } catch (err) {
+      setUnreadError(err.message)
+    } finally {
+      setTriggeringFanId(null)
+    }
+  }, [])
+
+  const skipFan = useCallback((fan) => {
+    setSkippedFanIds((prev) => new Set(prev).add(fan.fanExternalId))
   }, [])
 
   const loadDetail = useCallback(async (id) => {
@@ -471,6 +524,78 @@ VITE_V3_ADMIN_TOKEN=your-admin-token`}</pre>
           >
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
+        </div>
+
+        {/* Catch-up: fans on OnlyFans whose latest message has no V3 reply.
+            Manual trigger — operator clicks "Send V3 reply" or "Skip" per fan
+            (rather than auto-batching, which risks rate-limit cascades). */}
+        <div className="px-3 pb-2">
+          <details className="bg-amber-500/10 border border-amber-500/20 rounded-lg group">
+            <summary className="cursor-pointer px-3 py-2 text-xs text-amber-200 font-semibold flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5" />
+              Catch up on unread fans
+              {unreadFans.length > 0 && (
+                <span className="ml-auto bg-amber-500 text-black px-1.5 py-0.5 rounded text-[10px]">
+                  {unreadFans.filter(f => !skippedFanIds.has(f.fanExternalId)).length}
+                </span>
+              )}
+            </summary>
+            <div className="px-3 pb-3 pt-1 space-y-2">
+              <button
+                onClick={loadUnread}
+                disabled={loadingUnread}
+                className="w-full text-xs px-2 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 disabled:opacity-50 text-amber-200 rounded font-semibold flex items-center justify-center gap-1.5"
+              >
+                <RefreshCw className={`w-3 h-3 ${loadingUnread ? 'animate-spin' : ''}`} />
+                {loadingUnread ? 'Loading…' : 'Fetch unread from OnlyFans'}
+              </button>
+              {unreadError && (
+                <div className="text-[10px] text-red-300 bg-red-500/10 border border-red-500/20 px-2 py-1.5 rounded">
+                  {unreadError}
+                </div>
+              )}
+              {unreadFans.length === 0 && !loadingUnread && (
+                <div className="text-[10px] text-white/40 text-center py-2">
+                  Click "Fetch" to see fans waiting on a reply
+                </div>
+              )}
+              {unreadFans
+                .filter(f => !skippedFanIds.has(f.fanExternalId))
+                .map((fan) => (
+                  <div
+                    key={fan.fanExternalId}
+                    className="bg-black/30 rounded-lg p-2 space-y-1.5"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-semibold text-white truncate">
+                        {fan.fanName || fan.fanUsername || `Fan ${fan.fanExternalId}`}
+                      </span>
+                      <span className="text-[9px] text-white/40 ml-auto">
+                        {fan.lastMessageAt ? formatTime(fan.lastMessageAt) : ''}
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-white/70 italic">
+                      "{(fan.lastMessageText || '').replace(/<[^>]+>/g, '').slice(0, 100)}"
+                    </div>
+                    <div className="flex gap-1.5">
+                      <button
+                        onClick={() => triggerReply(fan)}
+                        disabled={triggeringFanId === fan.fanExternalId}
+                        className="flex-1 text-[10px] px-2 py-1 bg-emerald-500/30 hover:bg-emerald-500/50 disabled:opacity-50 text-emerald-200 rounded font-semibold"
+                      >
+                        {triggeringFanId === fan.fanExternalId ? 'Sending…' : '✓ Send V3 reply'}
+                      </button>
+                      <button
+                        onClick={() => skipFan(fan)}
+                        className="flex-1 text-[10px] px-2 py-1 bg-white/10 hover:bg-white/20 text-white/70 rounded"
+                      >
+                        Skip
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </details>
         </div>
 
         {/* Source filter bar — split conversations into test (loop) / shadow
