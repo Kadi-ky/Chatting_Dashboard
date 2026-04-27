@@ -100,6 +100,13 @@ const envSchema = z.object({
   // burst. Example: SEND_RAMP_UP_UNTIL=2026-04-27T13:00:00Z (60 min ramp).
   // Unset / empty / past time → normal rate.
   SEND_RAMP_UP_UNTIL: z.string().transform(v => v || undefined).optional(),
+  // BUBBLE_COMBINE: collapse multiple text bubbles into a single OFAPI send
+  // (joined by newlines). Pitch bubbles (PPVs) stay separate because their
+  // wire format differs (price + media). When TRUE, a 3-bubble reply makes
+  // 1 API call instead of 3, dramatically reducing the burst-fingerprint
+  // OnlyFans's CF rate limiter sees. Default FALSE to preserve original
+  // multi-bubble behavior; flip to TRUE on Railway when ready to A/B test.
+  BUBBLE_COMBINE: stringBool(false),
 
   BURST_WINDOW_MS: z.coerce.number().int().positive().default(4000),
   CONVERSATION_LOCK_TTL_MS: z.coerce.number().int().positive().default(60_000),

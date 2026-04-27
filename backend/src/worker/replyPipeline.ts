@@ -1,4 +1,5 @@
 import { logger } from "../observability/logger.js";
+import { env } from "../config/index.js";
 import { routeLlmCall } from "../llm/router.js";
 import { assemblePrompt } from "../prompt/assemble.js";
 import { parseGeneratorOutput } from "../prompt/parse.js";
@@ -583,9 +584,46 @@ async function enqueueHumanizedTurn(args: {
   extraLeadMs: number;
 }): Promise<{ bubbles: string[]; draftMessageIds: string[]; ppvAttemptId?: string }> {
   const { input, humanized, llmCallId, extraLeadMs } = args;
+  const pitch = input.pitch;
+
+  // BUBBLE COMBINE: when env.BUBBLE_COMBINE is on, fold all text bubbles into
+  // a single message joined by newlines. The pitch bubble (PPV) stays
+  // separate because its wire format includes price + mediaFiles. Reduces
+  // OnlyFans CF burst-fingerprint from 2-3 sends per turn to 1-2.
+  // Persona / intent / generator logic upstream is unchanged — we just
+  // collapse here at the queue boundary.
+  if (env.BUBBLE_COMBINE && humanized.bubbles.length > 1) {
+    const lastIdx0 = humanized.bubbles.length - 1;
+    if (pitch) {
+      // Combine all non-pitch bubbles, keep pitch as separate last bubble.
+      const textBubbles = humanized.bubbles.slice(0, lastIdx0);
+      const pitchBubble = humanized.bubbles[lastIdx0]!;
+      const combined = textBubbles.join("\n\n").trim();
+      humanized.bubbles = combined ? [combined, pitchBubble] : [pitchBubble];
+      // Sum text-bubble timings, keep last timing for the pitch
+      const textTotal = humanized.timings
+        .slice(0, lastIdx0)
+        .reduce((a, t) => a + (t?.delayMs ?? 0), 0);
+      humanized.timings = combined
+        ? [
+            { ...humanized.timings[0]!, delayMs: textTotal },
+            humanized.timings[lastIdx0]!,
+          ]
+        : [humanized.timings[lastIdx0]!];
+    } else {
+      // No pitch — collapse all bubbles into one.
+      const combined = humanized.bubbles.join("\n\n").trim();
+      const totalDelay = humanized.timings.reduce(
+        (a, t) => a + (t?.delayMs ?? 0),
+        0,
+      );
+      humanized.bubbles = [combined];
+      humanized.timings = [{ ...humanized.timings[0]!, delayMs: totalDelay }];
+    }
+  }
+
   const count = humanized.bubbles.length;
   const lastIdx = count - 1;
-  const pitch = input.pitch;
 
   // Sequential (not Promise.all) so created_at is strictly monotonic across
   // bubbles. UI orders messages by created_at and identical timestamps from

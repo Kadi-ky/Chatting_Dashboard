@@ -113,6 +113,7 @@ async function handle(
         const t = env.SEND_RAMP_UP_UNTIL ? Date.parse(env.SEND_RAMP_UP_UNTIL) : NaN;
         return Number.isFinite(t) && Date.now() < t;
       })(),
+      bubble_combine: env.BUBBLE_COMBINE,
       node_env: env.NODE_ENV,
       booted_at: process.env.PEACHBOT_BOOTED_AT ?? "(unknown)",
     });
