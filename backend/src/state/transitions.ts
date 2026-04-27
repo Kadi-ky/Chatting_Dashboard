@@ -44,17 +44,25 @@ export const TRANSITIONS: Transition[] = [
   },
 
   // ─── Forward progression through the funnel ───────────────────────────
+  // SIMPLIFIED 2026-04-27: dropped preferenceCount / factCount requirements.
+  // In production we observed conversations stuck in WARMUP for 80+ messages
+  // because the fact / preference extractors don't always fire on real fan
+  // chats. Result: bot literally never pitched. The rapport gate
+  // (PITCH_RAPPORT_GATE_TURNS=8 default) still prevents pitching before
+  // message 8, so dropping these signal requirements doesn't cause early
+  // pitches — it just unblocks the funnel for fans who aren't volunteering
+  // facts about themselves.
   {
     from: "WARMUP",
     to: "RAPPORT",
     trigger: "warmup_complete",
-    when: (s) => s.turnsInPhase >= 5 && s.preferenceCount >= 1,
+    when: (s) => s.turnsInPhase >= 3,
   },
   {
     from: "RAPPORT",
     to: "QUALIFYING",
     trigger: "rapport_established",
-    when: (s) => s.turnsInPhase >= 6 && s.factCount >= 3,
+    when: (s) => s.turnsInPhase >= 5,
   },
   {
     from: "QUALIFYING",

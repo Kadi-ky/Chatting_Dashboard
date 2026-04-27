@@ -106,14 +106,19 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
       } catch (err) {
         metrics.outboundFailures.inc();
         logger.error({ ...ctx, err: err instanceof Error ? err.message : err }, "send failed");
-        // Don't auto-retry rate-limit (429) or auth (401/403) errors.
-        // - 429: retrying immediately makes the rate limit WORSE (cf-rate-limit
-        //   compounds). Better to drop this one reply; the next fan message
-        //   will trigger a fresh attempt naturally spaced apart.
-        // - 401/403: token rotated or revoked — retries won't fix that.
-        // Throwing UnrecoverableError tells BullMQ to mark the job failed
-        // permanently and skip remaining attempts.
-        if (err instanceof PlatformHttpError && (err.status === 429 || err.status === 401 || err.status === 403)) {
+        // 429 (OnlyFans rate limit): don't drop the message. Push the job
+        // back with a 5-minute delay so it retries after the rate limit has
+        // had time to clear. Better than burning the reply but also better
+        // than retrying immediately (which compounds the rate limit and
+        // turns one 429 into many).
+        if (err instanceof PlatformHttpError && err.status === 429) {
+          logger.warn({ ...ctx }, "send 429 — delaying job 5 min for retry");
+          await job.moveToDelayed(Date.now() + 5 * 60_000, token);
+          throw new DelayedError();
+        }
+        // 401 / 403 (auth): retries won't fix a bad/revoked token. Mark
+        // failed permanently so we don't waste capacity.
+        if (err instanceof PlatformHttpError && (err.status === 401 || err.status === 403)) {
           throw new UnrecoverableError(err.message);
         }
         throw err;
