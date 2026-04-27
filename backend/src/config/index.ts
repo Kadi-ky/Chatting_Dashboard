@@ -3,6 +3,31 @@ dotenv.config();                            // .env (committed defaults)
 dotenv.config({ path: ".env.local", override: true }); // .env.local (git-ignored secrets)
 import { z } from "zod";
 
+/**
+ * Parse an env-var string as a boolean, with a sane default. DO NOT use Zod's
+ * `z.coerce.boolean()` for this — it calls `Boolean(v)` which treats ANY
+ * non-empty string as truthy, so the literal "false" comes back as `true`.
+ * That bug cost us hours on 2026-04-27 hunting why Railway's SHADOW_MODE=false
+ * wasn't taking effect.
+ *
+ * Recognised falsy strings: "false", "0", "no", "off" (case-insensitive).
+ * Recognised truthy strings: "true", "1", "yes", "on" (case-insensitive).
+ * Unset / empty / unrecognised → fallback to default.
+ */
+function stringBool(defaultValue: boolean) {
+  return z
+    .string()
+    .optional()
+    .transform((v) => {
+      if (v === undefined) return defaultValue;
+      const lower = v.trim().toLowerCase();
+      if (lower === "" ) return defaultValue;
+      if (lower === "false" || lower === "0" || lower === "no" || lower === "off") return false;
+      if (lower === "true" || lower === "1" || lower === "yes" || lower === "on") return true;
+      return defaultValue;
+    });
+}
+
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
@@ -42,8 +67,8 @@ const envSchema = z.object({
   // the adapter logs the would-send payload and returns a synthetic SendResult
   // (externalId prefixed with "shadow:"). Used for production-traffic A/B
   // testing without colliding with whatever bot is currently live for that
-  // creator.
-  SHADOW_MODE: z.coerce.boolean().default(false),
+  // creator. Uses stringBool to parse "false" correctly (see comment below).
+  SHADOW_MODE: stringBool(false),
   // Comma-separated list of CIDR blocks / single IPs that are trusted webhook
   // sources when no PLATFORM_WEBHOOK_SECRET is set. Used to defend the
   // unsigned `/webhooks/onlyfansapi` endpoint against forged requests.
@@ -54,16 +79,14 @@ const envSchema = z.object({
   // production bot is live for accounts we're not testing. Leave blank to
   // accept every account (unsafe in prod alongside another live bot).
   PLATFORM_ACCOUNT_ALLOWLIST: z.string().transform(v => v || undefined).optional(),
-  // Enable the catch-up poller. Designed for platforms whose webhook delivery
-  // is unreliable. OnlyFansAPI delivers webhooks reliably AND doesn't expose
-  // the `/inbox/events` endpoint we'd poll, so leave this OFF for OFAPI.
-  // Default false; set to true for platforms that need it.
-  POLLING_ENABLED: z.coerce.boolean().default(false),
-  // When true, bypass the persona's sleep-hours window — the bot replies
-  // immediately at any hour. Used for 24/7 production bots that should never
-  // defer replies to a "wake-up" time. Default true (most use cases want
-  // 24/7); set to false if you want the humanness sleep illusion.
-  PERSONA_ALWAYS_AWAKE: z.coerce.boolean().default(true),
+  // CAREFUL: do NOT use z.coerce.boolean() with env strings. Zod's coerce
+  // calls Boolean(v) which treats ANY non-empty string as truthy — so the
+  // literal string "false" comes out as `true`, silently. This wrecked the
+  // SHADOW_MODE flag on Railway 2026-04-27 (user set "false", code read true,
+  // bot sat in shadow mode for hours while we hunted ghosts in OFAPI logs).
+  // Use the explicit stringBool helper instead.
+  POLLING_ENABLED: stringBool(false),
+  PERSONA_ALWAYS_AWAKE: stringBool(true),
 
   BURST_WINDOW_MS: z.coerce.number().int().positive().default(4000),
   CONVERSATION_LOCK_TTL_MS: z.coerce.number().int().positive().default(60_000),
