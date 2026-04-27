@@ -71,18 +71,28 @@ function toScript(row: {
   tag_creator: string | null;
   tags: string[];
 }): ContentScript {
-  // Prices in the legacy table are stored in cents-equivalent integers (the
-  // defaults are 300/301/302/303 — interpreted as cents for internal math;
-  // display conversion lives at the UI boundary).
+  // CRITICAL UNIT CONVERSION:
+  //   The legacy `content_inventory_onlyfans.ppv*_price` columns store prices
+  //   in WHOLE DOLLARS (e.g. 15 = $15.00, 99 = $99.00) — confirmed against the
+  //   real Khlo catalog 2026-04-27 and consistent with how n8n forwards them
+  //   directly to OFAPI's `price` field (also dollars).
+  //
+  //   V3's internal model uses CENTS everywhere (PpvAttempt.priceCents,
+  //   purchases_onlyfans.amount, decidePitch's priceCents, the adapter's
+  //   centsToDollars conversion before sending). So we multiply by 100 at the
+  //   DB boundary to translate dollars → cents. Without this: bot was pitching
+  //   at $0.15 / $0.35 / $0.69 / $0.99 instead of $15 / $35 / $69 / $99,
+  //   which OFAPI rejects (most accounts have messageMinPrice >= $3).
   const rungs: ContentRung[] = [];
+  const dollarsToCents = (dollars: number) => Math.round(dollars * 100);
   if (row.ppv1_media_id)
-    rungs.push({ rung: 1, mediaId: row.ppv1_media_id, priceCents: row.ppv1_price, description: row.ppv1_description });
+    rungs.push({ rung: 1, mediaId: row.ppv1_media_id, priceCents: dollarsToCents(row.ppv1_price), description: row.ppv1_description });
   if (row.ppv2_media_id)
-    rungs.push({ rung: 2, mediaId: row.ppv2_media_id, priceCents: row.ppv2_price, description: row.ppv2_description });
+    rungs.push({ rung: 2, mediaId: row.ppv2_media_id, priceCents: dollarsToCents(row.ppv2_price), description: row.ppv2_description });
   if (row.ppv3_media_id)
-    rungs.push({ rung: 3, mediaId: row.ppv3_media_id, priceCents: row.ppv3_price, description: row.ppv3_description });
+    rungs.push({ rung: 3, mediaId: row.ppv3_media_id, priceCents: dollarsToCents(row.ppv3_price), description: row.ppv3_description });
   if (row.ppv4_media_id)
-    rungs.push({ rung: 4, mediaId: row.ppv4_media_id, priceCents: row.ppv4_price, description: row.ppv4_description });
+    rungs.push({ rung: 4, mediaId: row.ppv4_media_id, priceCents: dollarsToCents(row.ppv4_price), description: row.ppv4_description });
 
   // Unify tag_creator (legacy single-field) with the new tags array.
   const tagSet = new Set<string>(row.tags ?? []);

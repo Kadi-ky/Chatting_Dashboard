@@ -35,8 +35,11 @@ export async function recordPurchase(args: {
       creator_uuid: args.creatorUuid,
       script_number: args.scriptNumber,
       rung: args.rung,
-      // amount is numeric in the legacy schema — kysely passes through as-is.
-      amount: args.amountCents,
+      // The legacy `amount` column stores DOLLARS (not cents) — matching
+      // content_inventory_onlyfans.ppv*_price. V3 internally uses cents, so
+      // divide by 100 here. Without this we'd write 1500 into a dollars
+      // column, breaking inferRung lookups + frontend revenue totals.
+      amount: args.amountCents / 100,
       purchased_at: args.purchasedAt,
     })
     .executeTakeFirst()
@@ -80,7 +83,10 @@ export async function listPurchasesByFan(
     creatorUuid: r.creator_uuid,
     scriptNumber: r.script_number,
     rung: r.rung,
-    amountCents: r.amount === null ? null : Number(r.amount),
+    // `amount` column stores dollars; V3 internal model uses cents → multiply
+    // by 100 on the way out so script-picker's price-keyed inferRung lookups
+    // match content_inventory.ts which also converts dollars→cents at load.
+    amountCents: r.amount === null ? null : Math.round(Number(r.amount) * 100),
     purchasedAt: r.purchased_at as unknown as Date,
   }));
 }
