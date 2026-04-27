@@ -78,6 +78,27 @@ async function handle(
     return json(res, 200, { ok: true });
   }
 
+  // Diagnostic endpoint — returns what env values the live process is reading.
+  // Use this to settle "did my Railway env-var change actually take effect?"
+  // questions without hunting through deploy logs. No auth required so we can
+  // hit it from anywhere; only exposes booleans + lengths, never raw secrets.
+  if (method === "GET" && path === "/diag/runtime-flags") {
+    return json(res, 200, {
+      shadow_mode: env.SHADOW_MODE,
+      shadow_mode_type: typeof env.SHADOW_MODE,
+      platform_mode: env.PLATFORM_MODE,
+      polling_enabled: env.POLLING_ENABLED,
+      account_allowlist_size: env.PLATFORM_ACCOUNT_ALLOWLIST?.split(",").filter(Boolean).length ?? 0,
+      account_allowlist_first: env.PLATFORM_ACCOUNT_ALLOWLIST?.split(",")[0]?.trim() ?? null,
+      api_key_length: env.PLATFORM_API_KEY?.length ?? 0,
+      api_key_prefix: env.PLATFORM_API_KEY?.slice(0, 8) ?? null,
+      always_awake_raw: process.env.PERSONA_ALWAYS_AWAKE ?? "(unset)",
+      shadow_mode_raw: process.env.SHADOW_MODE ?? "(unset)",
+      node_env: env.NODE_ENV,
+      booted_at: process.env.PEACHBOT_BOOTED_AT ?? "(unknown)",
+    });
+  }
+
   if (method === "GET" && path === "/metrics") {
     res.writeHead(200, { "content-type": "text/plain; version=0.0.4" });
     res.end(renderMetrics());

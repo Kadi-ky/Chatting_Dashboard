@@ -83,6 +83,7 @@ async function boot(): Promise<void> {
   } else {
     logger.info("poller disabled (POLLING_ENABLED=false)");
   }
+  process.env.PEACHBOT_BOOTED_AT = new Date().toISOString();
   logger.info("service up");
 }
 
