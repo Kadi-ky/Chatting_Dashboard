@@ -9,6 +9,7 @@ import { env } from "../config/index.js";
 import { db } from "../db/client.js";
 import { getPlatformAdapter } from "../platform/index.js";
 import { loadAccountByPlatformId, upsertShadowAccount } from "../db/repos/accounts.js";
+import { getRecentPlatformErrors } from "../platform/impl/http/client.js";
 
 export interface AdminServerHandle {
   stop(): Promise<void>;
@@ -82,6 +83,12 @@ async function handle(
   // Use this to settle "did my Railway env-var change actually take effect?"
   // questions without hunting through deploy logs. No auth required so we can
   // hit it from anywhere; only exposes booleans + lengths, never raw secrets.
+  // Recent platform HTTP errors (in-memory ring buffer). Lets us debug send
+  // failures without finding Railway deploy logs. No auth required.
+  if (method === "GET" && path === "/diag/recent-errors") {
+    return json(res, 200, { errors: getRecentPlatformErrors() });
+  }
+
   if (method === "GET" && path === "/diag/runtime-flags") {
     return json(res, 200, {
       shadow_mode: env.SHADOW_MODE,

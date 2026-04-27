@@ -20,6 +20,25 @@ export class PlatformHttpError extends Error {
   }
 }
 
+/**
+ * In-memory ring buffer of recent platform HTTP errors. Surfaced via
+ * /diag/recent-errors so we can debug send failures without hunting Railway
+ * deploy logs. Process-local — clears on container restart.
+ */
+interface RecentError {
+  at: string;
+  status: number;
+  path: string;
+  method: string;
+  responseBody: string;
+  requestBodyKeys?: string[];
+}
+const RECENT_ERRORS: RecentError[] = [];
+const RECENT_ERRORS_MAX = 20;
+export function getRecentPlatformErrors(): RecentError[] {
+  return RECENT_ERRORS.slice();
+}
+
 export class PlatformHttpClient {
   private readonly baseUrl: string;
   private readonly apiKey: string;
@@ -70,19 +89,19 @@ export class PlatformHttpClient {
       // sensitive content (fan-facing message text), so we hash it instead
       // of logging raw — that's enough to correlate two failures of the
       // same outbound retry.
-      logger.warn(
-        {
-          path,
-          method: opts.method ?? "GET",
-          status: res.status,
-          elapsed,
-          responseBody: text.slice(0, 500),
-          requestBodyKeys: opts.body && typeof opts.body === "object"
-            ? Object.keys(opts.body as Record<string, unknown>)
-            : undefined,
-        },
-        "platform http error",
-      );
+      const errEntry: RecentError = {
+        at: new Date().toISOString(),
+        status: res.status,
+        path,
+        method: opts.method ?? "GET",
+        responseBody: text.slice(0, 1000),
+        ...(opts.body && typeof opts.body === "object"
+          ? { requestBodyKeys: Object.keys(opts.body as Record<string, unknown>) }
+          : {}),
+      };
+      RECENT_ERRORS.unshift(errEntry);
+      if (RECENT_ERRORS.length > RECENT_ERRORS_MAX) RECENT_ERRORS.length = RECENT_ERRORS_MAX;
+      logger.warn(errEntry, "platform http error");
       throw new PlatformHttpError(res.status, path, text);
     }
 
