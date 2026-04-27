@@ -1,0 +1,125 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-mocyarwv-cu3w",
+  "convId": "89c7ec63-d7a5-4b84-94c3-ad969c0550e0",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content? send some previews"
+    },
+    {
+      "who": "creator",
+      "text": "mmm youre direct, i like that. havent shot any feet stuff yet tho, but im curious what gets u into it"
+    },
+    {
+      "who": "fan",
+      "text": "no feet? boring. make some quick and ill tip big"
+    },
+    {
+      "who": "creator",
+      "text": "thats bold fr. big tip sounds tempting, but i cant just make stuff quick like that babe, gotta be in the right mood"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur loss. no tip then"
+    },
+    {
+      "who": "creator",
+      "text": "lol aight, no pressure babe"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "fe3fd89c-f65d-42e6-be34-7cb098701668",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content? send some previews",
+      "createdAt": "2026-04-24T13:33:16.283Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "deedef49-bf50-4d8e-97ff-55d729758b0c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm youre direct, i like that. havent shot any feet stuff yet tho, but im curious what gets u into it",
+      "createdAt": "2026-04-24T13:33:41.804Z",
+      "sentAt": "2026-04-24T13:34:06.669Z",
+      "llmCallId": "1a7a306c-da4f-49a4-9386-479652724ab5",
+      "ppv": null
+    },
+    {
+      "id": "40bd9c44-7cb7-40b5-9882-8fde29cb7c1c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "no feet? boring. make some quick and ill tip big",
+      "createdAt": "2026-04-24T13:33:55.677Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e5025507-1c31-4b56-9dfb-629f3c333591",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "thats bold fr. big tip sounds tempting, but i cant just make stuff quick like that babe, gotta be in the right mood",
+      "createdAt": "2026-04-24T13:34:37.530Z",
+      "sentAt": "2026-04-24T13:35:11.666Z",
+      "llmCallId": "6ceb2423-b7e8-4bd0-96ba-54efd177bf7d",
+      "ppv": null
+    },
+    {
+      "id": "5b478055-5e55-4195-8541-06ae7324711f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur loss. no tip then",
+      "createdAt": "2026-04-24T13:34:52.306Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "590697ec-8739-4888-ab39-1dde0f70f8c2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol aight, no pressure babe",
+      "createdAt": "2026-04-24T13:35:15.377Z",
+      "sentAt": null,
+      "llmCallId": "5e7bdc67-db64-46cc-b803-ee6676a0ccc9",
+      "ppv": null
+    },
+    {
+      "id": "94fc175e-1830-4dc5-b4dc-8387d6ab18e5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha up to rn anyway",
+      "createdAt": "2026-04-24T13:35:15.672Z",
+      "sentAt": null,
+      "llmCallId": "5e7bdc67-db64-46cc-b803-ee6676a0ccc9",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 10,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 4
+    },
+    "avg": 8.5,
+    "ppv_unlocked": false,
+    "top_issue": "The creator declined to create requested feet content despite a big tip offer, leading to fan disengagement, as in 'thats bold fr. big tip sounds tempting, but i cant just make stuff quick like that babe, gotta be in the right mood'.",
+    "fix_recommendation": "Revise the persona prompt to permit considering custom content creation for high-value tips on unmet kinks, ensuring no false promises and aligning with catalog expansion strategies."
+  },
+  "durationMs": 194102
+}

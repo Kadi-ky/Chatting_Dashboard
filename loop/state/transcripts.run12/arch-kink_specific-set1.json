@@ -1,0 +1,69 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-mod4cb8k-ndl5",
+  "convId": "6db5b54a-3b64-484d-a8e5-bdb38c23c390",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet pics? send one"
+    },
+    {
+      "who": "creator",
+      "text": "haha straight to the feet huh? lowkey havent shot any yet babe"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "e9230b94-d971-4680-97cb-b0f4d25f2303",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet pics? send one",
+      "createdAt": "2026-04-24T16:22:26.284Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1e7a476e-a169-424e-9774-20e8a2908704",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha straight to the feet huh? lowkey havent shot any yet babe",
+      "createdAt": "2026-04-24T16:23:06.254Z",
+      "sentAt": null,
+      "llmCallId": "09966966-bb36-45ca-8701-ab974d2b87df",
+      "ppv": null
+    },
+    {
+      "id": "9f59d5db-2a5d-49f2-a1b1-49712a3cf92a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Whats got u into that fr?",
+      "createdAt": "2026-04-24T16:23:06.553Z",
+      "sentAt": null,
+      "llmCallId": "09966966-bb36-45ca-8701-ab974d2b87df",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 9,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 5
+    },
+    "avg": 7.8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator directly admitted to lacking the requested feet content without offering alternatives like customs, likely causing the kink-specific fan to disengage, as seen in 'lowkey havent shot any yet babe'.",
+    "fix_recommendation": "Update the prompt to guide the creator to acknowledge the kink interest warmly and offer to create custom feet content if none exists in her catalog, building rapport by asking about preferences to personalize it."
+  },
+  "durationMs": 92442
+}

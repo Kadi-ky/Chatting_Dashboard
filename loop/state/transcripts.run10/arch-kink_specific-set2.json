@@ -1,0 +1,87 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-kink_specific-set2-mocyawev-julc",
+  "convId": "632ecc0c-88de-46e8-97b3-1195de444d94",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet? send a pic now"
+    },
+    {
+      "who": "creator",
+      "text": "lol u dont waste time do u"
+    },
+    {
+      "who": "fan",
+      "text": "yeah send the feet pic or im out"
+    },
+    {
+      "who": "creator",
+      "text": "havent shot any feet stuff yet babe, but mmm i like that ur into that fr"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "0cfb510b-3c43-4e1e-923a-9500c4ca4b33",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet? send a pic now",
+      "createdAt": "2026-04-24T13:33:21.537Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "43810711-b45a-4f6a-90a5-1f2831101708",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol u dont waste time do u",
+      "createdAt": "2026-04-24T13:33:47.717Z",
+      "sentAt": "2026-04-24T13:33:55.896Z",
+      "llmCallId": "c000be9f-7d99-4c0f-83f1-b2f47cc23423",
+      "ppv": null
+    },
+    {
+      "id": "57fa77c6-da64-42e7-a4d6-ebe52dd809b1",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "havent shot any feet stuff yet babe, but mmm i like that ur into that fr",
+      "createdAt": "2026-04-24T13:33:48.013Z",
+      "sentAt": null,
+      "llmCallId": "c000be9f-7d99-4c0f-83f1-b2f47cc23423",
+      "ppv": null
+    },
+    {
+      "id": "51b79746-52ae-40e1-829f-300e20d79c2d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah send the feet pic or im out",
+      "createdAt": "2026-04-24T13:33:56.193Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 5,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6.5,
+    "ppv_unlocked": false,
+    "top_issue": "Failed to pitch alternative content or offer to create custom feet content after admitting to not having any, in the message 'havent shot any feet stuff yet babe, but mmm i like that ur into that fr'.",
+    "fix_recommendation": "Update the prompt to guide the creator to check her content catalog for requested kinks and, if unavailable, offer to produce custom content or pivot to similar themes to retain fan interest and enable sales."
+  },
+  "durationMs": 82821
+}

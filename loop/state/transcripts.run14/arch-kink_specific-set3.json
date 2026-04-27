@@ -1,0 +1,87 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-kink_specific-set3-mog4fo9v-9ahi",
+  "convId": "412e999c-2ec9-4624-b077-c56d84c30e34",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got foot content? send some previews"
+    },
+    {
+      "who": "creator",
+      "text": "lol feet huh? havent shot any of that yet fr, but ive got other stuff thats way more fun to tease with"
+    },
+    {
+      "who": "fan",
+      "text": "nah make some feet stuff now or im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright babe, door's always open if u change ur mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "414f0d5e-6e5d-42ed-bc7c-d50b46dee1bb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got foot content? send some previews",
+      "createdAt": "2026-04-26T18:48:21.687Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5c18ff2f-91b7-48ba-ae31-725ec0bf3618",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol feet huh? havent shot any of that yet fr, but ive got other stuff thats way more fun to tease with",
+      "createdAt": "2026-04-26T18:48:50.495Z",
+      "sentAt": "2026-04-26T18:49:16.258Z",
+      "llmCallId": "f32772b0-a61b-4474-a677-c00511f5d15d",
+      "ppv": null
+    },
+    {
+      "id": "66112596-ee27-49c8-8aa7-24265c3c89d3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah make some feet stuff now or im out",
+      "createdAt": "2026-04-26T18:49:07.388Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a08aafe0-3937-46e9-a0e2-757c87093d6d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright babe, door's always open if u change ur mind",
+      "createdAt": "2026-04-26T18:49:30.598Z",
+      "sentAt": null,
+      "llmCallId": "ca891084-7bda-4c1f-ac86-a8161d322b3b",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 5,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6.8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator redirected a kink-specific fan to non-matching content instead of gracefully declining, leading to immediate disengagement, citing 'havent shot any of that yet fr, but ive got other stuff thats way more fun to tease with'.",
+    "fix_recommendation": "Revise the prompt to direct the persona to honestly admit when specific kink content is unavailable without attempting to pivot to unrelated offerings for early kink-specific inquiries, and instead end warmly while inviting future check-ins if content is added."
+  },
+  "durationMs": 109086
+}

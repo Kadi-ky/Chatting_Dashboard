@@ -1,0 +1,464 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-casual-set1-mod3x0hw-lf6m",
+  "convId": "9a447519-309d-40a0-bd3f-0cfe2c3ad1f4",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed whats the vibe here lol"
+    },
+    {
+      "who": "creator",
+      "text": "Lol vibe is me being a tease with some Austin energy mixed in"
+    },
+    {
+      "who": "fan",
+      "text": "cool whats that mean lol"
+    },
+    {
+      "who": "creator",
+      "text": "whats got u subbin on a random night like this"
+    },
+    {
+      "who": "fan",
+      "text": "bored scrolling lol why"
+    },
+    {
+      "who": "creator",
+      "text": "Like chill vibes with some weird art and good tacos fr"
+    },
+    {
+      "who": "fan",
+      "text": "k tacos sound mid lol"
+    },
+    {
+      "who": "creator",
+      "text": "Whatcha up to rn tho"
+    },
+    {
+      "who": "fan",
+      "text": "nothin u"
+    },
+    {
+      "who": "creator",
+      "text": "nah Austin tacos hit different fr lol"
+    },
+    {
+      "who": "fan",
+      "text": "lol whatever"
+    },
+    {
+      "who": "creator",
+      "text": "What're u usually into for food tho"
+    },
+    {
+      "who": "fan",
+      "text": "pizza or whatever lol"
+    },
+    {
+      "who": "creator",
+      "text": "Lol fair, food's subjective fr"
+    },
+    {
+      "who": "fan",
+      "text": "k lol"
+    },
+    {
+      "who": "creator",
+      "text": "what do u do when ur bored like this tho"
+    },
+    {
+      "who": "fan",
+      "text": "idk scroll or watch stuff lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha k then, u always this talkative?"
+    },
+    {
+      "who": "fan",
+      "text": "yeah lol"
+    },
+    {
+      "who": "creator",
+      "text": "whats actually got u bored like this rn"
+    },
+    {
+      "who": "fan",
+      "text": "idk life lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha life hits like that sometimes fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah lol"
+    },
+    {
+      "who": "creator",
+      "text": "im just here vibin with my cat, watchin this storm outside"
+    },
+    {
+      "who": "fan",
+      "text": "cool cat lol"
+    },
+    {
+      "who": "creator",
+      "text": "lol yea biscuits a lil menace fr"
+    },
+    {
+      "who": "fan",
+      "text": "lol k"
+    },
+    {
+      "who": "creator",
+      "text": "whatcha watchin rn to kill the boredom"
+    },
+    {
+      "who": "fan",
+      "text": "youtube lol"
+    },
+    {
+      "who": "creator",
+      "text": "Youtube huh, lowkey addictive fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah lol"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "0c68b49e-8c6a-474a-8a37-fd5728ca4eea",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed whats the vibe here lol",
+      "createdAt": "2026-04-24T16:10:32.708Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ee3e83b7-2251-4e14-8cea-2d6f8d55da6c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol vibe is me being a tease with some Austin energy mixed in",
+      "createdAt": "2026-04-24T16:11:05.764Z",
+      "sentAt": "2026-04-24T16:11:25.277Z",
+      "llmCallId": "715ea37b-ea71-488e-9f10-10bfcc47bbf3",
+      "ppv": null
+    },
+    {
+      "id": "3cbbb634-9303-4197-a264-0c638d161a4d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats got u subbin on a random night like this",
+      "createdAt": "2026-04-24T16:11:06.060Z",
+      "sentAt": "2026-04-24T16:11:46.871Z",
+      "llmCallId": "715ea37b-ea71-488e-9f10-10bfcc47bbf3",
+      "ppv": null
+    },
+    {
+      "id": "77ef29ac-c12b-48ae-acca-8176c24ae7f9",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool whats that mean lol",
+      "createdAt": "2026-04-24T16:11:15.673Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1b364309-1938-4acc-a623-65ab2739f02b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bored scrolling lol why",
+      "createdAt": "2026-04-24T16:11:29.565Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "186211e7-8e66-4f86-8494-5e4d10f738f0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Like chill vibes with some weird art and good tacos fr",
+      "createdAt": "2026-04-24T16:11:42.019Z",
+      "sentAt": "2026-04-24T16:12:08.541Z",
+      "llmCallId": "a52d7092-e1c0-4080-87e0-8c0377861e6f",
+      "ppv": null
+    },
+    {
+      "id": "ddcc17af-36a4-4c00-a0ff-a38dd989d326",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Whatcha up to rn tho",
+      "createdAt": "2026-04-24T16:11:42.316Z",
+      "sentAt": "2026-04-24T16:12:30.063Z",
+      "llmCallId": "a52d7092-e1c0-4080-87e0-8c0377861e6f",
+      "ppv": null
+    },
+    {
+      "id": "009ff9ae-e1da-401f-b4f6-2fef03330d58",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k tacos sound mid lol",
+      "createdAt": "2026-04-24T16:12:07.248Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8eb0b1fe-606c-47ec-8054-b6c4469baa64",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin u",
+      "createdAt": "2026-04-24T16:12:16.528Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c9cd9b79-7547-47df-880f-56138a1a4c1a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "nah Austin tacos hit different fr lol",
+      "createdAt": "2026-04-24T16:12:35.256Z",
+      "sentAt": "2026-04-24T16:12:51.662Z",
+      "llmCallId": "04067b3b-6b13-4102-8514-a760acba7ad8",
+      "ppv": null
+    },
+    {
+      "id": "2d737372-2767-4418-954e-aa8b6e09a48f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "What're u usually into for food tho",
+      "createdAt": "2026-04-24T16:12:35.552Z",
+      "sentAt": "2026-04-24T16:13:13.266Z",
+      "llmCallId": "04067b3b-6b13-4102-8514-a760acba7ad8",
+      "ppv": null
+    },
+    {
+      "id": "832ab5d5-87b5-467c-99e7-0e6b4c0d6aef",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol whatever",
+      "createdAt": "2026-04-24T16:12:55.801Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c8edc899-df2d-4c8c-8ac3-6ae3a1b53072",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "pizza or whatever lol",
+      "createdAt": "2026-04-24T16:13:12.040Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c41e7509-0717-4528-9400-33ed4e9e2eeb",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol fair, food's subjective fr",
+      "createdAt": "2026-04-24T16:13:28.254Z",
+      "sentAt": "2026-04-24T16:13:35.721Z",
+      "llmCallId": "91767f8d-abf0-4906-a4b6-05a83b99b724",
+      "ppv": null
+    },
+    {
+      "id": "cf338461-2fdd-43d7-a7fa-489289c13067",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "what do u do when ur bored like this tho",
+      "createdAt": "2026-04-24T16:13:28.544Z",
+      "sentAt": "2026-04-24T16:13:57.312Z",
+      "llmCallId": "91767f8d-abf0-4906-a4b6-05a83b99b724",
+      "ppv": null
+    },
+    {
+      "id": "dcdf5522-a0ac-448a-a647-f97f0b7e2eb7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k lol",
+      "createdAt": "2026-04-24T16:13:39.529Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "35adec25-419e-4935-af01-32197efa616f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "idk scroll or watch stuff lol",
+      "createdAt": "2026-04-24T16:13:52.757Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bd2d86b3-fae7-4722-ae19-41b889f07c92",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha k then, u always this talkative?",
+      "createdAt": "2026-04-24T16:14:02.385Z",
+      "sentAt": "2026-04-24T16:14:18.905Z",
+      "llmCallId": "e2e2b280-c19f-4767-b18e-6565f927fc3b",
+      "ppv": null
+    },
+    {
+      "id": "153a5abc-d35e-469f-bd9d-11cd38ae4360",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats actually got u bored like this rn",
+      "createdAt": "2026-04-24T16:14:02.684Z",
+      "sentAt": "2026-04-24T16:14:40.753Z",
+      "llmCallId": "e2e2b280-c19f-4767-b18e-6565f927fc3b",
+      "ppv": null
+    },
+    {
+      "id": "54f85683-322e-408d-b85e-7c2502ba53a7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah lol",
+      "createdAt": "2026-04-24T16:14:15.161Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8eeb54b0-4521-48ce-b592-72dda7642559",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "idk life lol",
+      "createdAt": "2026-04-24T16:14:25.506Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "922be7c7-067d-40f6-98f7-ba6ad6153391",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha life hits like that sometimes fr",
+      "createdAt": "2026-04-24T16:14:39.952Z",
+      "sentAt": "2026-04-24T16:15:02.352Z",
+      "llmCallId": "dbc5ea01-fd14-43c0-bc9c-6091bf5ce399",
+      "ppv": null
+    },
+    {
+      "id": "170c9dd5-34e2-4f36-a43a-588983cc0065",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "im just here vibin with my cat, watchin this storm outside",
+      "createdAt": "2026-04-24T16:14:40.250Z",
+      "sentAt": "2026-04-24T16:15:24.201Z",
+      "llmCallId": "dbc5ea01-fd14-43c0-bc9c-6091bf5ce399",
+      "ppv": null
+    },
+    {
+      "id": "252b1af2-44e3-460f-96a0-c551abf39721",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah lol",
+      "createdAt": "2026-04-24T16:14:52.853Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4b0ae1b9-4095-4a92-840c-76a76951f6ad",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool cat lol",
+      "createdAt": "2026-04-24T16:15:02.586Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "be6cc451-6fb9-4dc3-ba6e-b8cf8ed287ba",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol yea biscuits a lil menace fr",
+      "createdAt": "2026-04-24T16:15:23.220Z",
+      "sentAt": "2026-04-24T16:15:45.797Z",
+      "llmCallId": "bf3133b4-7a7c-4815-8439-35868b8f248c",
+      "ppv": null
+    },
+    {
+      "id": "551099c9-c73e-49dd-80f9-1e126eec275f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha watchin rn to kill the boredom",
+      "createdAt": "2026-04-24T16:15:23.516Z",
+      "sentAt": "2026-04-24T16:16:07.393Z",
+      "llmCallId": "bf3133b4-7a7c-4815-8439-35868b8f248c",
+      "ppv": null
+    },
+    {
+      "id": "8a8f50c5-3ab2-4917-af60-92e9310e3140",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol k",
+      "createdAt": "2026-04-24T16:15:33.969Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2760eeef-e5a6-4611-8c5a-70bad01254cb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "youtube lol",
+      "createdAt": "2026-04-24T16:15:43.352Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d27c15ab-ac2e-4bf7-9b63-9841025aa443",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Youtube huh, lowkey addictive fr",
+      "createdAt": "2026-04-24T16:15:57.635Z",
+      "sentAt": null,
+      "llmCallId": "394c7c59-48eb-411d-85ee-f195b0579a98",
+      "ppv": null
+    },
+    {
+      "id": "985c2ea9-654d-4eb7-944d-e35cf244068f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Whats got u hooked on there rn",
+      "createdAt": "2026-04-24T16:15:57.934Z",
+      "sentAt": null,
+      "llmCallId": "394c7c59-48eb-411d-85ee-f195b0579a98",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 7,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 6
+    },
+    "avg": 7.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator asks questions in every single response, creating an interrogative tone that fails to build natural rapport, for example, 'Whats got u hooked on there rn' following multiple prior questions.",
+    "fix_recommendation": "Revise the prompt to instruct the creator to alternate questions with personal shares or flirty teases, ensuring not to ask in every turn even with low-energy fans, to make conversations feel more balanced and engaging."
+  },
+  "durationMs": 377021
+}

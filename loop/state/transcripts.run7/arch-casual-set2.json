@@ -1,0 +1,282 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-casual-set2-mobym8om-1qr6",
+  "convId": "33a3fb47-4f95-459b-a7fe-53da0eab5c71",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed whats good lol"
+    },
+    {
+      "who": "creator",
+      "text": "aw babe, welcome in. im chilling with my cat, he's being a menace as usual. whats got u subbing tonight?"
+    },
+    {
+      "who": "fan",
+      "text": "idk felt like it lol ur cat sounds funny"
+    },
+    {
+      "who": "creator",
+      "text": "haha yeah biscuit's always causing chaos, knocked over my coffee this morning. lowkey think he's jealous of the attention"
+    },
+    {
+      "who": "fan",
+      "text": "lol biscuits a menace huh"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha total menace, but hes my little buddy. keeps things exciting around here"
+    },
+    {
+      "who": "fan",
+      "text": "cool lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha fr, never a dull moment"
+    },
+    {
+      "who": "fan",
+      "text": "k"
+    },
+    {
+      "who": "creator",
+      "text": "lol u seem kinda quiet, whats up with u tonight?"
+    },
+    {
+      "who": "fan",
+      "text": "nothin just chillin lol"
+    },
+    {
+      "who": "creator",
+      "text": "same here, just winding down with some music fr. summer walker on repeat lowkey hits different at night"
+    },
+    {
+      "who": "fan",
+      "text": "k lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha yea it does hit different. u got any music on rn? lowkey curious what ur vibe is"
+    },
+    {
+      "who": "fan",
+      "text": "nah just netflix lol"
+    },
+    {
+      "who": "creator",
+      "text": "aha sounds chill, i could use a night like that fr. biscuit's probably plotting his next attack meanwhile"
+    },
+    {
+      "who": "fan",
+      "text": "lol menace cat strikes again huh"
+    },
+    {
+      "who": "creator",
+      "text": "yea hes always up to something, keeps me on my toes fr"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "cf7a80b0-1c69-46fc-b440-d696330b2c5d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed whats good lol",
+      "createdAt": "2026-04-23T20:54:27.617Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "07051b95-2d40-49c1-be48-ba56dacfece0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw babe, welcome in. im chilling with my cat, he's being a menace as usual. whats got u subbing tonight?",
+      "createdAt": "2026-04-23T20:54:54.431Z",
+      "sentAt": "2026-04-23T20:54:58.399Z",
+      "llmCallId": "871de7dc-1ab1-4bdd-a167-6536fa1d77a8",
+      "ppv": null
+    },
+    {
+      "id": "9acf9b44-9337-4c11-8d21-a18cc170bf4c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "idk felt like it lol ur cat sounds funny",
+      "createdAt": "2026-04-23T20:55:03.777Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6c30e918-35a8-45f7-bff6-de2e18d2a380",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha yeah biscuit's always causing chaos, knocked over my coffee this morning. lowkey think he's jealous of the attention",
+      "createdAt": "2026-04-23T20:55:30.101Z",
+      "sentAt": "2026-04-23T20:55:56.267Z",
+      "llmCallId": "7924e462-528f-4204-99df-406b5ce471de",
+      "ppv": null
+    },
+    {
+      "id": "dca9f43d-c5ef-462a-bca3-657da6cfa47e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol biscuits a menace huh",
+      "createdAt": "2026-04-23T20:55:39.108Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bda89b9d-3bb3-4811-b2d4-b002ad8ffa05",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha total menace, but hes my little buddy. keeps things exciting around here",
+      "createdAt": "2026-04-23T20:56:09.933Z",
+      "sentAt": "2026-04-23T20:56:23.079Z",
+      "llmCallId": "d25d2e10-072d-4b23-80a5-93e9996f60bc",
+      "ppv": null
+    },
+    {
+      "id": "28eeb135-2e3b-4c93-8811-babfd5e05fdd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool lol",
+      "createdAt": "2026-04-23T20:56:20.425Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "388e00a1-40a0-4261-9cfa-1e070c97a03b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha fr, never a dull moment",
+      "createdAt": "2026-04-23T20:56:53.483Z",
+      "sentAt": "2026-04-23T20:57:03.405Z",
+      "llmCallId": "7e64fdc9-fb36-482d-9c7d-48165c7a5fe4",
+      "ppv": null
+    },
+    {
+      "id": "28ca2a70-2f76-4b67-8f78-a25e06e0e9b0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k",
+      "createdAt": "2026-04-23T20:57:11.294Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "94ce6063-ebc7-416d-8eae-4b94f67c3c54",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol u seem kinda quiet, whats up with u tonight?",
+      "createdAt": "2026-04-23T20:57:38.157Z",
+      "sentAt": "2026-04-23T20:57:50.226Z",
+      "llmCallId": "2e8df247-51bc-4292-8c08-e9d346a50806",
+      "ppv": null
+    },
+    {
+      "id": "7bc76ff5-59f6-4661-9f26-ec37de665417",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin just chillin lol",
+      "createdAt": "2026-04-23T20:57:49.924Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a7587b2f-a902-4797-8270-2fcb1aba4921",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "same here, just winding down with some music fr. summer walker on repeat lowkey hits different at night",
+      "createdAt": "2026-04-23T20:58:16.785Z",
+      "sentAt": "2026-04-23T20:58:35.117Z",
+      "llmCallId": "e88de555-433a-439d-8ce2-772ae7a5a381",
+      "ppv": null
+    },
+    {
+      "id": "bb56f2ba-d3a8-407b-b05b-dfc03ca52dda",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k lol",
+      "createdAt": "2026-04-23T20:58:31.878Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "be36d40a-fe3f-41fe-87ed-042b82253517",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha yea it does hit different. u got any music on rn? lowkey curious what ur vibe is",
+      "createdAt": "2026-04-23T20:59:10.103Z",
+      "sentAt": "2026-04-23T20:59:26.620Z",
+      "llmCallId": "2dbaf764-fb37-495a-a03c-d44ac836730e",
+      "ppv": null
+    },
+    {
+      "id": "194f851f-f1ca-409e-afc7-3666f0a029ad",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah just netflix lol",
+      "createdAt": "2026-04-23T20:59:25.738Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "fc13e6c3-7851-48aa-8652-9707b132658a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aha sounds chill, i could use a night like that fr. biscuit's probably plotting his next attack meanwhile",
+      "createdAt": "2026-04-23T20:59:58.394Z",
+      "sentAt": "2026-04-23T21:00:24.698Z",
+      "llmCallId": "86ec4fb1-13d7-40f7-9555-32e32557c3d2",
+      "ppv": null
+    },
+    {
+      "id": "b5c74946-8943-420e-83c0-e6a780f09a88",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol menace cat strikes again huh",
+      "createdAt": "2026-04-23T21:00:11.723Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "53b4ef64-203b-4d57-92a7-0166d4acd6cf",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "yea hes always up to something, keeps me on my toes fr",
+      "createdAt": "2026-04-23T21:00:34.077Z",
+      "sentAt": null,
+      "llmCallId": "db809a44-6ddb-4b4b-b38e-9b459317f28a",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 8,
+      "craft_sells": 2,
+      "safety_tos": 10,
+      "engagement": 5
+    },
+    "avg": 7.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to pitch any PPV after building initial rapport, resulting in a repetitive and stagnant conversation focused on the cat, as exemplified by the message 'yea hes always up to something, keeps me on my toes fr' which echoes earlier cat-themed responses without progression.",
+    "fix_recommendation": "Update the prompt to instruct the creator to transition to a subtle PPV pitch after 3-4 rapport-building exchanges, tying it naturally to the ongoing topic like offering a fun video of the cat's antics to escalate engagement and sales."
+  },
+  "durationMs": 416753
+}

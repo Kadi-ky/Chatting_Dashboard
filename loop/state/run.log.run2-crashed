@@ -1,0 +1,40 @@
+[2026-04-23T11:29:41.085Z] loop v2 start | archetypes=4 | sets/archetype=3 | model=grok-4
+[2026-04-23T11:29:41.087Z] === ARCHETYPE 1/4: whale ===
+[2026-04-23T11:29:41.087Z]   set 1 start | fan=loop-whale-set1-mobeg4in
+[2026-04-23T11:33:37.293Z]   set 1 fan ended at turn 9
+[2026-04-23T11:34:10.203Z]   set 1 done avg=6.3 ppv=true dur=269s
+[2026-04-23T11:34:10.203Z]   set 2 start | fan=loop-whale-set2-mobelw63
+[2026-04-23T11:40:08.676Z]   set 2 done avg=7.3 ppv=true dur=358s
+[2026-04-23T11:40:08.677Z]   set 3 start | fan=loop-whale-set3-mobetkrp
+[2026-04-23T11:42:28.160Z]   set 3 turn 2 no bot reply
+[2026-04-23T11:42:46.118Z]   set 3 done avg=1 ppv=false dur=157s
+[2026-04-23T11:42:46.118Z]   AGGREGATE avg=4.87 (across 3 valid sets)
+[2026-04-23T11:43:49.387Z]   edit ERROR: fetch failed
+[2026-04-23T11:43:49.389Z] === ARCHETYPE 2/4: casual ===
+[2026-04-23T11:43:49.389Z]   set 1 start | fan=loop-casual-set1-mobeyb2l
+[2026-04-23T11:43:56.041Z]   set 1 CRASHED: fetch failed
+[2026-04-23T11:43:56.042Z]   set 2 start | fan=loop-casual-set2-mobeyg7e
+[2026-04-23T11:44:03.612Z]   set 2 CRASHED: fetch failed
+[2026-04-23T11:44:03.613Z]   set 3 start | fan=loop-casual-set3-mobeym1p
+[2026-04-23T11:44:09.564Z]   set 3 CRASHED: fetch failed
+[2026-04-23T11:44:09.565Z]   AGGREGATE avg=? (across 0 valid sets)
+[2026-04-23T11:44:09.566Z]   edit SKIPPED (avg above bar)
+[2026-04-23T11:44:09.567Z] === ARCHETYPE 3/4: freebie_hunter ===
+[2026-04-23T11:44:09.567Z]   set 1 start | fan=loop-freebie_hunter-set1-mobeyqn3
+[2026-04-23T11:44:16.901Z]   set 1 CRASHED: fetch failed
+[2026-04-23T11:44:16.901Z]   set 2 start | fan=loop-freebie_hunter-set2-mobeywat
+[2026-04-23T11:44:21.894Z]   set 2 CRASHED: fetch failed
+[2026-04-23T11:44:21.894Z]   set 3 start | fan=loop-freebie_hunter-set3-mobez05i
+[2026-04-23T11:44:27.152Z]   set 3 CRASHED: fetch failed
+[2026-04-23T11:44:27.153Z]   AGGREGATE avg=? (across 0 valid sets)
+[2026-04-23T11:44:27.153Z]   edit SKIPPED (avg above bar)
+[2026-04-23T11:44:27.154Z] === ARCHETYPE 4/4: kink_specific ===
+[2026-04-23T11:44:27.154Z]   set 1 start | fan=loop-kink_specific-set1-mobez47m
+[2026-04-23T11:44:32.611Z]   set 1 CRASHED: fetch failed
+[2026-04-23T11:44:32.611Z]   set 2 start | fan=loop-kink_specific-set2-mobez8f7
+[2026-04-23T11:44:38.409Z]   set 2 CRASHED: fetch failed
+[2026-04-23T11:44:38.410Z]   set 3 start | fan=loop-kink_specific-set3-mobezcwa
+[2026-04-23T11:44:44.132Z]   set 3 CRASHED: fetch failed
+[2026-04-23T11:44:44.134Z]   AGGREGATE avg=? (across 0 valid sets)
+[2026-04-23T11:44:44.134Z]   edit SKIPPED (avg above bar)
+[2026-04-23T11:44:44.135Z] LOOP COMPLETE — 4 archetypes in 903s

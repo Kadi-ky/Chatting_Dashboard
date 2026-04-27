@@ -1,0 +1,312 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-casual-set3-mobjfg7o-nc6p",
+  "convId": "5c23cf47-2edc-4d5c-a50a-cabc88c1dc33",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed whats good"
+    },
+    {
+      "who": "creator",
+      "text": "glad u subbed. got somethin playful for u"
+    },
+    {
+      "who": "fan",
+      "text": "k what is it"
+    },
+    {
+      "who": "creator",
+      "text": "me messing around with my boobs and body, lowkey hot. unlock it? $0.15",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "k 15 cents? ehh maybe"
+    },
+    {
+      "who": "creator",
+      "text": "its me playing with my boobs, getting all teasing and curvy. lowkey addictive vibe"
+    },
+    {
+      "who": "fan",
+      "text": "ehh sounds mid pass for now"
+    },
+    {
+      "who": "creator",
+      "text": "lol fair enough, picky guys keep it interesting"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah picky for a reason"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright, high standards keep things fun"
+    },
+    {
+      "who": "fan",
+      "text": "lol k"
+    },
+    {
+      "who": "creator",
+      "text": "lol bet youre tough to impress then"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah i am"
+    },
+    {
+      "who": "creator",
+      "text": "lol challenge accepted, what would actually impress u tho"
+    },
+    {
+      "who": "fan",
+      "text": "dunno something actually spicy lol"
+    },
+    {
+      "who": "creator",
+      "text": "lol i can crank up the spice when the vibe is right"
+    },
+    {
+      "who": "fan",
+      "text": "lol k lets see it then"
+    },
+    {
+      "who": "creator",
+      "text": "lol u think u can handle my full spice right away"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah prove it"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "3706f812-c9d6-4a15-9570-e04f2fd74d84",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed whats good",
+      "createdAt": "2026-04-23T13:49:14.959Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5e9bb671-bbb0-41c4-ab42-8e4f8858d6ab",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "glad u subbed. got somethin playful for u",
+      "createdAt": "2026-04-23T13:49:49.172Z",
+      "sentAt": "2026-04-23T13:49:59.953Z",
+      "llmCallId": "4ed8d799-95a6-411c-b864-09692c6eafe9",
+      "ppv": null
+    },
+    {
+      "id": "aa6ba2a3-8f1a-4296-b7cc-c060d2fe7dfe",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "me messing around with my boobs and body, lowkey hot. unlock it? $0.15",
+      "createdAt": "2026-04-23T13:49:49.460Z",
+      "sentAt": "2026-04-23T13:50:21.389Z",
+      "llmCallId": "4ed8d799-95a6-411c-b864-09692c6eafe9",
+      "ppv": {
+        "attemptId": "14313e81-51d9-4441-b7f0-6d011e1db365",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "583719b8-d7c0-434b-8940-138318f06f70",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k what is it",
+      "createdAt": "2026-04-23T13:50:00.660Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6d4c8f84-6b25-4e47-9e27-5c7714da792c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k 15 cents? ehh maybe",
+      "createdAt": "2026-04-23T13:50:14.236Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c1814cdd-e57e-4324-96f9-84deca5cd6fd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "its me playing with my boobs, getting all teasing and curvy. lowkey addictive vibe",
+      "createdAt": "2026-04-23T13:50:28.195Z",
+      "sentAt": "2026-04-23T13:50:42.768Z",
+      "llmCallId": "faf1e6bd-d39f-46b1-909c-07efa1639f26",
+      "ppv": null
+    },
+    {
+      "id": "71b3bbf9-c37e-4b5d-a999-fe404988fb67",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh sounds mid pass for now",
+      "createdAt": "2026-04-23T13:50:40.610Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f2613951-607f-41c4-8889-a9a8c4bbedeb",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol fair enough, picky guys keep it interesting",
+      "createdAt": "2026-04-23T13:51:11.932Z",
+      "sentAt": "2026-04-23T13:51:19.174Z",
+      "llmCallId": "6a4779e6-4563-4a9f-a21f-eac6bce8d1a7",
+      "ppv": null
+    },
+    {
+      "id": "e910a7af-e922-4920-bb73-624b1482f158",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol yeah picky for a reason",
+      "createdAt": "2026-04-23T13:51:24.559Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "3e77d5e2-edc3-4681-956e-9bc3c8f8fea5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright, high standards keep things fun",
+      "createdAt": "2026-04-23T13:51:54.854Z",
+      "sentAt": "2026-04-23T13:52:01.889Z",
+      "llmCallId": "14448249-63e7-4d80-a373-427fef8c26d8",
+      "ppv": null
+    },
+    {
+      "id": "9636cf5d-4560-4159-a816-ddb34f2159d2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol k",
+      "createdAt": "2026-04-23T13:52:05.291Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0e73fdf9-6f6a-4020-a460-c1a065a45a99",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol bet youre tough to impress then",
+      "createdAt": "2026-04-23T13:52:32.493Z",
+      "sentAt": "2026-04-23T13:52:39.676Z",
+      "llmCallId": "34ed2e0f-2160-431c-ad75-ffe16fe792ad",
+      "ppv": null
+    },
+    {
+      "id": "0c0eb809-cb9a-4b95-8e05-168736c12f66",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol yeah i am",
+      "createdAt": "2026-04-23T13:52:48.743Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0e245ecd-001c-45ff-b6af-29794929a915",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol challenge accepted, what would actually impress u tho",
+      "createdAt": "2026-04-23T13:53:16.445Z",
+      "sentAt": "2026-04-23T13:53:24.960Z",
+      "llmCallId": "3aa3ded7-94ed-4d1c-82da-71704b51c63e",
+      "ppv": null
+    },
+    {
+      "id": "81d42df8-c2ce-4c6d-bd7d-7a2fb046cb20",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "dunno something actually spicy lol",
+      "createdAt": "2026-04-23T13:53:28.399Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c13ac8fa-2693-4cec-bb2d-78e10fec8344",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol i can crank up the spice when the vibe is right",
+      "createdAt": "2026-04-23T13:53:59.575Z",
+      "sentAt": "2026-04-23T13:54:09.836Z",
+      "llmCallId": "4b6a2a1e-af6e-44da-872e-e7e76d4cf893",
+      "ppv": null
+    },
+    {
+      "id": "d19ee9cf-d4c2-4a3d-891a-373916abc678",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol k lets see it then",
+      "createdAt": "2026-04-23T13:54:12.455Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5ea42df4-b390-407b-9ed0-770a34450fb6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol u think u can handle my full spice right away",
+      "createdAt": "2026-04-23T13:54:39.988Z",
+      "sentAt": null,
+      "llmCallId": "6581c9c0-4cab-450b-9b70-8c106fe19a44",
+      "ppv": null
+    },
+    {
+      "id": "569ecb01-e761-40db-9425-04d09a860e4f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "gotta earn that kinda heat babe",
+      "createdAt": "2026-04-23T13:54:40.286Z",
+      "sentAt": null,
+      "llmCallId": "6581c9c0-4cab-450b-9b70-8c106fe19a44",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 5,
+      "craft_pacing": 3,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 6
+    },
+    "avg": 6,
+    "ppv_unlocked": false,
+    "top_issue": "The creator pitched a PPV immediately in the first reply without building any rapport, as seen in 'glad u subbed. got somethin playful for u' followed directly by the PPV offer.",
+    "fix_recommendation": "Revise the prompt to mandate at least 2-3 conversational exchanges with new fans before any PPV pitch, focusing on asking open-ended questions about their interests or day to build initial connection. Instruct the persona to avoid any sales tease in the opening response and instead prioritize flirty, casual chit-chat to warm up the vibe."
+  },
+  "durationMs": 369318
+}

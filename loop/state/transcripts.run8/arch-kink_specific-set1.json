@@ -1,0 +1,125 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-moc0gth7-plx7",
+  "convId": "ff6e0e46-f07c-4088-97de-08611fd7372d",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content? send some now"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre direct huh"
+    },
+    {
+      "who": "fan",
+      "text": "yeah send feet or im out"
+    },
+    {
+      "who": "creator",
+      "text": "havent shot any feet stuff yet babe, whats got u into that anyway"
+    },
+    {
+      "who": "fan",
+      "text": "then im out lame"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre bossy babe"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "af88dc2b-7106-439e-b9b3-cae38f67c85a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content? send some now",
+      "createdAt": "2026-04-23T21:46:10.373Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "772ad283-9100-4366-a07a-d0ae3d418efe",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre direct huh",
+      "createdAt": "2026-04-23T21:46:37.057Z",
+      "sentAt": "2026-04-23T21:46:43.682Z",
+      "llmCallId": "a2a5e945-3587-4d59-9063-dc095873f85d",
+      "ppv": null
+    },
+    {
+      "id": "710b91ab-9dad-4161-a79a-65b9727f94b3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "havent shot any feet stuff yet babe, whats got u into that anyway",
+      "createdAt": "2026-04-23T21:46:37.354Z",
+      "sentAt": "2026-04-23T21:47:05.769Z",
+      "llmCallId": "a2a5e945-3587-4d59-9063-dc095873f85d",
+      "ppv": null
+    },
+    {
+      "id": "7165ecb0-63bb-4182-9d34-22516fba25b2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah send feet or im out",
+      "createdAt": "2026-04-23T21:46:46.874Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7c9ef565-ee07-4116-bf20-947bcd581965",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "then im out lame",
+      "createdAt": "2026-04-23T21:46:59.591Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7875faf8-0d31-4015-8a46-6ac90684fd29",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre bossy babe",
+      "createdAt": "2026-04-23T21:47:19.245Z",
+      "sentAt": "2026-04-23T21:47:27.296Z",
+      "llmCallId": "025bdfc4-e406-4dd3-9f91-4a97a4d1dfdb",
+      "ppv": null
+    },
+    {
+      "id": "bcf55444-b1db-4bec-bc20-98ffaf341ce9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "havent got any feet stuff yet, but im curious what else gets u goin",
+      "createdAt": "2026-04-23T21:47:19.541Z",
+      "sentAt": null,
+      "llmCallId": "025bdfc4-e406-4dd3-9f91-4a97a4d1dfdb",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 5,
+      "craft_sells": 3,
+      "safety_tos": 10,
+      "engagement": 2
+    },
+    "avg": 6.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to sell or retain the kink-specific fan by honestly admitting no feet content without pitching any alternative PPV, as in 'havent shot any feet stuff yet babe, whats got u into that anyway'.",
+    "fix_recommendation": "Modify the prompt to require checking the content catalog before responding to kink requests and, if no match, instruct the bot to tease custom content creation or pivot smoothly to similar available assets without repeating the lack of content."
+  },
+  "durationMs": 112541
+}

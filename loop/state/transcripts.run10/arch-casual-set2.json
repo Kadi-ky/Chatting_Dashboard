@@ -1,0 +1,422 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-casual-set2-mocxzd6s-hs1p",
+  "convId": "a0ba209d-7da9-4d66-b3b2-01bd811b451d",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed whats up"
+    },
+    {
+      "who": "creator",
+      "text": "im just chilling with biscuit here, he wont stop knocking stuff off the table lol"
+    },
+    {
+      "who": "fan",
+      "text": "lol cute"
+    },
+    {
+      "who": "creator",
+      "text": "yea hes a handful but i wouldnt trade him"
+    },
+    {
+      "who": "fan",
+      "text": "cool yeah cats r funny"
+    },
+    {
+      "who": "creator",
+      "text": "fr they keep things interesting. u got any pets or r u more of a dog person"
+    },
+    {
+      "who": "fan",
+      "text": "nah dog person lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha i can see that, dogs are way more loyal. what kinda dog would be your dream one"
+    },
+    {
+      "who": "fan",
+      "text": "golden retriever or sumthin idk"
+    },
+    {
+      "who": "creator",
+      "text": "haha classic choice, all that energy sounds fun. whatcha up to rn tho"
+    },
+    {
+      "who": "fan",
+      "text": "nothin much u"
+    },
+    {
+      "who": "creator",
+      "text": "boring night huh, im just scrolling on my phone. do u have a golden retriever or just dream about one"
+    },
+    {
+      "who": "fan",
+      "text": "nah just dream lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha fair, dreams are free at least. what do u do that keeps u from having one fr"
+    },
+    {
+      "who": "fan",
+      "text": "work too much idk"
+    },
+    {
+      "who": "creator",
+      "text": "ah that sucks, work can be a drag fr. what do u even do tho"
+    },
+    {
+      "who": "fan",
+      "text": "office stuff boring af"
+    },
+    {
+      "who": "creator",
+      "text": "ugh i feel u, sounds like a total drag. whats the worst part about it tho"
+    },
+    {
+      "who": "fan",
+      "text": "meetings all day lol boring"
+    },
+    {
+      "who": "creator",
+      "text": "haha endless meetings would drive me nuts fr. do u at least sneak out early sometimes"
+    },
+    {
+      "who": "fan",
+      "text": "sometimes lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha nice, love a little rebellion. where do u usually sneak off to tho"
+    },
+    {
+      "who": "fan",
+      "text": "bar or sumthin idk"
+    },
+    {
+      "who": "creator",
+      "text": "haha bars can be a good escape fr, lowkey jealous. do u go alone or with buddies usually"
+    },
+    {
+      "who": "fan",
+      "text": "alone mostly idk"
+    },
+    {
+      "who": "creator",
+      "text": "that can feel kinda quiet sometimes. but lowkey i get it, space to think fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah idk"
+    },
+    {
+      "who": "creator",
+      "text": "yeah sometimes quiet is good tho. hey since youre a dog person, do u have one or just like lookin at em"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "1d17c680-0397-49f3-86cc-e3b99f6534d9",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed whats up",
+      "createdAt": "2026-04-24T13:24:28.263Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "90f706a1-a03c-4356-b140-0454d2734c4e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "im just chilling with biscuit here, he wont stop knocking stuff off the table lol",
+      "createdAt": "2026-04-24T13:24:54.978Z",
+      "sentAt": "2026-04-24T13:25:09.741Z",
+      "llmCallId": "40fe02ff-0662-4ad5-8d31-d469b042035b",
+      "ppv": null
+    },
+    {
+      "id": "0590c25b-657a-4801-97be-ed1acd60160d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol cute",
+      "createdAt": "2026-04-24T13:25:04.516Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "53311153-1918-49ef-8107-9eb2e6001b34",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "yea hes a handful but i wouldnt trade him",
+      "createdAt": "2026-04-24T13:25:27.902Z",
+      "sentAt": "2026-04-24T13:25:35.767Z",
+      "llmCallId": "91767f92-03a6-47e0-9aba-45736403ce10",
+      "ppv": null
+    },
+    {
+      "id": "8695aca0-e2b0-4452-8c82-0f916cd5e06b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool yeah cats r funny",
+      "createdAt": "2026-04-24T13:25:38.343Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "dc4677e9-d87d-45a4-9d60-ce2a66abeb99",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fr they keep things interesting. u got any pets or r u more of a dog person",
+      "createdAt": "2026-04-24T13:26:00.658Z",
+      "sentAt": "2026-04-24T13:26:15.571Z",
+      "llmCallId": "6e2ae5f8-1d2e-4f9b-8015-ad56443aea9b",
+      "ppv": null
+    },
+    {
+      "id": "ff898c86-e3e2-4602-ac34-c6919830d47f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah dog person lol",
+      "createdAt": "2026-04-24T13:26:12.075Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e02a36a7-bc6b-4abd-8222-ef10ad702cd0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha i can see that, dogs are way more loyal. what kinda dog would be your dream one",
+      "createdAt": "2026-04-24T13:26:32.036Z",
+      "sentAt": "2026-04-24T13:26:50.371Z",
+      "llmCallId": "8896adba-3ad9-4e63-93db-9f11ac8098d4",
+      "ppv": null
+    },
+    {
+      "id": "52332b04-c956-4f09-a223-635ee6fe41ef",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "golden retriever or sumthin idk",
+      "createdAt": "2026-04-24T13:26:40.027Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "480a25eb-450d-460b-814a-0b7e6283f7d5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha classic choice, all that energy sounds fun. whatcha up to rn tho",
+      "createdAt": "2026-04-24T13:27:05.771Z",
+      "sentAt": "2026-04-24T13:27:18.908Z",
+      "llmCallId": "e54d9071-fd84-4b72-83fa-4febbbfd1b5d",
+      "ppv": null
+    },
+    {
+      "id": "b627d4f6-dcb5-4c5c-87a9-26a55efee091",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin much u",
+      "createdAt": "2026-04-24T13:27:15.105Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c478cca1-0e9c-4919-be66-e0f4be0ee485",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "boring night huh, im just scrolling on my phone. do u have a golden retriever or just dream about one",
+      "createdAt": "2026-04-24T13:27:39.247Z",
+      "sentAt": "2026-04-24T13:27:54.931Z",
+      "llmCallId": "a6ed0c08-42b0-4665-b1e0-e59a3eb07ae8",
+      "ppv": null
+    },
+    {
+      "id": "edef2b0e-0774-479d-adec-a91ba9092d64",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah just dream lol",
+      "createdAt": "2026-04-24T13:27:52.418Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "aa1ba63d-22a7-4522-af7b-8e16dba6f81c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha fair, dreams are free at least. what do u do that keeps u from having one fr",
+      "createdAt": "2026-04-24T13:28:17.610Z",
+      "sentAt": "2026-04-24T13:28:34.071Z",
+      "llmCallId": "7b450752-e310-4cd8-bf5f-3e554d46d688",
+      "ppv": null
+    },
+    {
+      "id": "60b59116-be42-4ffe-9779-681b8521722a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "work too much idk",
+      "createdAt": "2026-04-24T13:28:32.953Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f5705dc3-05b7-4e39-adb8-4e47b619354c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ah that sucks, work can be a drag fr. what do u even do tho",
+      "createdAt": "2026-04-24T13:28:57.936Z",
+      "sentAt": "2026-04-24T13:29:12.210Z",
+      "llmCallId": "fcb53f2b-1592-4716-b919-39b76a2daf34",
+      "ppv": null
+    },
+    {
+      "id": "36bcc5ee-0307-4a0a-8a6a-05d981465f82",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "office stuff boring af",
+      "createdAt": "2026-04-24T13:29:07.356Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9cc8e3c3-2916-4b7f-95e1-f1ed40b3308d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ugh i feel u, sounds like a total drag. whats the worst part about it tho",
+      "createdAt": "2026-04-24T13:29:28.323Z",
+      "sentAt": "2026-04-24T13:29:43.629Z",
+      "llmCallId": "fb94427b-ab79-44ba-a4d7-2512a67733db",
+      "ppv": null
+    },
+    {
+      "id": "d8685a20-284b-4aed-83e3-3d6d3249be79",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "meetings all day lol boring",
+      "createdAt": "2026-04-24T13:29:39.131Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "806d94cb-15a1-4a47-bbca-23c03271881c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha endless meetings would drive me nuts fr. do u at least sneak out early sometimes",
+      "createdAt": "2026-04-24T13:30:00.490Z",
+      "sentAt": "2026-04-24T13:30:14.775Z",
+      "llmCallId": "a2cef7a6-50ef-441f-bef6-f56d1bad24d9",
+      "ppv": null
+    },
+    {
+      "id": "fe24ae3a-3a31-47eb-bbab-1136b925e408",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "sometimes lol",
+      "createdAt": "2026-04-24T13:30:10.773Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2190cd6d-55dc-4a6d-918d-40d306091665",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha nice, love a little rebellion. where do u usually sneak off to tho",
+      "createdAt": "2026-04-24T13:30:32.466Z",
+      "sentAt": "2026-04-24T13:30:45.742Z",
+      "llmCallId": "4264e832-4ae1-43c8-8da7-d81e1f9182a5",
+      "ppv": null
+    },
+    {
+      "id": "cad34bd4-025c-4cdd-926e-c9cae8d9068d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bar or sumthin idk",
+      "createdAt": "2026-04-24T13:30:42.966Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1107663c-2fb8-46ef-a56d-d6ee584573d1",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha bars can be a good escape fr, lowkey jealous. do u go alone or with buddies usually",
+      "createdAt": "2026-04-24T13:31:08.336Z",
+      "sentAt": "2026-04-24T13:31:24.663Z",
+      "llmCallId": "ad688045-911c-48b5-acdf-a9c79149027d",
+      "ppv": null
+    },
+    {
+      "id": "fc74c765-fd00-46c0-9379-8d92f236c4b5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "alone mostly idk",
+      "createdAt": "2026-04-24T13:31:28.280Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cb49b5a4-78c6-4b76-8c88-8ff9d60e4354",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "that can feel kinda quiet sometimes. but lowkey i get it, space to think fr",
+      "createdAt": "2026-04-24T13:31:59.713Z",
+      "sentAt": "2026-04-24T13:32:17.567Z",
+      "llmCallId": "8a15bb8a-03bd-40d4-8634-eebe5654cdd3",
+      "ppv": null
+    },
+    {
+      "id": "6adbe14d-cb00-4049-b7d9-9bee7eb4b81e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah idk",
+      "createdAt": "2026-04-24T13:32:12.155Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "19e3d30a-0888-4683-88b0-97a8b73a9dd2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "yeah sometimes quiet is good tho. hey since youre a dog person, do u have one or just like lookin at em",
+      "createdAt": "2026-04-24T13:32:39.125Z",
+      "sentAt": null,
+      "llmCallId": "a3be27f5-3fda-4afe-b929-9896c0aabed9",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 7,
+      "craft_sells": 5,
+      "safety_tos": 10,
+      "engagement": 6
+    },
+    "avg": 7.5,
+    "ppv_unlocked": false,
+    "top_issue": "The creator repeats a question about the fan's dog ownership, looping the conversation as seen in the final message 'hey since youre a dog person, do u have one or just like lookin at em' after already asking a similar one earlier.",
+    "fix_recommendation": "Update the prompt to include conversation tracking mechanisms that flag and avoid repeating questions on the same topic. Encourage the persona to pivot to new, lightly flirty subjects like shared interests or compliments when detecting short fan responses to maintain momentum."
+  },
+  "durationMs": 532296
+}

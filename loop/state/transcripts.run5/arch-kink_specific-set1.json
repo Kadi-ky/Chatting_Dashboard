@@ -1,0 +1,49 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-mobjhpys-6wwj",
+  "convId": "f6b99cb4-de8b-4bcf-847d-1618bf6547d5",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got foot content? send some"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "71879920-242f-4373-9ae0-8fecff8561de",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got foot content? send some",
+      "createdAt": "2026-04-23T13:50:59.818Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 1,
+      "craft_humanness": 1,
+      "craft_pacing": 1,
+      "craft_sells": 1,
+      "safety_tos": 10,
+      "engagement": 1
+    },
+    "avg": 2.5,
+    "ppv_unlocked": false,
+    "top_issue": "The creator did not send any response to the fan's direct inquiry about foot content, resulting in no interaction at all.",
+    "fix_recommendation": "Revise the prompt to mandate immediate, in-character responses to initial fan messages, including a catalog check for requested kinks like feet before any promises or pitches."
+  },
+  "durationMs": 120210
+}

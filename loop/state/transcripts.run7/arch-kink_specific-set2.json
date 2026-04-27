@@ -1,0 +1,115 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-kink_specific-set2-mobyxrzu-w86j",
+  "convId": "001ecc24-bd37-4cd6-b256-8d01e5f8a399",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content?"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey havent shot any of that yet babe, whats got u into em fr"
+    },
+    {
+      "who": "fan",
+      "text": "nah make some feet stuff now ill tip good"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha youre bold, i like that. lowkey tempting but im not filming rn babe"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur loss"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre grumpy today, somethin got u all twisted up?"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "ad9ba714-87ac-43d2-ad22-081744383e28",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content?",
+      "createdAt": "2026-04-23T21:03:23.371Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6dc7751f-2245-4796-aaf5-50d1b972ca36",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey havent shot any of that yet babe, whats got u into em fr",
+      "createdAt": "2026-04-23T21:03:51.830Z",
+      "sentAt": "2026-04-23T21:04:10.314Z",
+      "llmCallId": "ee3324ea-a8bb-4507-9ed4-315ba0873ecd",
+      "ppv": null
+    },
+    {
+      "id": "e27fa64c-be4e-43f9-bd3e-8e97c04f87fd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah make some feet stuff now ill tip good",
+      "createdAt": "2026-04-23T21:04:08.213Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0834de80-21cf-4c40-a15b-04b3d315a9a0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha youre bold, i like that. lowkey tempting but im not filming rn babe",
+      "createdAt": "2026-04-23T21:04:44.004Z",
+      "sentAt": "2026-04-23T21:05:09.636Z",
+      "llmCallId": "93fba11e-0f22-4d5a-827b-5ef9af381bad",
+      "ppv": null
+    },
+    {
+      "id": "40feb33a-a903-4137-8579-b86474395e6c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur loss",
+      "createdAt": "2026-04-23T21:05:00.064Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9096677d-6284-4cbe-8f62-e860432ad5e5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre grumpy today, somethin got u all twisted up?",
+      "createdAt": "2026-04-23T21:05:35.942Z",
+      "sentAt": "2026-04-23T21:05:49.310Z",
+      "llmCallId": "6225d13b-f09e-4ffe-9d7c-2167ee681375",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 9,
+      "craft_sells": 9,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 8.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator admitted lacking feet content without pitching alternatives or committing to custom creation, causing the fan to disengage, as seen in 'lowkey havent shot any of that yet babe, whats got u into em fr'.",
+    "fix_recommendation": "Enhance the persona's prompt to include a diverse content catalog with common kinks like feet for direct matching, and add guidance to explore tipped custom content options when fans request unavailable material to maintain engagement."
+  },
+  "durationMs": 199673
+}

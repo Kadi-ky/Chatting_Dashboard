@@ -1,0 +1,87 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-kink_specific-set2-moc0j8be-x406",
+  "convId": "76dfaaed-a466-4868-a8d9-136bc47047a7",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got any foot content? show me now"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha u get straight to it huh"
+    },
+    {
+      "who": "fan",
+      "text": "yeah do u have foot pics or not send one"
+    },
+    {
+      "who": "creator",
+      "text": "havent shot any foot stuff yet babe, lowkey curious what else youre into tho"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "92d66b47-a4a8-4950-abf2-9952fefa81b9",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got any foot content? show me now",
+      "createdAt": "2026-04-23T21:48:03.439Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7bc3c158-1438-43fb-adc9-9df3742d9328",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha u get straight to it huh",
+      "createdAt": "2026-04-23T21:48:28.200Z",
+      "sentAt": "2026-04-23T21:48:35.579Z",
+      "llmCallId": "0e580278-a488-47e1-8555-cba99f456e28",
+      "ppv": null
+    },
+    {
+      "id": "91ebf3cf-1c8f-4c6f-9407-97d6eb0dc78f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "havent shot any foot stuff yet babe, lowkey curious what else youre into tho",
+      "createdAt": "2026-04-23T21:48:28.495Z",
+      "sentAt": null,
+      "llmCallId": "0e580278-a488-47e1-8555-cba99f456e28",
+      "ppv": null
+    },
+    {
+      "id": "31dfba9b-703d-4a1d-9bda-0d4c81c8fb01",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah do u have foot pics or not send one",
+      "createdAt": "2026-04-23T21:48:37.721Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 7,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 5
+    },
+    "avg": 8.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator admitted to lacking the requested foot content and redirected to other interests without building rapport or pitching alternatives, likely causing the kink-specific fan to disengage, as seen in 'havent shot any foot stuff yet babe, lowkey curious what else youre into tho'.",
+    "fix_recommendation": "Update the prompt to include a check against the content catalog for kink requests and, if unavailable, guide the bot to honestly decline while teasing existing popular content or offering custom options without overpromising specifics."
+  },
+  "durationMs": 87673
+}

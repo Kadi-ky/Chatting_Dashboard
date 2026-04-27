@@ -1,0 +1,214 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-casual-set3-mobvehst-d9va",
+  "convId": "281bbf2e-613d-4ba0-9d6a-25485a1d2cf9",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed whats the vibe here"
+    },
+    {
+      "who": "creator",
+      "text": "fresh blood. vibe here is lowkey fun with a side of tease. whats got u subbing now"
+    },
+    {
+      "who": "fan",
+      "text": "idk ur profile popped up seemed chill"
+    },
+    {
+      "who": "creator",
+      "text": "glad it caught your eye. im all about that easy vibe with a lil spark fr"
+    },
+    {
+      "who": "fan",
+      "text": "cool ig show me sumthin"
+    },
+    {
+      "who": "creator",
+      "text": "alright since u asked"
+    },
+    {
+      "who": "fan",
+      "text": "k lets see"
+    },
+    {
+      "who": "creator",
+      "text": "heres me getting playful with my boobs n body, unlock if it tempts u",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "ehh send a free tease first then maybe ill unlock"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha straight to the point, i like that. hope it sparks somethin for u"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever boring"
+    },
+    {
+      "who": "creator",
+      "text": "aw dont be like that. what kinda thing actually gets u going fr"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "c554c514-59c3-4b54-b07a-776dc589163d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed whats the vibe here",
+      "createdAt": "2026-04-23T19:24:25.912Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "060265b2-f903-497f-88de-0a14ebf5dc7c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fresh blood. vibe here is lowkey fun with a side of tease. whats got u subbing now",
+      "createdAt": "2026-04-23T19:24:47.824Z",
+      "sentAt": "2026-04-23T19:25:04.871Z",
+      "llmCallId": "1df70527-75df-45a2-b19a-c2ae1ddee8ac",
+      "ppv": null
+    },
+    {
+      "id": "da5bc75c-a5e9-4275-ae3a-585e85f7fbbe",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "idk ur profile popped up seemed chill",
+      "createdAt": "2026-04-23T19:24:57.008Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "27376e53-87bf-4f67-b3f6-2cb5cc10bc6e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "glad it caught your eye. im all about that easy vibe with a lil spark fr",
+      "createdAt": "2026-04-23T19:25:20.444Z",
+      "sentAt": "2026-04-23T19:25:38.061Z",
+      "llmCallId": "f01d8515-a1a5-46d0-9852-f514dc2804eb",
+      "ppv": null
+    },
+    {
+      "id": "3e6c4f64-0265-4409-868a-7a448b54d634",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool ig show me sumthin",
+      "createdAt": "2026-04-23T19:25:30.567Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "15bb42d1-9456-42e8-9d7f-797658d0c757",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "alright since u asked",
+      "createdAt": "2026-04-23T19:26:05.212Z",
+      "sentAt": "2026-04-23T19:26:12.140Z",
+      "llmCallId": "2c638084-eae8-4344-93d3-5f3ca63ad882",
+      "ppv": null
+    },
+    {
+      "id": "ac239046-b4e6-483f-91c7-9a6a72b47af5",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres me getting playful with my boobs n body, unlock if it tempts u",
+      "createdAt": "2026-04-23T19:26:05.501Z",
+      "sentAt": "2026-04-23T19:26:33.847Z",
+      "llmCallId": "2c638084-eae8-4344-93d3-5f3ca63ad882",
+      "ppv": {
+        "attemptId": "00511232-8291-4831-8160-5e937e8a7130",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c744cf5b-d558-4435-a751-0568431e3d84",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k lets see",
+      "createdAt": "2026-04-23T19:26:16.596Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "3fb43698-ca4b-43cd-96cf-ff3d460fce63",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh send a free tease first then maybe ill unlock",
+      "createdAt": "2026-04-23T19:26:29.976Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4fbcb5a7-99d0-4b9c-bff6-a5bd0b6a0813",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha straight to the point, i like that. hope it sparks somethin for u",
+      "createdAt": "2026-04-23T19:27:08.425Z",
+      "sentAt": "2026-04-23T19:27:23.242Z",
+      "llmCallId": "0a064bbe-83d5-4921-9456-c75356192c85",
+      "ppv": null
+    },
+    {
+      "id": "22e4409b-b4ef-4430-a6e7-d19630a72ed8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever boring",
+      "createdAt": "2026-04-23T19:27:23.691Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2c9efcce-f927-4ff1-9994-853c962e4d6a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw dont be like that. what kinda thing actually gets u going fr",
+      "createdAt": "2026-04-23T19:27:52.111Z",
+      "sentAt": null,
+      "llmCallId": "7a4f8955-e551-4e4a-8cc6-fcb0649223c2",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 7,
+      "craft_sells": 7,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 8.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator pitched a PPV too early after only two exchanges without building more rapport, as seen in the message 'alright since u asked' followed immediately by the PPV.",
+    "fix_recommendation": "Update the prompt to require at least three back-and-forth conversational exchanges with brand-new subscribers before pitching any PPV, even if the fan asks to see something, to allow more rapport building. Encourage responding to content requests with teasing questions first to extend the conversation."
+  },
+  "durationMs": 255261
+}

@@ -1,0 +1,382 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-freebie_hunter-set1-mod1tnl1-jks0",
+  "convId": "3afbbcc0-d8a6-4d10-8174-b6ab06b0c3b7",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a teaser pic first then ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre bold asking for a teaser right away"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be greedy send sumn quick or ill dip"
+    },
+    {
+      "who": "creator",
+      "text": "make me wanna send one first 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "fine whatever send ur snap ill pay there instead guess u dont want subs huh"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre funny thinking id just send snaps like that"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur loss ill find someone who aint greedy send one pic or bye"
+    },
+    {
+      "who": "creator",
+      "text": "lets keep the fun here babe, no dipping needed"
+    },
+    {
+      "who": "fan",
+      "text": "come on just one pic aint greedy or im out for real"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre persistent fr"
+    },
+    {
+      "who": "fan",
+      "text": "come on send one quick pic other girls do it dont be lame or bye"
+    },
+    {
+      "who": "creator",
+      "text": "but i dont just send pics to strangers babe, lets vibe a lil first"
+    },
+    {
+      "who": "fan",
+      "text": "come on vibe by sending a teaser first dont be greedy or bye"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre really tryna test me huh"
+    },
+    {
+      "who": "fan",
+      "text": "come on ur testing my patience send one teaser or im out for real ur loss"
+    },
+    {
+      "who": "creator",
+      "text": "ok fine heres a lil somethin to tease u... me playin with my boobs and body, unlock if u dare",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "come on thats ppv not free send actual teaser or bye ur greedy af"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright babe, door's open when youre feelin less pushy"
+    },
+    {
+      "who": "fan",
+      "text": "come on ur still greedy send actual free pic or bye for real ur loss"
+    },
+    {
+      "who": "creator",
+      "text": "haha suit yourself babe, door's always open when u wanna vibe right"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur greedy af ill find better bye ur loss"
+    },
+    {
+      "who": "creator",
+      "text": "haha alright babe, hit me up when youre in a better mood"
+    },
+    {
+      "who": "fan",
+      "text": "guess u dont want real fans huh ur loss for real bye"
+    },
+    {
+      "who": "creator",
+      "text": "haha ok babe, door's open if u rethink it"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "b92ebee1-6f46-4813-9ef9-612d89c89ecf",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a teaser pic first then ill sub",
+      "createdAt": "2026-04-24T15:11:56.322Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "adfb9197-df32-41ba-8a93-bce87aba6de9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre bold asking for a teaser right away",
+      "createdAt": "2026-04-24T15:12:23.378Z",
+      "sentAt": "2026-04-24T15:12:36.039Z",
+      "llmCallId": "ec1db264-b023-400a-b36b-efd8f9ab4337",
+      "ppv": null
+    },
+    {
+      "id": "b1ada04a-e17a-4d64-ab1d-f6cc57941cb1",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "make me wanna send one first 🖤",
+      "createdAt": "2026-04-24T15:12:23.677Z",
+      "sentAt": "2026-04-24T15:12:57.375Z",
+      "llmCallId": "ec1db264-b023-400a-b36b-efd8f9ab4337",
+      "ppv": null
+    },
+    {
+      "id": "95662f39-7615-4d5a-a2ad-8bb7c0a04113",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be greedy send sumn quick or ill dip",
+      "createdAt": "2026-04-24T15:12:30.648Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b48fe789-cffc-47ba-b465-70700f80b572",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fine whatever send ur snap ill pay there instead guess u dont want subs huh",
+      "createdAt": "2026-04-24T15:12:38.338Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "728ba340-5db4-419e-a36e-13b291a6baa8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre funny thinking id just send snaps like that",
+      "createdAt": "2026-04-24T15:13:02.213Z",
+      "sentAt": "2026-04-24T15:13:18.769Z",
+      "llmCallId": "be71dc8d-1483-48f9-bb81-57b12af00465",
+      "ppv": null
+    },
+    {
+      "id": "75670ec5-4f44-49a1-8dcd-f6462766773d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lets keep the fun here babe, no dipping needed",
+      "createdAt": "2026-04-24T15:13:02.510Z",
+      "sentAt": "2026-04-24T15:13:40.119Z",
+      "llmCallId": "be71dc8d-1483-48f9-bb81-57b12af00465",
+      "ppv": null
+    },
+    {
+      "id": "e9a745c9-1077-417a-b6f9-788fe8e73f9e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur loss ill find someone who aint greedy send one pic or bye",
+      "createdAt": "2026-04-24T15:13:12.029Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "71f5ae22-5bc0-48dd-878d-491fbb1b962f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on just one pic aint greedy or im out for real",
+      "createdAt": "2026-04-24T15:13:21.446Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4d174d94-8d6c-4aa1-add3-d3ad7509f0ff",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre persistent fr",
+      "createdAt": "2026-04-24T15:13:49.099Z",
+      "sentAt": "2026-04-24T15:14:02.432Z",
+      "llmCallId": "d7197d68-e2e9-4c4d-a567-05ba9c94fbe3",
+      "ppv": null
+    },
+    {
+      "id": "82d72332-e655-4891-9c33-ca84d0142cdd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but i dont just send pics to strangers babe, lets vibe a lil first",
+      "createdAt": "2026-04-24T15:13:49.397Z",
+      "sentAt": "2026-04-24T15:14:36.024Z",
+      "llmCallId": "d7197d68-e2e9-4c4d-a567-05ba9c94fbe3",
+      "ppv": null
+    },
+    {
+      "id": "fdf21093-1120-4b4b-98ca-e44708fc2065",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send one quick pic other girls do it dont be lame or bye",
+      "createdAt": "2026-04-24T15:14:06.350Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f6063548-a279-470c-a51d-b2a2e322c33f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on vibe by sending a teaser first dont be greedy or bye",
+      "createdAt": "2026-04-24T15:14:16.139Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ba92188e-0e2d-404c-8877-5ee0066d1837",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre really tryna test me huh",
+      "createdAt": "2026-04-24T15:14:59.668Z",
+      "sentAt": "2026-04-24T15:15:11.858Z",
+      "llmCallId": "c9ce10e6-3509-424c-a757-ee12ce991e8e",
+      "ppv": null
+    },
+    {
+      "id": "96f48067-767a-4390-8856-10dce9f9cc8b",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "ok fine heres a lil somethin to tease u... me playin with my boobs and body, unlock if u dare",
+      "createdAt": "2026-04-24T15:14:59.967Z",
+      "sentAt": "2026-04-24T15:15:33.424Z",
+      "llmCallId": "c9ce10e6-3509-424c-a757-ee12ce991e8e",
+      "ppv": {
+        "attemptId": "78ddc3c8-5111-48d9-b791-3a52ede68fd6",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8dc4505c-9379-48d3-9b12-b602671ea1bb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on ur testing my patience send one teaser or im out for real ur loss",
+      "createdAt": "2026-04-24T15:15:11.018Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6f426701-3df9-45be-8db4-6f4ea4e473f2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on thats ppv not free send actual teaser or bye ur greedy af",
+      "createdAt": "2026-04-24T15:15:20.467Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "eae75dbc-5c7f-4340-a414-8f8759124512",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright babe, door's open when youre feelin less pushy",
+      "createdAt": "2026-04-24T15:15:41.594Z",
+      "sentAt": "2026-04-24T15:15:57.387Z",
+      "llmCallId": "d39dabb7-e15c-46b0-b235-fcbb5f48cedc",
+      "ppv": null
+    },
+    {
+      "id": "4a58f943-9fb5-4963-8ed5-dea63171b2e5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on ur still greedy send actual free pic or bye for real ur loss",
+      "createdAt": "2026-04-24T15:15:51.425Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "31bd0ce5-4b63-4201-b240-f869e525d430",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha suit yourself babe, door's always open when u wanna vibe right",
+      "createdAt": "2026-04-24T15:16:20.141Z",
+      "sentAt": "2026-04-24T15:16:48.620Z",
+      "llmCallId": "15ce42be-1a7b-4ac7-ac80-f0e5a36dd844",
+      "ppv": null
+    },
+    {
+      "id": "33add408-3cc2-4c18-8e5c-d4bd6933ec19",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur greedy af ill find better bye ur loss",
+      "createdAt": "2026-04-24T15:16:36.390Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "3455f4a2-d653-4c42-8309-873f806b340d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha alright babe, hit me up when youre in a better mood",
+      "createdAt": "2026-04-24T15:17:00.905Z",
+      "sentAt": "2026-04-24T15:17:12.301Z",
+      "llmCallId": "1a138366-db27-4254-88d4-376688ca0754",
+      "ppv": null
+    },
+    {
+      "id": "4c6d7ea2-36dd-4bb1-bf74-948340c21d8d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "guess u dont want real fans huh ur loss for real bye",
+      "createdAt": "2026-04-24T15:17:16.763Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4b7f066c-86ef-47be-bfe2-477df13e2e87",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha ok babe, door's open if u rethink it",
+      "createdAt": "2026-04-24T15:17:46.575Z",
+      "sentAt": "2026-04-24T15:17:57.097Z",
+      "llmCallId": "4db81d1f-7810-49db-9aa0-ce8a7dcb7993",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 7,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator gave in to the fan's persistent demands for free content by sending a low-price PPV teaser instead of firmly refusing and building more rapport, as seen in 'ok fine heres a lil somethin to tease u... me playin with my boobs and body, unlock if u dare'.",
+    "fix_recommendation": "Update the prompt to instruct the persona to never offer discounted or teaser PPVs to aggressive freebie hunters and instead redirect by asking personal questions to build genuine rapport before any sales pitch."
+  },
+  "durationMs": 401731
+}

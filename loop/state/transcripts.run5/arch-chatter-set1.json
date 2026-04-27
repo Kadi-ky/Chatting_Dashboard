@@ -1,0 +1,286 @@
+{
+  "archetype": {
+    "id": "chatter",
+    "profile": "Here for the conversation, not the content. Lonely or just bored, wants to feel like he is texting an actual girl. Talks about his day, his job, what he is eating, his cat. Does NOT push for sexting and visibly cools when the bot pivots straight to PPV. May eventually buy something LATE in the convo if rapport is real, but only if the chat felt like a real exchange first. Asks the creator questions about her life and expects answers.",
+    "buyProb": 0.3,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-chatter-set1-mobjlot9-lv0x",
+  "convId": "6f63e67e-8e60-4570-8242-9656ac09878e",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey whats up just got off work hows your day goin"
+    },
+    {
+      "who": "creator",
+      "text": "same, just got back from grabbing coffee. days been chill, lowkey could use some fun tho"
+    },
+    {
+      "who": "fan",
+      "text": "cool pizza for dinner here whatd you get at coffee? any plans tonight"
+    },
+    {
+      "who": "creator",
+      "text": "black iced with oat milk today. pizza sounds way better than my boring snack situation"
+    },
+    {
+      "who": "fan",
+      "text": "pizza sucks sometimes too what snack you got? my cats begging for crust lol"
+    },
+    {
+      "who": "creator",
+      "text": "no big plans tonight, lowkey just vibing with some music"
+    },
+    {
+      "who": "fan",
+      "text": "oh nice what music you into? im just chillin with my cat watching tv what about your snacks earlier?"
+    },
+    {
+      "who": "creator",
+      "text": "just cheese sticks and fruit, kinda basic fr"
+    },
+    {
+      "who": "fan",
+      "text": "cheese sticks arent basic i love em what music you vibing to tonight? my cats asleep now lol"
+    },
+    {
+      "who": "creator",
+      "text": "aw ur cat begging for crust? biscuit does the same, ruins my vibes every time lol"
+    },
+    {
+      "who": "fan",
+      "text": "biscuit sounds fun whats he like whiskers is a lazy bum lol"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey sza tonight, her voice just melts me fr"
+    },
+    {
+      "who": "fan",
+      "text": "sza is fire her lyrics hit different whats your fav song? biscuit begging again? lol"
+    },
+    {
+      "who": "creator",
+      "text": "biscuits a menace, always knocking shit over but hes my baby. whiskers asleep? sounds like a vibe"
+    },
+    {
+      "who": "fan",
+      "text": "whiskers is out cold yeah biscuits antics sound hilarious got any funny stories bout him? sza wise i like broken clocks whats urs"
+    },
+    {
+      "who": "creator",
+      "text": "love blind, that one always hits me right in the feels"
+    },
+    {
+      "who": "fan",
+      "text": "blind is solid yeah hits deep broken clocks makes me reflect lol got that biscuit story?"
+    },
+    {
+      "who": "creator",
+      "text": "nah biscuits chillin for once, not causing trouble"
+    },
+    {
+      "who": "fan",
+      "text": "haha lucky biscuits chill mode sounds rare whats his funniest chaos story then? broken clocks on repeat here lol"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "28b49239-df04-4e75-a4c0-527bc8bea829",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey whats up just got off work hows your day goin",
+      "createdAt": "2026-04-23T13:54:08.268Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "af768fba-8427-4918-8228-eaef38e17eb4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "same, just got back from grabbing coffee. days been chill, lowkey could use some fun tho",
+      "createdAt": "2026-04-23T13:54:31.135Z",
+      "sentAt": "2026-04-23T13:54:59.694Z",
+      "llmCallId": "12ba6ea2-9180-4347-86db-3239ddb6dfe2",
+      "ppv": null
+    },
+    {
+      "id": "1b7b5902-53fc-4633-801c-8739d9d17732",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool pizza for dinner here whatd you get at coffee? any plans tonight",
+      "createdAt": "2026-04-23T13:54:39.981Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "84ffa7d4-d321-41e8-83f6-4cc1a2593205",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "black iced with oat milk today. pizza sounds way better than my boring snack situation",
+      "createdAt": "2026-04-23T13:55:06.643Z",
+      "sentAt": "2026-04-23T13:55:26.098Z",
+      "llmCallId": "b79c1c9e-b72d-404e-aabb-3bd6bb47e7c9",
+      "ppv": null
+    },
+    {
+      "id": "d41f20a7-4f79-43d6-a6eb-2de66e5c587b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "no big plans tonight, lowkey just vibing with some music",
+      "createdAt": "2026-04-23T13:55:06.941Z",
+      "sentAt": "2026-04-23T13:55:47.622Z",
+      "llmCallId": "b79c1c9e-b72d-404e-aabb-3bd6bb47e7c9",
+      "ppv": null
+    },
+    {
+      "id": "069cdbe0-d9e8-4aba-8067-ee02f7ae8400",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "pizza sucks sometimes too what snack you got? my cats begging for crust lol",
+      "createdAt": "2026-04-23T13:55:18.522Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5239d2cc-fb32-454e-8357-06e7f2333ce2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "oh nice what music you into? im just chillin with my cat watching tv what about your snacks earlier?",
+      "createdAt": "2026-04-23T13:55:30.768Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e66d4324-181d-4222-89a0-6de697b09bac",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "just cheese sticks and fruit, kinda basic fr",
+      "createdAt": "2026-04-23T13:55:46.269Z",
+      "sentAt": "2026-04-23T13:56:09.687Z",
+      "llmCallId": "f9f82326-afad-44d9-98a4-ec1f17e17ab9",
+      "ppv": null
+    },
+    {
+      "id": "104dc519-cb1c-4d4b-adf1-2fb31893ff68",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw ur cat begging for crust? biscuit does the same, ruins my vibes every time lol",
+      "createdAt": "2026-04-23T13:55:46.558Z",
+      "sentAt": "2026-04-23T13:56:31.441Z",
+      "llmCallId": "f9f82326-afad-44d9-98a4-ec1f17e17ab9",
+      "ppv": null
+    },
+    {
+      "id": "2ecc9d2e-9c44-4b7f-8cfc-bda0a3eafc36",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cheese sticks arent basic i love em what music you vibing to tonight? my cats asleep now lol",
+      "createdAt": "2026-04-23T13:56:01.048Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a0a20b19-b850-43e4-8364-c38da5897060",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "biscuit sounds fun whats he like whiskers is a lazy bum lol",
+      "createdAt": "2026-04-23T13:56:11.507Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1caf72f0-4b89-4658-8e50-9716c42945a8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey sza tonight, her voice just melts me fr",
+      "createdAt": "2026-04-23T13:56:30.655Z",
+      "sentAt": "2026-04-23T13:56:52.993Z",
+      "llmCallId": "ddc45c2c-7e6c-4b04-928c-a505b73acfa8",
+      "ppv": null
+    },
+    {
+      "id": "9b3b29bb-d8a4-490c-94d0-a7703c7abe21",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "biscuits a menace, always knocking shit over but hes my baby. whiskers asleep? sounds like a vibe",
+      "createdAt": "2026-04-23T13:56:30.951Z",
+      "sentAt": "2026-04-23T13:57:14.451Z",
+      "llmCallId": "ddc45c2c-7e6c-4b04-928c-a505b73acfa8",
+      "ppv": null
+    },
+    {
+      "id": "8d59aa2f-2f7b-458a-90aa-cfec4c1093de",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "sza is fire her lyrics hit different whats your fav song? biscuit begging again? lol",
+      "createdAt": "2026-04-23T13:56:44.979Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f52b25e0-cb23-47a6-85fe-e3b15313ca8d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whiskers is out cold yeah biscuits antics sound hilarious got any funny stories bout him? sza wise i like broken clocks whats urs",
+      "createdAt": "2026-04-23T13:56:56.301Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9687bf79-d41e-456f-bd6a-8e43335490e6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "love blind, that one always hits me right in the feels",
+      "createdAt": "2026-04-23T13:57:11.770Z",
+      "sentAt": null,
+      "llmCallId": "78d82c37-d3ec-4d54-a3cc-d99ee8b16789",
+      "ppv": null
+    },
+    {
+      "id": "7d646b79-0eac-4920-81c7-a4e5aa2c9663",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "nah biscuits chillin for once, not causing trouble",
+      "createdAt": "2026-04-23T13:57:12.066Z",
+      "sentAt": null,
+      "llmCallId": "78d82c37-d3ec-4d54-a3cc-d99ee8b16789",
+      "ppv": null
+    },
+    {
+      "id": "8ac08f46-40e5-49fb-892e-58ca53f30519",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "blind is solid yeah hits deep broken clocks makes me reflect lol got that biscuit story?",
+      "createdAt": "2026-04-23T13:57:23.110Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 10,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 10
+    },
+    "avg": 9.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to introduce any PPV pitch after building extensive rapport through personal sharing, as seen in the message 'love blind, that one always hits me right in the feels' where a subtle tie-in to content could have been made.",
+    "fix_recommendation": "Update the prompt to instruct the creator to subtly pitch PPV after 4-5 rapport-building exchanges with chatters, linking it naturally to the conversation like offering a custom voice note about favorite songs to transition gently into sales without disrupting the flow."
+  },
+  "durationMs": 259811
+}

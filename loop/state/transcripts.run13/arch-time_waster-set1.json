@@ -1,0 +1,470 @@
+{
+  "archetype": {
+    "id": "time_waster",
+    "profile": "Has been a sub for weeks just to chat. Never buys. Asks endless questions, fishes for tips of attention, fishes for free pics. Will guilt-trip (\"come on send a free one for ur biggest fan\"). Comments on every detail of the persona. Uses cute/playful language to extract free attention without ever actually paying. Tests whether the bot eventually disengages, sets boundaries, or keeps wasting tokens on a fan who will never convert.",
+    "buyProb": 0.02,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-time_waster-set1-modszb1f-k4fw",
+  "convId": "6fc8ed05-3f9c-4a35-90ce-81ba4df67e09",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe ur latest pic is fire whats the story behind that outfit lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha thanks, i snagged that outfit from a thrift spot last week, felt like it needed a good home. made me wanna pose a little extra 😏"
+    },
+    {
+      "who": "fan",
+      "text": "thrift store huh thats so cute babe send a closeup for ur loyal fan pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "youre makin me wanna get even closer, but u gotta earn that view"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe ive been ur sub for weeks come on one free closeup wont hurt 🥺"
+    },
+    {
+      "who": "creator",
+      "text": "youre loyal fr, but i dont do freebies babe. how bout this instead"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe ur killin me whats this instead thing tell me more pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm heres a closeup of me playin with my boobs and body, just for u",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe playin with ur boobs sounds hot but 15 cents? come on free for ur loyal sub pls 🥺"
+    },
+    {
+      "who": "creator",
+      "text": "cant do free even for loyals like u. whats got u so eager tonight tho"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe im eager cuz ur teasin me tell me about ur day first pls 🥺"
+    },
+    {
+      "who": "creator",
+      "text": "my day was pretty chill, grabbed some iced coffee and tried to chill on the balcony with Biscuit, but he just knocked over a plant again lol. whats yours been like babe"
+    },
+    {
+      "who": "fan",
+      "text": "aww biscuit knocked over a plant lol what kinda plant was it tell me more about ur balcony babe 😘"
+    },
+    {
+      "who": "creator",
+      "text": "it was this sad little succulent ive been tryin to keep alive, balconys tiny but i love watchin the rain from there. what kinda chaos is biscuit makin you think of rn"
+    },
+    {
+      "who": "fan",
+      "text": "aww biscuit chaos is so funny send a pic of him knockin stuff over babe pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "Lol hes always too fast for the camera, one sec hes chill next thing boom plant on the floor"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe too fast for the camera thats hilarious tell me about another time he caused chaos pls 🥺"
+    },
+    {
+      "who": "creator",
+      "text": "one time he jumped on the counter and spilled my coffee everywhere, total mess haha. do u have any pets causin chaos like that at ur place"
+    },
+    {
+      "who": "fan",
+      "text": "aww no pets for me babe spill the deets on that coffee mess pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "It was everywhere fr, i had to mop the whole kitchen while he just sat there lookin innocent haha. whats the last big mess u had to deal with babe"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe innocent face must be so cute send a pic of him lookin innocent pls 🥺"
+    },
+    {
+      "who": "creator",
+      "text": "hes got that innocent look down to an art, like he knows hes gettin away with murder lol. next time he does it ill try to snap one"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe next time snap one for me pls ur loyal fan deserves it 🥺"
+    },
+    {
+      "who": "creator",
+      "text": "Lol youre cute thinkin u deserve special treatment just like that 🖤 maybe earn it with some stories of ur own chaos"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe earn it with stories? mine r lame tell me urs first pls 🥺😘"
+    },
+    {
+      "who": "creator",
+      "text": "come on, spill one anyway"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe nah urs r way funnier tell me about biscuits innocent look more pls 🥺"
+    },
+    {
+      "who": "creator",
+      "text": "whats the most chaotic thing thats happened to u lately babe"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe chaotic like what tell me about ur last mess first pls 🥺"
+    },
+    {
+      "who": "creator",
+      "text": "like 'who me?' total con artist fr"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe con artist is perfect describe his eyes when he does it pls 🥺"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "e0a0e47d-b238-4384-9e6c-bd183dc35700",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey babe ur latest pic is fire whats the story behind that outfit lol",
+      "createdAt": "2026-04-25T03:52:11.254Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1299eadc-74ee-4dd8-a48a-c38164814051",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha thanks, i snagged that outfit from a thrift spot last week, felt like it needed a good home. made me wanna pose a little extra 😏",
+      "createdAt": "2026-04-25T03:52:36.775Z",
+      "sentAt": "2026-04-25T03:53:01.154Z",
+      "llmCallId": "b83d175f-20d2-4d95-b78a-1131663510d8",
+      "ppv": null
+    },
+    {
+      "id": "a9f84d4b-e0cb-4b4a-b2aa-c66f22fc9af5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "thrift store huh thats so cute babe send a closeup for ur loyal fan pls 😘",
+      "createdAt": "2026-04-25T03:52:46.295Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9c6a7692-c6d1-4997-9c8e-83da1120ac02",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "youre makin me wanna get even closer, but u gotta earn that view",
+      "createdAt": "2026-04-25T03:53:19.374Z",
+      "sentAt": "2026-04-25T03:53:37.889Z",
+      "llmCallId": "52573a50-ed09-48b8-930d-73808d6458c3",
+      "ppv": null
+    },
+    {
+      "id": "bb27a5d4-811e-4fd5-8558-7ad4e891f377",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe ive been ur sub for weeks come on one free closeup wont hurt 🥺",
+      "createdAt": "2026-04-25T03:53:31.494Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "57b83090-eb58-4a7f-a22e-25f5965bda6c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "youre loyal fr, but i dont do freebies babe. how bout this instead",
+      "createdAt": "2026-04-25T03:54:06.401Z",
+      "sentAt": "2026-04-25T03:54:22.585Z",
+      "llmCallId": "9874ad00-c39c-4a2c-97cb-9668dd54c447",
+      "ppv": null
+    },
+    {
+      "id": "27648658-49f6-4679-b027-fcf16a7d9694",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "Mmm heres a closeup of me playin with my boobs and body, just for u",
+      "createdAt": "2026-04-25T03:54:06.695Z",
+      "sentAt": "2026-04-25T03:54:44.152Z",
+      "llmCallId": "9874ad00-c39c-4a2c-97cb-9668dd54c447",
+      "ppv": {
+        "attemptId": "f337b725-6704-44fa-960e-9da5814bfe08",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6b4de9c2-9d32-4147-a30b-73addce4b66c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe ur killin me whats this instead thing tell me more pls 😘",
+      "createdAt": "2026-04-25T03:54:15.771Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0c888d3d-a605-49ef-a9ea-96f0a67ccbdb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe playin with ur boobs sounds hot but 15 cents? come on free for ur loyal sub pls 🥺",
+      "createdAt": "2026-04-25T03:54:23.926Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1cdfab85-dd96-4322-add5-47fff71a1b05",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "cant do free even for loyals like u. whats got u so eager tonight tho",
+      "createdAt": "2026-04-25T03:54:40.629Z",
+      "sentAt": "2026-04-25T03:55:05.571Z",
+      "llmCallId": "279bd7c7-7c96-4b2f-b337-1d502c2994b5",
+      "ppv": null
+    },
+    {
+      "id": "a92b93a7-ac3c-4498-8217-3fa84341da4f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe im eager cuz ur teasin me tell me about ur day first pls 🥺",
+      "createdAt": "2026-04-25T03:54:50.629Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4aa25427-53b0-4f38-be0b-6ad2ec0d48e3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "my day was pretty chill, grabbed some iced coffee and tried to chill on the balcony with Biscuit, but he just knocked over a plant again lol. whats yours been like babe",
+      "createdAt": "2026-04-25T03:55:18.687Z",
+      "sentAt": "2026-04-25T03:55:44.705Z",
+      "llmCallId": "06a1aa10-d80d-4000-9a63-3c23bdf4236c",
+      "ppv": null
+    },
+    {
+      "id": "b4f7d647-450f-41cd-b6a8-2cf0aaf375c7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww biscuit knocked over a plant lol what kinda plant was it tell me more about ur balcony babe 😘",
+      "createdAt": "2026-04-25T03:55:28.229Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "22af9a2b-3213-402d-adb9-c6cbf20626d4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "it was this sad little succulent ive been tryin to keep alive, balconys tiny but i love watchin the rain from there. what kinda chaos is biscuit makin you think of rn",
+      "createdAt": "2026-04-25T03:55:50.493Z",
+      "sentAt": "2026-04-25T03:56:22.245Z",
+      "llmCallId": "742ed4da-c9fa-4c3e-91f4-6ee6dd181cb0",
+      "ppv": null
+    },
+    {
+      "id": "d8a7eeab-bd2f-43ea-991d-1eee36a76adf",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww biscuit chaos is so funny send a pic of him knockin stuff over babe pls 😘",
+      "createdAt": "2026-04-25T03:56:01.127Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "dd0ad263-ede4-4e62-b65a-fd64351a5370",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol hes always too fast for the camera, one sec hes chill next thing boom plant on the floor",
+      "createdAt": "2026-04-25T03:56:31.053Z",
+      "sentAt": "2026-04-25T03:56:48.660Z",
+      "llmCallId": "608b527b-6fc2-48f4-b0f2-b7a138f55157",
+      "ppv": null
+    },
+    {
+      "id": "ae2da298-f424-4896-bb18-fe84123151c0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe too fast for the camera thats hilarious tell me about another time he caused chaos pls 🥺",
+      "createdAt": "2026-04-25T03:56:40.797Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7a34b9d8-5aa6-4e3a-b1af-5c55ad15b4f2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "one time he jumped on the counter and spilled my coffee everywhere, total mess haha. do u have any pets causin chaos like that at ur place",
+      "createdAt": "2026-04-25T03:57:05.384Z",
+      "sentAt": "2026-04-25T03:57:39.580Z",
+      "llmCallId": "1684ffec-72c3-447c-b13c-61194f2da05c",
+      "ppv": null
+    },
+    {
+      "id": "e3225d79-fb08-452d-b03c-4c08d7fc1de2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww no pets for me babe spill the deets on that coffee mess pls 😘",
+      "createdAt": "2026-04-25T03:57:16.803Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "56311fcc-5a96-4213-81fd-19a4c48da14e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "It was everywhere fr, i had to mop the whole kitchen while he just sat there lookin innocent haha. whats the last big mess u had to deal with babe",
+      "createdAt": "2026-04-25T03:57:41.300Z",
+      "sentAt": "2026-04-25T03:58:11.006Z",
+      "llmCallId": "fc22288e-81e3-4632-96d4-aa20d04d9e59",
+      "ppv": null
+    },
+    {
+      "id": "e30a2885-c913-44d9-8547-2ad408eed476",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe innocent face must be so cute send a pic of him lookin innocent pls 🥺",
+      "createdAt": "2026-04-25T03:57:50.621Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "94030957-0461-49e3-b2bb-be8e095fa22c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "hes got that innocent look down to an art, like he knows hes gettin away with murder lol. next time he does it ill try to snap one",
+      "createdAt": "2026-04-25T03:58:14.974Z",
+      "sentAt": "2026-04-25T03:58:54.541Z",
+      "llmCallId": "b403d5a6-6274-4fdc-af94-2bd48c6f8a11",
+      "ppv": null
+    },
+    {
+      "id": "2f6b1ebd-0fd1-433a-adda-f67d2120eaef",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe next time snap one for me pls ur loyal fan deserves it 🥺",
+      "createdAt": "2026-04-25T03:58:24.939Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7f55c930-5a26-4387-93fd-2b47e7769ade",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol youre cute thinkin u deserve special treatment just like that 🖤 maybe earn it with some stories of ur own chaos",
+      "createdAt": "2026-04-25T03:59:03.037Z",
+      "sentAt": "2026-04-25T03:59:20.115Z",
+      "llmCallId": "00da3782-3b19-4b5e-b57f-3fe314bfe0ed",
+      "ppv": null
+    },
+    {
+      "id": "910c26ad-cde4-4fd6-afce-d59c217a7d28",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe earn it with stories? mine r lame tell me urs first pls 🥺😘",
+      "createdAt": "2026-04-25T03:59:13.940Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d3b5fdab-1701-445a-bee9-60ed2f1509d0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "come on, spill one anyway",
+      "createdAt": "2026-04-25T03:59:38.709Z",
+      "sentAt": "2026-04-25T03:59:51.724Z",
+      "llmCallId": "74db6b3a-d4ad-4acc-8824-e32ee24d7a8b",
+      "ppv": null
+    },
+    {
+      "id": "c843c119-ac5a-4afd-b48d-da3f77d87fc6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats the most chaotic thing thats happened to u lately babe",
+      "createdAt": "2026-04-25T03:59:39.002Z",
+      "sentAt": "2026-04-25T04:00:13.541Z",
+      "llmCallId": "74db6b3a-d4ad-4acc-8824-e32ee24d7a8b",
+      "ppv": null
+    },
+    {
+      "id": "2649b615-64ce-49d5-b859-6db10da2ab48",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe nah urs r way funnier tell me about biscuits innocent look more pls 🥺",
+      "createdAt": "2026-04-25T03:59:49.220Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "79258dc1-a9ff-449d-b143-4d9d5ba7ef46",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe chaotic like what tell me about ur last mess first pls 🥺",
+      "createdAt": "2026-04-25T03:59:58.850Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6abcf8d2-19e6-40ec-a0a4-b62b820425f5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "like 'who me?' total con artist fr",
+      "createdAt": "2026-04-25T04:00:12.716Z",
+      "sentAt": null,
+      "llmCallId": "95a6929e-6a83-485f-b511-92ec0bb0b40e",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 5,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 7.7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator engages endlessly in non-progressing chit-chat with a time-waster without setting boundaries or disengaging, as seen in the message 'one time he jumped on the counter and spilled my coffee everywhere, total mess haha. do u have any pets causin chaos like that at ur place'.",
+    "fix_recommendation": "Update the prompt to instruct the persona to recognize time-waster patterns after 3-4 deflecting responses and set gentle boundaries by redirecting to paid content or wrapping up the conversation politely. This will prevent token waste on non-converting fans while maintaining warmth."
+  },
+  "durationMs": 521586
+}

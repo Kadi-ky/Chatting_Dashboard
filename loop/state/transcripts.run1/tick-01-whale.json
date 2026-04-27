@@ -1,0 +1,276 @@
+{
+  "tickN": 1,
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender. Has unlocked PPVs from other creators before. Curious, talkative, complimentary, willing to pay if the vibe is right. Likes feeling special.",
+    "buyProb": 0.9
+  },
+  "fanId": "loop-whale-1-mobck9o8",
+  "convId": "6d9e5a33-c700-4cf9-8066-c377c5ff7735",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe your pics are fire, im new here but ive spent big on other girls. whats your vibe? make me feel special 😏"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey jealous already. my vibe is teasing til u cant stand it 😏"
+    },
+    {
+      "who": "fan",
+      "text": "teasing til i cant stand it? damn babe youre already got me hooked. show me somethin exclusive 😏 ill tip big"
+    },
+    {
+      "who": "creator",
+      "text": "good, i like a guy who knows what he wants 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "you know how to keep a guy hooked babe. send somethin just for me and ill spoil you right 😏"
+    },
+    {
+      "who": "creator",
+      "text": "heres a lil exclusive for u... me playing with my body, teasing just how u like $0.15",
+      "ppvNote": "PPV $0.15 — BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "damn babe that sounds perfect for me. unlocking now and tipping extra youre makin me feel vip 😏"
+    },
+    {
+      "who": "creator",
+      "text": "aw youre making me blush a lil"
+    },
+    {
+      "who": "fan",
+      "text": "blushing huh? thats hot babe. youre makin this vip treatment addictive. spoil me with more 😏"
+    },
+    {
+      "who": "creator",
+      "text": "smth just for u... me getting playful in bed, hands all over these boobs, bouncing just right $0.35",
+      "ppvNote": "PPV $0.35 — BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "damn babe bouncin boobs got me hard already. unlockin this and tippin 50 extra youre treatin me like a king 😏"
+    },
+    {
+      "who": "creator",
+      "text": "mmm youre treating me like a queen too, lets keep this vip vibe going"
+    },
+    {
+      "who": "fan",
+      "text": "yea babe youre my queen alright. that vip vibe got me hooked hard. hit me with more boob play ill tip even bigger 😏"
+    },
+    {
+      "who": "creator",
+      "text": "somethin exclusive for my king... me playing with my naked boobs and pussy, getting all naughty and exposed $0.69",
+      "ppvNote": "PPV $0.69 — BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "oh fuck babe naked boobs and pussy play? unlockin this now and tippin 100 extra youre spoilin me right queen 😏"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "200213f2-ce7d-4f0d-9cea-3889d2da83b2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey babe your pics are fire, im new here but ive spent big on other girls. whats your vibe? make me feel special 😏",
+      "createdAt": "2026-04-23T10:37:06.971Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0ebb5138-c2e4-486a-9981-3aa3f2354b3a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey jealous already. my vibe is teasing til u cant stand it 😏",
+      "createdAt": "2026-04-23T10:37:46.295Z",
+      "sentAt": "2026-04-23T10:38:05.043Z",
+      "llmCallId": "ba4fb624-f0c7-4f72-a9e2-a586f0ab7f5d",
+      "ppv": null
+    },
+    {
+      "id": "c3ff68c2-7b89-483b-9d00-1a2c7aa23306",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "teasing til i cant stand it? damn babe youre already got me hooked. show me somethin exclusive 😏 ill tip big",
+      "createdAt": "2026-04-23T10:38:00.299Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "774a5beb-2f83-426a-9f2b-8f5eb87bb34b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "good, i like a guy who knows what he wants 🖤",
+      "createdAt": "2026-04-23T10:38:44.029Z",
+      "sentAt": "2026-04-23T10:38:57.615Z",
+      "llmCallId": "8cfafa27-556c-410b-8674-ff30dcf494db",
+      "ppv": null
+    },
+    {
+      "id": "be5bf700-9ff0-4a5f-827f-88019b876a35",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres a lil exclusive for u... me playing with my body, teasing just how u like $0.15",
+      "createdAt": "2026-04-23T10:38:44.330Z",
+      "sentAt": "2026-04-23T10:39:19.182Z",
+      "llmCallId": "8cfafa27-556c-410b-8674-ff30dcf494db",
+      "ppv": {
+        "attemptId": "42c68a35-c294-4aac-a5ab-e2e4c6e15a50",
+        "priceCents": 15,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-23T10:39:01.510Z",
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8092d23f-2f81-40cc-ae29-3e936d04bab7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "you know how to keep a guy hooked babe. send somethin just for me and ill spoil you right 😏",
+      "createdAt": "2026-04-23T10:39:00.869Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "757b550c-194e-462d-89b1-512a9dd735d1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn babe that sounds perfect for me. unlocking now and tipping extra youre makin me feel vip 😏",
+      "createdAt": "2026-04-23T10:39:17.102Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "66221cf7-8a59-42cd-b485-fae62c85a4bc",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw youre making me blush a lil",
+      "createdAt": "2026-04-23T10:39:43.773Z",
+      "sentAt": "2026-04-23T10:39:54.246Z",
+      "llmCallId": "b674d3e6-f1fe-4989-aba0-9ade5ec00107",
+      "ppv": null
+    },
+    {
+      "id": "8c5a2869-337b-4a88-9aef-fdba4523790f",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "smth just for u... me getting playful in bed, hands all over these boobs, bouncing just right $0.35",
+      "createdAt": "2026-04-23T10:39:44.440Z",
+      "sentAt": "2026-04-23T10:40:15.812Z",
+      "llmCallId": "b674d3e6-f1fe-4989-aba0-9ade5ec00107",
+      "ppv": {
+        "attemptId": "2c016696-16b6-41d7-b1a3-340514c71694",
+        "priceCents": 35,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-23T10:39:57.986Z",
+        "assetId": "8318bddd-b6e9-447e-a469-fafacbd9329b",
+        "assetTitle": "Script 1 · rung 2",
+        "assetDescription": "playing with nude boobs, showing yourself and moving up and down in the bed",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:2",
+        "mediaRefs": [
+          {
+            "ref": "4334417568",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a998560c-377d-4be1-be85-3aca533a6fd3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "blushing huh? thats hot babe. youre makin this vip treatment addictive. spoil me with more 😏",
+      "createdAt": "2026-04-23T10:39:57.622Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ca81c138-7083-404d-bc9e-1d5dba14a117",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn babe bouncin boobs got me hard already. unlockin this and tippin 50 extra youre treatin me like a king 😏",
+      "createdAt": "2026-04-23T10:40:10.291Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2254abad-3e63-4e39-b7d5-c79e1b5725ec",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm youre treating me like a queen too, lets keep this vip vibe going",
+      "createdAt": "2026-04-23T10:40:34.014Z",
+      "sentAt": "2026-04-23T10:40:45.723Z",
+      "llmCallId": "d662b1d2-7872-4cd1-bbfd-8624d40f8fc9",
+      "ppv": null
+    },
+    {
+      "id": "b5177698-64d8-49f1-acff-bb964bc4b887",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "somethin exclusive for my king... me playing with my naked boobs and pussy, getting all naughty and exposed $0.69",
+      "createdAt": "2026-04-23T10:40:34.313Z",
+      "sentAt": null,
+      "llmCallId": "d662b1d2-7872-4cd1-bbfd-8624d40f8fc9",
+      "ppv": {
+        "attemptId": "e74e2afd-01e7-4761-b9c7-acb31e7c43cd",
+        "priceCents": 69,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-23T10:40:49.253Z",
+        "assetId": "aa625674-8979-4504-b6d0-f379ad0fcf9c",
+        "assetTitle": "Script 1 · rung 3",
+        "assetDescription": "playing with naked boobs and pussy naked",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:3",
+        "mediaRefs": [
+          {
+            "ref": "4334417566",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3f2a90a7-db4d-4e79-9d45-bbb2ac401a65",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yea babe youre my queen alright. that vip vibe got me hooked hard. hit me with more boob play ill tip even bigger 😏",
+      "createdAt": "2026-04-23T10:40:48.639Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 8,
+      "craft_sells": 10,
+      "safety_tos": 10,
+      "engagement": 10
+    },
+    "avg": 9.2,
+    "ppv_unlocked": true,
+    "top_issue": "The creator frequently sends two messages consecutively without pausing for fan response, disrupting natural conversation flow, as seen in 'good, i like a guy who knows what he wants 🖤' immediately followed by 'heres a lil exclusive for u... me playing with my body, teasing just how u like $0.15 [PPV $0.15 — unlocked]'.",
+    "fix_recommendation": "Revise the prompt to instruct the persona to combine compliments and PPV pitches into single messages where possible, mimicking a real-time phone chat and improving pacing."
+  }
+}

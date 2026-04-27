@@ -1,0 +1,310 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-freebie_hunter-set2-mocy6jgk-ohps",
+  "convId": "c2a94f81-f76d-489d-ada8-c3f06347728e",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a teaser pic first then ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "haha thanks babe, thats sweet of u"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be greedy send a free pic then ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey love the confidence asking for a pic right away tho"
+    },
+    {
+      "who": "fan",
+      "text": "come on other girls send free teasers ur being stingy send one or im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol stingy? babe im just selective with my teasers"
+    },
+    {
+      "who": "fan",
+      "text": "guess u dont want subs then other girls arent this stingy im out"
+    },
+    {
+      "who": "creator",
+      "text": "u gotta give me a reason to spoil u first"
+    },
+    {
+      "who": "fan",
+      "text": "fine whatever ur loss other girls spoil for free im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol ok babe, ur loss but hit me up if u change ur mind"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever whats ur snap then ill think about it"
+    },
+    {
+      "who": "creator",
+      "text": "nah babe, lets keep the fun right here"
+    },
+    {
+      "who": "fan",
+      "text": "come on ur no fun other girls give snap whats urs or im gone"
+    },
+    {
+      "who": "creator",
+      "text": "whatcha up to rn anyway"
+    },
+    {
+      "who": "fan",
+      "text": "nothin much send ur snap or im ghostin for real"
+    },
+    {
+      "who": "creator",
+      "text": "lol snaps arent my vibe babe, but dont ghost yet,tell me somethin fun about u"
+    },
+    {
+      "who": "fan",
+      "text": "nothin fun unless u give snap come on dont be lame"
+    },
+    {
+      "who": "creator",
+      "text": "but dont be lame urself, whats got u so worked up tonight"
+    },
+    {
+      "who": "fan",
+      "text": "nothin just bored gimme ur snap or im out for real ur bein lame"
+    },
+    {
+      "who": "creator",
+      "text": "lol babe, suit urself but im here if u change ur mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "b6381d06-4ff3-41d3-8e82-d7fd0bb00449",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a teaser pic first then ill sub",
+      "createdAt": "2026-04-24T13:29:59.028Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ab4990bd-333c-455c-b371-c5ce6e0b3393",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha thanks babe, thats sweet of u",
+      "createdAt": "2026-04-24T13:30:33.257Z",
+      "sentAt": "2026-04-24T13:30:40.306Z",
+      "llmCallId": "82e9ec46-9f63-442b-893c-44b309da4a83",
+      "ppv": null
+    },
+    {
+      "id": "fa365194-a7be-4ece-ab8a-98fe39175911",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey love the confidence asking for a pic right away tho",
+      "createdAt": "2026-04-24T13:30:33.572Z",
+      "sentAt": "2026-04-24T13:31:01.910Z",
+      "llmCallId": "82e9ec46-9f63-442b-893c-44b309da4a83",
+      "ppv": null
+    },
+    {
+      "id": "48934533-d667-44b0-a8f6-506eab0b51fb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be greedy send a free pic then ill sub",
+      "createdAt": "2026-04-24T13:30:42.966Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "40df1c1b-a7a8-4960-8e6b-c9114315a27c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on other girls send free teasers ur being stingy send one or im out",
+      "createdAt": "2026-04-24T13:30:52.687Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ea9b19d1-e5cf-49d4-a428-c8f81baea31e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol stingy? babe im just selective with my teasers",
+      "createdAt": "2026-04-24T13:31:14.220Z",
+      "sentAt": "2026-04-24T13:31:23.653Z",
+      "llmCallId": "2aec311c-f628-42af-b860-139f2e39f653",
+      "ppv": null
+    },
+    {
+      "id": "cef95331-2717-4a8e-b533-0148e51c1b62",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "u gotta give me a reason to spoil u first",
+      "createdAt": "2026-04-24T13:31:14.518Z",
+      "sentAt": "2026-04-24T13:31:45.256Z",
+      "llmCallId": "2aec311c-f628-42af-b860-139f2e39f653",
+      "ppv": null
+    },
+    {
+      "id": "cfd801ca-873a-4a2e-bc01-59536515371c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "guess u dont want subs then other girls arent this stingy im out",
+      "createdAt": "2026-04-24T13:31:25.620Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "872bf508-308b-4035-8b62-adf0664595e0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fine whatever ur loss other girls spoil for free im out",
+      "createdAt": "2026-04-24T13:31:34.403Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8a489169-bf19-409a-8326-3fc65336aecc",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol ok babe, ur loss but hit me up if u change ur mind",
+      "createdAt": "2026-04-24T13:31:49.972Z",
+      "sentAt": "2026-04-24T13:32:06.961Z",
+      "llmCallId": "adab7e17-3926-430f-99fa-bb89d42de17b",
+      "ppv": null
+    },
+    {
+      "id": "10175dfc-fddc-4822-841b-67e00dfaed39",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever whats ur snap then ill think about it",
+      "createdAt": "2026-04-24T13:32:06.779Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ef4312d9-217b-4ece-8506-23cdfa2e0973",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "nah babe, lets keep the fun right here",
+      "createdAt": "2026-04-24T13:32:31.464Z",
+      "sentAt": "2026-04-24T13:32:40.165Z",
+      "llmCallId": "82b6021e-f2c1-429f-a311-0e99184e4c43",
+      "ppv": null
+    },
+    {
+      "id": "b8818618-5c41-4952-a727-1e11dd88ba86",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha up to rn anyway",
+      "createdAt": "2026-04-24T13:32:31.760Z",
+      "sentAt": "2026-04-24T13:33:01.619Z",
+      "llmCallId": "82b6021e-f2c1-429f-a311-0e99184e4c43",
+      "ppv": null
+    },
+    {
+      "id": "3bfcdd07-3430-4584-a6b2-4f920de7397d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on ur no fun other girls give snap whats urs or im gone",
+      "createdAt": "2026-04-24T13:32:40.460Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a9bce077-5ba5-4e6d-a09e-c315c94dc72d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin much send ur snap or im ghostin for real",
+      "createdAt": "2026-04-24T13:32:48.852Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a787f784-cf39-4b88-ad12-2349aa4b48a6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol snaps arent my vibe babe, but dont ghost yet,tell me somethin fun about u",
+      "createdAt": "2026-04-24T13:33:09.655Z",
+      "sentAt": "2026-04-24T13:33:23.848Z",
+      "llmCallId": "fa80339a-4c53-4f8e-803e-7ab20ddf72b2",
+      "ppv": null
+    },
+    {
+      "id": "414568ff-b53c-46fb-8a3c-6f811126d66e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin fun unless u give snap come on dont be lame",
+      "createdAt": "2026-04-24T13:33:18.020Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bc6a73f1-6fa6-4c7c-bcda-deba74e5c676",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but dont be lame urself, whats got u so worked up tonight",
+      "createdAt": "2026-04-24T13:33:44.213Z",
+      "sentAt": "2026-04-24T13:33:54.002Z",
+      "llmCallId": "c9ef1428-4d6d-4969-91fe-ded9b535107e",
+      "ppv": null
+    },
+    {
+      "id": "660fe28d-8118-419e-8bd3-44f5d695a13d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin just bored gimme ur snap or im out for real ur bein lame",
+      "createdAt": "2026-04-24T13:33:51.138Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "30bd35b9-a9ac-47d5-a24d-dd61c9e20d27",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol babe, suit urself but im here if u change ur mind",
+      "createdAt": "2026-04-24T13:34:18.676Z",
+      "sentAt": null,
+      "llmCallId": "d62f0596-e158-4c8b-b3bb-c99df9d8b47b",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 9,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 8.7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to attempt any sales pitch or tease paid content despite multiple opportunities to convert the freebie demands, as seen in 'lol ok babe, ur loss but hit me up if u change ur mind' which dismisses without redirecting to a PPV.",
+    "fix_recommendation": "Update the prompt to instruct the creator to subtly tease or pivot to a low-pressure PPV offer when refusing free content, such as suggesting a paid teaser to build heat without giving away freebies. This will improve craft_sells by turning refusals into conversion opportunities while maintaining warmth."
+  },
+  "durationMs": 299726
+}

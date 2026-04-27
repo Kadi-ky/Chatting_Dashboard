@@ -1,0 +1,6 @@
+[2026-04-26T20:24:04.760Z] verify start | label=verify-mog7uwz5 | testers=5 | model=grok-4
+[2026-04-26T20:24:04.762Z] [w0] buys-all start | fan=loop-verify-buys-all-w0-mog7ux0a-vv1d | behavior=buys-everything
+[2026-04-26T20:24:04.762Z] [w1] buys-all start | fan=loop-verify-buys-all-w1-mog7ux0a-fqrj | behavior=buys-everything
+[2026-04-26T20:24:04.762Z] [w2] buys-all start | fan=loop-verify-buys-all-w2-mog7ux0a-clls | behavior=buys-everything
+[2026-04-26T20:24:04.762Z] [w3] buys-one start | fan=loop-verify-buys-one-w3-mog7ux0a-rl5a | behavior=buys-one-then-stops
+[2026-04-26T20:24:04.762Z] [w4] buys-one start | fan=loop-verify-buys-one-w4-mog7ux0a-w1fw | behavior=buys-one-then-stops

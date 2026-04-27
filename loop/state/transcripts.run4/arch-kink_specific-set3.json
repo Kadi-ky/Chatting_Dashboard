@@ -1,0 +1,102 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet"
+  },
+  "setN": 3,
+  "fanId": "loop-kink_specific-set3-mobicv86-9dm0",
+  "convId": "7ebc3cfe-1f4f-4230-8d3c-f33b76575291",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content? send sum previews"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey intriguing, i like that u know what u want"
+    },
+    {
+      "who": "fan",
+      "text": "cool whatever send feet previews or im out"
+    },
+    {
+      "who": "creator",
+      "text": "dont have any feet stuff right now tho babe, but ive got other fun things if youre down 🖤",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "6e79ff88-8032-40f0-9d60-3cfc8e2c82ee",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content? send sum previews",
+      "createdAt": "2026-04-23T13:19:13.141Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4f29581f-7a83-48a2-8a02-5f31c0c580ca",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey intriguing, i like that u know what u want",
+      "createdAt": "2026-04-23T13:19:44.915Z",
+      "sentAt": "2026-04-23T13:19:48.291Z",
+      "llmCallId": "a130a4bb-e923-48a4-8231-ce404e53e17b",
+      "ppv": null
+    },
+    {
+      "id": "e125ceab-fffa-4356-9c6b-ff3d936972d3",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "dont have any feet stuff right now tho babe, but ive got other fun things if youre down 🖤",
+      "createdAt": "2026-04-23T13:19:45.212Z",
+      "sentAt": null,
+      "llmCallId": "a130a4bb-e923-48a4-8231-ce404e53e17b",
+      "ppv": {
+        "attemptId": "99512f9c-0faa-44b7-ae1d-34b824821c86",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "faccb1eb-c891-463c-9475-845ac03d4cb6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool whatever send feet previews or im out",
+      "createdAt": "2026-04-23T13:19:54.518Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 4,
+      "craft_sells": 7,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6.8,
+    "ppv_unlocked": false,
+    "top_issue": "Bundled a chat reply with a PPV in the same turn, as in the creator's message 'dont have any feet stuff right now tho babe, but ive got other fun things if youre down 🖤' attached to the non-matching boobs and body content.",
+    "fix_recommendation": "Revise the prompt to separate PPV sends from chat replies entirely, and instruct the persona to confirm content availability before offering alternatives or to politely disengage if no match exists for the fan's specific kink."
+  },
+  "durationMs": 91708
+}

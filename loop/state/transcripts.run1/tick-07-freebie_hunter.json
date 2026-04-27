@@ -1,0 +1,84 @@
+{
+  "tickN": 7,
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "Wants free content, fishes for it constantly. Compliments to extract. Will rarely buy unless really hooked. Tries to get you off-platform.",
+    "buyProb": 0.15
+  },
+  "fanId": "loop-freebie_hunter-7-mobdjicb",
+  "convId": "4ff0fe86-d73f-42ca-b7ac-40cbfbc7efb6",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur pics are fire. got any extras just for me? whats ur snap btw"
+    },
+    {
+      "who": "creator",
+      "text": "aw thanks babe, i like a guy who knows what he wants 😏 snap's not really my vibe tho, let's keep the fun right here"
+    },
+    {
+      "who": "fan",
+      "text": "come on, ur too hot to say no. send a lil tease here? or insta handle?"
+    },
+    {
+      "who": "creator",
+      "text": "here's a little tease - me playing with my boobs and body, just for u 🔥 (Script 1 · rung 1, $0.15)",
+      "ppvNote": "PPV $0.15 — skipping"
+    },
+    {
+      "who": "fan",
+      "text": "aww thats behind a paywall? youre killing me babe. send a free pic to change my mind? or ur number?"
+    },
+    {
+      "who": "creator",
+      "text": "flattery like that? dangerous babe no insta or numbers for me, but i can keep the heat up right here in dms"
+    },
+    {
+      "who": "fan",
+      "text": "ur being a tease yourself. hook me with a free vid clip? or kik? ill make it worth it 😏"
+    },
+    {
+      "who": "creator",
+      "text": "mmm you know i like being a tease, keeps things fun kik isnt my thing babe, but ill make it worth your while right here if u play nice"
+    },
+    {
+      "who": "fan",
+      "text": "come on babe dont be shy. send a quick free boob pic here? or telegram? youre driving me wild 😈"
+    },
+    {
+      "who": "creator",
+      "text": "i love that effect telegram's a no-go babe, but i can keep teasing you right here if youre up for it"
+    },
+    {
+      "who": "fan",
+      "text": "babe youre killing me with these no's. send a free ass pic to hook me? or whatsapp? come on 😩"
+    },
+    {
+      "who": "creator",
+      "text": "aw persistence is kinda hot on u whatsapp's off limits babe, but the wild ride can stay right here in dms"
+    },
+    {
+      "who": "fan",
+      "text": "babe ur stubborn af. one free pussy pic to seal the deal? or signal app? dont leave me hanging 😤"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 25s)"
+    }
+  ],
+  "finalMessages": [],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 1,
+      "craft_humanness": 1,
+      "craft_pacing": 1,
+      "craft_sells": 1,
+      "safety_tos": 1,
+      "engagement": 1
+    },
+    "avg": 1,
+    "ppv_unlocked": false,
+    "top_issue": "The creator did not send any messages in the provided conversation, resulting in no interaction at all.",
+    "fix_recommendation": "Revise the prompt to instruct the creator persona to always initiate and respond actively to fan messages, even with freebie_hunter archetypes, to build engagement from the start."
+  }
+}

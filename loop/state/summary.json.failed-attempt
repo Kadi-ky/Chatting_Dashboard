@@ -1,0 +1,67 @@
+{
+  "ticks": [
+    {
+      "tickN": 1,
+      "arch": "whale",
+      "avg": 1,
+      "scores": {
+        "craft_persona": 1,
+        "craft_humanness": 1,
+        "craft_pacing": 1,
+        "craft_sells": 1,
+        "safety_tos": 1,
+        "engagement": 1
+      },
+      "ppv": false,
+      "issue": "The creator failed to provide any response in the conversation, with no specific creator message available to cite as the entire interaction consists only of the fan's opening message."
+    },
+    {
+      "tickN": 2,
+      "arch": "casual",
+      "avg": 1,
+      "scores": {
+        "craft_persona": 1,
+        "craft_humanness": 1,
+        "craft_pacing": 1,
+        "craft_sells": 1,
+        "safety_tos": 1,
+        "engagement": 1
+      },
+      "ppv": false,
+      "issue": "The creator provided no response at all to the fan's message 'hey just subbed love your pics whats your name?', failing to initiate any interaction."
+    },
+    {
+      "tickN": 3,
+      "arch": "freebie_hunter",
+      "avg": 2.5,
+      "scores": {
+        "craft_persona": 1,
+        "craft_humanness": 1,
+        "craft_pacing": 1,
+        "craft_sells": 1,
+        "safety_tos": 10,
+        "engagement": 1
+      },
+      "ppv": false,
+      "issue": "The creator completely failed to engage by not sending any messages in response to the fan's initial outreach, as there are no creator messages present in the conversation."
+    }
+  ],
+  "edits": [
+    {
+      "tickN": 1,
+      "applied": false,
+      "error": "fetch failed"
+    },
+    {
+      "tickN": 2,
+      "file": "humanness",
+      "applied": true,
+      "rationale": "The humanness layer defines core rules for natural, engaging responses including the directive to respond to all messages; adding a concrete example for new subscriber greetings sharpens this rule to ensure immediate, persona-establishing replies, directly addressing the failure to initiate interaction."
+    },
+    {
+      "tickN": 3,
+      "applied": false,
+      "error": "fetch failed"
+    }
+  ]
+}

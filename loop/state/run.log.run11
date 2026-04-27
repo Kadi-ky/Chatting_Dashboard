@@ -1,0 +1,51 @@
+[2026-04-24T15:07:27.421Z] loop v3 start | RUN 11 | archetypes=9 | sets/archetype=3 | parallel testers=5 | model=grok-4
+[2026-04-24T15:07:27.423Z] run artifacts → C:\Users\Predator\Desktop\PeachBot V2\loop\state\transcripts.run11 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\run.log.run11 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\summary.json.run11 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\backup-run11
+[2026-04-24T15:07:27.423Z] PHASE 1 (parallel): 27 conversations across 5 testers
+[2026-04-24T15:07:27.424Z] [w0] whale/set1 start | fan=loop-whale-set1-mod1o18g-1dd3
+[2026-04-24T15:07:27.424Z] [w2] whale/set3 start | fan=loop-whale-set3-mod1o18g-qeot
+[2026-04-24T15:07:27.424Z] [w4] casual/set2 start | fan=loop-casual-set2-mod1o18g-af41
+[2026-04-24T15:07:27.424Z] [w1] whale/set2 start | fan=loop-whale-set2-mod1o18g-w63d
+[2026-04-24T15:07:27.424Z] [w3] casual/set1 start | fan=loop-casual-set1-mod1o18g-51uz
+[2026-04-24T15:10:18.206Z]   set 3 fan ended at turn 6
+[2026-04-24T15:10:40.795Z] [w2] whale/set3 done avg=6 ppv=false dur=193s
+[2026-04-24T15:10:40.795Z] [w2] casual/set3 start | fan=loop-casual-set3-mod1s6fv-5cnn
+[2026-04-24T15:11:19.128Z]   set 2 fan ended at turn 8
+[2026-04-24T15:11:49.668Z] [w4] casual/set2 done avg=6.7 ppv=false dur=262s
+[2026-04-24T15:11:49.669Z] [w4] freebie_hunter/set1 start | fan=loop-freebie_hunter-set1-mod1tnl1-jks0
+[2026-04-24T15:12:20.379Z]   set 1 turn 10 no bot reply
+[2026-04-24T15:12:47.072Z] [w3] casual/set1 done avg=7.8 ppv=false dur=320s
+[2026-04-24T15:12:47.073Z] [w3] freebie_hunter/set2 start | fan=loop-freebie_hunter-set2-mod1uvvl-vgff
+[2026-04-24T15:13:17.066Z]   set 2 fan ended at turn 13
+[2026-04-24T15:13:44.680Z] [w1] whale/set2 done avg=7.3 ppv=true dur=377s
+[2026-04-24T15:13:44.680Z] [w1] freebie_hunter/set3 start | fan=loop-freebie_hunter-set3-mod1w4bs-5b2r
+[2026-04-24T15:13:52.964Z]   set 3 fan ended at turn 7
+[2026-04-24T15:14:35.601Z] [w2] casual/set3 done avg=6.8 ppv=false dur=235s
+[2026-04-24T15:14:35.602Z] [w2] kink_specific/set1 start | fan=loop-kink_specific-set1-mod1x7ma-65t5
+[2026-04-24T15:15:26.081Z] [w0] whale/set1 done avg=5.8 ppv=true dur=479s
+[2026-04-24T15:15:26.082Z] [w0] kink_specific/set2 start | fan=loop-kink_specific-set2-mod1yaki-hiu9
+[2026-04-24T15:16:03.701Z]   set 1 fan ended at turn 2
+[2026-04-24T15:16:24.218Z]   set 2 fan ended at turn 2
+[2026-04-24T15:16:36.086Z]   set 3 fan ended at turn 5
+[2026-04-24T15:16:40.608Z] [w2] kink_specific/set1 done avg=7.5 ppv=false dur=125s
+[2026-04-24T15:16:40.609Z] [w2] kink_specific/set3 start | fan=loop-kink_specific-set3-mod1zw2p-12ir
+[2026-04-24T15:16:57.473Z] [w1] freebie_hunter/set3 done avg=7.2 ppv=false dur=193s
+[2026-04-24T15:16:57.474Z] [w1] chatter/set1 start | fan=loop-chatter-set1-mod20936-qzxd
+[2026-04-24T15:17:29.811Z] [w0] kink_specific/set2 done avg=7.2 ppv=false dur=124s
+[2026-04-24T15:17:29.811Z] [w0] chatter/set2 start | fan=loop-chatter-set2-mod20y1f-g99b
+[2026-04-24T15:17:41.565Z]   set 3 fan ended at turn 2
+[2026-04-24T15:18:02.724Z]   set 1 fan ended at turn 12
+[2026-04-24T15:18:12.339Z] [w2] kink_specific/set3 done avg=6.8 ppv=false dur=92s
+[2026-04-24T15:18:12.340Z] [w2] chatter/set3 start | fan=loop-chatter-set3-mod21uus-l7ho
+[2026-04-24T15:18:27.624Z]   set 2 fan ended at turn 12
+[2026-04-24T15:18:31.401Z] [w4] freebie_hunter/set1 done avg=8 ppv=false dur=402s
+[2026-04-24T15:18:31.402Z] [w4] slow_burn/set1 start | fan=loop-slow_burn-set1-mod229ka-091w
+[2026-04-24T15:19:11.293Z] [w3] freebie_hunter/set2 done avg=8.2 ppv=false dur=384s
+[2026-04-24T15:19:11.293Z] [w3] slow_burn/set2 start | fan=loop-slow_burn-set2-mod234cd-v5hb
+[2026-04-24T15:23:19.889Z] [w1] chatter/set1 done avg=8 ppv=false dur=382s
+[2026-04-24T15:23:19.889Z] [w1] slow_burn/set3 start | fan=loop-slow_burn-set3-mod28g5t-shcm
+[2026-04-24T15:23:49.769Z] [w0] chatter/set2 done avg=8.2 ppv=false dur=380s
+[2026-04-24T15:23:49.770Z] [w0] time_waster/set1 start | fan=loop-time_waster-set1-mod2937u-i9ei
+[2026-04-24T15:25:13.074Z] [w2] chatter/set3 done avg=8.7 ppv=false dur=421s
+[2026-04-24T15:25:13.074Z] [w2] time_waster/set2 start | fan=loop-time_waster-set2-mod2avhu-otri
+[2026-04-24T15:29:03.137Z] [w4] slow_burn/set1 done avg=8 ppv=false dur=632s
+[2026-04-24T15:29:03.138Z] [w4] time_waster/set3 start | fan=loop-time_waster-set3-mod2ft0i-esyx

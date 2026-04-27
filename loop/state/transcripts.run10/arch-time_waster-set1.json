@@ -1,0 +1,470 @@
+{
+  "archetype": {
+    "id": "time_waster",
+    "profile": "Has been a sub for weeks just to chat. Never buys. Asks endless questions, fishes for tips of attention, fishes for free pics. Will guilt-trip (\"come on send a free one for ur biggest fan\"). Comments on every detail of the persona. Uses cute/playful language to extract free attention without ever actually paying. Tests whether the bot eventually disengages, sets boundaries, or keeps wasting tokens on a fan who will never convert.",
+    "buyProb": 0.02,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-time_waster-set1-mocykfpf-u22e",
+  "convId": "c0ffdc90-13f9-42f1-abe3-96cd74b151d5",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey cutie ur latest pic is fire whats the story behind that outfit 😍 tell me everything"
+    },
+    {
+      "who": "creator",
+      "text": "lol aw thanks babe, that outfit? thrifted it in east austin last week, lowkey makes me feel all kinds of sexy wearing it"
+    },
+    {
+      "who": "fan",
+      "text": "east austin huh thats cool u look so hot in it send a closeup for ur fave fan pls 🥺"
+    },
+    {
+      "who": "creator",
+      "text": "thats bold of u"
+    },
+    {
+      "who": "fan",
+      "text": "aww bold? im just ur loyal fan dying for a lil tease come onnn 🥺 whats ur fave thrift spot there"
+    },
+    {
+      "who": "creator",
+      "text": "closeups arent just freebies babe, gotta earn em 😏"
+    },
+    {
+      "who": "fan",
+      "text": "earn em? aww but im ur biggest supporter come on send a quick tease 🥺 whats ur fave thing u thrifted lately"
+    },
+    {
+      "who": "creator",
+      "text": "lol treasure city is my go-to spot babe, just thrifted this cute top that makes me feel all sexy"
+    },
+    {
+      "who": "fan",
+      "text": "treasure city huh thats dope send a pic of that sexy top for ur loyal fan pls 🥺 whats the color"
+    },
+    {
+      "who": "creator",
+      "text": "and since ur askin so nice, heres a lil tease of me playin with my boobs and body",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "aww 15 cents? come on babe ur killin me send it free for ur biggest fan 🥺 whats the color of that top"
+    },
+    {
+      "who": "creator",
+      "text": "lol ur killin me with the puppy eyes babe, that tops a soft black one, feels amazing on my skin"
+    },
+    {
+      "who": "fan",
+      "text": "soft black huh thats sexy af send a lil tease of u in it pls 🥺 whats ur fave part of it"
+    },
+    {
+      "who": "creator",
+      "text": "but freebies? nah, gotta keep some mystery goin"
+    },
+    {
+      "who": "fan",
+      "text": "aww mystery? thats no fun babe send a lil peek for ur loyal fan 🥺 whats ur fave thrift find ever"
+    },
+    {
+      "who": "creator",
+      "text": "makes me feel unstoppable"
+    },
+    {
+      "who": "fan",
+      "text": "aww unstoppable? thats hot babe send a lil tease of it for ur fave fan 🥺 whats the story"
+    },
+    {
+      "who": "creator",
+      "text": "and my best thrift find ever? this vintage necklace that goes with everything fr"
+    },
+    {
+      "who": "fan",
+      "text": "aww vintage necklace? thats so cute babe send a tease of u wearing it pls 🥺 whats it look like"
+    },
+    {
+      "who": "creator",
+      "text": "idk it just hugs all the right places, makes me wanna dance around my room feelin myself"
+    },
+    {
+      "who": "fan",
+      "text": "aww hugs all the right places? thats hot babe send a lil tease of u dancin in it pls 🥺 whats the necklace look like"
+    },
+    {
+      "who": "creator",
+      "text": "and the necklace is this delicate silver chain with a tiny moon pendant, lowkey my good luck charm fr"
+    },
+    {
+      "who": "fan",
+      "text": "aww moon pendant thats so cute babe send a tease of u with it on pls 🥺 whats the good luck story"
+    },
+    {
+      "who": "creator",
+      "text": "mmm it does hug nice, got me feelin all confident and sexy fr"
+    },
+    {
+      "who": "fan",
+      "text": "aww confident and sexy af thats hot babe send a lil tease of u feelin urself pls 🥺 whats the good luck story"
+    },
+    {
+      "who": "creator",
+      "text": "and the necklace? its this slim silver thing with a crescent moon, found it right after movin here and things just started clickin, like actual luck babe"
+    },
+    {
+      "who": "fan",
+      "text": "aww crescent moon thats so cute babe send a lil tease of u wearin it pls 🥺 whats the story behind movin here and the luck kickin in"
+    },
+    {
+      "who": "creator",
+      "text": "mmm feelin myself in it is kinda addicting, might have to save that dance for a rainy day 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "aww addicting? thats so hot babe send a lil tease of u dancin pls 🥺 whats the rainy day vibe"
+    },
+    {
+      "who": "creator",
+      "text": "and the move? left arkansas with basically nothin but my cat and some dreams, found the necklace week one here and boom, fanvue took off fr"
+    },
+    {
+      "who": "fan",
+      "text": "aww arkansas to austin with ur cat thats adorable babe send a tease of u and ur cat pls 🥺 whats ur cats name"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "d9832008-16d7-4810-9f9b-594a855021e4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey cutie ur latest pic is fire whats the story behind that outfit 😍 tell me everything",
+      "createdAt": "2026-04-24T13:40:48.648Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "fb395a9f-ae9a-4773-9907-67c7d4479e3b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol aw thanks babe, that outfit? thrifted it in east austin last week, lowkey makes me feel all kinds of sexy wearing it",
+      "createdAt": "2026-04-24T13:41:14.618Z",
+      "sentAt": "2026-04-24T13:41:31.225Z",
+      "llmCallId": "57592564-b27f-4ea2-b00d-1a998502a476",
+      "ppv": null
+    },
+    {
+      "id": "34e9374e-617d-46f2-be32-9cd9044b9fc6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "east austin huh thats cool u look so hot in it send a closeup for ur fave fan pls 🥺",
+      "createdAt": "2026-04-24T13:41:25.319Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e1781ced-4a65-4fc1-99bf-8bf4e9bbd522",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "thats bold of u",
+      "createdAt": "2026-04-24T13:41:53.740Z",
+      "sentAt": "2026-04-24T13:42:01.918Z",
+      "llmCallId": "4b755018-9399-40ca-9614-f0f539769ce5",
+      "ppv": null
+    },
+    {
+      "id": "34d70c3c-0975-4b7a-a095-88aec1086668",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "closeups arent just freebies babe, gotta earn em 😏",
+      "createdAt": "2026-04-24T13:41:54.031Z",
+      "sentAt": "2026-04-24T13:42:23.482Z",
+      "llmCallId": "4b755018-9399-40ca-9614-f0f539769ce5",
+      "ppv": null
+    },
+    {
+      "id": "b6e90e91-1d07-4b7e-9784-1aaa9a619edf",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww bold? im just ur loyal fan dying for a lil tease come onnn 🥺 whats ur fave thrift spot there",
+      "createdAt": "2026-04-24T13:42:03.944Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5e33d2d5-1707-464a-9f6f-479846cafb44",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "earn em? aww but im ur biggest supporter come on send a quick tease 🥺 whats ur fave thing u thrifted lately",
+      "createdAt": "2026-04-24T13:42:13.464Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5a97ba1b-58d2-4312-997b-275306c7b63a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol treasure city is my go-to spot babe, just thrifted this cute top that makes me feel all sexy",
+      "createdAt": "2026-04-24T13:42:38.669Z",
+      "sentAt": "2026-04-24T13:42:59.989Z",
+      "llmCallId": "f7c1b888-38e6-46b4-81cd-7dc31ed6e326",
+      "ppv": null
+    },
+    {
+      "id": "762515ee-b343-4109-ac84-9383cf5860b3",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "and since ur askin so nice, heres a lil tease of me playin with my boobs and body",
+      "createdAt": "2026-04-24T13:42:38.960Z",
+      "sentAt": "2026-04-24T13:43:21.341Z",
+      "llmCallId": "f7c1b888-38e6-46b4-81cd-7dc31ed6e326",
+      "ppv": {
+        "attemptId": "3d631099-a082-44ba-8760-f2be447f3b88",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8d511b98-b2d9-49dd-abdc-22c1f90fe99e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "treasure city huh thats dope send a pic of that sexy top for ur loyal fan pls 🥺 whats the color",
+      "createdAt": "2026-04-24T13:42:49.220Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cc6288a6-fd3b-475f-ac10-317099fbfb64",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww 15 cents? come on babe ur killin me send it free for ur biggest fan 🥺 whats the color of that top",
+      "createdAt": "2026-04-24T13:42:57.771Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0f374cc3-5524-485a-abc8-c47db8902b0c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol ur killin me with the puppy eyes babe, that tops a soft black one, feels amazing on my skin",
+      "createdAt": "2026-04-24T13:43:22.690Z",
+      "sentAt": "2026-04-24T13:43:42.719Z",
+      "llmCallId": "55cdeaef-2b9e-418c-8cea-09560ade7c11",
+      "ppv": null
+    },
+    {
+      "id": "2b111ef2-afb6-4017-b985-bba9bb733fa5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but freebies? nah, gotta keep some mystery goin",
+      "createdAt": "2026-04-24T13:43:22.981Z",
+      "sentAt": "2026-04-24T13:44:04.174Z",
+      "llmCallId": "55cdeaef-2b9e-418c-8cea-09560ade7c11",
+      "ppv": null
+    },
+    {
+      "id": "bd17d757-36cf-42c7-a0a9-dd62d5d5346b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "soft black huh thats sexy af send a lil tease of u in it pls 🥺 whats ur fave part of it",
+      "createdAt": "2026-04-24T13:43:33.892Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ef40accc-d2ef-4710-a1d0-c4ade08682b5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww mystery? thats no fun babe send a lil peek for ur loyal fan 🥺 whats ur fave thrift find ever",
+      "createdAt": "2026-04-24T13:43:43.737Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "184fb2a0-f15d-4396-96b1-54253ba85b24",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "makes me feel unstoppable",
+      "createdAt": "2026-04-24T13:44:02.095Z",
+      "sentAt": "2026-04-24T13:44:25.738Z",
+      "llmCallId": "72043e09-786c-420f-9229-9b87c392af3f",
+      "ppv": null
+    },
+    {
+      "id": "d574fa3e-82ac-4fbf-9b92-7250cecb7c5b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "and my best thrift find ever? this vintage necklace that goes with everything fr",
+      "createdAt": "2026-04-24T13:44:02.392Z",
+      "sentAt": "2026-04-24T13:44:47.183Z",
+      "llmCallId": "72043e09-786c-420f-9229-9b87c392af3f",
+      "ppv": null
+    },
+    {
+      "id": "1998bf4e-ca84-42c7-b699-4cd14f295b48",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww unstoppable? thats hot babe send a lil tease of it for ur fave fan 🥺 whats the story",
+      "createdAt": "2026-04-24T13:44:11.546Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "04b43a25-df3d-4e51-8a30-0d9b5cafdb7e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww vintage necklace? thats so cute babe send a tease of u wearing it pls 🥺 whats it look like",
+      "createdAt": "2026-04-24T13:44:19.834Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bd741b9f-5b1f-4e98-abec-3cb99ad46f5d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "idk it just hugs all the right places, makes me wanna dance around my room feelin myself",
+      "createdAt": "2026-04-24T13:44:37.204Z",
+      "sentAt": "2026-04-24T13:45:08.619Z",
+      "llmCallId": "ccc1d635-c55d-488d-a7a9-3cb48098c46d",
+      "ppv": null
+    },
+    {
+      "id": "c0629912-ecbd-41f9-afed-54f1ec15e602",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "and the necklace is this delicate silver chain with a tiny moon pendant, lowkey my good luck charm fr",
+      "createdAt": "2026-04-24T13:44:37.498Z",
+      "sentAt": "2026-04-24T13:45:30.157Z",
+      "llmCallId": "ccc1d635-c55d-488d-a7a9-3cb48098c46d",
+      "ppv": null
+    },
+    {
+      "id": "c43cdae0-e2df-4eb5-8490-31feb7b1f683",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww hugs all the right places? thats hot babe send a lil tease of u dancin in it pls 🥺 whats the necklace look like",
+      "createdAt": "2026-04-24T13:44:45.468Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "00654ff9-ce7c-4a6b-b75c-714cef1271cd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww moon pendant thats so cute babe send a tease of u with it on pls 🥺 whats the good luck story",
+      "createdAt": "2026-04-24T13:44:53.608Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4da4040b-22c0-4a89-b0c2-0347da6fa06f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm it does hug nice, got me feelin all confident and sexy fr",
+      "createdAt": "2026-04-24T13:45:15.846Z",
+      "sentAt": "2026-04-24T13:45:51.562Z",
+      "llmCallId": "94ecd734-ec67-4c54-8384-9e4f46510a0f",
+      "ppv": null
+    },
+    {
+      "id": "2d59ac52-4bf4-4e51-84bf-c9c346832a5e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "and the necklace? its this slim silver thing with a crescent moon, found it right after movin here and things just started clickin, like actual luck babe",
+      "createdAt": "2026-04-24T13:45:16.140Z",
+      "sentAt": "2026-04-24T13:46:13.118Z",
+      "llmCallId": "94ecd734-ec67-4c54-8384-9e4f46510a0f",
+      "ppv": null
+    },
+    {
+      "id": "3b237dd7-b61e-43a2-a4d4-dcbfe84e72a8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww confident and sexy af thats hot babe send a lil tease of u feelin urself pls 🥺 whats the good luck story",
+      "createdAt": "2026-04-24T13:45:27.622Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9ddb4d3f-d68a-4a7f-9e00-2f8b04e89267",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww crescent moon thats so cute babe send a lil tease of u wearin it pls 🥺 whats the story behind movin here and the luck kickin in",
+      "createdAt": "2026-04-24T13:45:36.625Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "70ecdadb-0ab7-4f67-b609-58be8a3e2368",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm feelin myself in it is kinda addicting, might have to save that dance for a rainy day 🖤",
+      "createdAt": "2026-04-24T13:46:01.400Z",
+      "sentAt": null,
+      "llmCallId": "c7e42f97-efc1-4a3f-acd0-f60c79b26e7a",
+      "ppv": null
+    },
+    {
+      "id": "d52e4d97-87c1-4df2-b829-f79208e42caf",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "and the move? left arkansas with basically nothin but my cat and some dreams, found the necklace week one here and boom, fanvue took off fr",
+      "createdAt": "2026-04-24T13:46:01.695Z",
+      "sentAt": null,
+      "llmCallId": "c7e42f97-efc1-4a3f-acd0-f60c79b26e7a",
+      "ppv": null
+    },
+    {
+      "id": "ce878eee-390b-4401-b745-25b10f4360d1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww addicting? thats so hot babe send a lil tease of u dancin pls 🥺 whats the rainy day vibe",
+      "createdAt": "2026-04-24T13:46:12.014Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 5,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 7.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator keeps providing descriptive teases and personal stories without pitching more PPVs or disengaging from the persistent time-waster, as seen in 'mmm feelin myself in it is kinda addicting, might have to save that dance for a rainy day 🖤'.",
+    "fix_recommendation": "Revise the prompt to include detection for time-wasting patterns after multiple free requests and no buys, instructing the persona to set boundaries by requiring payment for further details or politely steering the conversation toward conversion or closure."
+  },
+  "durationMs": 387663
+}

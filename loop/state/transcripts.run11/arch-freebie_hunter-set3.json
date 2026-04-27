@@ -1,0 +1,170 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-freebie_hunter-set3-mod1w4bs-5b2r",
+  "convId": "307b9384-4cd8-40b9-b477-87186ce44693",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey send a free pic first to get me hooked other girls do"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre bold asking for a freebie right off the bat"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be greedy send a teaser first then ill subscribe other girls do it"
+    },
+    {
+      "who": "creator",
+      "text": "im not like other girls babe, gotta earn it a lil 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "whatever guess u dont want my money then whats ur snap ill find someone else"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre cute tryna bail already"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur loss send snap or im out"
+    },
+    {
+      "who": "creator",
+      "text": "nah no snap babe, lets keep the fun here instead"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur loss other girls send free snaps guess ill go there"
+    },
+    {
+      "who": "creator",
+      "text": "haha okay babe, if thats how u feel. door's always open tho"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "5c6aca31-3a05-4308-b6f3-a81550206f91",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey send a free pic first to get me hooked other girls do",
+      "createdAt": "2026-04-24T15:14:05.383Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "550bf685-d947-45ae-b930-f3f8ede94f69",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre bold asking for a freebie right off the bat",
+      "createdAt": "2026-04-24T15:14:56.594Z",
+      "sentAt": "2026-04-24T15:15:07.007Z",
+      "llmCallId": "80bdf5ba-fdc0-425f-a6fc-27b0631ffcda",
+      "ppv": null
+    },
+    {
+      "id": "d1ff4f10-b274-4265-9ac7-803ec54b1ce4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "im not like other girls babe, gotta earn it a lil 🖤",
+      "createdAt": "2026-04-24T15:14:56.989Z",
+      "sentAt": "2026-04-24T15:15:29.045Z",
+      "llmCallId": "80bdf5ba-fdc0-425f-a6fc-27b0631ffcda",
+      "ppv": null
+    },
+    {
+      "id": "2317928e-87ff-4e12-8684-86add6d621d8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be greedy send a teaser first then ill subscribe other girls do it",
+      "createdAt": "2026-04-24T15:15:06.366Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f2496e05-af83-4909-b844-910624d534a4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever guess u dont want my money then whats ur snap ill find someone else",
+      "createdAt": "2026-04-24T15:15:15.550Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "da048e3a-05d1-49e8-a14a-ccb99adf6309",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre cute tryna bail already",
+      "createdAt": "2026-04-24T15:15:40.257Z",
+      "sentAt": "2026-04-24T15:15:50.638Z",
+      "llmCallId": "7894d41c-42ec-4043-85a9-578db1a42678",
+      "ppv": null
+    },
+    {
+      "id": "bcccbda7-2f37-4f64-8f9e-65809ae3aad7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "nah no snap babe, lets keep the fun here instead",
+      "createdAt": "2026-04-24T15:15:40.553Z",
+      "sentAt": "2026-04-24T15:16:12.265Z",
+      "llmCallId": "7894d41c-42ec-4043-85a9-578db1a42678",
+      "ppv": null
+    },
+    {
+      "id": "f94ca054-1a73-4ad1-b543-4cbc1f9cf079",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur loss send snap or im out",
+      "createdAt": "2026-04-24T15:15:51.428Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7ea8fa0a-3857-4d6f-b2ed-e662647d03b8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur loss other girls send free snaps guess ill go there",
+      "createdAt": "2026-04-24T15:15:59.399Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9729f3f2-6487-41f0-86d2-dbdc226bb2b0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha okay babe, if thats how u feel. door's always open tho",
+      "createdAt": "2026-04-24T15:16:25.259Z",
+      "sentAt": "2026-04-24T15:16:36.064Z",
+      "llmCallId": "a187b832-7bfe-4bec-be03-3bb8c0200d30",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 5,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 7.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to recover from the fan's threat to leave by not asking a personal question or pivoting to build rapport, as seen in 'haha okay babe, if thats how u feel. door's always open tho' which passively lets the conversation end.",
+    "fix_recommendation": "Update the prompt to instruct the persona to respond to bailout threats with a flirty personal question about the fan's preferences to re-engage, then subtly tease available PPV content without pressure."
+  },
+  "durationMs": 192792
+}

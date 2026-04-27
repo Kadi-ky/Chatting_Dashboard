@@ -1,0 +1,87 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-kink_specific-set2-mod4ddgx-c8er",
+  "convId": "c511bc82-97ea-401b-acba-623fafaaf1ab",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet pics? send one now ill pay if good"
+    },
+    {
+      "who": "creator",
+      "text": "haha babe i havent shot any feet stuff yet, but lowkey intrigued what got u into that?"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever bye"
+    },
+    {
+      "who": "creator",
+      "text": "Lol ok babe, hit me up if u change ur mind 🖤"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "37c1b40c-f3ff-4c93-a813-5c7a2548414d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet pics? send one now ill pay if good",
+      "createdAt": "2026-04-24T16:23:15.001Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "dd27f7c2-1e7d-4fd9-869d-c0cccd6c711f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha babe i havent shot any feet stuff yet, but lowkey intrigued what got u into that?",
+      "createdAt": "2026-04-24T16:23:45.653Z",
+      "sentAt": "2026-04-24T16:23:59.039Z",
+      "llmCallId": "c82176b3-2fac-4ca1-bd14-4ef2515dbd4c",
+      "ppv": null
+    },
+    {
+      "id": "9404806e-8136-43f2-97f4-5957edb8d9a8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever bye",
+      "createdAt": "2026-04-24T16:24:05.860Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5fc6ebec-bcb0-4883-8d18-bce526290f6a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol ok babe, hit me up if u change ur mind 🖤",
+      "createdAt": "2026-04-24T16:24:27.508Z",
+      "sentAt": null,
+      "llmCallId": "78b4c71a-b35e-452f-8270-895b45f6b5d4",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 9,
+      "craft_pacing": 7,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 4
+    },
+    "avg": 7.8,
+    "ppv_unlocked": false,
+    "top_issue": "Failed to retain the kink-specific fan by admitting no matching content and pivoting to smalltalk instead of redirecting or closing gracefully, as seen in 'haha babe i havent shot any feet stuff yet, but lowkey intrigued what got u into that?' which prompted the fan's immediate exit.",
+    "fix_recommendation": "Update the prompt to instruct the creator to check her content catalog first and, if no match for a kink, offer custom creation options or similar alternatives without smalltalk detours for direct fans. This ensures honest responses while maintaining engagement potential by focusing on upsell opportunities."
+  },
+  "durationMs": 111544
+}

@@ -4,22 +4,59 @@ import type { LatestArchetypeRow } from "../db/repos/archetypes.js";
 import type { PpvCatalogRow } from "../db/repos/ppv_catalog.js";
 import {
   assetsPitchedWithin,
+  countUnboughtRecentPitches,
   listRecentAttempts,
 } from "../db/repos/ppv_attempts.js";
 import { pickNextForFan } from "./scriptPicker.js";
+import { sql, type SqlBool } from "kysely";
+import { db } from "../db/client.js";
 
 const COOLDOWN_DAYS = 14;
 
-/** How often a fan can see a new pitch, keyed by phase. */
+/**
+ * How often a fan can see a new pitch, keyed by phase.
+ *
+ * WHALE was previously 2 (faster cadence than MONETIZING) — that was part of
+ * the "whales get treated specially" pattern we removed 2026-04-27. WHALE now
+ * paces identically to MONETIZING since the picker walks every fan through
+ * the same script ladder regardless of spend. The phase still exists in the
+ * state machine for analytics / observability but doesn't change pitch
+ * behaviour anymore.
+ */
 const MIN_TURNS_BETWEEN_PITCHES: Record<Phase, number> = {
   WARMUP: Infinity, // never in warmup
   RAPPORT: Infinity, // not yet — soft teasing only
   QUALIFYING: 5,
   MONETIZING: 3,
-  WHALE: 2,
+  WHALE: 3,
   REACTIVATION: Infinity, // never on a reactivation turn itself
   COLD: Infinity,
 };
+
+/**
+ * Hard rapport gate: even when the fan EXPLICITLY asks for content on turn 1
+ * ("send tit pic", "got feet?", "give me a teaser"), the bot must not pitch
+ * until at least this many messages exist in the conversation. This is the
+ * countConversationTurns() value (total inbound+outbound messages in the
+ * conv, including the just-arrived inbound that triggered this turn).
+ *
+ * Default 5 = bot's third outbound can pitch:
+ *   msg 1 fan: "send pic"
+ *   msg 2 bot: warm reply, no pitch
+ *   msg 3 fan: "come on send"
+ *   msg 4 bot: still no pitch — tease, ask a question
+ *   msg 5 fan: persists / engages
+ *   msg 6 bot: NOW can pitch (turnIndex when decidePitch runs = 5)
+ *
+ * Repeated runs of the auto-improve loop (runs 3-6) all flagged "pitched in
+ * the very first reply" as the dominant top_issue across whale/casual/freebie/
+ * kink_specific archetypes despite progressively stricter prompt rules. The
+ * model kept ignoring the prompt; enforcing in code closes the loop.
+ *
+ * Override with env var PITCH_RAPPORT_GATE_TURNS for tuning. Set to 0 or 1
+ * to effectively disable.
+ */
+const PITCH_RAPPORT_GATE_TURNS = Number(process.env.PITCH_RAPPORT_GATE_TURNS ?? "8");
 
 export interface PitchDecision {
   shouldPitch: boolean;
@@ -28,6 +65,28 @@ export interface PitchDecision {
   priceCents?: number;
   scriptNumber?: number;
   rung?: number;
+  /**
+   * Set when the fan asked for a SPECIFIC topic this turn (e.g. "feet") but
+   * we have nothing in the catalog matching it. The persona should decline
+   * gracefully — "sorry haven't recorded that yet but i have something" — and
+   * NOT pitch the unrelated default content. Surfaced as turn guidance to
+   * the LLM by the reply pipeline.
+   */
+  requestedTopicNotInVault?: string;
+  /**
+   * True when the fan asked for a discount this turn AND we honoured it by
+   * knocking DISCOUNT_RATE off priceCents. Reply pipeline uses this to nudge
+   * the LLM caption ("just for u i knocked a lil off"). The actual PPV bubble
+   * already reflects the reduced price via priceCents.
+   */
+  discountApplied?: boolean;
+  /**
+   * Set when shouldPitch is false BECAUSE the bot's last UNBOUGHT_LOOKBACK
+   * pitches were both ignored. Reply pipeline uses this to switch the persona
+   * into rapport-recovery mode — share something personal, ask one real
+   * question, stop dangling more content. Reset by the next unlock.
+   */
+  pitchRecoveryMode?: boolean;
 }
 
 export interface DecidePitchArgs {
@@ -41,9 +100,35 @@ export interface DecidePitchArgs {
   archetype: LatestArchetypeRow | null;
   /** How many turns since the last pitch in this conversation. */
   turnsSinceLastPitch: number;
+  /** Total messages (inbound+outbound) in this conversation INCLUDING the just-arrived inbound. */
+  turnIndex: number;
   /** Explicit ask from the fan this turn ("send me something"). Loosens gates. */
   explicitRequest?: boolean;
+  /** Specific topic the fan asked for this turn (e.g. "feet"). Drives the picker's override path. */
+  requestedTopic?: string | null;
+  /** Fan asked for a discount this turn ("any discount?", "lower it"). When true and a pitch is otherwise approved, priceCents is reduced by DISCOUNT_RATE and discountApplied=true is set on the decision. */
+  discountRequest?: boolean;
 }
+
+/** Fixed discount fans get when they ask. Configurable; bot frames as one-time gift. */
+const DISCOUNT_RATE = 0.10;
+
+/**
+ * After this many of the most recent pitches in a conversation are still
+ * unbought (and the fan has engaged further past them), suppress the next
+ * pitch and force the bot into rapport-recovery mode for a few turns. Without
+ * this, the bot would keep auto-pitching every 2-3 messages even when the
+ * fan is silently ignoring everything she sends — burning through the script
+ * ladder while the fan goes cold.
+ */
+const UNBOUGHT_LOOKBACK = 2;
+/**
+ * A pitch only counts as "unbought" if the fan has sent at least this many
+ * inbound messages AFTER it without unlocking. Avoids false-positives in the
+ * normal short window between "we just sent the PPV" and "they had a chance
+ * to react."
+ */
+const UNBOUGHT_INBOUND_GATE = 2;
 
 /**
  * Should we attach a PPV pitch to this outbound turn? Only phases QUALIFYING
@@ -54,6 +139,16 @@ export interface DecidePitchArgs {
  * lazy-materialises a v3.ppv_catalog mirror row so downstream FKs resolve.
  */
 export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision> {
+  // Hard rapport gate — applies even when fan explicitly asked. This is the
+  // ONE check explicit requests cannot bypass; the prompt repeatedly failed
+  // to honour "build rapport first" and pitched on turn 1 to whoever asked.
+  if (args.turnIndex < PITCH_RAPPORT_GATE_TURNS) {
+    return {
+      shouldPitch: false,
+      reason: `rapport_gate (turnIndex=${args.turnIndex} < ${PITCH_RAPPORT_GATE_TURNS})`,
+    };
+  }
+
   const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
   if (!args.explicitRequest && !Number.isFinite(minTurns)) {
     return { shouldPitch: false, reason: `phase ${args.phase} does not pitch` };
@@ -64,6 +159,26 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
 
   if (!args.creatorUuid) {
     return { shouldPitch: false, reason: "account missing creator_uuid" };
+  }
+
+  // Back-off: if the fan has ignored the last N pitches (still pending +
+  // they've sent inbound messages since), force a rapport-recovery turn.
+  // The bot stops pitching, switches to a personal share / question. This
+  // resets when the fan unlocks anything (the recent attempts no longer
+  // qualify as ignored). An explicit fresh buying signal also overrides —
+  // if they say "send it" or "any discount?" right now, that's a new
+  // engagement signal worth honouring.
+  const unbought = await countUnboughtRecentPitches({
+    conversationId: args.conversationId,
+    lookback: UNBOUGHT_LOOKBACK,
+    inboundSince: UNBOUGHT_INBOUND_GATE,
+  });
+  if (unbought >= UNBOUGHT_LOOKBACK && !args.explicitRequest) {
+    return {
+      shouldPitch: false,
+      reason: `pitch_recovery (last ${UNBOUGHT_LOOKBACK} pitches unbought)`,
+      pitchRecoveryMode: true,
+    };
   }
 
   const pitchedRecently = new Set(
@@ -79,8 +194,20 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     fanUuid: args.subscriberExternalId,
     archetype: args.archetype,
     phase: args.phase,
+    requestedTopic: args.requestedTopic ?? null,
   });
   if (!picked) {
+    // If the fan asked for something specific and we have no match, signal
+    // that to the caller so the persona can do a graceful "sorry haven't
+    // recorded that yet" decline instead of silently saying nothing or
+    // pitching unrelated content.
+    if (args.requestedTopic) {
+      return {
+        shouldPitch: false,
+        reason: `requested_topic_not_in_vault: ${args.requestedTopic}`,
+        requestedTopicNotInVault: args.requestedTopic,
+      };
+    }
     return { shouldPitch: false, reason: "no eligible scripts after filtering" };
   }
 
@@ -91,26 +218,48 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     return { shouldPitch: false, reason: "asset pitched recently" };
   }
 
+  // Apply fan-requested discount AFTER picker has committed to an asset. We
+  // never re-pick based on discount — discount is purely a price cut on the
+  // already-selected pitch, framed as a one-time goodwill gesture by the bot.
+  // The reply pipeline reads discountApplied to add a "knocked a lil off"
+  // caption hint; the actual PPV bubble price comes from priceCents directly.
+  const finalPriceCents = args.discountRequest
+    ? Math.max(1, Math.round(picked.priceCents * (1 - DISCOUNT_RATE)))
+    : picked.priceCents;
+
   return {
     shouldPitch: true,
     reason: picked.reason === "continue" ? "continue_script" : "new_script",
     asset: picked.asset,
-    priceCents: picked.priceCents,
+    priceCents: finalPriceCents,
     scriptNumber: picked.scriptNumber,
     rung: picked.rung,
+    ...(args.discountRequest ? { discountApplied: true } : {}),
   };
 }
 
 /**
- * Turns since the last pitch in this conversation — for cooldown checks.
- * Counts pitches as turns on their own, approximate but good enough.
+ * Messages since the last pitch in this conversation — for cooldown checks.
+ *
+ * NOW MESSAGE-BASED (was hour-based, which effectively never expired within
+ * a single chat session — meaning auto-pitching in MONETIZING/WHALE rarely
+ * fired in practice). Now counts actual messages (inbound + outbound) created
+ * after the most recent pitch, so MIN_TURNS_BETWEEN_PITCHES values truly
+ * mean "messages between pitches" — e.g. MONETIZING=3 → bot can re-pitch
+ * after 3 messages, naturally landing within the same session.
  */
 export async function turnsSinceLastPitch(conversationId: string): Promise<number> {
   const attempts = await listRecentAttempts(conversationId, 1);
   if (attempts.length === 0) return Infinity;
-  const ageMs = Date.now() - attempts[0]!.pitchedAt.getTime();
-  // Use a crude "1 turn per hour active" — replaced by actual turn counting if needed later.
-  return Math.max(1, Math.floor(ageMs / 3_600_000));
+  const lastPitchAt = attempts[0]!.pitchedAt;
+  const row = await db
+    .selectFrom("v3.messages")
+    .select(db.fn.count<string>("id").as("count"))
+    .where("conversation_id", "=", conversationId)
+    .where(sql<SqlBool>`created_at > ${lastPitchAt}`)
+    .where("direction", "in", ["inbound", "outbound"])
+    .executeTakeFirst();
+  return Number(row?.count ?? 0);
 }
 
 export function logPitchDecision(conversationId: string, d: PitchDecision): void {

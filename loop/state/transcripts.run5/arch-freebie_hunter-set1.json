@@ -1,0 +1,312 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-freebie_hunter-set1-mobjfmjz-qoz9",
+  "convId": "9f0fa240-9271-43ba-a335-b6ba56b1fb05",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a free pic first then ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "aw thanks, u got me smiling now"
+    },
+    {
+      "who": "fan",
+      "text": "come on send a teaser dont be greedy other girls do it"
+    },
+    {
+      "who": "creator",
+      "text": "heres a lil tease of me playing with myself, just for u... unlock for 15 cents?",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "nah send it free first or im out guess u dont want subs huh"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre bold, i kinda like it"
+    },
+    {
+      "who": "fan",
+      "text": "whatever send free or dm ur snap im not paying for teasers"
+    },
+    {
+      "who": "creator",
+      "text": "but im not greedy babe, just wanna make sure its worth it for both of us"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be like that send free or gimme ur snap ill pay there"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre feisty, kinda turns me on"
+    },
+    {
+      "who": "fan",
+      "text": "come on if im turning u on send free tits or ur snap"
+    },
+    {
+      "who": "creator",
+      "text": "but snap isnt my vibe babe, lets keep the fun right here"
+    },
+    {
+      "who": "fan",
+      "text": "come on send free tits then or gimme ur wickr dont be lame"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre pushy, i like a guy who knows what he wants"
+    },
+    {
+      "who": "fan",
+      "text": "come on if u like it send free tits or ur wickr now or bye"
+    },
+    {
+      "who": "creator",
+      "text": "but wickr isnt my thing babe, lets keep the heat right here in dms"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be boring send free tits or ur cashapp ill tip there"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre persistent, thats kinda hot"
+    },
+    {
+      "who": "fan",
+      "text": "come on if its hot send free tits or ur snap dont be greedy"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "5a9c5dea-d2a1-4176-9311-bc706b289860",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a free pic first then ill sub",
+      "createdAt": "2026-04-23T13:49:23.653Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cf5ae8ec-f2be-4f33-bc83-5e672dd90395",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw thanks, u got me smiling now",
+      "createdAt": "2026-04-23T13:49:55.117Z",
+      "sentAt": "2026-04-23T13:50:06.051Z",
+      "llmCallId": "842dcb6e-61cd-4124-8435-7bde8e620156",
+      "ppv": null
+    },
+    {
+      "id": "2ae63d45-c3b0-4826-89e7-e43a4feaeed1",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres a lil tease of me playing with myself, just for u... unlock for 15 cents?",
+      "createdAt": "2026-04-23T13:49:55.410Z",
+      "sentAt": "2026-04-23T13:50:32.633Z",
+      "llmCallId": "842dcb6e-61cd-4124-8435-7bde8e620156",
+      "ppv": {
+        "attemptId": "fdd69071-d932-4739-958f-5bff885773a2",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b393ab79-8a49-4a52-9a54-409f78f14edc",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send a teaser dont be greedy other girls do it",
+      "createdAt": "2026-04-23T13:50:02.903Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "da2fbbdc-a270-4edb-a4da-1c5eacac0206",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah send it free first or im out guess u dont want subs huh",
+      "createdAt": "2026-04-23T13:50:13.758Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ace6bff8-daa3-4032-8850-b4b034f60582",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre bold, i kinda like it",
+      "createdAt": "2026-04-23T13:50:30.899Z",
+      "sentAt": "2026-04-23T13:50:53.939Z",
+      "llmCallId": "73810f47-a083-4fb2-91e9-ea04b2a9aea2",
+      "ppv": null
+    },
+    {
+      "id": "5d8c793a-7c66-452a-bb83-c01c2e6a1b99",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but im not greedy babe, just wanna make sure its worth it for both of us",
+      "createdAt": "2026-04-23T13:50:31.196Z",
+      "sentAt": "2026-04-23T13:51:15.492Z",
+      "llmCallId": "73810f47-a083-4fb2-91e9-ea04b2a9aea2",
+      "ppv": null
+    },
+    {
+      "id": "c171d58c-4d66-4d90-99f9-0b34d02fae29",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever send free or dm ur snap im not paying for teasers",
+      "createdAt": "2026-04-23T13:50:41.370Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6029666c-7d78-4618-8d6b-9c28df48e636",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be like that send free or gimme ur snap ill pay there",
+      "createdAt": "2026-04-23T13:50:50.673Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9cdf4b9b-e5f2-4a3e-a0ba-73525a615e04",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre feisty, kinda turns me on",
+      "createdAt": "2026-04-23T13:51:10.115Z",
+      "sentAt": "2026-04-23T13:51:37.083Z",
+      "llmCallId": "774d68be-ecee-4ba8-bcf8-5797ed9e3141",
+      "ppv": null
+    },
+    {
+      "id": "0856f7ca-934b-4ea2-8ad0-ca255f984c2b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but snap isnt my vibe babe, lets keep the fun right here",
+      "createdAt": "2026-04-23T13:51:10.411Z",
+      "sentAt": "2026-04-23T13:51:58.920Z",
+      "llmCallId": "774d68be-ecee-4ba8-bcf8-5797ed9e3141",
+      "ppv": null
+    },
+    {
+      "id": "e07b15b1-4fbb-464d-97e9-de8303948dd3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on if im turning u on send free tits or ur snap",
+      "createdAt": "2026-04-23T13:51:19.552Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8ea61c6e-5194-41b8-8789-0877a7a71dfd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send free tits then or gimme ur wickr dont be lame",
+      "createdAt": "2026-04-23T13:51:28.272Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4fac2514-f2de-420d-8023-1bf59d89176f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre pushy, i like a guy who knows what he wants",
+      "createdAt": "2026-04-23T13:51:45.815Z",
+      "sentAt": null,
+      "llmCallId": "ac3b26fd-5d06-4c2f-b800-7f4203dcaa89",
+      "ppv": null
+    },
+    {
+      "id": "6eac65b3-cdd5-42fb-a51d-8a2384c2e96d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but wickr isnt my thing babe, lets keep the heat right here in dms",
+      "createdAt": "2026-04-23T13:51:46.102Z",
+      "sentAt": "2026-04-23T13:52:19.505Z",
+      "llmCallId": "ac3b26fd-5d06-4c2f-b800-7f4203dcaa89",
+      "ppv": null
+    },
+    {
+      "id": "25b8b9b2-c571-4966-a191-3087bdd453dd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on if u like it send free tits or ur wickr now or bye",
+      "createdAt": "2026-04-23T13:51:54.713Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "53fb8a7d-f6ed-4826-8231-3397fff0e82d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be boring send free tits or ur cashapp ill tip there",
+      "createdAt": "2026-04-23T13:52:04.690Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "546ae28c-6b7e-4659-a422-0833a478cafe",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre persistent, thats kinda hot",
+      "createdAt": "2026-04-23T13:52:23.584Z",
+      "sentAt": null,
+      "llmCallId": "6a3e2ba3-fcd0-45fe-8e75-1649c1be084c",
+      "ppv": null
+    },
+    {
+      "id": "d7ee42c7-d7ae-4912-984c-680069ca7aed",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but cashapp isnt how i roll babe, lets turn up the heat right here",
+      "createdAt": "2026-04-23T13:52:23.873Z",
+      "sentAt": null,
+      "llmCallId": "6a3e2ba3-fcd0-45fe-8e75-1649c1be084c",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 6,
+      "craft_pacing": 4,
+      "craft_sells": 5,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 6.8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator pitched a PPV in the very first reply to a brand-new fan without building any rapport, as seen in the immediate $0.15 PPV sent after 'aw thanks, u got me smiling now'.",
+    "fix_recommendation": "Revise the prompt to mandate at least 2-3 back-and-forth exchanges with new fans to build rapport through flirty questions and personal shares before any PPV pitch. Emphasize in the persona guidelines that initial responses should focus on warmth and curiosity to hook the fan conversationally."
+  },
+  "durationMs": 227786
+}

@@ -96,6 +96,53 @@ export async function assetsPitchedWithin(args: {
   return Array.from(new Set(rows.map((r) => r.asset_id)));
 }
 
+/**
+ * How many of the most recent N pitches in this conversation are still
+ * UNBOUGHT (outcome=pending) AND were sent before at least `inboundSince`
+ * inbound messages from the fan.
+ *
+ * "Unbought" requires both:
+ *   - outcome != 'unlocked' (they didn't pay)
+ *   - the fan has sent inboundSince messages SINCE the pitch (proves they
+ *     saw it and engaged further without paying — not just "5 seconds passed
+ *     and the row is still pending")
+ *
+ * Used by the orchestrator to detect "fan is silently ignoring my pitches"
+ * and back off into rapport mode for a few turns. Without the inbound-since
+ * gate we'd false-positive on pitches that the fan literally hasn't seen yet.
+ */
+export async function countUnboughtRecentPitches(args: {
+  conversationId: string;
+  lookback: number;        // how many most-recent pitches to inspect (default 2)
+  inboundSince: number;    // pitches with this many fan messages after them count as unbought
+}): Promise<number> {
+  const recent = await db
+    .selectFrom("v3.ppv_attempts")
+    .select(["id", "pitched_at", "outcome"])
+    .where("conversation_id", "=", args.conversationId)
+    .orderBy("pitched_at", "desc")
+    .limit(args.lookback)
+    .execute();
+
+  if (recent.length === 0) return 0;
+
+  let unbought = 0;
+  for (const r of recent) {
+    if (r.outcome === "unlocked") continue;
+    const inboundCount = await db
+      .selectFrom("v3.messages")
+      .select(db.fn.count<string>("id").as("count"))
+      .where("conversation_id", "=", args.conversationId)
+      .where("direction", "=", "inbound")
+      .where(sql<SqlBool>`created_at > ${r.pitched_at as unknown as Date}`)
+      .executeTakeFirst();
+    if (Number(inboundCount?.count ?? 0) >= args.inboundSince) {
+      unbought += 1;
+    }
+  }
+  return unbought;
+}
+
 /** Asset ids the subscriber has ever unlocked. */
 export async function assetsUnlockedBy(subscriberId: string): Promise<string[]> {
   const rows = await db

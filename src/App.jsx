@@ -38,6 +38,18 @@ import { supabase } from './lib/supabase'
 import ConversationsTab from './components/ConversationsTab'
 import V3TestingGroundTab from './components/V3TestingGroundTab'
 
+// Creator UUIDs that belong to the V3 test loop / sandbox accounts. These
+// are excluded from EVERY Home Page query unconditionally so that test
+// PPVs / interactions / tips never pollute real-creator analytics, even
+// during the brief window before the user has picked a creator from the
+// dropdown (creatorUuid starts as null → without this guard, ALL rows from
+// ALL creators load, including the test loop's loop-* fans).
+const TEST_CREATOR_UUIDS = ['acct_TEST_LOOP']
+const excludeTestCreators = (q, col = 'creator_uuid') =>
+  TEST_CREATOR_UUIDS.length === 0
+    ? q
+    : q.not(col, 'in', `(${TEST_CREATOR_UUIDS.map((u) => `"${u}"`).join(',')})`)
+
 // ━━━ Screenshot Configuration ━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 const TOTAL_SHOTS = 5
@@ -393,11 +405,13 @@ function useCreators() {
   const [creators, setCreators] = useState([])
   useEffect(() => {
     if (!supabase) return
-    supabase
-      .from('content_inventory_onlyfans')
-      .select('creator_uuid, creator_name')
-      .not('creator_uuid', 'is', null)
-      .not('creator_name', 'is', null)
+    excludeTestCreators(
+      supabase
+        .from('content_inventory_onlyfans')
+        .select('creator_uuid, creator_name')
+        .not('creator_uuid', 'is', null)
+        .not('creator_name', 'is', null),
+    )
       .then(({ data }) => {
         if (!data) return
         const seen = new Map()
@@ -467,6 +481,7 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
           .lte('created_at', isoTo)
           .range(intFrom, intFrom + PAGE - 1)
         if (creatorUuid) intQ = intQ.eq('creatoruuid', creatorUuid)
+        intQ = excludeTestCreators(intQ, 'creatoruuid')
         const { data: interactions, error: err1 } = await intQ
         if (err1) throw err1
         for (const row of interactions ?? []) {
@@ -490,6 +505,7 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
           .lte('purchased_at', isoTo)
           .range(purFrom, purFrom + PAGE - 1)
         if (creatorUuid) purQ = purQ.eq('creator_uuid', creatorUuid)
+        purQ = excludeTestCreators(purQ)
         const { data: purchases, error: err2 } = await purQ
         if (err2) throw err2
         allPurchases = allPurchases.concat(purchases ?? [])
@@ -536,6 +552,7 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
           .lte('tipped_at', isoTo)
           .range(tipsFrom, tipsFrom + PAGE - 1)
         if (creatorUuid) tipsQ = tipsQ.eq('creator_uuid', creatorUuid)
+        tipsQ = excludeTestCreators(tipsQ)
         const { data: tips, error: err3 } = await tipsQ
         if (err3) throw err3
         for (const t of tips ?? []) tipsTotalAcc += Number(t.amount_gross) || 0
@@ -555,6 +572,7 @@ function useTodayMetrics(creatorUuid, startDate, endDate) {
           .lte('subscribed_at', isoTo)
           .range(subFrom, subFrom + PAGE - 1)
         if (creatorUuid) subQ = subQ.eq('creator_uuid', creatorUuid)
+        subQ = excludeTestCreators(subQ)
         const { data: subs, error: err4 } = await subQ
         if (err4) throw err4
         for (const s of subs ?? []) subTotalAcc += Number(s.amount) || 0
@@ -664,6 +682,7 @@ function useWeeklyData(creatorUuid) {
           .lte('created_at', nowEnd)
           .range(from, from + PAGE - 1)
         if (creatorUuid) intQ = intQ.eq('creatoruuid', creatorUuid)
+        intQ = excludeTestCreators(intQ, 'creatoruuid')
         const { data: batch } = await intQ
         allInts = allInts.concat(batch ?? [])
         if (!batch || batch.length < PAGE) break
@@ -678,6 +697,7 @@ function useWeeklyData(creatorUuid) {
         .gte('purchased_at', weekAgo)
         .lte('purchased_at', nowEnd)
       if (creatorUuid) purQ = purQ.eq('creator_uuid', creatorUuid)
+      purQ = excludeTestCreators(purQ)
       const { data: purs } = await purQ
 
       // Bucket interactions by day (unique fans per day)
@@ -772,6 +792,7 @@ function useSubscribers(creatorUuid) {
           .order('total_spent', { ascending: false })
           .range(from, from + PAGE - 1)
         if (creatorUuid) q = q.eq('creator_uuid', creatorUuid)
+        q = excludeTestCreators(q)
         const { data, error: err } = await q
         if (err) throw err
         allSubscribers = allSubscribers.concat(data ?? [])
@@ -788,6 +809,7 @@ function useSubscribers(creatorUuid) {
         .order('finished_at', { ascending: false })
         .limit(1)
       if (creatorUuid) syncQ = syncQ.eq('creator_uuid', creatorUuid)
+      syncQ = excludeTestCreators(syncQ)
       const { data: syncData } = await syncQ
       if (syncData?.[0]?.finished_at) setLastResetAt(syncData[0].finished_at)
     } catch (e) {
@@ -886,11 +908,11 @@ function Navbar({ creators, creatorUuid, onCreatorChange, activeTab, onTabChange
           </div>
         </div>
         <div className="hidden md:flex items-center gap-6">
-          {['Home', 'Messages', 'Conversations', 'Onlyfans Chat Bot'].map(
+          {['Home', 'Messages', 'Conversations', 'Testing Ground Chatbot'].map(
             (item) => {
               const tabKey = item.toLowerCase()
               const isActive = tabKey === activeTab
-              const clickable = tabKey === 'home' || tabKey === 'messages' || tabKey === 'conversations' || tabKey === 'onlyfans chat bot'
+              const clickable = tabKey === 'home' || tabKey === 'messages' || tabKey === 'conversations' || tabKey === 'testing ground chatbot'
               return (
                 <button
                   key={item}
@@ -1774,6 +1796,7 @@ function useMessagesAnalytics(creatorUuid, rangeDays) {
           .range(offset, offset + PAGE - 1)
         if (isoFrom) q = q.gte('created_at', isoFrom)
         if (creatorUuid) q = q.eq('creatoruuid', creatorUuid)
+        q = excludeTestCreators(q, 'creatoruuid')
         const { data: batch, error } = await q
         if (error) throw error
         allRows = allRows.concat(batch ?? [])
@@ -2167,7 +2190,7 @@ export default function App() {
 
         {/* Mobile tab switcher */}
         <div className="flex md:hidden mt-3 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-1 gap-1">
-          {['Home', 'Messages', 'Conversations', 'Onlyfans Chat Bot'].map((item) => {
+          {['Home', 'Messages', 'Conversations', 'Testing Ground Chatbot'].map((item) => {
             const tabKey = item.toLowerCase()
             return (
               <button
@@ -2221,7 +2244,7 @@ export default function App() {
           <ConversationsTab creatorUuid={creatorUuid} />
         )}
 
-        {activeTab === 'onlyfans chat bot' && (
+        {activeTab === 'testing ground chatbot' && (
           <V3TestingGroundTab />
         )}
       </div>

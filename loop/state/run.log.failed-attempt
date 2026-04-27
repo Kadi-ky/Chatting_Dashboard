@@ -1,0 +1,15 @@
+[2026-04-23T10:26:51.846Z] loop start | duration=1800s | model=grok-4
+[2026-04-23T10:26:51.849Z] tick 1 start | archetype=whale | fan=loop-whale-1-mobc7c5l
+[2026-04-23T10:27:32.759Z] tick 1 turn 0 no bot reply within timeout
+[2026-04-23T10:28:12.343Z] tick 1 done avg=1 issue="The creator failed to provide any response in the conversation, with no specific creator message available to cite as th"
+[2026-04-23T10:29:30.924Z] edit tick=1 ERROR: fetch failed
+[2026-04-23T10:29:30.928Z] tick 2 start | archetype=casual | fan=loop-casual-2-mobcaqwg
+[2026-04-23T10:30:06.061Z] tick 2 turn 0 no bot reply within timeout
+[2026-04-23T10:30:25.968Z] tick 2 done avg=1 issue="The creator provided no response at all to the fan's message 'hey just subbed love your pics whats your name?', failing "
+[2026-04-23T10:31:30.885Z] edit tick=2 file=humanness applied=true 
+[2026-04-23T10:31:30.887Z] tick 3 start | archetype=freebie_hunter | fan=loop-freebie_hunter-3-mobcdbgn
+[2026-04-23T10:32:07.720Z] tick 3 turn 0 no bot reply within timeout
+[2026-04-23T10:32:44.171Z] tick 3 done avg=2.5 issue="The creator completely failed to engage by not sending any messages in response to the fan's initial outreach, as there "
+[2026-04-23T10:33:36.086Z] edit tick=3 ERROR: fetch failed
+[2026-04-23T10:33:36.087Z] tick 4 start | archetype=kink_specific | fan=loop-kink_specific-4-mobcg02f
+[2026-04-23T10:34:14.812Z] tick 4 turn 0 no bot reply within timeout

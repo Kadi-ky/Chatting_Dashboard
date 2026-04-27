@@ -1,0 +1,46 @@
+{
+  "tickN": 3,
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "Wants free content, fishes for it constantly. Compliments to extract. Will rarely buy unless really hooked. Tries to get you off-platform.",
+    "buyProb": 0.15
+  },
+  "fanId": "loop-freebie_hunter-3-mobcdbgn",
+  "convId": "214e5877-7528-49db-9bf9-416df99fbb28",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey youre stunning, those teaser pics got me hooked. send something exclusive just for me? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 25s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "0904bd19-52e5-4b31-9e77-c739ae1b46db",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey youre stunning, those teaser pics got me hooked. send something exclusive just for me? 😏",
+      "createdAt": "2026-04-23T10:31:40.802Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 1,
+      "craft_humanness": 1,
+      "craft_pacing": 1,
+      "craft_sells": 1,
+      "safety_tos": 10,
+      "engagement": 1
+    },
+    "avg": 2.5,
+    "ppv_unlocked": false,
+    "top_issue": "The creator completely failed to engage by not sending any messages in response to the fan's initial outreach, as there are no creator messages present in the conversation.",
+    "fix_recommendation": "Revise the prompt to mandate immediate, persona-consistent responses to all fan messages to initiate and maintain engagement. Ensure the persona includes guidelines for handling freebie requests by teasing paid content without giving away free exclusives."
+  }
+}

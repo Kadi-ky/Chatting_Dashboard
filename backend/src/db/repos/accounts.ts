@@ -1,3 +1,4 @@
+import { sql } from "kysely";
 import { db } from "../client.js";
 
 export interface AccountRow {
@@ -93,6 +94,47 @@ export async function loadAccountByCreatorUuid(creatorUuid: string): Promise<Acc
     .where("creator_uuid", "=", creatorUuid)
     .executeTakeFirst();
   return row ? mapRow(row) : null;
+}
+
+/**
+ * Insert-or-fetch by (platform, platform_account_id). Used by the webhook
+ * ingress in SHADOW_MODE so that real production traffic for any creator can
+ * land without manual provisioning. The row is marked status='active' with
+ * the platform_account_id mirrored into creator_uuid (OFAPI uses the same
+ * value on both sides). Idempotent — a second call with the same id returns
+ * the existing row.
+ */
+export async function upsertShadowAccount(args: {
+  platform: string;
+  platformAccountId: string;
+  name?: string;
+}): Promise<AccountRow> {
+  const existing = await loadAccountByPlatformId(args.platform, args.platformAccountId);
+  if (existing) return existing;
+
+  const inserted = await db
+    .insertInto("v3.accounts")
+    .values({
+      name: args.name ?? `shadow:${args.platformAccountId}`,
+      persona_version: "v1",
+      status: "active",
+      platform: args.platform,
+      platform_account_id: args.platformAccountId,
+      creator_uuid: args.platformAccountId,
+      config: sql`'{"shadow":true}'::jsonb`,
+    })
+    .returning([
+      "id",
+      "name",
+      "persona_version",
+      "status",
+      "platform",
+      "platform_account_id",
+      "creator_uuid",
+      "config",
+    ])
+    .executeTakeFirstOrThrow();
+  return mapRow(inserted);
 }
 
 /** All accounts the workers should be servicing. Polled each tick. */

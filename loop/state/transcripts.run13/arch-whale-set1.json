@@ -1,0 +1,220 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-whale-set1-modrpykl-yv4k",
+  "convId": "ad35e1a2-85eb-4725-be2c-98c65c033c60",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey gorgeous ur the hottest ive seen send something exclusive ill tip 100 right now"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre bold coming in with that 100 tip fr"
+    },
+    {
+      "who": "fan",
+      "text": "bold? nah im serious send that exclusive now or ill bounce to someone who delivers"
+    },
+    {
+      "who": "creator",
+      "text": "makes me wanna show u somethin special.."
+    },
+    {
+      "who": "fan",
+      "text": "then show it dont keep me waiting gorgeous"
+    },
+    {
+      "who": "creator",
+      "text": "lol ok babe, since ur tipping big heres somethin exclusive just for u"
+    },
+    {
+      "who": "fan",
+      "text": "damn thats fire heres ur 100 tip send another one just for me"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm watch me play with my boobs and body.. gets real hot fr",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "bought it damn ur teasing me good tip another 50 for a custom vid just for me"
+    },
+    {
+      "who": "creator",
+      "text": "Lol thanks for the tip babe, u deserve this next one",
+      "ppvNote": "PPV $0.35 · Script 1 · rung 2 · playing with nude boobs, showing yourself and moving up and down in the bed · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "bought it fuck ur body is insane send a custom with my name john tip 200 now"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "7d0fef1d-4237-4e54-b46b-00441bc53dba",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey gorgeous ur the hottest ive seen send something exclusive ill tip 100 right now",
+      "createdAt": "2026-04-25T03:16:56.150Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b4a1af77-2742-4e6d-a941-042d74f3e9a7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre bold coming in with that 100 tip fr",
+      "createdAt": "2026-04-25T03:18:06.854Z",
+      "sentAt": "2026-04-25T03:18:07.940Z",
+      "llmCallId": "92166fc7-44b2-4bc9-a7c1-8d345f39b2ec",
+      "ppv": null
+    },
+    {
+      "id": "88bfc6e4-622e-42c7-b9d1-98b372f1b569",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "makes me wanna show u somethin special..",
+      "createdAt": "2026-04-25T03:18:07.148Z",
+      "sentAt": "2026-04-25T03:18:29.248Z",
+      "llmCallId": "92166fc7-44b2-4bc9-a7c1-8d345f39b2ec",
+      "ppv": null
+    },
+    {
+      "id": "6e17886a-761b-48ac-b1de-b1b4da543ec6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bold? nah im serious send that exclusive now or ill bounce to someone who delivers",
+      "createdAt": "2026-04-25T03:18:16.798Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f439cafe-b022-481a-a608-ce027082429a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "then show it dont keep me waiting gorgeous",
+      "createdAt": "2026-04-25T03:18:25.357Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b5a8c0a5-c16d-4e58-a839-5de59e38367e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol ok babe, since ur tipping big heres somethin exclusive just for u",
+      "createdAt": "2026-04-25T03:18:44.616Z",
+      "sentAt": "2026-04-25T03:19:00.588Z",
+      "llmCallId": "53bd56f4-305f-4f1e-b41f-b87bbb30d44a",
+      "ppv": null
+    },
+    {
+      "id": "52039c28-b44a-4b11-abcf-5291792593f2",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "Mmm watch me play with my boobs and body.. gets real hot fr",
+      "createdAt": "2026-04-25T03:18:44.912Z",
+      "sentAt": "2026-04-25T03:19:22.146Z",
+      "llmCallId": "53bd56f4-305f-4f1e-b41f-b87bbb30d44a",
+      "ppv": {
+        "attemptId": "f7e4d472-6cf4-4cb5-a0b8-d3d9764d7872",
+        "priceCents": 15,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-25T03:18:55.941Z",
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "0a723d21-b51f-4351-9faf-67a68be32dc0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn thats fire heres ur 100 tip send another one just for me",
+      "createdAt": "2026-04-25T03:18:56.607Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "941de6d7-ea71-4aa3-b868-426059ea0035",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bought it damn ur teasing me good tip another 50 for a custom vid just for me",
+      "createdAt": "2026-04-25T03:19:16.225Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bcc547c4-d3a8-45f0-ad24-29715fb3bffe",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "Lol thanks for the tip babe, u deserve this next one",
+      "createdAt": "2026-04-25T03:19:28.000Z",
+      "sentAt": "2026-04-25T03:19:46.591Z",
+      "llmCallId": "52f517d1-fcac-4286-90fe-ffcd3e199dad",
+      "ppv": {
+        "attemptId": "503a74dc-c0e5-462d-82ac-55f6bf4842d1",
+        "priceCents": 35,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-25T03:19:28.658Z",
+        "assetId": "da7de480-6431-4664-94ab-f51402810689",
+        "assetTitle": "Script 1 · rung 2",
+        "assetDescription": "playing with nude boobs, showing yourself and moving up and down in the bed",
+        "sourceRef": "of:acct_TEST_LOOP:1:2",
+        "mediaRefs": [
+          {
+            "ref": "4334417568",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "53413287-45e5-46f0-8bd4-16ff2a3c4a86",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bought it fuck ur body is insane send a custom with my name john tip 200 now",
+      "createdAt": "2026-04-25T03:19:42.789Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 9,
+      "craft_pacing": 6,
+      "craft_sells": 9,
+      "safety_tos": 10,
+      "engagement": 10
+    },
+    "avg": 8.8,
+    "ppv_unlocked": true,
+    "top_issue": "The creator pitched a PPV too early without building at least 2-3 conversational exchanges for rapport with a brand-new fan, as seen in the quick pivot to PPV after 'lol ok babe, since ur tipping big heres somethin exclusive just for u'.",
+    "fix_recommendation": "Update the prompt to enforce at least 2-3 back-and-forth exchanges with teasing questions or personal comments before any PPV pitch to new fans, even if they demand content immediately. This will improve pacing while reacting to high-energy whales by making them feel uniquely engaged first."
+  },
+  "durationMs": 308563
+}

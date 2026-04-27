@@ -113,7 +113,12 @@ export function startTurnWorker(): Worker<TurnJobData> {
       const regexAsk = detectExplicitAsk(incomingText);
       const pitchSuppressed =
         intent.objection || intent.disengagement || intent.emotional_disclosure;
-      const explicitRequest = (regexAsk || intent.buying_signal) && !pitchSuppressed;
+      // discount_request implies the fan is ready to buy at a lower price — treat
+      // it as an explicit buying signal so the orchestrator pitches this turn
+      // (and applies the 10% off downstream). Without this, "any discount?"
+      // alone wouldn't trip the regex or LLM buying_signal path.
+      const explicitRequest =
+        (regexAsk || intent.buying_signal || intent.discount_request) && !pitchSuppressed;
 
       const pitchDecision = await decidePitch({
         accountId,
@@ -124,7 +129,10 @@ export function startTurnWorker(): Worker<TurnJobData> {
         phase: tick.phase,
         archetype,
         turnsSinceLastPitch: sinceLastPitch,
+        turnIndex,
         explicitRequest,
+        requestedTopic: intent.requested_topic ?? null,
+        discountRequest: intent.discount_request ?? false,
       });
       logPitchDecision(conversationId, pitchDecision);
 
@@ -142,7 +150,19 @@ export function startTurnWorker(): Worker<TurnJobData> {
         ...(archetypeDirective !== undefined ? { archetypeDirective } : {}),
         ...(factStrings.length > 0 ? { facts: factStrings } : {}),
         ...(pitchDecision.shouldPitch && pitchDecision.asset && pitchDecision.priceCents != null
-          ? { pitch: { asset: pitchDecision.asset, priceCents: pitchDecision.priceCents } }
+          ? {
+              pitch: {
+                asset: pitchDecision.asset,
+                priceCents: pitchDecision.priceCents,
+                ...(pitchDecision.discountApplied ? { discountApplied: true } : {}),
+              },
+            }
+          : {}),
+        ...(pitchDecision.requestedTopicNotInVault
+          ? { requestedTopicNotInVault: pitchDecision.requestedTopicNotInVault }
+          : {}),
+        ...(pitchDecision.pitchRecoveryMode
+          ? { pitchRecoveryMode: true }
           : {}),
       });
 

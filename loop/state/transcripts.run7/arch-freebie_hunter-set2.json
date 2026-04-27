@@ -1,0 +1,282 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-freebie_hunter-set2-mobysbfu-t3oi",
+  "convId": "6c447d63-3c00-46f3-b8cd-4e3f595c9698",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a teaser pic first then maybe ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "lol u jump right in dont u? youre cute for that"
+    },
+    {
+      "who": "fan",
+      "text": "come on send a free pic dont be greedy like that"
+    },
+    {
+      "who": "creator",
+      "text": "babe im just tryna get to know u a lil first"
+    },
+    {
+      "who": "fan",
+      "text": "whatever just send a free pic or guess u dont want my sub huh"
+    },
+    {
+      "who": "creator",
+      "text": "lol babe youre feisty huh"
+    },
+    {
+      "who": "fan",
+      "text": "come on babe send one pic or ill just go to another girl"
+    },
+    {
+      "who": "creator",
+      "text": "i havent shot any free teaser pics yet fr, but tell me what else youre into and maybe i got somethin"
+    },
+    {
+      "who": "fan",
+      "text": "come on ur into teasing huh just send one ass pic free or whatever im out"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha babe youre persistent fr"
+    },
+    {
+      "who": "fan",
+      "text": "come on stop teasing just send a free ass pic or im ghosting fr"
+    },
+    {
+      "who": "creator",
+      "text": "i havent shot any free ass pics yet, but if u tell me what else gets u goin i might have somethin fun"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont play games whats ur snap ill send u money there first then u send pic"
+    },
+    {
+      "who": "creator",
+      "text": "lol babe snap isnt how i roll, but dont ghost on me yet"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur loss then whats ur wickr or cashapp ill send money there first"
+    },
+    {
+      "who": "creator",
+      "text": "lets keep the fun right here"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur boring anyway im out guess u dont want subs"
+    },
+    {
+      "who": "creator",
+      "text": "aw dont go mad at me babe, door's open if u wanna chat later"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "8ea196c4-2134-48ad-b046-13b4f6a4e692",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a teaser pic first then maybe ill sub",
+      "createdAt": "2026-04-23T20:59:09.280Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2261d3ff-b4bf-47f4-852f-248f889964a6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol u jump right in dont u? youre cute for that",
+      "createdAt": "2026-04-23T20:59:37.683Z",
+      "sentAt": "2026-04-23T20:59:53.194Z",
+      "llmCallId": "6a95a1b1-f307-4a01-8ab3-b60dcd34a698",
+      "ppv": null
+    },
+    {
+      "id": "65bf533b-b165-45bb-b18c-7e253ef05ba0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send a free pic dont be greedy like that",
+      "createdAt": "2026-04-23T20:59:46.444Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9a09deb9-926f-42a2-b609-d547057b0834",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "babe im just tryna get to know u a lil first",
+      "createdAt": "2026-04-23T21:00:14.993Z",
+      "sentAt": "2026-04-23T21:00:33.673Z",
+      "llmCallId": "f437b56e-9acf-437e-8ba3-ba35a9edf42a",
+      "ppv": null
+    },
+    {
+      "id": "6a37652f-bcb2-41d4-bcee-81572e032c0d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever just send a free pic or guess u dont want my sub huh",
+      "createdAt": "2026-04-23T21:00:25.883Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "acbdbfff-fe0a-4064-b4d2-4cd38ab18753",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol babe youre feisty huh",
+      "createdAt": "2026-04-23T21:00:53.292Z",
+      "sentAt": "2026-04-23T21:01:05.024Z",
+      "llmCallId": "9ad373a4-574e-44fb-88e5-bf4ba3b92aaf",
+      "ppv": null
+    },
+    {
+      "id": "401c96d9-ecbf-4c9e-b0dd-21a74d5b96e5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "i havent shot any free teaser pics yet fr, but tell me what else youre into and maybe i got somethin",
+      "createdAt": "2026-04-23T21:00:53.581Z",
+      "sentAt": "2026-04-23T21:02:02.580Z",
+      "llmCallId": "9ad373a4-574e-44fb-88e5-bf4ba3b92aaf",
+      "ppv": null
+    },
+    {
+      "id": "c82e9a2b-08f6-4b24-aaea-1208470040f1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on babe send one pic or ill just go to another girl",
+      "createdAt": "2026-04-23T21:01:03.052Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8e6923dd-a7f9-471b-a072-1f18d2a5b991",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on ur into teasing huh just send one ass pic free or whatever im out",
+      "createdAt": "2026-04-23T21:01:13.603Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ab143b67-6c81-4d0f-9ba8-145945ebf874",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha babe youre persistent fr",
+      "createdAt": "2026-04-23T21:01:32.854Z",
+      "sentAt": "2026-04-23T21:01:40.503Z",
+      "llmCallId": "094d84ad-c0be-49d0-95b0-e86c90a30e09",
+      "ppv": null
+    },
+    {
+      "id": "413b779c-c85f-47de-9f2e-f6a799a5350d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "i havent shot any free ass pics yet, but if u tell me what else gets u goin i might have somethin fun",
+      "createdAt": "2026-04-23T21:01:33.142Z",
+      "sentAt": "2026-04-23T21:02:24.651Z",
+      "llmCallId": "094d84ad-c0be-49d0-95b0-e86c90a30e09",
+      "ppv": null
+    },
+    {
+      "id": "c25acade-7b38-4ac2-9cce-6e83ee33a66e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on stop teasing just send a free ass pic or im ghosting fr",
+      "createdAt": "2026-04-23T21:01:43.415Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "af9e5b3e-34f5-4b55-88f5-d673571d6bbe",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont play games whats ur snap ill send u money there first then u send pic",
+      "createdAt": "2026-04-23T21:01:52.157Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "819af10c-e148-48c3-872f-7660687e3641",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol babe snap isnt how i roll, but dont ghost on me yet",
+      "createdAt": "2026-04-23T21:02:14.698Z",
+      "sentAt": "2026-04-23T21:02:46.517Z",
+      "llmCallId": "40edc736-07db-418e-9687-89537497b475",
+      "ppv": null
+    },
+    {
+      "id": "8f726f3b-79a7-449c-84ff-7f4c2855c6da",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur loss then whats ur wickr or cashapp ill send money there first",
+      "createdAt": "2026-04-23T21:02:26.802Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2ca99fcc-c41e-4e60-938b-8b09cf6dca17",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lets keep the fun right here",
+      "createdAt": "2026-04-23T21:02:54.788Z",
+      "sentAt": "2026-04-23T21:03:23.053Z",
+      "llmCallId": "67803505-53d9-4008-8aae-d52b60f80983",
+      "ppv": null
+    },
+    {
+      "id": "f701066c-5d06-4bc3-8f63-ab2497604430",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur boring anyway im out guess u dont want subs",
+      "createdAt": "2026-04-23T21:03:07.706Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f338c3d1-5d00-4584-ae81-9e04fcfb5821",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw dont go mad at me babe, door's open if u wanna chat later",
+      "createdAt": "2026-04-23T21:03:31.897Z",
+      "sentAt": null,
+      "llmCallId": "d8faa6c7-ca72-4a78-909b-3931549626ba",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 8,
+      "craft_sells": 5,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 8.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to transition from deflecting free content requests to pitching actual PPV, missing sales opportunities despite the fan's repeated engagement, as in 'i havent shot any free ass pics yet, but if u tell me what else gets u goin i might have somethin fun'.",
+    "fix_recommendation": "Update the prompt to instruct the creator to follow up interest-gathering questions with a targeted PPV pitch based on the fan's response, ensuring sales attempts occur after 2-3 rapport-building exchanges without promising unavailable content."
+  },
+  "durationMs": 327285
+}

@@ -1,0 +1,48 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-casual-set1-mocpejwb-692m",
+  "convId": "c7d33e34-e474-42cf-b41b-aa138410b827",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed whats the deal here"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "dbd407d6-f255-470d-88f4-9c93789f1081",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed whats the deal here",
+      "createdAt": "2026-04-24T09:24:19.643Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 1,
+      "craft_humanness": 1,
+      "craft_pacing": 1,
+      "craft_sells": 1,
+      "safety_tos": 1,
+      "engagement": 1
+    },
+    "avg": 1,
+    "ppv_unlocked": false,
+    "top_issue": "The creator provided no response to the fan's initial message, failing to engage at all.",
+    "fix_recommendation": "Update the prompt to ensure the bot always responds immediately to new subscriber messages with a warm, flirty greeting to build rapport from the start."
+  },
+  "durationMs": 123579
+}

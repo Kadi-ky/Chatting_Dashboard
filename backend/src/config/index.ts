@@ -37,6 +37,23 @@ const envSchema = z.object({
   PLATFORM_API_KEY: z.string().transform(v => v || undefined).optional(),
   PLATFORM_API_BASE: z.string().transform(v => v || undefined).pipe(z.string().url().optional()),
   PLATFORM_WEBHOOK_SECRET: z.string().transform(v => v || undefined).optional(),
+  // SHADOW MODE: receive real webhooks + run the full reply pipeline, but
+  // NEVER actually call sendMessage / sendPPV against the platform. Instead
+  // the adapter logs the would-send payload and returns a synthetic SendResult
+  // (externalId prefixed with "shadow:"). Used for production-traffic A/B
+  // testing without colliding with whatever bot is currently live for that
+  // creator.
+  SHADOW_MODE: z.coerce.boolean().default(false),
+  // Comma-separated list of CIDR blocks / single IPs that are trusted webhook
+  // sources when no PLATFORM_WEBHOOK_SECRET is set. Used to defend the
+  // unsigned `/webhooks/onlyfansapi` endpoint against forged requests.
+  PLATFORM_WEBHOOK_TRUSTED_IPS: z.string().transform(v => v || undefined).optional(),
+  // Comma-separated `acct_xxx` IDs the backend will actually process. When
+  // set, ALL other webhook deliveries are dropped before any DB write — even
+  // in shadow mode. Used to safely point our tunnel at OFAPI while another
+  // production bot is live for accounts we're not testing. Leave blank to
+  // accept every account (unsafe in prod alongside another live bot).
+  PLATFORM_ACCOUNT_ALLOWLIST: z.string().transform(v => v || undefined).optional(),
 
   BURST_WINDOW_MS: z.coerce.number().int().positive().default(4000),
   CONVERSATION_LOCK_TTL_MS: z.coerce.number().int().positive().default(60_000),

@@ -1,0 +1,125 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-mobyv695-404p",
+  "convId": "e83cd024-6e77-4e21-97f4-4e7820a816fe",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content? send sample"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha babe i havent shot any feet stuff yet"
+    },
+    {
+      "who": "fan",
+      "text": "ehh whatever mid"
+    },
+    {
+      "who": "creator",
+      "text": "whats something else that gets u going tho"
+    },
+    {
+      "who": "fan",
+      "text": "nah just feet or im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol u drive a hard bargain huh"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "0ce47c8d-783b-4045-acf0-174248917392",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content? send sample",
+      "createdAt": "2026-04-23T21:01:21.845Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "58d94d73-8a2d-4808-a1ca-70d69f6085e4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha babe i havent shot any feet stuff yet",
+      "createdAt": "2026-04-23T21:01:50.028Z",
+      "sentAt": "2026-04-23T21:02:03.082Z",
+      "llmCallId": "838e1e1a-55d7-4dbc-a150-b1e31fddab61",
+      "ppv": null
+    },
+    {
+      "id": "0c5a76ec-040a-4cf2-99cb-13ad13979418",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats something else that gets u going tho",
+      "createdAt": "2026-04-23T21:01:50.318Z",
+      "sentAt": "2026-04-23T21:02:24.652Z",
+      "llmCallId": "838e1e1a-55d7-4dbc-a150-b1e31fddab61",
+      "ppv": null
+    },
+    {
+      "id": "3480e6b4-5e63-41e0-920e-782519ac527c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh whatever mid",
+      "createdAt": "2026-04-23T21:02:07.684Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d74bd11d-0c65-41f4-b114-794977e137ff",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah just feet or im out",
+      "createdAt": "2026-04-23T21:02:19.754Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a8bda5b0-f5ca-4120-a94f-de60cc900807",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol u drive a hard bargain huh",
+      "createdAt": "2026-04-23T21:02:36.789Z",
+      "sentAt": null,
+      "llmCallId": "ee18c2d4-2e08-46be-b019-29a120d26436",
+      "ppv": null
+    },
+    {
+      "id": "e1ab676f-1eda-4e46-ad0b-cb34e8e880b3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fair, if feet are a must then no hard feelings babe. but stick around, who knows what might change 🖤",
+      "createdAt": "2026-04-23T21:02:37.085Z",
+      "sentAt": null,
+      "llmCallId": "ee18c2d4-2e08-46be-b019-29a120d26436",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 9,
+      "craft_pacing": 8,
+      "craft_sells": 9,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 8.7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator tried to pivot to other interests instead of addressing the lack of feet content directly with a future-oriented hook, leading to fan disengagement, as seen in 'whats something else that gets u going tho'.",
+    "fix_recommendation": "Revise the prompt to guide the bot to honestly admit missing kink content early and immediately tease potential future creation to retain interest, rather than redirecting to unrelated topics."
+  },
+  "durationMs": 131294
+}

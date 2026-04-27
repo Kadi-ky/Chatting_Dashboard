@@ -1,0 +1,6 @@
+[2026-04-23T11:53:47.232Z] loop v2 start | archetypes=4 | sets/archetype=3 | model=grok-4
+[2026-04-23T11:53:47.234Z] === ARCHETYPE 1/4: whale ===
+[2026-04-23T11:53:47.235Z]   set 1 start | fan=loop-whale-set1-mobfb4df
+[2026-04-23T11:55:03.746Z]   set 1 turn 0 no bot reply
+[2026-04-23T11:55:46.158Z]   set 1 done avg=1 ppv=false dur=119s
+[2026-04-23T11:55:46.158Z]   set 2 start | fan=loop-whale-set2-mobfdo4u

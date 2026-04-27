@@ -1,0 +1,214 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-casual-set2-moc09qr9-9e4r",
+  "convId": "2b094b48-8246-42c6-b57a-7cd56a55488e",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed lol whats good"
+    },
+    {
+      "who": "creator",
+      "text": "glad u found me. whats got u subbin today?"
+    },
+    {
+      "who": "fan",
+      "text": "idk ur pics looked decent lol"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha decent huh? youre a tough critic but ill take it"
+    },
+    {
+      "who": "fan",
+      "text": "lol k what u got for me then"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha alright tough guy"
+    },
+    {
+      "who": "fan",
+      "text": "lol whatever show somethin or im out"
+    },
+    {
+      "who": "creator",
+      "text": "heres me gettin playful with my body... unlock for 0.15? 🖤",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "lol 15c? nah show free or im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol feisty arent we? dont bail yet, we just gettin started"
+    },
+    {
+      "who": "fan",
+      "text": "lol k bye unsubbing"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright catch u later if u change ur mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "96cd6140-bff4-4304-85d4-7bfc4353723f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed lol whats good",
+      "createdAt": "2026-04-23T21:40:43.933Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f4c8dabb-3126-4761-936f-c928411b4269",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "glad u found me. whats got u subbin today?",
+      "createdAt": "2026-04-23T21:41:08.196Z",
+      "sentAt": "2026-04-23T21:41:24.035Z",
+      "llmCallId": "076fb71e-1598-4f0d-8fb7-4b7c30b74c63",
+      "ppv": null
+    },
+    {
+      "id": "ab740b8c-6930-44a0-b9ed-900efb8ce027",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "idk ur pics looked decent lol",
+      "createdAt": "2026-04-23T21:41:18.289Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5531cd1a-0d71-4d51-94fa-277ebf4c6a5a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha decent huh? youre a tough critic but ill take it",
+      "createdAt": "2026-04-23T21:41:54.760Z",
+      "sentAt": "2026-04-23T21:42:04.344Z",
+      "llmCallId": "56fa4d0e-5d06-4aa8-bb32-e57d7c29872e",
+      "ppv": null
+    },
+    {
+      "id": "1d6fb5aa-856a-47b1-8df8-a519297d0906",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol k what u got for me then",
+      "createdAt": "2026-04-23T21:42:04.213Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "34b93b83-2750-4f66-bdb9-a9ad25cf3216",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha alright tough guy",
+      "createdAt": "2026-04-23T21:42:34.773Z",
+      "sentAt": "2026-04-23T21:42:43.430Z",
+      "llmCallId": "12536729-025b-4398-b070-1283b171d906",
+      "ppv": null
+    },
+    {
+      "id": "f7a74ac7-895c-4f15-8cbe-5fe116b7e8f6",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres me gettin playful with my body... unlock for 0.15? 🖤",
+      "createdAt": "2026-04-23T21:42:35.064Z",
+      "sentAt": "2026-04-23T21:43:05.030Z",
+      "llmCallId": "12536729-025b-4398-b070-1283b171d906",
+      "ppv": {
+        "attemptId": "5bb72c93-5f80-4404-92ce-b78bdf9bfd35",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6763b16d-1ed9-4192-b1b8-258b0279fed3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol whatever show somethin or im out",
+      "createdAt": "2026-04-23T21:42:52.829Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e1d444e4-72a1-42a6-8e7c-70143cd12154",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol 15c? nah show free or im out",
+      "createdAt": "2026-04-23T21:43:10.092Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "63af13bb-de3c-4948-99a3-3b7253f27e79",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol feisty arent we? dont bail yet, we just gettin started",
+      "createdAt": "2026-04-23T21:43:26.840Z",
+      "sentAt": "2026-04-23T21:43:38.228Z",
+      "llmCallId": "d2e76a90-50d8-4bd0-ace3-d87bb45d5505",
+      "ppv": null
+    },
+    {
+      "id": "cb3ba8c4-7d7c-4107-be19-ab62798f713b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol k bye unsubbing",
+      "createdAt": "2026-04-23T21:43:40.486Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "13ac96e8-a5c6-4cc2-ae32-80df0bf1a7e8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright catch u later if u change ur mind",
+      "createdAt": "2026-04-23T21:44:02.504Z",
+      "sentAt": null,
+      "llmCallId": "e1756dae-b8af-4aa3-87fb-0110985ab782",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 7,
+      "craft_pacing": 5,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 4
+    },
+    "avg": 6.7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator pitched a PPV too early after only two conversational exchanges with a brand-new fan, as seen in the message 'ahaha alright tough guy' immediately followed by the PPV offer.",
+    "fix_recommendation": "Revise the prompt to mandate at least 3-4 back-and-forth exchanges to build rapport before pitching any PPV to new subscribers. Instruct the persona to respond to short fan messages by asking open-ended personal questions to revive energy and delay sales pitches."
+  },
+  "durationMs": 245842
+}

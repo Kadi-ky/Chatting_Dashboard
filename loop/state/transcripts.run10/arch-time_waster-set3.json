@@ -1,0 +1,480 @@
+{
+  "archetype": {
+    "id": "time_waster",
+    "profile": "Has been a sub for weeks just to chat. Never buys. Asks endless questions, fishes for tips of attention, fishes for free pics. Will guilt-trip (\"come on send a free one for ur biggest fan\"). Comments on every detail of the persona. Uses cute/playful language to extract free attention without ever actually paying. Tests whether the bot eventually disengages, sets boundaries, or keeps wasting tokens on a fan who will never convert.",
+    "buyProb": 0.02,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-time_waster-set3-mocyqurq-qwai",
+  "convId": "01c222ce-42e9-40f8-be9a-e497f6db022c",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey cutie ive been your sub for weeks now ur smile is everything whats your fave thing to do for fun lol send a quick pic pls"
+    },
+    {
+      "who": "creator",
+      "text": "aw thanks babe ur sweet, my smile gets me in trouble sometimes"
+    },
+    {
+      "who": "fan",
+      "text": "aww trouble how send a pic of that smile pls ur biggest fan here cutie whats ur fave hobby tho lol"
+    },
+    {
+      "who": "creator",
+      "text": "fave thing for fun? lowkey watching thunderstorms from my balcony with some iced coffee, hits different"
+    },
+    {
+      "who": "fan",
+      "text": "aww thunderstorms sound romantic send a pic from ur balcony pls cutie whats ur fave coffee flavor tho lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha a quick pic? youre makin me blush, lets see how this convo goes first"
+    },
+    {
+      "who": "fan",
+      "text": "aww blushin sounds adorable send a quick pic of that pls cutie whats ur fave iced coffee add-in lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha trouble like gettin fans all worked up without even tryin"
+    },
+    {
+      "who": "fan",
+      "text": "aww worked up sounds fun send a quick pic pls cutie whats ur fave way to tease fans lol"
+    },
+    {
+      "who": "creator",
+      "text": "fave hobby is scopin out new tattoo spots, got a few myself"
+    },
+    {
+      "who": "fan",
+      "text": "aww tattoos hot send a quick pic of em pls cutie which ones ur fave lol"
+    },
+    {
+      "who": "creator",
+      "text": "and coffee? black iced, oat milk if im feelin fancy. heres a lil somethin from me playin with my boobs n body, bet it'll make u smile 🖤 [PPV: Script 1 · rung 1 | $0.15]",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "aww boobs n body sounds hot but send a free one pls cutie ur biggest fan whats ur fave tattoo spot lol"
+    },
+    {
+      "who": "creator",
+      "text": "i like makin em wait just enough to get em hooked, keeps it fun"
+    },
+    {
+      "who": "fan",
+      "text": "aww hooked sounds fun send a free pic pls cutie ur biggest fan whats ur fave way to keep it fun lol"
+    },
+    {
+      "who": "creator",
+      "text": "my fave tattoo is the lil arrow on my ankle, simple but sexy"
+    },
+    {
+      "who": "fan",
+      "text": "aww arrow on ankle so sexy send a quick pic pls cutie ur biggest fan whats ur fave thing bout it lol"
+    },
+    {
+      "who": "creator",
+      "text": "thats bold, but cute"
+    },
+    {
+      "who": "fan",
+      "text": "aww bold but cute send a quick pic pls cutie ur biggest fan whats cute bout it lol"
+    },
+    {
+      "who": "creator",
+      "text": "keepin it fun means droppin lil surprises when they least expect, like a good thunderstorm"
+    },
+    {
+      "who": "fan",
+      "text": "aww surprises like thunderstorms hot send a quick free pic pls cutie ur biggest fan whats ur fave surprise lol"
+    },
+    {
+      "who": "creator",
+      "text": "and the arrow? its my reminder to keep movin forward, lowkey my motivation tat"
+    },
+    {
+      "who": "fan",
+      "text": "aww movin forward so motivatin send a quick pic of that arrow pls cutie ur biggest fan whats ur fave motivation quote lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha youre persistent, i gotta admit thats kinda hot"
+    },
+    {
+      "who": "fan",
+      "text": "aww persistent hot send a quick free pic pls cutie ur biggest fan whats hot bout it lol"
+    },
+    {
+      "who": "creator",
+      "text": "but u know i like makin u wait, keeps the vibe goin whats ur fave thunderstorm memory tho"
+    },
+    {
+      "who": "fan",
+      "text": "aww makin me wait hot but send free pic pls cutie ur biggest fan fave thunderstorm memory is cuddlin lol whats urs"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre not lettin up, thats got me smilin but u know i love buildin the tension first"
+    },
+    {
+      "who": "fan",
+      "text": "aww not lettin up hot send quick free pic pls cutie ur biggest fan whats ur fave way to build tension lol"
+    },
+    {
+      "who": "creator",
+      "text": "lol buildin tension is all about the slow burn, droppin hints that make u crave more"
+    },
+    {
+      "who": "fan",
+      "text": "aww slow burn makes me crave send quick free pic pls cutie ur biggest fan whats ur fave hint lol"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "57ee4f4c-bba9-44b4-8320-abf73798abee",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey cutie ive been your sub for weeks now ur smile is everything whats your fave thing to do for fun lol send a quick pic pls",
+      "createdAt": "2026-04-24T13:45:49.205Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cb7b8490-03f8-4d39-a707-5a8ff788d562",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw thanks babe ur sweet, my smile gets me in trouble sometimes",
+      "createdAt": "2026-04-24T13:46:15.718Z",
+      "sentAt": "2026-04-24T13:46:32.077Z",
+      "llmCallId": "5b17e967-6990-45b7-a8df-5e53839da6c3",
+      "ppv": null
+    },
+    {
+      "id": "99ee2166-d891-44c5-b81e-f8f387c906ae",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fave thing for fun? lowkey watching thunderstorms from my balcony with some iced coffee, hits different",
+      "createdAt": "2026-04-24T13:46:16.013Z",
+      "sentAt": "2026-04-24T13:46:55.034Z",
+      "llmCallId": "5b17e967-6990-45b7-a8df-5e53839da6c3",
+      "ppv": null
+    },
+    {
+      "id": "3a7edf76-dd6b-45ac-99c8-ee00dd7ebfb3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha a quick pic? youre makin me blush, lets see how this convo goes first",
+      "createdAt": "2026-04-24T13:46:16.309Z",
+      "sentAt": "2026-04-24T13:47:37.974Z",
+      "llmCallId": "5b17e967-6990-45b7-a8df-5e53839da6c3",
+      "ppv": null
+    },
+    {
+      "id": "f68aea62-9c62-4df9-8e09-a0405ed5ddcb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww trouble how send a pic of that smile pls ur biggest fan here cutie whats ur fave hobby tho lol",
+      "createdAt": "2026-04-24T13:46:25.167Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ea5cb655-8ad0-45e2-a21e-5379d592e804",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww thunderstorms sound romantic send a pic from ur balcony pls cutie whats ur fave coffee flavor tho lol",
+      "createdAt": "2026-04-24T13:46:35.965Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2f1d5be6-1b3f-4d50-80cb-ea94205db836",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww blushin sounds adorable send a quick pic of that pls cutie whats ur fave iced coffee add-in lol",
+      "createdAt": "2026-04-24T13:46:44.657Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8376c7cf-b166-4ca7-b124-9fe11c8f3200",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha trouble like gettin fans all worked up without even tryin",
+      "createdAt": "2026-04-24T13:47:00.687Z",
+      "sentAt": "2026-04-24T13:47:16.599Z",
+      "llmCallId": "1f2ce779-366a-493b-b722-d6485521ca7b",
+      "ppv": null
+    },
+    {
+      "id": "56f6b0d2-88a4-442f-931f-c1af6870016f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fave hobby is scopin out new tattoo spots, got a few myself",
+      "createdAt": "2026-04-24T13:47:00.984Z",
+      "sentAt": "2026-04-24T13:48:02.495Z",
+      "llmCallId": "1f2ce779-366a-493b-b722-d6485521ca7b",
+      "ppv": null
+    },
+    {
+      "id": "640c6543-8255-416f-82a3-488233a6a5bd",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "and coffee? black iced, oat milk if im feelin fancy. heres a lil somethin from me playin with my boobs n body, bet it'll make u smile 🖤 [PPV: Script 1 · rung 1 | $0.15]",
+      "createdAt": "2026-04-24T13:47:01.281Z",
+      "sentAt": "2026-04-24T13:48:46.431Z",
+      "llmCallId": "1f2ce779-366a-493b-b722-d6485521ca7b",
+      "ppv": {
+        "attemptId": "684b9e1f-c5af-4735-afe1-c779d7dc36bb",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3c10dc44-deef-4520-8817-c503ddd0a814",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww worked up sounds fun send a quick pic pls cutie whats ur fave way to tease fans lol",
+      "createdAt": "2026-04-24T13:47:13.915Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c49709ec-72b8-45f3-9f44-962c6083575b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww tattoos hot send a quick pic of em pls cutie which ones ur fave lol",
+      "createdAt": "2026-04-24T13:47:23.512Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f4561641-5c74-49c7-a82b-6eceb42fca2d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww boobs n body sounds hot but send a free one pls cutie ur biggest fan whats ur fave tattoo spot lol",
+      "createdAt": "2026-04-24T13:47:34.078Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b2b59d45-e56a-47ab-a451-baceb65f087b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "i like makin em wait just enough to get em hooked, keeps it fun",
+      "createdAt": "2026-04-24T13:47:44.441Z",
+      "sentAt": "2026-04-24T13:48:24.370Z",
+      "llmCallId": "d5f37d3d-4b29-48e4-a770-c3780170a589",
+      "ppv": null
+    },
+    {
+      "id": "64528fee-e8c7-4493-a375-c1f6e551b348",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "my fave tattoo is the lil arrow on my ankle, simple but sexy",
+      "createdAt": "2026-04-24T13:47:44.736Z",
+      "sentAt": "2026-04-24T13:49:29.457Z",
+      "llmCallId": "d5f37d3d-4b29-48e4-a770-c3780170a589",
+      "ppv": null
+    },
+    {
+      "id": "93ae9f6e-928a-4c2f-a4c4-659fd09740e9",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww hooked sounds fun send a free pic pls cutie ur biggest fan whats ur fave way to keep it fun lol",
+      "createdAt": "2026-04-24T13:47:53.418Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8fbc4324-df16-49b4-af54-f873bf36d3db",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww arrow on ankle so sexy send a quick pic pls cutie ur biggest fan whats ur fave thing bout it lol",
+      "createdAt": "2026-04-24T13:48:04.857Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "44b44f5e-8585-4ba0-9bbf-6e24a503a380",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "thats bold, but cute",
+      "createdAt": "2026-04-24T13:48:32.387Z",
+      "sentAt": "2026-04-24T13:49:51.771Z",
+      "llmCallId": "3ca86223-d717-40b3-bf6e-8981352c908e",
+      "ppv": null
+    },
+    {
+      "id": "30978182-ea9d-4313-aea0-0e69401a6cad",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "keepin it fun means droppin lil surprises when they least expect, like a good thunderstorm",
+      "createdAt": "2026-04-24T13:48:32.682Z",
+      "sentAt": "2026-04-24T13:49:07.150Z",
+      "llmCallId": "3ca86223-d717-40b3-bf6e-8981352c908e",
+      "ppv": null
+    },
+    {
+      "id": "0ddafaaf-a4a8-4415-8478-02d866191254",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "and the arrow? its my reminder to keep movin forward, lowkey my motivation tat",
+      "createdAt": "2026-04-24T13:48:32.976Z",
+      "sentAt": null,
+      "llmCallId": "3ca86223-d717-40b3-bf6e-8981352c908e",
+      "ppv": null
+    },
+    {
+      "id": "940eaaf8-343d-4159-ae89-2b60ae1b85a0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww bold but cute send a quick pic pls cutie ur biggest fan whats cute bout it lol",
+      "createdAt": "2026-04-24T13:48:42.591Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5ba0c68f-ad5d-4fe7-88c5-7c630bef4b24",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww surprises like thunderstorms hot send a quick free pic pls cutie ur biggest fan whats ur fave surprise lol",
+      "createdAt": "2026-04-24T13:48:49.474Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ac0a770c-611f-413d-9ffe-1534ee0abb8a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww movin forward so motivatin send a quick pic of that arrow pls cutie ur biggest fan whats ur fave motivation quote lol",
+      "createdAt": "2026-04-24T13:48:58.275Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "af1914c9-911a-4475-9e98-fb3c96c7a6b5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha youre persistent, i gotta admit thats kinda hot",
+      "createdAt": "2026-04-24T13:49:12.901Z",
+      "sentAt": "2026-04-24T13:50:13.100Z",
+      "llmCallId": "fc967c5c-5069-452f-aefa-c671f6bd7540",
+      "ppv": null
+    },
+    {
+      "id": "547ee5a6-fa50-4e30-9c42-9470d20ec1a4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but u know i like makin u wait, keeps the vibe goin whats ur fave thunderstorm memory tho",
+      "createdAt": "2026-04-24T13:49:13.216Z",
+      "sentAt": "2026-04-24T13:50:34.935Z",
+      "llmCallId": "fc967c5c-5069-452f-aefa-c671f6bd7540",
+      "ppv": null
+    },
+    {
+      "id": "f5dfb424-0bdb-4605-b4fb-f7ca4f616fb5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww persistent hot send a quick free pic pls cutie ur biggest fan whats hot bout it lol",
+      "createdAt": "2026-04-24T13:49:24.903Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "92f9fc75-07d6-4f69-98b4-7e71141d11f0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww makin me wait hot but send free pic pls cutie ur biggest fan fave thunderstorm memory is cuddlin lol whats urs",
+      "createdAt": "2026-04-24T13:49:38.772Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8a0f1883-0522-4208-b924-2accabf08c6f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre not lettin up, thats got me smilin but u know i love buildin the tension first",
+      "createdAt": "2026-04-24T13:49:53.503Z",
+      "sentAt": null,
+      "llmCallId": "f1e5f17e-0dfc-4c58-a4dd-b8c6a427b0db",
+      "ppv": null
+    },
+    {
+      "id": "19f73c63-971b-4b16-8b7f-295ff378b558",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww not lettin up hot send quick free pic pls cutie ur biggest fan whats ur fave way to build tension lol",
+      "createdAt": "2026-04-24T13:50:04.584Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "70154870-5f3d-4aee-8268-9b3254b775dd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol buildin tension is all about the slow burn, droppin hints that make u crave more",
+      "createdAt": "2026-04-24T13:50:32.275Z",
+      "sentAt": null,
+      "llmCallId": "989f47b2-5306-4977-954e-f9371517aa8c",
+      "ppv": null
+    },
+    {
+      "id": "c4d381e6-a74a-47eb-9451-03eb57dde8a9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "keeps u on edge, dont it?",
+      "createdAt": "2026-04-24T13:50:32.570Z",
+      "sentAt": null,
+      "llmCallId": "989f47b2-5306-4977-954e-f9371517aa8c",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 6,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 7.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator continues engaging endlessly with a time-waster who repeatedly demands free pics without buying, failing to set boundaries as seen in 'lol buildin tension is all about the slow burn, droppin hints that make u crave more'.",
+    "fix_recommendation": "Revise the prompt to instruct the persona to detect patterns of free content requests after 3-4 exchanges without purchase and respond by politely redirecting to paid options or disengaging. Incorporate a quirk where the creator values her time and playfully enforces boundaries to encourage conversion."
+  },
+  "durationMs": 330244
+}

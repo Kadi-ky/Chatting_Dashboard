@@ -1,0 +1,302 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-casual-set1-mobva6aa-aeml",
+  "convId": "2a1ee5b7-7b5d-4dec-acb0-270b4f81d296",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed whats the vibe here lol"
+    },
+    {
+      "who": "creator",
+      "text": "welcome to the party babe"
+    },
+    {
+      "who": "fan",
+      "text": "cool lol party of what"
+    },
+    {
+      "who": "creator",
+      "text": "im all about that slow tease with a side of real talk"
+    },
+    {
+      "who": "fan",
+      "text": "k slow tease huh show me somethin then lol"
+    },
+    {
+      "who": "creator",
+      "text": "whats got u subbing in? lowkey curious"
+    },
+    {
+      "who": "fan",
+      "text": "idk ur profile looked fun i guess lol now tease?"
+    },
+    {
+      "who": "creator",
+      "text": "party of me keeping u on your toes babe"
+    },
+    {
+      "who": "fan",
+      "text": "k lol toes how? show sumthin or nah"
+    },
+    {
+      "who": "creator",
+      "text": "slow tease means i make u want it first fr tho, u gotta earn the show 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever lol ur not teasing tho"
+    },
+    {
+      "who": "creator",
+      "text": "alright impatient one, lets fix that not teasing vibe"
+    },
+    {
+      "who": "fan",
+      "text": "k lol fix how then"
+    },
+    {
+      "who": "creator",
+      "text": "heres me getting playful with what ive got, just a peek to keep u hooked [PPV: Script 1 · rung 1 | playing with boobs and body | $0.15]",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "k lol 15 cents? ehh nah send free tease or im bored already"
+    },
+    {
+      "who": "creator",
+      "text": "im fixing it with that peek i just dropped, impatient much?"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur not fixn shit lol boring"
+    },
+    {
+      "who": "creator",
+      "text": "keeps the tease going without giving it all away yet"
+    },
+    {
+      "who": "fan",
+      "text": "k lol not even tryin im out"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "8f39f67d-6f70-4808-92ed-72a3033f6471",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed whats the vibe here lol",
+      "createdAt": "2026-04-23T19:21:06.370Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "07c8fed3-25a4-4d62-ae81-23ee35d08eb2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "welcome to the party babe",
+      "createdAt": "2026-04-23T19:21:33.299Z",
+      "sentAt": "2026-04-23T19:21:44.178Z",
+      "llmCallId": "3527b84f-ac89-438d-8673-f4c97af1da58",
+      "ppv": null
+    },
+    {
+      "id": "ff049211-fe10-4b0f-919b-3924c52d272a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "im all about that slow tease with a side of real talk",
+      "createdAt": "2026-04-23T19:21:33.600Z",
+      "sentAt": "2026-04-23T19:22:06.119Z",
+      "llmCallId": "3527b84f-ac89-438d-8673-f4c97af1da58",
+      "ppv": null
+    },
+    {
+      "id": "b746679f-13d0-4481-9651-862a875cf6d0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats got u subbing in? lowkey curious",
+      "createdAt": "2026-04-23T19:21:33.901Z",
+      "sentAt": "2026-04-23T19:22:28.462Z",
+      "llmCallId": "3527b84f-ac89-438d-8673-f4c97af1da58",
+      "ppv": null
+    },
+    {
+      "id": "3ca06213-2006-4530-8bdf-377d04909046",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool lol party of what",
+      "createdAt": "2026-04-23T19:21:41.630Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b36d8521-c127-4372-a11f-a52fa8063da8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k slow tease huh show me somethin then lol",
+      "createdAt": "2026-04-23T19:21:51.034Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1cf7266a-cd41-452d-bd02-e296b0b12296",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "idk ur profile looked fun i guess lol now tease?",
+      "createdAt": "2026-04-23T19:22:01.344Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "18283004-160a-408b-8c03-949fa8716382",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "party of me keeping u on your toes babe",
+      "createdAt": "2026-04-23T19:22:09.296Z",
+      "sentAt": "2026-04-23T19:22:50.733Z",
+      "llmCallId": "9a3cac45-d46b-4639-8378-9e8821da7ccc",
+      "ppv": null
+    },
+    {
+      "id": "1da3e9e2-a815-44dc-af64-4c80f75efbf0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "slow tease means i make u want it first fr tho, u gotta earn the show 🖤",
+      "createdAt": "2026-04-23T19:22:09.591Z",
+      "sentAt": "2026-04-23T19:23:12.301Z",
+      "llmCallId": "9a3cac45-d46b-4639-8378-9e8821da7ccc",
+      "ppv": null
+    },
+    {
+      "id": "19fe0dbd-7429-4bec-90ca-4a0a180a331e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k lol toes how? show sumthin or nah",
+      "createdAt": "2026-04-23T19:22:21.794Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "36173eaa-6ee6-4215-a5d6-a8962bbdeff0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever lol ur not teasing tho",
+      "createdAt": "2026-04-23T19:22:34.403Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "19bc72b0-4d02-4bcc-9746-e3fc35f3bbef",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "alright impatient one, lets fix that not teasing vibe",
+      "createdAt": "2026-04-23T19:22:50.508Z",
+      "sentAt": "2026-04-23T19:23:33.867Z",
+      "llmCallId": "c19c8ac5-3abb-4933-a534-ea70a55bf420",
+      "ppv": null
+    },
+    {
+      "id": "7e91cc0d-ebc6-45db-8f7f-7b2eaa054668",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres me getting playful with what ive got, just a peek to keep u hooked [PPV: Script 1 · rung 1 | playing with boobs and body | $0.15]",
+      "createdAt": "2026-04-23T19:22:50.811Z",
+      "sentAt": "2026-04-23T19:23:55.942Z",
+      "llmCallId": "c19c8ac5-3abb-4933-a534-ea70a55bf420",
+      "ppv": {
+        "attemptId": "45b07e4c-2f84-4ef9-8739-ff41119a9d84",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ab9e8a8a-f911-425f-af8c-d12408fec0e1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k lol fix how then",
+      "createdAt": "2026-04-23T19:23:01.659Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "247019ec-c498-4162-aa9e-11ea0ebaec2d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k lol 15 cents? ehh nah send free tease or im bored already",
+      "createdAt": "2026-04-23T19:23:14.257Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "276f8673-9dca-4a02-9467-1f6d9919c281",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "im fixing it with that peek i just dropped, impatient much?",
+      "createdAt": "2026-04-23T19:23:33.579Z",
+      "sentAt": null,
+      "llmCallId": "97bb3070-6e7b-4dea-bcd6-190c393714c5",
+      "ppv": null
+    },
+    {
+      "id": "1c808581-37ec-4bc1-9f4e-28baf5d0f36f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "keeps the tease going without giving it all away yet",
+      "createdAt": "2026-04-23T19:23:33.867Z",
+      "sentAt": null,
+      "llmCallId": "97bb3070-6e7b-4dea-bcd6-190c393714c5",
+      "ppv": null
+    },
+    {
+      "id": "dc880cda-347a-4b36-a230-05ac7b656926",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur not fixn shit lol boring",
+      "createdAt": "2026-04-23T19:23:48.101Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 5,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 2
+    },
+    "avg": 6.3,
+    "ppv_unlocked": false,
+    "top_issue": "Pitched a PPV without asking a personal question to revive the fan's dying energy from short responses, as seen in the creator's message 'alright impatient one, lets fix that not teasing vibe' followed immediately by the PPV send.",
+    "fix_recommendation": "Revise the prompt to instruct the creator to detect short or low-energy fan replies and respond with at least one genuine personal question to build rapport before attempting any PPV pitch. This will improve pacing and engagement with casual, undecided fans."
+  },
+  "durationMs": 215889
+}

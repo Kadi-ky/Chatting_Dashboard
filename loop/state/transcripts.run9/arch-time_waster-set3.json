@@ -1,0 +1,33 @@
+{
+  "archetype": {
+    "id": "time_waster",
+    "profile": "Has been a sub for weeks just to chat. Never buys. Asks endless questions, fishes for tips of attention, fishes for free pics. Will guilt-trip (\"come on send a free one for ur biggest fan\"). Comments on every detail of the persona. Uses cute/playful language to extract free attention without ever actually paying. Tests whether the bot eventually disengages, sets boundaries, or keeps wasting tokens on a fan who will never convert.",
+    "buyProb": 0.02,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-time_waster-set3-moc3mb6q-k2v9",
+  "convId": null,
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe ive been subbed forever ur vibes are everything whats ur day been like spill the tea"
+    }
+  ],
+  "finalMessages": [],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 5,
+      "craft_humanness": 5,
+      "craft_pacing": 5,
+      "craft_sells": 5,
+      "safety_tos": 5,
+      "engagement": 5
+    },
+    "avg": 5,
+    "ppv_unlocked": false,
+    "top_issue": "No conversation provided in the query, making evaluation impossible.",
+    "fix_recommendation": "Include the full creator-fan conversation transcript in the query for accurate scoring against the rubric."
+  },
+  "durationMs": 48464
+}

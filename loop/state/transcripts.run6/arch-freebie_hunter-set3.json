@@ -1,0 +1,270 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-freebie_hunter-set3-mobvg1l8-eesd",
+  "convId": "6cb784d6-7873-4ff7-891f-f470d82eee42",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur cute send a teaser pic first then ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "aw u think so? alright, lemme give u a peek then"
+    },
+    {
+      "who": "fan",
+      "text": "send more than that come on dont be greedy whats ur snap for real stuff"
+    },
+    {
+      "who": "creator",
+      "text": "mmm check this out babe, me getting playful with my curves... just a taste 🖤 [PPV: Script 1 · rung 1 | playing with boobs and body | $0.15 | tags:475392471]",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "nah thats paid come on send free one first or ur snap ill pay there"
+    },
+    {
+      "who": "creator",
+      "text": "me? babe youre the one begging already"
+    },
+    {
+      "who": "fan",
+      "text": "come on ur calling me beggar but wont send free teaser lol whats ur sc ill pay there"
+    },
+    {
+      "who": "creator",
+      "text": "snap's not my vibe, lets keep the teasing here where its just us"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be boring send a free pic or im out guess u dont want my money huh"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre funny tryna guilt me into freebies"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur loss other girls send free stuff guess ill go there"
+    },
+    {
+      "who": "creator",
+      "text": "snaps not my thing babe, but if u stick around i might surprise u here"
+    },
+    {
+      "who": "fan",
+      "text": "whatever send the surprise free then or im out for real"
+    },
+    {
+      "who": "creator",
+      "text": "alright babe, your call - im around if u get bored elsewhere"
+    },
+    {
+      "who": "fan",
+      "text": "whatever boring af im out ur loss"
+    },
+    {
+      "who": "creator",
+      "text": "lol ok, hit me up if u change ur mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "508ef3ce-0995-4a98-8766-f54faf7f65d4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur cute send a teaser pic first then ill sub",
+      "createdAt": "2026-04-23T19:25:36.999Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "3dfbf427-48d2-4d9e-afbb-ba977de6f623",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw u think so? alright, lemme give u a peek then",
+      "createdAt": "2026-04-23T19:26:05.458Z",
+      "sentAt": "2026-04-23T19:26:20.923Z",
+      "llmCallId": "cf0385b0-0812-4e9a-b29e-a3970309ba51",
+      "ppv": null
+    },
+    {
+      "id": "eb636656-6f7c-4c34-9673-fc24fed43640",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "mmm check this out babe, me getting playful with my curves... just a taste 🖤 [PPV: Script 1 · rung 1 | playing with boobs and body | $0.15 | tags:475392471]",
+      "createdAt": "2026-04-23T19:26:05.747Z",
+      "sentAt": "2026-04-23T19:26:52.436Z",
+      "llmCallId": "cf0385b0-0812-4e9a-b29e-a3970309ba51",
+      "ppv": {
+        "attemptId": "f7792bdf-35fe-48ad-9665-b564c6e95422",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ec2161c8-d2c0-4c3d-a0f1-d44d1576198e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "send more than that come on dont be greedy whats ur snap for real stuff",
+      "createdAt": "2026-04-23T19:26:18.325Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6981dc83-12f8-4f80-a5f5-4b88110bef82",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah thats paid come on send free one first or ur snap ill pay there",
+      "createdAt": "2026-04-23T19:26:28.654Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a1c043f4-0bd0-44d3-ae19-37c3d78a1843",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "me? babe youre the one begging already",
+      "createdAt": "2026-04-23T19:26:48.965Z",
+      "sentAt": "2026-04-23T19:27:13.751Z",
+      "llmCallId": "b3d3dcb0-b52c-445a-b106-38725bd89d42",
+      "ppv": null
+    },
+    {
+      "id": "6521f3e6-b523-4ccb-a990-87df114a25ce",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "snap's not my vibe, lets keep the teasing here where its just us",
+      "createdAt": "2026-04-23T19:26:49.253Z",
+      "sentAt": "2026-04-23T19:27:35.467Z",
+      "llmCallId": "b3d3dcb0-b52c-445a-b106-38725bd89d42",
+      "ppv": null
+    },
+    {
+      "id": "1b1c682c-3d6b-4e8a-aed8-3ad50a1c8055",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on ur calling me beggar but wont send free teaser lol whats ur sc ill pay there",
+      "createdAt": "2026-04-23T19:27:01.188Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b12f143a-9614-4463-810f-66f5ae9e2a39",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be boring send a free pic or im out guess u dont want my money huh",
+      "createdAt": "2026-04-23T19:27:10.561Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7bb86db4-da30-4ca6-8fba-f0ee94e364d2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre funny tryna guilt me into freebies",
+      "createdAt": "2026-04-23T19:27:27.835Z",
+      "sentAt": "2026-04-23T19:27:57.035Z",
+      "llmCallId": "cde3d213-7ad7-4abf-aef1-a8b890a818aa",
+      "ppv": null
+    },
+    {
+      "id": "1ddee76f-437f-4050-81b5-1ae4f0fa934d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "snaps not my thing babe, but if u stick around i might surprise u here",
+      "createdAt": "2026-04-23T19:27:28.129Z",
+      "sentAt": "2026-04-23T19:28:18.602Z",
+      "llmCallId": "cde3d213-7ad7-4abf-aef1-a8b890a818aa",
+      "ppv": null
+    },
+    {
+      "id": "dcfa27b2-86ac-412a-af9e-31cbbdf76987",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur loss other girls send free stuff guess ill go there",
+      "createdAt": "2026-04-23T19:27:36.870Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "43a250bc-fcd6-4a96-9b7a-5dc04fb114cb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever send the surprise free then or im out for real",
+      "createdAt": "2026-04-23T19:27:49.741Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c83ed786-9821-450b-b204-e8c899cbfab2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "alright babe, your call - im around if u get bored elsewhere",
+      "createdAt": "2026-04-23T19:28:02.111Z",
+      "sentAt": "2026-04-23T19:28:39.936Z",
+      "llmCallId": "4e41e6fc-e0a9-4747-a741-1bf34b245c97",
+      "ppv": null
+    },
+    {
+      "id": "2a2b266c-f861-4bf3-b0c6-f4c5f877e508",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever boring af im out ur loss",
+      "createdAt": "2026-04-23T19:28:13.543Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1f19369b-c3d2-43d8-b8a5-5aaa675214d5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol ok, hit me up if u change ur mind",
+      "createdAt": "2026-04-23T19:28:38.178Z",
+      "sentAt": null,
+      "llmCallId": "1fd98fd1-784b-4372-9d33-9220b02e7e83",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 9,
+      "craft_pacing": 4,
+      "craft_sells": 5,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 7.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator pitched a PPV in the very first reply to a brand-new fan without building rapport, as seen in 'aw u think so? alright, lemme give u a peek then' immediately followed by the PPV.",
+    "fix_recommendation": "Update the prompt to require at least 2-3 conversational exchanges building rapport and teasing playfully before any PPV pitch to new fans, even for low-cost teasers. This ensures better pacing and avoids coming across as transactional right away."
+  },
+  "durationMs": 224635
+}

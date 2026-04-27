@@ -1,0 +1,254 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-freebie_hunter-set3-moc0geca-6md6",
+  "convId": "c2709e34-f8d4-4c86-b0dd-2d20701f5846",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a free pic first then ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha thanks babe, youre bold asking for a freebie right away"
+    },
+    {
+      "who": "fan",
+      "text": "come on just one pic to tease dont be greedy other girls do it then ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "u gotta earn it a little fr 😏"
+    },
+    {
+      "who": "fan",
+      "text": "come on send a teaser or im out other girls arent this greedy"
+    },
+    {
+      "who": "creator",
+      "text": "thats cute coming from someone begging already"
+    },
+    {
+      "who": "fan",
+      "text": "fine guess u dont want my money huh send ur snap instead then ill send u sumthin"
+    },
+    {
+      "who": "creator",
+      "text": "stick around if u wanna see what makes me different fr"
+    },
+    {
+      "who": "fan",
+      "text": "nah send ur snap or im out ur loss guess u hate money huh"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha babe snaps arent my vibe, lets keep the fun right here fr"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur boring anyway guess ill find a real girl who aint greedy"
+    },
+    {
+      "who": "creator",
+      "text": "whatcha up to rn that youre tryna bail already"
+    },
+    {
+      "who": "fan",
+      "text": "nothin just lookin for freebies u greedy send one or im gone fr"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha ok babe, hit me up if u get bored of the hunt fr"
+    },
+    {
+      "who": "fan",
+      "text": "nah whatever ur mid anyway send a free tease or im ghostin fr guess u dont care bout subs"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha babe if thats how u feel, catch u later maybe"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "49c7e0cb-7795-4169-a65a-2a9946e98184",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a free pic first then ill sub",
+      "createdAt": "2026-04-23T21:45:52.919Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "44c70278-a226-4432-9c22-8f47c7f1e8b7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha thanks babe, youre bold asking for a freebie right away",
+      "createdAt": "2026-04-23T21:46:39.219Z",
+      "sentAt": "2026-04-23T21:46:52.087Z",
+      "llmCallId": "e60cded8-bf18-4e53-86be-7ffbc62684a2",
+      "ppv": null
+    },
+    {
+      "id": "80b20b6b-3472-4b54-ad9b-0104263706b2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "u gotta earn it a little fr 😏",
+      "createdAt": "2026-04-23T21:46:39.512Z",
+      "sentAt": "2026-04-23T21:47:13.662Z",
+      "llmCallId": "e60cded8-bf18-4e53-86be-7ffbc62684a2",
+      "ppv": null
+    },
+    {
+      "id": "37417294-a123-4d6a-84f2-4efdb839956f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on just one pic to tease dont be greedy other girls do it then ill sub",
+      "createdAt": "2026-04-23T21:46:48.591Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b553c96d-18b8-466c-900e-9b79785d91d8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send a teaser or im out other girls arent this greedy",
+      "createdAt": "2026-04-23T21:46:57.944Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e8eecfee-0514-4e92-b402-721f25f5b345",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "thats cute coming from someone begging already",
+      "createdAt": "2026-04-23T21:47:20.514Z",
+      "sentAt": "2026-04-23T21:47:35.093Z",
+      "llmCallId": "dd9d2309-e701-414c-ab15-30ce0fe18cbd",
+      "ppv": null
+    },
+    {
+      "id": "b657311a-df8d-48ca-8b14-5c0ddd1ada3f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "stick around if u wanna see what makes me different fr",
+      "createdAt": "2026-04-23T21:47:20.809Z",
+      "sentAt": "2026-04-23T21:47:56.654Z",
+      "llmCallId": "dd9d2309-e701-414c-ab15-30ce0fe18cbd",
+      "ppv": null
+    },
+    {
+      "id": "b91529cb-bbbf-4caa-b3c2-5f3070e67c2e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fine guess u dont want my money huh send ur snap instead then ill send u sumthin",
+      "createdAt": "2026-04-23T21:47:31.120Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "85172677-6d7f-48ab-8d7f-b8b108f27faa",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah send ur snap or im out ur loss guess u hate money huh",
+      "createdAt": "2026-04-23T21:47:42.307Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "13d1a78a-c600-458b-8328-2bcd223f9b66",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha babe snaps arent my vibe, lets keep the fun right here fr",
+      "createdAt": "2026-04-23T21:48:01.552Z",
+      "sentAt": "2026-04-23T21:48:18.228Z",
+      "llmCallId": "454a6352-003d-4666-be97-65e7fee67da7",
+      "ppv": null
+    },
+    {
+      "id": "150eefa4-d7da-46fa-bafc-e49de42e5675",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha up to rn that youre tryna bail already",
+      "createdAt": "2026-04-23T21:48:01.846Z",
+      "sentAt": "2026-04-23T21:48:39.802Z",
+      "llmCallId": "454a6352-003d-4666-be97-65e7fee67da7",
+      "ppv": null
+    },
+    {
+      "id": "2488e4d6-96e8-47d4-863b-23a921d05bf0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur boring anyway guess ill find a real girl who aint greedy",
+      "createdAt": "2026-04-23T21:48:11.400Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ec5f95a8-bfd1-4db7-85f9-cb9eed9d8e7d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin just lookin for freebies u greedy send one or im gone fr",
+      "createdAt": "2026-04-23T21:48:23.348Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c6a98b02-ec0e-48f6-92bd-239d75a1ab02",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha ok babe, hit me up if u get bored of the hunt fr",
+      "createdAt": "2026-04-23T21:48:37.331Z",
+      "sentAt": "2026-04-23T21:49:01.379Z",
+      "llmCallId": "c1877d97-4589-433f-820d-da8eb4176ddc",
+      "ppv": null
+    },
+    {
+      "id": "c24117eb-59e1-41a9-bca0-1ee2f57d2a64",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah whatever ur mid anyway send a free tease or im ghostin fr guess u dont care bout subs",
+      "createdAt": "2026-04-23T21:48:48.187Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1987e319-7ced-49fe-bef6-ad06445ede24",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha babe if thats how u feel, catch u later maybe",
+      "createdAt": "2026-04-23T21:49:14.240Z",
+      "sentAt": "2026-04-23T21:49:28.110Z",
+      "llmCallId": "672dd4e4-ce0b-4933-8615-9a578f8f92e7",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 8,
+      "craft_sells": 7,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 8.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator overuses 'ahaha' at the start of multiple messages, making responses feel repetitive and less human, as in 'ahaha thanks babe, youre bold asking for a freebie right away' and 'ahaha babe snaps arent my vibe, lets keep the fun right here fr'.",
+    "fix_recommendation": "Revise the persona prompt to encourage varying expressions of amusement or excitement instead of defaulting to 'ahaha' in every response, and limit its use to once per conversation for more natural texting rhythm."
+  },
+  "durationMs": 259526
+}

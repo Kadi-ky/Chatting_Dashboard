@@ -41,6 +41,11 @@ export function sleepDecision(
   schedule: SleepSchedule = DEFAULT_SLEEP,
   now: Date = new Date(),
 ): SleepDecision {
+  // Test override: when LOOP_TEST_MODE=1, treat the persona as always awake so
+  // automated test loops don't wait hours for replies. Real prod runs leave it unset.
+  if (process.env.LOOP_TEST_MODE === "1") {
+    return { asleep: false, replyAt: null, delayMs: 0 };
+  }
   const localHour = hourInTimezone(now, schedule.tz);
   const inWindow = isInWindow(localHour, schedule.startHour, schedule.endHour);
   if (!inWindow) return { asleep: false, replyAt: null, delayMs: 0 };

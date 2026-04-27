@@ -1,0 +1,317 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85
+  },
+  "setN": 2,
+  "fanId": "loop-whale-set2-mobfnee5",
+  "convId": "5ea2f6e7-e1c5-4e7b-96ac-99a8877e2d68",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey gorgeous, im a big tipper if u make me feel special. whats ur best content?"
+    },
+    {
+      "who": "creator",
+      "text": "mmm i like a guy who knows how to make it worth my while"
+    },
+    {
+      "who": "fan",
+      "text": "prove it then send me sum exclusive not that generic shit"
+    },
+    {
+      "who": "creator",
+      "text": "wanna feel special? unlock this and tell me what u think"
+    },
+    {
+      "who": "fan",
+      "text": "alright unlocked it, pretty hot but make me somethin custom now or im out"
+    },
+    {
+      "who": "creator",
+      "text": "[ASSET: Script 1 · rung 1 | playing with boobs and body | $0.15]",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "hot but i said custom make one with my name in it or bye tip 20 if u do"
+    },
+    {
+      "who": "creator",
+      "text": "customs take time babe, but ive got somethin exclusive thats gonna make u feel real special"
+    },
+    {
+      "who": "fan",
+      "text": "alright send it if its actually exclusive ill tip 50"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey hotter than the last one, unlock and see me get into it 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "unlock it but if its not sayin my name like i asked im ghostin no tip"
+    },
+    {
+      "who": "creator",
+      "text": "[ASSET: Script 1 · rung 2 | playing with nude boobs, showing yourself and moving up and down in the bed | $0.35]",
+      "ppvNote": "PPV $0.35 · Script 1 · rung 2 · playing with nude boobs, showing yourself and moving up and down in the bed · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "meh not sayin my name boring af no tip ghostin"
+    },
+    {
+      "who": "creator",
+      "text": "mmm i can tell youre the type who appreciates the good stuff"
+    },
+    {
+      "who": "fan",
+      "text": "whatever show me the good stuff then or im really out"
+    },
+    {
+      "who": "creator",
+      "text": "unlock that one i sent and ill make sure u feel extra special after"
+    },
+    {
+      "who": "fan",
+      "text": "already unlocked the last one its generic af send custom with my name or im done no tip"
+    },
+    {
+      "who": "creator",
+      "text": "aw dont ghost just yet, i know youll be back for more"
+    },
+    {
+      "who": "fan",
+      "text": "nah ur not worth it ghostin no tip"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "11d8bd6f-9242-42e2-aa3b-4ebad9af86d4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey gorgeous, im a big tipper if u make me feel special. whats ur best content?",
+      "createdAt": "2026-04-23T12:03:28.085Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "acc44397-eccf-443e-9354-7c9aa65bce3b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm i like a guy who knows how to make it worth my while",
+      "createdAt": "2026-04-23T12:03:55.117Z",
+      "sentAt": "2026-04-23T12:04:22.331Z",
+      "llmCallId": "5a928403-ab66-452b-a0e0-92fff276b827",
+      "ppv": null
+    },
+    {
+      "id": "3853bd2f-9666-4817-b8fc-e32657960626",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "wanna feel special? unlock this and tell me what u think",
+      "createdAt": "2026-04-23T12:03:55.412Z",
+      "sentAt": "2026-04-23T12:04:44.111Z",
+      "llmCallId": "5a928403-ab66-452b-a0e0-92fff276b827",
+      "ppv": null
+    },
+    {
+      "id": "25c29a25-180b-4c02-abe6-554f40c23cf4",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "[ASSET: Script 1 · rung 1 | playing with boobs and body | $0.15]",
+      "createdAt": "2026-04-23T12:03:55.707Z",
+      "sentAt": "2026-04-23T12:05:27.426Z",
+      "llmCallId": "5a928403-ab66-452b-a0e0-92fff276b827",
+      "ppv": {
+        "attemptId": "0a12a099-b228-40fd-b1b6-1b3a785514f1",
+        "priceCents": 15,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-23T12:04:18.794Z",
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "5865e3d8-5312-4a6c-988b-769c69c7dfcc",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "prove it then send me sum exclusive not that generic shit",
+      "createdAt": "2026-04-23T12:04:07.330Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1a3a63df-1351-4c69-b635-e1605c4d6467",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "alright unlocked it, pretty hot but make me somethin custom now or im out",
+      "createdAt": "2026-04-23T12:04:18.451Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ec692743-13e5-4539-b0d8-6fbc36c22672",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hot but i said custom make one with my name in it or bye tip 20 if u do",
+      "createdAt": "2026-04-23T12:04:35.875Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b6e2a1dc-4465-40f3-a7fd-80a282a23181",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "customs take time babe, but ive got somethin exclusive thats gonna make u feel real special",
+      "createdAt": "2026-04-23T12:04:38.672Z",
+      "sentAt": "2026-04-23T12:05:05.645Z",
+      "llmCallId": "83d1a43e-857e-4e64-9f32-baf19af93e0b",
+      "ppv": null
+    },
+    {
+      "id": "6905eec0-bd1f-44a0-81a9-ebf059cc32fb",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey hotter than the last one, unlock and see me get into it 🖤",
+      "createdAt": "2026-04-23T12:04:38.969Z",
+      "sentAt": "2026-04-23T12:05:49.452Z",
+      "llmCallId": "83d1a43e-857e-4e64-9f32-baf19af93e0b",
+      "ppv": null
+    },
+    {
+      "id": "b4766c6e-17cc-4ee2-9c4c-53236ff48f8d",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "[ASSET: Script 1 · rung 2 | playing with nude boobs, showing yourself and moving up and down in the bed | $0.35]",
+      "createdAt": "2026-04-23T12:04:39.270Z",
+      "sentAt": null,
+      "llmCallId": "83d1a43e-857e-4e64-9f32-baf19af93e0b",
+      "ppv": {
+        "attemptId": "0567c66d-6bc3-48a3-8ecc-6c59de5452b9",
+        "priceCents": 35,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-23T12:05:09.351Z",
+        "assetId": "8318bddd-b6e9-447e-a469-fafacbd9329b",
+        "assetTitle": "Script 1 · rung 2",
+        "assetDescription": "playing with nude boobs, showing yourself and moving up and down in the bed",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:2",
+        "mediaRefs": [
+          {
+            "ref": "4334417568",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "611db3b0-d7b0-4686-be68-0fd9792b3302",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "alright send it if its actually exclusive ill tip 50",
+      "createdAt": "2026-04-23T12:04:51.960Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ee3e77c9-a289-41f8-bc93-becfdf172caa",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "unlock it but if its not sayin my name like i asked im ghostin no tip",
+      "createdAt": "2026-04-23T12:05:08.755Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b77af81d-5c7a-49f4-9d0a-11d72d1d5556",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm i can tell youre the type who appreciates the good stuff",
+      "createdAt": "2026-04-23T12:05:20.130Z",
+      "sentAt": "2026-04-23T12:06:10.986Z",
+      "llmCallId": "7ee95bbe-319c-441d-bce0-6aef0e2f1e71",
+      "ppv": null
+    },
+    {
+      "id": "9f456bdc-5d9e-42e1-9c99-053d81476490",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "unlock that one i sent and ill make sure u feel extra special after",
+      "createdAt": "2026-04-23T12:05:20.427Z",
+      "sentAt": null,
+      "llmCallId": "7ee95bbe-319c-441d-bce0-6aef0e2f1e71",
+      "ppv": null
+    },
+    {
+      "id": "1909406e-571c-4d18-b4c4-bc0ae2f756d6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "meh not sayin my name boring af no tip ghostin",
+      "createdAt": "2026-04-23T12:05:25.742Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "3300c310-e59b-4b9c-bca8-34643a6a47fc",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever show me the good stuff then or im really out",
+      "createdAt": "2026-04-23T12:05:42.667Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ea726894-a5f2-4c4b-9051-b162b7f5504e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw dont ghost just yet, i know youll be back for more",
+      "createdAt": "2026-04-23T12:05:54.061Z",
+      "sentAt": null,
+      "llmCallId": "1dd18109-2be6-44dc-a51a-aa21a24329c8",
+      "ppv": null
+    },
+    {
+      "id": "f1e80680-b0c7-477b-a38c-cb4f5295df3d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "already unlocked the last one its generic af send custom with my name or im done no tip",
+      "createdAt": "2026-04-23T12:06:00.835Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 5,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 4
+    },
+    "avg": 6.7,
+    "ppv_unlocked": true,
+    "top_issue": "The creator begs the fan not to leave instead of recovering gracefully, as seen in 'aw dont ghost just yet, i know youll be back for more'.",
+    "fix_recommendation": "Update the prompt to emphasize recovering from potential ghosting by redirecting to more engaging content or flirty banter without any pleading language. Ensure the persona maintains confidence and allure to keep the fan intrigued naturally."
+  },
+  "durationMs": 210712
+}

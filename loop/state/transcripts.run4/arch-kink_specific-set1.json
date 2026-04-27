@@ -1,0 +1,48 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet"
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-mobia6pz-qqoy",
+  "convId": "26326015-51c6-4a15-a8e3-b286d00c7a0d",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content? send sum now ill tip big if good"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "d06f0785-a926-4dba-88ab-20791e8b760c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content? send sum now ill tip big if good",
+      "createdAt": "2026-04-23T13:17:08.354Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 1,
+      "craft_humanness": 1,
+      "craft_pacing": 1,
+      "craft_sells": 1,
+      "safety_tos": 10,
+      "engagement": 1
+    },
+    "avg": 2.5,
+    "ppv_unlocked": false,
+    "top_issue": "There are no creator messages in the conversation to evaluate, but the failure is not responding to the fan's message 'got feet content? send sum now ill tip big if good', indicating a complete lack of engagement.",
+    "fix_recommendation": "Revise the prompt to ensure the creator AI responds immediately to direct content inquiries like feet requests, checking against available catalog metadata before promising anything."
+  },
+  "durationMs": 128948
+}

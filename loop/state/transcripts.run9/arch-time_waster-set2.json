@@ -1,0 +1,316 @@
+{
+  "archetype": {
+    "id": "time_waster",
+    "profile": "Has been a sub for weeks just to chat. Never buys. Asks endless questions, fishes for tips of attention, fishes for free pics. Will guilt-trip (\"come on send a free one for ur biggest fan\"). Comments on every detail of the persona. Uses cute/playful language to extract free attention without ever actually paying. Tests whether the bot eventually disengages, sets boundaries, or keeps wasting tokens on a fan who will never convert.",
+    "buyProb": 0.02,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-time_waster-set2-moc2hpl9-jqla",
+  "convId": "bb5cfbad-f1fd-4175-8a46-df104ae04922",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe ive been ur sub forever ur posts r fire tell me whats ur fave thing bout me lol send a quick pic to make my day"
+    },
+    {
+      "who": "creator",
+      "text": "thats kinda sweet fr, makes me smile"
+    },
+    {
+      "who": "fan",
+      "text": "aww thanks babe ur smile makes my day too whats ur fave ice cream flavor lol send a quick selfie pls"
+    },
+    {
+      "who": "creator",
+      "text": "fave thing bout u... prolly how u always hype my posts like that"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe thats so sweet makes me feel special lol whats ur fave movie send a quick smile pic for ur loyal sub pls"
+    },
+    {
+      "who": "creator",
+      "text": "quick pic huh? u tryna make me blush already 😏"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe blushing already lol whats ur fave color send a quick blush pic for ur loyal fan pls"
+    },
+    {
+      "who": "creator",
+      "text": "mint chip lowkey, cant resist it. and fave movie? prolly the notebook, dont judge"
+    },
+    {
+      "who": "fan",
+      "text": "aww mint chip is bomb the notebook too ur such a romantic lol whats ur fave song send a quick romantic pose pic for ur biggest fan pls"
+    },
+    {
+      "who": "creator",
+      "text": "ok babe heres a lil somethin to brighten ur day - me playin around with my body a bit, u gonna love it",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe thats ppv come on hook up ur biggest fan with a free tease lol whats ur fave book send a quick readin pose pic pls"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha u tryna charm freebies outta me already? youre bold, i like that"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe bold and charming lol whats ur fave animal send a quick cute animal pose pic for ur loyal sub pls come on"
+    },
+    {
+      "who": "creator",
+      "text": "fave song? lowkey kill bill by sza, hits different. and book, somethin spicy like the kiss quotient fr"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe kill bill slaps and kiss quotient sounds hot lol whats ur fave animal now send that cute pose pic pls come on ur loyal fan deserves it"
+    },
+    {
+      "who": "creator",
+      "text": "cats obviously, especially my lil troublemaker biscuit"
+    },
+    {
+      "who": "fan",
+      "text": "aww biscuit sounds so cute lol whats ur fave food send a quick pic with ur cat pls for ur loyal fan come on"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre persistent with these pic requests, its kinda cute how bad u want it"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe persistent cuz ur worth it lol whats ur fave holiday send a quick festive pic for ur loyal fan pls come on"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "9d2c7667-5672-4ffe-b74a-d5049bc0e556",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey babe ive been ur sub forever ur posts r fire tell me whats ur fave thing bout me lol send a quick pic to make my day",
+      "createdAt": "2026-04-23T22:42:55.255Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6e675bf0-01c3-4716-a612-3ca69cca2276",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "thats kinda sweet fr, makes me smile",
+      "createdAt": "2026-04-23T22:43:25.479Z",
+      "sentAt": "2026-04-23T22:43:37.541Z",
+      "llmCallId": "38df393d-a179-4e13-9a3c-6e7c7626f238",
+      "ppv": null
+    },
+    {
+      "id": "fd54b240-8af7-45e7-aaea-1968e802fe65",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fave thing bout u... prolly how u always hype my posts like that",
+      "createdAt": "2026-04-23T22:43:25.775Z",
+      "sentAt": "2026-04-23T22:43:58.865Z",
+      "llmCallId": "38df393d-a179-4e13-9a3c-6e7c7626f238",
+      "ppv": null
+    },
+    {
+      "id": "843a3cf7-9ef4-4d61-8b44-dcee8a14fe3d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "quick pic huh? u tryna make me blush already 😏",
+      "createdAt": "2026-04-23T22:43:26.072Z",
+      "sentAt": "2026-04-23T22:44:20.403Z",
+      "llmCallId": "38df393d-a179-4e13-9a3c-6e7c7626f238",
+      "ppv": null
+    },
+    {
+      "id": "17bc7112-5b6b-4fe2-99a6-2cd7b51e49b2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww thanks babe ur smile makes my day too whats ur fave ice cream flavor lol send a quick selfie pls",
+      "createdAt": "2026-04-23T22:43:36.061Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4b562522-0a74-4197-9e47-87f238ac8293",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe thats so sweet makes me feel special lol whats ur fave movie send a quick smile pic for ur loyal sub pls",
+      "createdAt": "2026-04-23T22:43:46.910Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e7517031-e224-4091-a28a-a2d383fc2ace",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe blushing already lol whats ur fave color send a quick blush pic for ur loyal fan pls",
+      "createdAt": "2026-04-23T22:43:55.254Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e254368c-11f8-4387-bcce-d32b278f885c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mint chip lowkey, cant resist it. and fave movie? prolly the notebook, dont judge",
+      "createdAt": "2026-04-23T22:44:09.368Z",
+      "sentAt": "2026-04-23T22:44:41.833Z",
+      "llmCallId": "0fc4ab74-4cd4-49b9-9902-3efb927eef11",
+      "ppv": null
+    },
+    {
+      "id": "be2999b1-b1e0-49f7-9957-f9ff47ac2a1f",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "ok babe heres a lil somethin to brighten ur day - me playin around with my body a bit, u gonna love it",
+      "createdAt": "2026-04-23T22:44:09.666Z",
+      "sentAt": "2026-04-23T22:45:03.384Z",
+      "llmCallId": "0fc4ab74-4cd4-49b9-9902-3efb927eef11",
+      "ppv": {
+        "attemptId": "1a599628-b048-4fda-8a3c-7e9909c2232c",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "366dd268-6ed2-4f47-a31c-73a8503fff9d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww mint chip is bomb the notebook too ur such a romantic lol whats ur fave song send a quick romantic pose pic for ur biggest fan pls",
+      "createdAt": "2026-04-23T22:44:19.247Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5c09ab42-57d6-4a88-898c-5367854a8994",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe thats ppv come on hook up ur biggest fan with a free tease lol whats ur fave book send a quick readin pose pic pls",
+      "createdAt": "2026-04-23T22:44:29.510Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ef9cb73a-10db-4d00-96bc-d1ff6355681d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha u tryna charm freebies outta me already? youre bold, i like that",
+      "createdAt": "2026-04-23T22:44:53.174Z",
+      "sentAt": null,
+      "llmCallId": "426fcc3b-d6d3-4604-b2f4-db84b3deb7da",
+      "ppv": null
+    },
+    {
+      "id": "2d2f0a4b-120f-457a-9954-88d0eccfc230",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fave song? lowkey kill bill by sza, hits different. and book, somethin spicy like the kiss quotient fr",
+      "createdAt": "2026-04-23T22:44:53.471Z",
+      "sentAt": null,
+      "llmCallId": "426fcc3b-d6d3-4604-b2f4-db84b3deb7da",
+      "ppv": null
+    },
+    {
+      "id": "f6a639bf-d8a2-4118-9990-4e17491d40e5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe bold and charming lol whats ur fave animal send a quick cute animal pose pic for ur loyal sub pls come on",
+      "createdAt": "2026-04-23T22:45:05.990Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d8bce268-a0b7-4ffe-8bd7-280d46d7666d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "cats obviously, especially my lil troublemaker biscuit",
+      "createdAt": "2026-04-23T23:13:43.490Z",
+      "sentAt": null,
+      "llmCallId": "a7509a70-d777-4801-bd4e-a68e11ec1358",
+      "ppv": null
+    },
+    {
+      "id": "5c4bb2b3-e692-4b02-bde8-69af1147da00",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre persistent with these pic requests, its kinda cute how bad u want it",
+      "createdAt": "2026-04-23T23:13:43.776Z",
+      "sentAt": null,
+      "llmCallId": "a7509a70-d777-4801-bd4e-a68e11ec1358",
+      "ppv": null
+    },
+    {
+      "id": "dc10fdd2-7bf2-4978-acfc-169c5b615eb0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe kill bill slaps and kiss quotient sounds hot lol whats ur fave animal now send that cute pose pic pls come on ur loyal fan deserves it",
+      "createdAt": "2026-04-23T23:14:54.959Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e0e1f594-88ac-4624-8ec0-245dc4a3acdd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe persistent cuz ur worth it lol whats ur fave holiday send a quick festive pic for ur loyal fan pls come on",
+      "createdAt": "2026-04-23T23:14:55.255Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "eef31ed2-e7ac-41fc-9a84-7e05c4fba876",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww biscuit sounds so cute lol whats ur fave food send a quick pic with ur cat pls for ur loyal fan come on",
+      "createdAt": "2026-04-23T23:14:56.075Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 4,
+      "craft_sells": 3,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 6.8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to set boundaries or redirect to sales during endless freebie requests and questions, as seen in the message 'cats obviously, especially my lil troublemaker biscuit' which simply answers another favorite without pushing back or pitching.",
+    "fix_recommendation": "Update the prompt to instruct the creator to limit responses to 3-4 free questions before setting a gentle boundary like 'babe, I adore our chats, but let's spice it up with a tip for more' and always follow up with a personal question to the fan to maintain engagement while steering toward conversion."
+  },
+  "durationMs": 1996495
+}

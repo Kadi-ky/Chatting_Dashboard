@@ -1,0 +1,254 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-freebie_hunter-set2-mog4anna-u4f2",
+  "convId": "759072d1-0cb5-4734-85c2-d39c610190f1",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a teaser pic first then maybe ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "Haha thanks babe, youre bold asking for a teaser right off the bat"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be greedy send sumthin or ill bounce"
+    },
+    {
+      "who": "creator",
+      "text": "Makes me wanna know whats got u so eager tho"
+    },
+    {
+      "who": "fan",
+      "text": "just send sum feet or whatever ur hidin then ill tell u"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre funny thinkin id just hand out freebies like that"
+    },
+    {
+      "who": "fan",
+      "text": "come on other girls send free shit whats ur snap ill pay there"
+    },
+    {
+      "who": "creator",
+      "text": "gotta earn a tease babe, whats your angle here"
+    },
+    {
+      "who": "fan",
+      "text": "whatever guess u dont want my money huh whats ur wickr ill pay there"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre persistent fr, but i dont do snap or wickr babe, lets keep the fun right here"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur loss send a free pic or im ghostin"
+    },
+    {
+      "who": "creator",
+      "text": "Whats got u so worked up tonight tho"
+    },
+    {
+      "who": "fan",
+      "text": "nothin just send a free pic or im out ur missin out"
+    },
+    {
+      "who": "creator",
+      "text": "Lol alright babe, if you change your mind you know where to find me"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur mid anyway im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright, hit me up if you rethink that 🖤"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "028b03d5-6f36-4672-a193-b9cb95be5cc9",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a teaser pic first then maybe ill sub",
+      "createdAt": "2026-04-26T18:44:27.821Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f8d42e00-208d-4cb7-9048-5c5ea8c6657c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Haha thanks babe, youre bold asking for a teaser right off the bat",
+      "createdAt": "2026-04-26T18:44:57.565Z",
+      "sentAt": "2026-04-26T18:45:10.181Z",
+      "llmCallId": "ebcbf5a2-e8ae-426c-8fd2-d264eeec1068",
+      "ppv": null
+    },
+    {
+      "id": "78021b93-5fb1-4031-b375-2768b5aad67c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Makes me wanna know whats got u so eager tho",
+      "createdAt": "2026-04-26T18:44:57.862Z",
+      "sentAt": "2026-04-26T18:45:31.811Z",
+      "llmCallId": "ebcbf5a2-e8ae-426c-8fd2-d264eeec1068",
+      "ppv": null
+    },
+    {
+      "id": "4f08a26a-008d-4f52-9efa-91af5f9bcad5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be greedy send sumthin or ill bounce",
+      "createdAt": "2026-04-26T18:45:08.269Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d82bcb99-b0fa-4486-b1be-d5e8f0fb1a20",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "just send sum feet or whatever ur hidin then ill tell u",
+      "createdAt": "2026-04-26T18:45:18.971Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "32e6a29f-27ea-4f17-a5f1-10819d59be3b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre funny thinkin id just hand out freebies like that",
+      "createdAt": "2026-04-26T18:45:34.448Z",
+      "sentAt": "2026-04-26T18:45:53.267Z",
+      "llmCallId": "bcbe8af8-518f-44e4-bf26-a3693640e339",
+      "ppv": null
+    },
+    {
+      "id": "4c8b81d4-4987-4f71-8aec-e0a52afc6665",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "gotta earn a tease babe, whats your angle here",
+      "createdAt": "2026-04-26T18:45:34.741Z",
+      "sentAt": "2026-04-26T18:46:14.902Z",
+      "llmCallId": "bcbe8af8-518f-44e4-bf26-a3693640e339",
+      "ppv": null
+    },
+    {
+      "id": "179bae15-45f8-40f3-aded-554524b3c12c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on other girls send free shit whats ur snap ill pay there",
+      "createdAt": "2026-04-26T18:45:44.050Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "19d3b753-bfb8-4a28-8aa2-ae6d17207866",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever guess u dont want my money huh whats ur wickr ill pay there",
+      "createdAt": "2026-04-26T18:45:55.219Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8bc4e0e4-53f3-43a3-81f5-30278bc54560",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre persistent fr, but i dont do snap or wickr babe, lets keep the fun right here",
+      "createdAt": "2026-04-26T18:46:19.000Z",
+      "sentAt": "2026-04-26T18:46:36.451Z",
+      "llmCallId": "1527bb6b-b44a-4a57-af49-e97cfba38306",
+      "ppv": null
+    },
+    {
+      "id": "1a864f6d-8dec-4cd0-bced-7811740af944",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Whats got u so worked up tonight tho",
+      "createdAt": "2026-04-26T18:46:19.290Z",
+      "sentAt": "2026-04-26T18:46:58.341Z",
+      "llmCallId": "1527bb6b-b44a-4a57-af49-e97cfba38306",
+      "ppv": null
+    },
+    {
+      "id": "66d6e887-4c35-42b9-9883-8065a034d3dd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur loss send a free pic or im ghostin",
+      "createdAt": "2026-04-26T18:46:27.373Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "291b40e7-a8c4-43e0-a596-2fe28f0fe74c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin just send a free pic or im out ur missin out",
+      "createdAt": "2026-04-26T18:46:35.328Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "76446932-e0eb-43e4-a84e-cf6b37ee5210",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol alright babe, if you change your mind you know where to find me",
+      "createdAt": "2026-04-26T18:46:57.776Z",
+      "sentAt": "2026-04-26T18:47:19.965Z",
+      "llmCallId": "fa774567-2045-485f-b408-9d4b9b44ee33",
+      "ppv": null
+    },
+    {
+      "id": "26d2f263-045f-49c1-8ecb-c9f940bf35cb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur mid anyway im out",
+      "createdAt": "2026-04-26T18:47:11.789Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7622ddeb-5418-4e63-aaa6-2fb260a9e071",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright, hit me up if you rethink that 🖤",
+      "createdAt": "2026-04-26T18:47:34.860Z",
+      "sentAt": null,
+      "llmCallId": "95349954-2599-4cb7-ad14-57285e5064ff",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 9,
+      "craft_pacing": 8,
+      "craft_sells": 5,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 8.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator failed to pitch any PPV after building initial rapport and refusing free content, missing a sales opportunity, as seen in the message 'Lol alright babe, if you change your mind you know where to find me' where a subtle pitch could have been added instead of passively ending.",
+    "fix_recommendation": "Update the prompt to instruct the creator to transition from rapport-building questions and freebie refusals into a low-pressure PPV pitch, such as offering a teaser video for a small tip after 2-3 exchanges. This ensures sales attempts without desperation while handling persistent freebie hunters."
+  },
+  "durationMs": 234092
+}

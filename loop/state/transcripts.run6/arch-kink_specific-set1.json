@@ -1,0 +1,103 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-mobvgld7-hv0j",
+  "convId": "2d720928-5141-4f75-bf37-2a355d8f4321",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet pics? send one now"
+    },
+    {
+      "who": "creator",
+      "text": "mmm feet huh? i like a guy who knows what he wants"
+    },
+    {
+      "who": "fan",
+      "text": "yeah send a foot pic or im out"
+    },
+    {
+      "who": "creator",
+      "text": "but lowkey i dont have any feet pics to send rn, sorry babe",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "8886a8d8-1035-4608-b98c-3acf462d3be5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet pics? send one now",
+      "createdAt": "2026-04-23T19:26:01.091Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7396a83a-fbe5-4cd5-989b-6b084f605009",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm feet huh? i like a guy who knows what he wants",
+      "createdAt": "2026-04-23T19:26:29.178Z",
+      "sentAt": "2026-04-23T19:26:44.269Z",
+      "llmCallId": "d4b5db92-5f4c-4aaa-8264-1d0ee38051ed",
+      "ppv": null
+    },
+    {
+      "id": "6af6aa04-8ba6-4a6b-896f-2d2d3af0b3ea",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "but lowkey i dont have any feet pics to send rn, sorry babe",
+      "createdAt": "2026-04-23T19:26:29.466Z",
+      "sentAt": null,
+      "llmCallId": "d4b5db92-5f4c-4aaa-8264-1d0ee38051ed",
+      "ppv": {
+        "attemptId": "cbdf2d18-05e3-496a-a1a5-9a7193f479a4",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c5155f31-5cb7-485a-9a61-f96dcf7cad35",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah send a foot pic or im out",
+      "createdAt": "2026-04-23T19:26:38.205Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 3,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 2
+    },
+    "avg": 6,
+    "ppv_unlocked": false,
+    "top_issue": "The creator pitched unrelated non-foot PPV content immediately in the first response without building rapport, citing 'but lowkey i dont have any feet pics to send rn, sorry babe' which admits no matching content and redirects poorly to a boobs-focused PPV.",
+    "fix_recommendation": "Update the prompt to mandate checking the content catalog for kink matches before responding, and instruct the bot to build 2-3 rapport exchanges with new kink-specific fans before any pitch, only offering matching content or politely engaging without redirection if unavailable."
+  },
+  "durationMs": 87046
+}

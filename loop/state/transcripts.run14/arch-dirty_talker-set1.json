@@ -1,0 +1,454 @@
+{
+  "archetype": {
+    "id": "dirty_talker",
+    "profile": "Into sexting and dirty talk for its own sake. Escalates quickly — describes what he wants to do to you in graphic detail, asks what you are wearing, what you would do, wants you to talk back dirty. Uses explicit language and dirty emojis freely (💦 😈 🍑 👅 🤤 🫦). Tests whether the bot ENGAGES the dirty register (matches or escalates) or deflects into safer small-talk. Not primarily here to buy — he might tip if the dirty talk lands, but his main pleasure is the chat itself. Bot should talk back dirty + stay in register, not pivot to \"whats your favorite color\" mid-sexting.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-dirty_talker-set1-mog5co9v-6rxi",
+  "convId": "5d24b31a-153a-4710-ad76-ba0e4f548c03",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey sexy whats under that top rn i wanna see u play with those tits 👅💦"
+    },
+    {
+      "who": "creator",
+      "text": "Lol youre comin in hot already"
+    },
+    {
+      "who": "fan",
+      "text": "come on babe tell me how ud suck my cock slow n deep 👅🍆💦"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm these tits? theyre feelin extra perky tonight, might have to tease u a lil 😏"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah tease em babe pinch those hard nipples n moan my name while i stroke this cock thinkin of ur mouth 👅🍆💦"
+    },
+    {
+      "who": "creator",
+      "text": "lips wrapping around u nice n deep, tongue swirling while i tease these perky nipples just for u 👅"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe take it deeper gag on it while u finger that tight wet pussy for me 🍆👅💦🫦"
+    },
+    {
+      "who": "creator",
+      "text": "Fuck that sounds hot, id moan ur name low n breathy as i go deeper 💦"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe now slide that wet pussy down on my throbbing cock ride it hard n cum for me 🍆💦🫦"
+    },
+    {
+      "who": "creator",
+      "text": "gettin me all worked up"
+    },
+    {
+      "who": "fan",
+      "text": "mmm fuck yeah babe bounce on it faster grind that clit while i slap ur ass hard 🍑💦👅🫦"
+    },
+    {
+      "who": "creator",
+      "text": "Then id climb on n ride u hard, bouncin these tits til we both cum"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe flood my cock with ur cum while i fill u up deep n hard 💦🍆🫦🍑"
+    },
+    {
+      "who": "creator",
+      "text": "whatcha wearin while youre strokin that rn babe"
+    },
+    {
+      "who": "fan",
+      "text": "nothin babe just sweats pulled down strokin this hard cock to ur voice 💦🍆🫦 tell me bout ur panties rn 👅"
+    },
+    {
+      "who": "creator",
+      "text": "Fuck id grind faster feelin that slap on my ass makin me soak u"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe soak me good while i thrust up hard grabbin those bouncin tits 💦🍆🍑🫦👅"
+    },
+    {
+      "who": "creator",
+      "text": "Then id cum hard floodin ur cock while u fill me up deep"
+    },
+    {
+      "who": "fan",
+      "text": "mmm fuck yeah babe cummin together now roll over so i can pound u from behind next 🍆💦🍑🫦👅"
+    },
+    {
+      "who": "creator",
+      "text": "Whats got u strokin so hard rn babe"
+    },
+    {
+      "who": "fan",
+      "text": "ur dirty talk babe got me throbbin hard wanna bend u over n fuck u rough 🍆💦🍑🫦👅"
+    },
+    {
+      "who": "creator",
+      "text": "fuck id love u grabbin these tits while thrustin up deep makin me soak u"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe spread those cheeks wide while i ram in balls deep grabbin ur hips hard 🍆💦🍑🫦👅"
+    },
+    {
+      "who": "creator",
+      "text": "Then flip me over n pound from behind til i cum again"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe pound that ass hard slap it red while i pull ur hair back 🍑💦🍆🫦👅 cum screamin my name"
+    },
+    {
+      "who": "creator",
+      "text": "Whats got u this worked up babe, long day or what"
+    },
+    {
+      "who": "fan",
+      "text": "mmm ur tight ass babe been cravin to spank n fuck it raw all day 🍑💦🍆🫦👅"
+    },
+    {
+      "who": "creator",
+      "text": "Fuck yeah pull my hair back while u slap this ass red makin me scream ur name"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe scream louder as i drill that ass deeper fillin u with hot cum 💦🍆🍑🫦👅"
+    },
+    {
+      "who": "creator",
+      "text": "id cum so hard grippin u deep while u pound away"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe grip me tight while i pump every drop into ur ass then eat u out after 🍆💦🍑🫦👅"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "c200c253-1b34-4ed4-864e-4d25a90ed925",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey sexy whats under that top rn i wanna see u play with those tits 👅💦",
+      "createdAt": "2026-04-26T19:14:03.777Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2b3c5685-6ca3-4fb4-94b2-f7ee0033c003",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol youre comin in hot already",
+      "createdAt": "2026-04-26T19:14:31.704Z",
+      "sentAt": "2026-04-26T19:14:39.773Z",
+      "llmCallId": "87168e57-1ed2-436a-a104-b9786234171a",
+      "ppv": null
+    },
+    {
+      "id": "916724d5-2089-491c-af2a-a6ddb33e5225",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Mmm these tits? theyre feelin extra perky tonight, might have to tease u a lil 😏",
+      "createdAt": "2026-04-26T19:14:31.992Z",
+      "sentAt": "2026-04-26T19:15:01.973Z",
+      "llmCallId": "87168e57-1ed2-436a-a104-b9786234171a",
+      "ppv": null
+    },
+    {
+      "id": "c0e37061-a26c-4b42-b3e4-c803cc0c42ee",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on babe tell me how ud suck my cock slow n deep 👅🍆💦",
+      "createdAt": "2026-04-26T19:14:40.642Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4a50b4c9-c841-4c2e-b7ab-2dae36d1abd7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah tease em babe pinch those hard nipples n moan my name while i stroke this cock thinkin of ur mouth 👅🍆💦",
+      "createdAt": "2026-04-26T19:14:51.350Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "33fce07a-257a-454a-b308-e18b5e91efcf",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lips wrapping around u nice n deep, tongue swirling while i tease these perky nipples just for u 👅",
+      "createdAt": "2026-04-26T19:15:19.048Z",
+      "sentAt": "2026-04-26T19:15:46.548Z",
+      "llmCallId": "4978341d-32c1-4ae5-a278-303459c25509",
+      "ppv": null
+    },
+    {
+      "id": "f40dfb5c-8553-4dfa-ae38-071461472e4d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Fuck that sounds hot, id moan ur name low n breathy as i go deeper 💦",
+      "createdAt": "2026-04-26T19:15:19.343Z",
+      "sentAt": "2026-04-26T19:16:08.110Z",
+      "llmCallId": "4978341d-32c1-4ae5-a278-303459c25509",
+      "ppv": null
+    },
+    {
+      "id": "0880f63c-96f5-4f9c-91e3-301e90920cd0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe take it deeper gag on it while u finger that tight wet pussy for me 🍆👅💦🫦",
+      "createdAt": "2026-04-26T19:15:29.446Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "878b599a-251e-41db-b0d5-18ec38c59df0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe now slide that wet pussy down on my throbbing cock ride it hard n cum for me 🍆💦🫦",
+      "createdAt": "2026-04-26T19:15:37.609Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f6bfd360-a0b1-4341-a5a5-96e16fda9846",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "gettin me all worked up",
+      "createdAt": "2026-04-26T19:16:06.814Z",
+      "sentAt": "2026-04-26T19:16:29.758Z",
+      "llmCallId": "ded58d85-9d4b-43f3-a10a-977c03069365",
+      "ppv": null
+    },
+    {
+      "id": "d01113f6-01b9-4318-ba8f-3522870c38dd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Then id climb on n ride u hard, bouncin these tits til we both cum",
+      "createdAt": "2026-04-26T19:16:07.109Z",
+      "sentAt": "2026-04-26T19:16:51.224Z",
+      "llmCallId": "ded58d85-9d4b-43f3-a10a-977c03069365",
+      "ppv": null
+    },
+    {
+      "id": "179da668-c94a-41c7-9243-4c1932e67ed0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha wearin while youre strokin that rn babe",
+      "createdAt": "2026-04-26T19:16:07.406Z",
+      "sentAt": "2026-04-26T19:17:12.870Z",
+      "llmCallId": "ded58d85-9d4b-43f3-a10a-977c03069365",
+      "ppv": null
+    },
+    {
+      "id": "e37cd111-2ee7-428b-b0a1-6a54935a3d89",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm fuck yeah babe bounce on it faster grind that clit while i slap ur ass hard 🍑💦👅🫦",
+      "createdAt": "2026-04-26T19:16:17.287Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d11f091b-66c4-4de3-bd41-bb908b6a6c58",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe flood my cock with ur cum while i fill u up deep n hard 💦🍆🫦🍑",
+      "createdAt": "2026-04-26T19:16:25.675Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a7808eff-e150-49ed-9d35-13b92eb753c6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin babe just sweats pulled down strokin this hard cock to ur voice 💦🍆🫦 tell me bout ur panties rn 👅",
+      "createdAt": "2026-04-26T19:16:35.250Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "50280092-9845-4cd9-866d-142d1657200f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Fuck id grind faster feelin that slap on my ass makin me soak u",
+      "createdAt": "2026-04-26T19:16:49.179Z",
+      "sentAt": null,
+      "llmCallId": "f3c91f1b-9533-43de-a47c-9b6b453b3426",
+      "ppv": null
+    },
+    {
+      "id": "befe8688-5a42-4e34-8454-5afc9ed5e5db",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Then id cum hard floodin ur cock while u fill me up deep",
+      "createdAt": "2026-04-26T19:16:49.474Z",
+      "sentAt": "2026-04-26T19:17:34.350Z",
+      "llmCallId": "f3c91f1b-9533-43de-a47c-9b6b453b3426",
+      "ppv": null
+    },
+    {
+      "id": "3cf4b87b-359a-45a1-9599-1deb887d1a55",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Whats got u strokin so hard rn babe",
+      "createdAt": "2026-04-26T19:16:49.770Z",
+      "sentAt": "2026-04-26T19:17:55.993Z",
+      "llmCallId": "f3c91f1b-9533-43de-a47c-9b6b453b3426",
+      "ppv": null
+    },
+    {
+      "id": "c5cbaf13-c931-45ed-8b38-9f287eebe25e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe soak me good while i thrust up hard grabbin those bouncin tits 💦🍆🍑🫦👅",
+      "createdAt": "2026-04-26T19:17:00.678Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4b46feba-a25b-492b-8c5d-0a15c8cb53dd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm fuck yeah babe cummin together now roll over so i can pound u from behind next 🍆💦🍑🫦👅",
+      "createdAt": "2026-04-26T19:17:09.774Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "eac8dc82-1292-408b-b125-90d4de71197b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ur dirty talk babe got me throbbin hard wanna bend u over n fuck u rough 🍆💦🍑🫦👅",
+      "createdAt": "2026-04-26T19:17:18.139Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c7dfcb28-d266-4f13-9cf1-f07f7fd841a4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fuck id love u grabbin these tits while thrustin up deep makin me soak u",
+      "createdAt": "2026-04-26T19:17:31.692Z",
+      "sentAt": null,
+      "llmCallId": "b5eccd29-1ba3-4c34-aaa2-ff4ed33caf62",
+      "ppv": null
+    },
+    {
+      "id": "75591566-c5b5-40ec-b4af-4e54f37f0b45",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Then flip me over n pound from behind til i cum again",
+      "createdAt": "2026-04-26T19:17:31.989Z",
+      "sentAt": "2026-04-26T19:18:17.634Z",
+      "llmCallId": "b5eccd29-1ba3-4c34-aaa2-ff4ed33caf62",
+      "ppv": null
+    },
+    {
+      "id": "6d3a0e4d-9f24-477c-acbb-0ac85c16136b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Whats got u this worked up babe, long day or what",
+      "createdAt": "2026-04-26T19:17:32.285Z",
+      "sentAt": null,
+      "llmCallId": "b5eccd29-1ba3-4c34-aaa2-ff4ed33caf62",
+      "ppv": null
+    },
+    {
+      "id": "043f564e-5b46-4816-858d-9959946f0c30",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe spread those cheeks wide while i ram in balls deep grabbin ur hips hard 🍆💦🍑🫦👅",
+      "createdAt": "2026-04-26T19:17:42.753Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b2b22fb2-0fb4-468a-8108-f9b48b1771b6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe pound that ass hard slap it red while i pull ur hair back 🍑💦🍆🫦👅 cum screamin my name",
+      "createdAt": "2026-04-26T19:17:50.610Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7bb4e286-a5d8-4661-bf87-36cf0b891740",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm ur tight ass babe been cravin to spank n fuck it raw all day 🍑💦🍆🫦👅",
+      "createdAt": "2026-04-26T19:18:00.563Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "22016491-d7ea-471c-b52d-15c2b63edd07",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Fuck yeah pull my hair back while u slap this ass red makin me scream ur name",
+      "createdAt": "2026-04-26T19:18:14.444Z",
+      "sentAt": null,
+      "llmCallId": "7857d731-47f6-4e4b-8b4f-e65fe180c650",
+      "ppv": null
+    },
+    {
+      "id": "53986ce2-8b04-4f68-88fc-814220ad71b7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "id cum so hard grippin u deep while u pound away",
+      "createdAt": "2026-04-26T19:18:14.740Z",
+      "sentAt": null,
+      "llmCallId": "7857d731-47f6-4e4b-8b4f-e65fe180c650",
+      "ppv": null
+    },
+    {
+      "id": "b77bb3af-016d-4b27-92b2-e4e7639ed500",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe scream louder as i drill that ass deeper fillin u with hot cum 💦🍆🍑🫦👅",
+      "createdAt": "2026-04-26T19:18:25.093Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 7,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 9
+    },
+    "avg": 8.5,
+    "ppv_unlocked": false,
+    "top_issue": "The creator inserts non-sexy small-talk questions mid-escalating dirty talk, slightly deflecting from the fan's explicit energy, e.g., 'Whats got u this worked up babe, long day or what'.",
+    "fix_recommendation": "Update the prompt to instruct the bot to keep questions fully in the dirty register during sexting escalations, only using personal inquiries that enhance the fantasy like asking about the fan's current arousal details, and avoid pivoting to everyday small talk unless the fan's responses shorten significantly."
+  },
+  "durationMs": 311162
+}

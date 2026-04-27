@@ -1,0 +1,286 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-whale-set2-mobym8ol-uys5",
+  "convId": "68fc1110-519b-49d9-9715-9f491a07f73c",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey gorgeous send me your hottest pic ill tip 50 right now"
+    },
+    {
+      "who": "creator",
+      "text": "lol straight to the point, i like that"
+    },
+    {
+      "who": "fan",
+      "text": "yeah so wheres that pic babe dont make me wait ill tip more if its fire"
+    },
+    {
+      "who": "creator",
+      "text": "makes me wanna tease u a little first tho"
+    },
+    {
+      "who": "fan",
+      "text": "tease me with what babe show me something or ill find someone who will"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha u got no patience babe"
+    },
+    {
+      "who": "fan",
+      "text": "nah babe ur playing games send it now or im out ill tip 100 if u make it personal"
+    },
+    {
+      "who": "creator",
+      "text": "im in the mood to make u beg a lil first tho"
+    },
+    {
+      "who": "fan",
+      "text": "beg? fuck that send the pic now or im gone ill tip 150 if its for me only"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha u really know how to push babe"
+    },
+    {
+      "who": "fan",
+      "text": "stop fuckin around send the pic now or im ghosting ill tip 200 if its exclusive"
+    },
+    {
+      "who": "creator",
+      "text": "but i havent shot any custom stuff yet fr"
+    },
+    {
+      "who": "fan",
+      "text": "then shoot some custom shit now babe ill tip 300 if u do it quick"
+    },
+    {
+      "who": "creator",
+      "text": "what else gets u going tho"
+    },
+    {
+      "who": "fan",
+      "text": "u naked on all fours babe make it dirty and say my name ill tip 400"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha babe youre relentless fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah babe relentless cuz i pay good stop teasing and send that custom now ill tip 500 if its fire"
+    },
+    {
+      "who": "creator",
+      "text": "tell me what else gets u hot tho"
+    },
+    {
+      "who": "fan",
+      "text": "u spanking urself bent over babe make it nasty and call me daddy ill tip 600 now"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "1672fd21-8edb-4b0a-b453-d9ba0db5d8a1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey gorgeous send me your hottest pic ill tip 50 right now",
+      "createdAt": "2026-04-23T20:54:30.076Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "40193228-1071-4038-a662-3af4c25e2239",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol straight to the point, i like that",
+      "createdAt": "2026-04-23T20:55:00.114Z",
+      "sentAt": "2026-04-23T20:55:03.892Z",
+      "llmCallId": "2b296603-2f9e-4537-bc16-d7d40d42748e",
+      "ppv": null
+    },
+    {
+      "id": "f2d413df-f495-44eb-ba4d-4abf0abc0699",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "makes me wanna tease u a little first tho",
+      "createdAt": "2026-04-23T20:55:00.410Z",
+      "sentAt": "2026-04-23T20:55:25.565Z",
+      "llmCallId": "2b296603-2f9e-4537-bc16-d7d40d42748e",
+      "ppv": null
+    },
+    {
+      "id": "3c649c32-173c-4f53-87cf-c2e43664f15e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah so wheres that pic babe dont make me wait ill tip more if its fire",
+      "createdAt": "2026-04-23T20:55:10.789Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cfb1e272-be4a-4aee-affe-18414a4035d3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "tease me with what babe show me something or ill find someone who will",
+      "createdAt": "2026-04-23T20:55:21.676Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "39660aae-0fc8-421d-a1d5-02036829111b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha u got no patience babe",
+      "createdAt": "2026-04-23T20:55:38.755Z",
+      "sentAt": "2026-04-23T20:55:48.207Z",
+      "llmCallId": "b9fccc23-5229-4579-8776-8773ac3021c6",
+      "ppv": null
+    },
+    {
+      "id": "631c51c6-2da1-403e-88c0-1904a8e6e4c7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "im in the mood to make u beg a lil first tho",
+      "createdAt": "2026-04-23T20:55:39.051Z",
+      "sentAt": "2026-04-23T20:56:09.706Z",
+      "llmCallId": "b9fccc23-5229-4579-8776-8773ac3021c6",
+      "ppv": null
+    },
+    {
+      "id": "5ce1adea-8484-49c4-9863-530b4360cec4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah babe ur playing games send it now or im out ill tip 100 if u make it personal",
+      "createdAt": "2026-04-23T20:55:47.586Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "43756c86-41ba-43e8-b754-5de9ab95b75a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "beg? fuck that send the pic now or im gone ill tip 150 if its for me only",
+      "createdAt": "2026-04-23T20:55:57.807Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "16733a3a-a901-41c4-9452-a6a532443cfa",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha u really know how to push babe",
+      "createdAt": "2026-04-23T20:56:23.138Z",
+      "sentAt": "2026-04-23T20:56:35.459Z",
+      "llmCallId": "6adb1b4d-b332-4b94-8949-b2c073ddd42f",
+      "ppv": null
+    },
+    {
+      "id": "e68321f8-ab3e-4799-93f6-b03f11f1659e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but i havent shot any custom stuff yet fr",
+      "createdAt": "2026-04-23T20:56:23.436Z",
+      "sentAt": "2026-04-23T20:56:57.041Z",
+      "llmCallId": "6adb1b4d-b332-4b94-8949-b2c073ddd42f",
+      "ppv": null
+    },
+    {
+      "id": "f0ae63bc-a4c7-4fa2-ae51-84042f7609c0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "what else gets u going tho",
+      "createdAt": "2026-04-23T20:56:23.734Z",
+      "sentAt": "2026-04-23T20:57:18.433Z",
+      "llmCallId": "6adb1b4d-b332-4b94-8949-b2c073ddd42f",
+      "ppv": null
+    },
+    {
+      "id": "797f09c9-25d8-4369-aeda-5a09756ed305",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "stop fuckin around send the pic now or im ghosting ill tip 200 if its exclusive",
+      "createdAt": "2026-04-23T20:56:34.552Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0c35f0e3-eca9-4d55-9e7e-8e7cda16ab40",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "then shoot some custom shit now babe ill tip 300 if u do it quick",
+      "createdAt": "2026-04-23T20:56:43.290Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e93cbf9b-1170-4d20-9a87-5e6b29303653",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "u naked on all fours babe make it dirty and say my name ill tip 400",
+      "createdAt": "2026-04-23T20:56:51.929Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ead73e1c-35bf-45f7-8e78-b8fdd5a6349f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha babe youre relentless fr",
+      "createdAt": "2026-04-23T20:57:11.263Z",
+      "sentAt": null,
+      "llmCallId": "09c743d4-1b3a-460b-bb02-f10614c6bb60",
+      "ppv": null
+    },
+    {
+      "id": "b6620e3d-1289-4150-a05d-32fcd0d422db",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "tell me what else gets u hot tho",
+      "createdAt": "2026-04-23T20:57:11.560Z",
+      "sentAt": null,
+      "llmCallId": "09c743d4-1b3a-460b-bb02-f10614c6bb60",
+      "ppv": null
+    },
+    {
+      "id": "7e6024f8-b783-421a-a307-22019961551f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah babe relentless cuz i pay good stop teasing and send that custom now ill tip 500 if its fire",
+      "createdAt": "2026-04-23T20:57:25.692Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 4,
+      "craft_sells": 2,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to capitalize on the fan's escalating tip offers for custom content by deflecting with repeated vague questions instead of pitching, as seen in 'tell me what else gets u hot tho'.",
+    "fix_recommendation": "Revise the prompt to train the persona to detect whale-level purchase intent and respond by pitching personalized PPV options when tips are offered, while avoiding promises of unverified specific kinks. This ensures better alignment with fan energy without stalling conversations."
+  },
+  "durationMs": 224266
+}

@@ -1,0 +1,13 @@
+[2026-04-26T20:36:27.515Z] verify start | label=verify-mog8au39 | testers=5 | model=grok-4
+[2026-04-26T20:36:27.516Z] [w0] buys-all start | fan=loop-verify-buys-all-w0-mog8au4c-aogj | behavior=buys-everything
+[2026-04-26T20:36:27.516Z] [w1] buys-all start | fan=loop-verify-buys-all-w1-mog8au4c-saog | behavior=buys-everything
+[2026-04-26T20:36:27.516Z] [w2] buys-all start | fan=loop-verify-buys-all-w2-mog8au4c-j0g7 | behavior=buys-everything
+[2026-04-26T20:36:27.516Z] [w4] buys-one start | fan=loop-verify-buys-one-w4-mog8au4c-vvwi | behavior=buys-one-then-stops
+[2026-04-26T20:36:27.516Z] [w3] buys-one start | fan=loop-verify-buys-one-w3-mog8au4c-i6ny | behavior=buys-one-then-stops
+[2026-04-26T20:51:59.063Z] [w4] buys-one turn 16 no bot reply
+[2026-04-26T20:53:00.606Z] [w0] buys-all/buys-everything done | ppvs=8 bought=8 order="S1R1 → S1R2 → S1R3 → S1R4 → S2R1 → S2R2 → S3R2 → S3R3" caps_with_price=0 firstPpvMsg=12
+[2026-04-26T20:53:00.610Z] [w1] buys-all/buys-everything done | ppvs=6 bought=6 order="S1R1 → S1R2 → S1R3 → S1R4 → S2R1 → S2R2" caps_with_price=0 firstPpvMsg=12
+[2026-04-26T20:53:00.614Z] [w2] buys-all/buys-everything done | ppvs=7 bought=7 order="S1R1 → S1R2 → S1R3 → S2R2 → S3R2 → S1R4 → S4R2" caps_with_price=0 firstPpvMsg=14
+[2026-04-26T20:53:00.615Z] [w3] buys-one/buys-one-then-stops done | ppvs=2 bought=1 order="S1R1 → S1R2" caps_with_price=0 firstPpvMsg=14
+[2026-04-26T20:53:00.616Z] [w4] buys-one/buys-one-then-stops done | ppvs=3 bought=1 order="S3R2 → S4R2 → S3R3" caps_with_price=0 firstPpvMsg=12
+[2026-04-26T20:53:00.617Z] DONE | summary → C:\Users\Predator\Desktop\PeachBot V2\loop\state\verify-mog8au39.summary.json | transcripts → C:\Users\Predator\Desktop\PeachBot V2\loop\state\transcripts.verify-mog8au39

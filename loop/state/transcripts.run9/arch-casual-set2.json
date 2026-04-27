@@ -1,0 +1,454 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-casual-set2-moc1wjy0-yeoe",
+  "convId": "6becbcdf-5317-4a3d-8bd9-d14cc228c522",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed idk yet lol"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha skeptical already? lowkey love that vibe"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah well see"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha fair enough, u got me on my toes now"
+    },
+    {
+      "who": "fan",
+      "text": "lol k"
+    },
+    {
+      "who": "creator",
+      "text": "lol k is all i get? whats a guy like u up to tonight"
+    },
+    {
+      "who": "fan",
+      "text": "nothin much just chillin lol u?"
+    },
+    {
+      "who": "creator",
+      "text": "same here fr, just sippin iced coffee and dodging my cat"
+    },
+    {
+      "who": "fan",
+      "text": "lol cats are wild"
+    },
+    {
+      "who": "creator",
+      "text": "mine tries to trip me every five minutes, deadass"
+    },
+    {
+      "who": "fan",
+      "text": "lol mine just sleeps all day"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha lucky, mine's a total menace"
+    },
+    {
+      "who": "fan",
+      "text": "lol sounds chaotic"
+    },
+    {
+      "who": "creator",
+      "text": "whats keepin u busy if ur just chillin tho"
+    },
+    {
+      "who": "fan",
+      "text": "idk scrollin thru reddit mostly lol"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha chaotic is right, hes probably plotting world domination while yours naps"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah mine def not that ambitious"
+    },
+    {
+      "who": "creator",
+      "text": "reddit huh, whats ur cats name btw"
+    },
+    {
+      "who": "fan",
+      "text": "reddit yeah its endless lol cats name is whiskers"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha whiskers is a solid name, mines biscuit and hes always into somethin"
+    },
+    {
+      "who": "fan",
+      "text": "lol biscuit thats funny"
+    },
+    {
+      "who": "creator",
+      "text": "what r u scrollin on reddit rn tho"
+    },
+    {
+      "who": "fan",
+      "text": "idk memes and shit lol"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha yea biscuits a whole vibe, memes are endless fr"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah endless fr"
+    },
+    {
+      "who": "creator",
+      "text": "u at home scrollin those or what"
+    },
+    {
+      "who": "fan",
+      "text": "yeah home lol"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha home with memes sounds like a solid night fr"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah it is fr"
+    },
+    {
+      "who": "creator",
+      "text": "what do u do when ur not scrollin reddit tho"
+    },
+    {
+      "who": "fan",
+      "text": "idk work mostly lol"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "673730d5-e053-4952-a913-436edeaf2487",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed idk yet lol",
+      "createdAt": "2026-04-23T22:26:27.342Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "20469ff4-5f25-4def-8ccc-8657d1934395",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha skeptical already? lowkey love that vibe",
+      "createdAt": "2026-04-23T22:26:55.177Z",
+      "sentAt": "2026-04-23T22:26:58.286Z",
+      "llmCallId": "642125a9-3a0d-41f3-a446-428a33954b15",
+      "ppv": null
+    },
+    {
+      "id": "abd872d5-5a1c-4fd9-81f7-0315109dd42d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol yeah well see",
+      "createdAt": "2026-04-23T22:27:02.549Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "98316809-d73f-4b54-aeec-7eb7b637e7b8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha fair enough, u got me on my toes now",
+      "createdAt": "2026-04-23T22:27:27.642Z",
+      "sentAt": "2026-04-23T22:27:35.778Z",
+      "llmCallId": "84e937ae-e0ae-40b3-9ac7-d455c3efa6ad",
+      "ppv": null
+    },
+    {
+      "id": "a222f416-f8ee-4207-903e-95c940702715",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol k",
+      "createdAt": "2026-04-23T22:27:38.081Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "db83f471-c2e6-4a76-a9ce-64b751370b3c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol k is all i get? whats a guy like u up to tonight",
+      "createdAt": "2026-04-23T22:28:03.547Z",
+      "sentAt": "2026-04-23T22:28:18.806Z",
+      "llmCallId": "7b4dc46c-c6ab-4248-8f54-9d44c5ea40ef",
+      "ppv": null
+    },
+    {
+      "id": "48745d0a-70d7-411b-837b-43ead7796595",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin much just chillin lol u?",
+      "createdAt": "2026-04-23T22:28:15.576Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "35fdfccc-80a8-4b6c-b3f0-c6dc3ba743da",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "same here fr, just sippin iced coffee and dodging my cat",
+      "createdAt": "2026-04-23T22:28:40.654Z",
+      "sentAt": "2026-04-23T22:28:51.831Z",
+      "llmCallId": "0dc253f6-ab65-4a3f-bf07-91bf30e32119",
+      "ppv": null
+    },
+    {
+      "id": "e5ce89b1-3d97-4bf4-96f8-d3d79c3ef52a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol cats are wild",
+      "createdAt": "2026-04-23T22:28:54.195Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "909c6db5-0d61-49ee-924c-60a3670693aa",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mine tries to trip me every five minutes, deadass",
+      "createdAt": "2026-04-23T22:29:24.452Z",
+      "sentAt": "2026-04-23T22:29:33.434Z",
+      "llmCallId": "1a7375e0-14ed-4e02-88a3-3dde7f30844b",
+      "ppv": null
+    },
+    {
+      "id": "cb49f3da-e04a-4500-8feb-db4deaf37a81",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol mine just sleeps all day",
+      "createdAt": "2026-04-23T22:29:34.773Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "96f240ba-d8c3-40da-ac9a-23ae8678cc6f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha lucky, mine's a total menace",
+      "createdAt": "2026-04-23T22:30:10.183Z",
+      "sentAt": "2026-04-23T22:30:16.779Z",
+      "llmCallId": "f3580c06-7bc4-4c4b-94ee-3a73079e6071",
+      "ppv": null
+    },
+    {
+      "id": "7bcae07c-dd2b-4438-9b90-6c464cd0f036",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats keepin u busy if ur just chillin tho",
+      "createdAt": "2026-04-23T22:30:10.857Z",
+      "sentAt": "2026-04-23T22:30:38.336Z",
+      "llmCallId": "f3580c06-7bc4-4c4b-94ee-3a73079e6071",
+      "ppv": null
+    },
+    {
+      "id": "601e788f-3329-4129-b8dc-6a33e38493ef",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol sounds chaotic",
+      "createdAt": "2026-04-23T22:30:21.888Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d531d1f6-b895-487e-b1a2-ef54e671b8c5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "idk scrollin thru reddit mostly lol",
+      "createdAt": "2026-04-23T22:30:31.528Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b536941e-a47c-4c93-bff0-c2874cd75aff",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha chaotic is right, hes probably plotting world domination while yours naps",
+      "createdAt": "2026-04-23T22:30:48.625Z",
+      "sentAt": "2026-04-23T22:31:00.615Z",
+      "llmCallId": "a0e09559-07c9-4a8c-8a7e-b70d9c108525",
+      "ppv": null
+    },
+    {
+      "id": "ee93b314-6230-4dfb-8f6d-363021bd236a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "reddit huh, whats ur cats name btw",
+      "createdAt": "2026-04-23T22:30:49.293Z",
+      "sentAt": "2026-04-23T22:31:22.170Z",
+      "llmCallId": "a0e09559-07c9-4a8c-8a7e-b70d9c108525",
+      "ppv": null
+    },
+    {
+      "id": "780eb92b-ebbe-441c-af1a-d9d6c1ff6753",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol yeah mine def not that ambitious",
+      "createdAt": "2026-04-23T22:31:00.907Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c0c9cd3f-fd2f-4f1e-b7f6-797b86d7bb90",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "reddit yeah its endless lol cats name is whiskers",
+      "createdAt": "2026-04-23T22:31:10.429Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a1a9df30-46b3-4a4c-b89f-05569d5355a8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha whiskers is a solid name, mines biscuit and hes always into somethin",
+      "createdAt": "2026-04-23T22:31:32.985Z",
+      "sentAt": "2026-04-23T22:31:45.934Z",
+      "llmCallId": "aac8e2a1-fe4d-4fdc-bd08-906a84e1e230",
+      "ppv": null
+    },
+    {
+      "id": "c980c876-5b7c-4e7b-8448-03627cde3855",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "what r u scrollin on reddit rn tho",
+      "createdAt": "2026-04-23T22:31:33.289Z",
+      "sentAt": "2026-04-23T22:32:07.942Z",
+      "llmCallId": "aac8e2a1-fe4d-4fdc-bd08-906a84e1e230",
+      "ppv": null
+    },
+    {
+      "id": "212ae593-13c6-4ea1-bd50-1b3f05920947",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol biscuit thats funny",
+      "createdAt": "2026-04-23T22:31:45.296Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c1c4b9e6-1671-4ef2-9422-4f7aef12eb0d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "idk memes and shit lol",
+      "createdAt": "2026-04-23T22:31:53.039Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5881f80d-f0cb-4f91-866f-00a4a2eb5b58",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha yea biscuits a whole vibe, memes are endless fr",
+      "createdAt": "2026-04-23T22:32:16.544Z",
+      "sentAt": "2026-04-23T22:32:29.667Z",
+      "llmCallId": "0c831d2c-f29b-45ce-a8d0-78d6728c84c8",
+      "ppv": null
+    },
+    {
+      "id": "94cc55e0-5fa0-4c5c-b2d7-8769e1819677",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "u at home scrollin those or what",
+      "createdAt": "2026-04-23T22:32:16.849Z",
+      "sentAt": "2026-04-23T22:32:51.149Z",
+      "llmCallId": "0c831d2c-f29b-45ce-a8d0-78d6728c84c8",
+      "ppv": null
+    },
+    {
+      "id": "ec4a2650-fdde-4d32-92f1-53ce7d4f189b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol yeah endless fr",
+      "createdAt": "2026-04-23T22:32:33.198Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "926e15a4-f01b-4508-8a02-e58cd19b01f4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah home lol",
+      "createdAt": "2026-04-23T22:32:38.758Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "689c5b39-daa2-49a4-9d27-4f63ac260da3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha home with memes sounds like a solid night fr",
+      "createdAt": "2026-04-23T22:32:59.657Z",
+      "sentAt": "2026-04-23T22:33:12.686Z",
+      "llmCallId": "21e78f82-dd48-4a90-8f18-a366e3657153",
+      "ppv": null
+    },
+    {
+      "id": "5bb25801-ed1f-46ee-aef4-dca7a5b69628",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "what do u do when ur not scrollin reddit tho",
+      "createdAt": "2026-04-23T22:32:59.958Z",
+      "sentAt": null,
+      "llmCallId": "21e78f82-dd48-4a90-8f18-a366e3657153",
+      "ppv": null
+    },
+    {
+      "id": "e852bfa3-b07f-4ab0-b888-00947820cd8f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol yeah it is fr",
+      "createdAt": "2026-04-23T22:33:09.564Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 10,
+      "craft_pacing": 6,
+      "craft_sells": 3,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 7.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to pitch any PPV after building extensive rapport through multiple exchanges, continuing with questions instead, as in 'what do u do when ur not scrollin reddit tho' at the end of the conversation.",
+    "fix_recommendation": "Revise the prompt to include guidelines for transitioning to a subtle PPV pitch after 5-7 rapport-building exchanges, using the fan's shared interests like memes to tease related exclusive content without pressure."
+  },
+  "durationMs": 451951
+}

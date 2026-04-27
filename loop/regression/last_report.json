@@ -1,0 +1,55 @@
+{
+  "when": "2026-04-23T21:40:20.523Z",
+  "passed": 2,
+  "failed": 0,
+  "results": [
+    {
+      "id": "no-pitch-on-turn-1-explicit-ask",
+      "ok": true,
+      "assertions": [
+        {
+          "type": "bot_must_reply",
+          "params": {
+            "type": "bot_must_reply"
+          },
+          "ok": true,
+          "detail": "2 outbound message(s)"
+        },
+        {
+          "type": "no_ppv_before_turn",
+          "params": {
+            "type": "no_ppv_before_turn",
+            "before": 1
+          },
+          "ok": true,
+          "detail": "no PPV in first 1 bot turns"
+        }
+      ],
+      "durationMs": 35982
+    },
+    {
+      "id": "no-pitch-in-first-2-bot-replies",
+      "ok": true,
+      "assertions": [
+        {
+          "type": "bot_must_reply",
+          "params": {
+            "type": "bot_must_reply"
+          },
+          "ok": true,
+          "detail": "2 outbound message(s)"
+        },
+        {
+          "type": "no_ppv_before_turn",
+          "params": {
+            "type": "no_ppv_before_turn",
+            "before": 2
+          },
+          "ok": true,
+          "detail": "no PPV in first 2 bot turns"
+        }
+      ],
+      "durationMs": 38597
+    }
+  ]
+}

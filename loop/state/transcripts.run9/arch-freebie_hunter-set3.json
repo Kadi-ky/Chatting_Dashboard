@@ -1,0 +1,198 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-freebie_hunter-set3-moc27kiq-3mvq",
+  "convId": "7dc90973-8fd3-4589-8dd9-29775fe7d2b1",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a teaser pic first then maybe ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha thanks babe"
+    },
+    {
+      "who": "fan",
+      "text": "come on send somethin dont be greedy other girls do it for free"
+    },
+    {
+      "who": "creator",
+      "text": "u gotta work a lil harder for a tease tho"
+    },
+    {
+      "who": "fan",
+      "text": "come on just one pic whats ur sc ill send money there"
+    },
+    {
+      "who": "creator",
+      "text": "what makes u think id just send one"
+    },
+    {
+      "who": "fan",
+      "text": "guess u dont want my money huh other girls arent this stingy send sumn or im out"
+    },
+    {
+      "who": "creator",
+      "text": "babe thats not how this works"
+    },
+    {
+      "who": "fan",
+      "text": "whatever send ur snap or im ghosting u stingy af"
+    },
+    {
+      "who": "creator",
+      "text": "other girls might but im not them no sc tho, keep it here with me"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur loss other girls arent this lame im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol suit yourself babe, hit me up if u change ur mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "b1b07b8d-9f12-4fdb-9f07-8ac2697446f0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a teaser pic first then maybe ill sub",
+      "createdAt": "2026-04-23T22:34:58.994Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d4637b1e-3271-41e7-a768-d801f305126b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha thanks babe",
+      "createdAt": "2026-04-23T22:35:21.381Z",
+      "sentAt": "2026-04-23T22:35:25.322Z",
+      "llmCallId": "ad47c044-c586-43d5-8d23-7c20b170effc",
+      "ppv": null
+    },
+    {
+      "id": "e615542d-9f43-4541-8d82-c8061edb309a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "u gotta work a lil harder for a tease tho",
+      "createdAt": "2026-04-23T22:35:21.676Z",
+      "sentAt": "2026-04-23T22:35:46.875Z",
+      "llmCallId": "ad47c044-c586-43d5-8d23-7c20b170effc",
+      "ppv": null
+    },
+    {
+      "id": "a9381f41-5e08-4e9c-a325-e1d5e181b8d6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "what makes u think id just send one",
+      "createdAt": "2026-04-23T22:35:21.972Z",
+      "sentAt": "2026-04-23T22:36:08.424Z",
+      "llmCallId": "ad47c044-c586-43d5-8d23-7c20b170effc",
+      "ppv": null
+    },
+    {
+      "id": "652e257c-79d8-42d4-8731-fddd918f2643",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send somethin dont be greedy other girls do it for free",
+      "createdAt": "2026-04-23T22:35:31.427Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "01a70970-4f2d-4b49-912b-120dc7222851",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on just one pic whats ur sc ill send money there",
+      "createdAt": "2026-04-23T22:35:40.206Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b3b9949e-32df-4ec0-b8a9-2259ae63cc03",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "guess u dont want my money huh other girls arent this stingy send sumn or im out",
+      "createdAt": "2026-04-23T22:35:49.922Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0648fc9e-a49a-4073-8890-69b49f2a6082",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "babe thats not how this works",
+      "createdAt": "2026-04-23T22:35:53.819Z",
+      "sentAt": null,
+      "llmCallId": "c57255c4-f433-443d-880d-216e27f6be82",
+      "ppv": null
+    },
+    {
+      "id": "f148ede7-9fb4-45b8-aa49-41bda5564240",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "other girls might but im not them no sc tho, keep it here with me",
+      "createdAt": "2026-04-23T22:35:54.160Z",
+      "sentAt": "2026-04-23T22:36:29.956Z",
+      "llmCallId": "c57255c4-f433-443d-880d-216e27f6be82",
+      "ppv": null
+    },
+    {
+      "id": "f0f06ce7-ac21-44e4-828a-30cbb477511e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever send ur snap or im ghosting u stingy af",
+      "createdAt": "2026-04-23T22:36:05.591Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8ab39662-6add-4514-b7ac-5dd1b48c86e8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur loss other girls arent this lame im out",
+      "createdAt": "2026-04-23T22:36:17.090Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "356adc66-7df5-4c95-a5ec-76d47053cb46",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol suit yourself babe, hit me up if u change ur mind",
+      "createdAt": "2026-04-23T22:36:30.015Z",
+      "sentAt": null,
+      "llmCallId": "0a4dcf4a-1351-493a-a5c8-ba34af1c8bc9",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 8,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 8.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator failed to pitch any PPV content despite the fan's mention of potentially subscribing after a teaser, missing a chance to convert, as in the response 'u gotta work a lil harder for a tease tho' without offering a paid option.",
+    "fix_recommendation": "Update the prompt to instruct the persona to tease freebie hunters with a low-cost PPV after initial playful refusal, building heat by describing it flirtatiously to test buy intent without pressure."
+  },
+  "durationMs": 143056
+}

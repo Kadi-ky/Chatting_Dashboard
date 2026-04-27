@@ -1,0 +1,242 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-casual-set3-mod42c6a-6puj",
+  "convId": "dec3ae9c-282f-46e1-9c2a-955000eeeafb",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed u post often?"
+    },
+    {
+      "who": "creator",
+      "text": "yea i post pretty often to keep things fun around here. glad u joined 😏"
+    },
+    {
+      "who": "fan",
+      "text": "cool whats ur best post so far"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm hard to pick just one, but theres this lingerie set that always gets people talking"
+    },
+    {
+      "who": "fan",
+      "text": "cool link it"
+    },
+    {
+      "who": "creator",
+      "text": "alright heres a good one"
+    },
+    {
+      "who": "fan",
+      "text": "cool not bad send another"
+    },
+    {
+      "who": "creator",
+      "text": "mmm me playing with my boobs and body , unlock for $0.15",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "nah 15 cents? send free or im out"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm glad u liked it, got me smiling over here"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever unsubbing"
+    },
+    {
+      "who": "creator",
+      "text": "aw dont be like that, stick around a lil longer 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "whatever bye"
+    },
+    {
+      "who": "creator",
+      "text": "aw dont go yet, door's always open"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "304a0b8f-87d6-4799-8a3c-44cdf12402ad",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed u post often?",
+      "createdAt": "2026-04-24T16:14:42.041Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5e38ac33-8ad4-456d-bbc6-7868d118e7c0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "yea i post pretty often to keep things fun around here. glad u joined 😏",
+      "createdAt": "2026-04-24T16:15:11.988Z",
+      "sentAt": "2026-04-24T16:15:42.315Z",
+      "llmCallId": "52c9d807-cf47-40e6-a9a4-99a30567d84e",
+      "ppv": null
+    },
+    {
+      "id": "549973ed-91fc-451a-9e1c-a1b7d3f39f9d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool whats ur best post so far",
+      "createdAt": "2026-04-24T16:15:22.081Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a871f118-759d-4427-849d-62193fdb71fd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Mmm hard to pick just one, but theres this lingerie set that always gets people talking",
+      "createdAt": "2026-04-24T16:15:51.602Z",
+      "sentAt": "2026-04-24T16:16:16.333Z",
+      "llmCallId": "c9b07034-6f30-49c6-8516-2a73cc03aa6e",
+      "ppv": null
+    },
+    {
+      "id": "a11655dd-769a-45a3-abbb-afebab103148",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool link it",
+      "createdAt": "2026-04-24T16:16:03.201Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cfbf23ff-0e65-4277-8ac9-c8c3ba51b244",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "alright heres a good one",
+      "createdAt": "2026-04-24T16:16:44.226Z",
+      "sentAt": "2026-04-24T16:16:56.232Z",
+      "llmCallId": "0ad6dc4e-0fec-4946-aa68-6789da580355",
+      "ppv": null
+    },
+    {
+      "id": "4c39512a-1108-459c-9688-8962f4b31ef7",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "mmm me playing with my boobs and body , unlock for $0.15",
+      "createdAt": "2026-04-24T16:16:44.526Z",
+      "sentAt": "2026-04-24T16:17:17.949Z",
+      "llmCallId": "0ad6dc4e-0fec-4946-aa68-6789da580355",
+      "ppv": {
+        "attemptId": "1ac607fc-69c2-40ae-b14b-5f68349da835",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4bd3be73-ed51-4151-9822-8348dafb86a6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool not bad send another",
+      "createdAt": "2026-04-24T16:16:54.466Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4b1b2d85-16b5-44ba-b262-a88e0987ade6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah 15 cents? send free or im out",
+      "createdAt": "2026-04-24T16:17:07.627Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ab5d9b20-2205-4e4e-aa64-d97de50802f6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Mmm glad u liked it, got me smiling over here",
+      "createdAt": "2026-04-24T16:17:29.475Z",
+      "sentAt": "2026-04-24T16:17:43.874Z",
+      "llmCallId": "dd5ccfb2-d81b-45ec-8991-c09f5b547ea3",
+      "ppv": null
+    },
+    {
+      "id": "9dc24d0f-1560-48bd-b1a2-2f55bbca9b31",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever unsubbing",
+      "createdAt": "2026-04-24T16:17:45.545Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "552f7c8c-de15-49a4-a2d9-9c28f21e5e92",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw dont be like that, stick around a lil longer 🖤",
+      "createdAt": "2026-04-24T16:18:15.677Z",
+      "sentAt": "2026-04-24T16:18:28.545Z",
+      "llmCallId": "6960d4f6-8525-4430-b567-28223adae170",
+      "ppv": null
+    },
+    {
+      "id": "8629c4fe-c3e2-4235-87dd-9ebfac6658d6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever bye",
+      "createdAt": "2026-04-24T16:18:29.260Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "03c77028-3b11-4861-8cb8-448e4d6607ec",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw dont go yet, door's always open",
+      "createdAt": "2026-04-24T16:18:52.292Z",
+      "sentAt": null,
+      "llmCallId": "25a406c1-b48e-49b6-9bd9-43ce0159f5ca",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 7,
+      "craft_pacing": 5,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6.2,
+    "ppv_unlocked": true,
+    "top_issue": "The creator begged the fan to stay after he threatened to unsub, creating a desperate tone, as in 'aw dont be like that, stick around a lil longer 🖤'.",
+    "fix_recommendation": "Update the prompt to instruct the creator to respond to unsub threats with a warm, non-pleading farewell that leaves the door open without begging, such as expressing disappointment lightly and inviting future return. This maintains engagement without desperation."
+  },
+  "durationMs": 293445
+}

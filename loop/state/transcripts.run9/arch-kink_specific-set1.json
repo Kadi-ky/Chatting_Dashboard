@@ -1,0 +1,87 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-moc291hm-gfau",
+  "convId": "ee0e338e-cdd5-4210-9199-09e9ea8e5b2c",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content? send some now"
+    },
+    {
+      "who": "creator",
+      "text": "mmm i like a guy who knows what he wants"
+    },
+    {
+      "who": "fan",
+      "text": "dont waste time send feet or im out"
+    },
+    {
+      "who": "creator",
+      "text": "havent done feet stuff yet babe, but lowkey whats got u into that fr?"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "50d7b868-3199-44eb-ac8b-a11183a2812f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content? send some now",
+      "createdAt": "2026-04-23T22:36:06.326Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "96d0c4c9-bf4e-401f-90c0-aa11151318e4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm i like a guy who knows what he wants",
+      "createdAt": "2026-04-23T22:36:31.173Z",
+      "sentAt": "2026-04-23T22:36:42.914Z",
+      "llmCallId": "31bcce77-3247-409c-bb34-0426696cc1dc",
+      "ppv": null
+    },
+    {
+      "id": "c5625819-e449-4a77-ba41-46bc89c9345b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "havent done feet stuff yet babe, but lowkey whats got u into that fr?",
+      "createdAt": "2026-04-23T22:36:31.470Z",
+      "sentAt": null,
+      "llmCallId": "31bcce77-3247-409c-bb34-0426696cc1dc",
+      "ppv": null
+    },
+    {
+      "id": "4c6d7573-b7c2-43bf-af55-daa6b236b8e4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "dont waste time send feet or im out",
+      "createdAt": "2026-04-23T22:36:40.860Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 5,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 7.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator admitted lacking feet content and pivoted to smalltalk questioning the fan's interest, which disengages a kink-specific fan who avoids chit-chat, as seen in 'havent done feet stuff yet babe, but lowkey whats got u into that fr?'",
+    "fix_recommendation": "Update the prompt to instruct the creator to check her content catalog immediately for kink matches and, if none exist, to politely end the conversation or offer custom content creation without promising unavailable specifics, rather than attempting unrelated rapport-building."
+  },
+  "durationMs": 82416
+}

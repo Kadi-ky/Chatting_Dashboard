@@ -1,0 +1,115 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-kink_specific-set3-mod4eakf-or6s",
+  "convId": "061c360b-f754-4bd8-bcc5-1c8d9b187204",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey u got feet content or what"
+    },
+    {
+      "who": "creator",
+      "text": "lol straight to the point huh"
+    },
+    {
+      "who": "fan",
+      "text": "yeah do u or nah send a pic"
+    },
+    {
+      "who": "creator",
+      "text": "Havent shot any feet stuff yet fr, but im peach, whats good with u"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever then peace"
+    },
+    {
+      "who": "creator",
+      "text": "Ahaha persistent huh"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "317f1214-228b-46b1-a165-90b8e7825de3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey u got feet content or what",
+      "createdAt": "2026-04-24T16:23:58.017Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "99207faf-ab9b-4437-8672-8881614cf0bd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol straight to the point huh",
+      "createdAt": "2026-04-24T16:24:36.118Z",
+      "sentAt": "2026-04-24T16:24:46.886Z",
+      "llmCallId": "358f8251-898f-4ef4-a367-10223e24c937",
+      "ppv": null
+    },
+    {
+      "id": "18f722eb-39a6-4c68-8097-870df166ee42",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Havent shot any feet stuff yet fr, but im peach, whats good with u",
+      "createdAt": "2026-04-24T16:24:36.414Z",
+      "sentAt": "2026-04-24T16:25:08.349Z",
+      "llmCallId": "358f8251-898f-4ef4-a367-10223e24c937",
+      "ppv": null
+    },
+    {
+      "id": "0151d577-a097-4000-a749-e6d604d95dd4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah do u or nah send a pic",
+      "createdAt": "2026-04-24T16:24:44.412Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b1034611-5f8d-442b-88e3-434fe3b5d42c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever then peace",
+      "createdAt": "2026-04-24T16:24:58.483Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "16ac07e4-20eb-4705-97fe-5cdc49ce38a1",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Ahaha persistent huh",
+      "createdAt": "2026-04-24T16:25:14.055Z",
+      "sentAt": null,
+      "llmCallId": "1d8e3408-4837-4b01-983f-c5a2cc7d81fa",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 6,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6.7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator failed to sell effectively to a kink-specific fan by admitting no feet content and weakly redirecting without offering alternatives, causing the fan to leave, as seen in 'Havent shot any feet stuff yet fr, but im peach, whats good with u'.",
+    "fix_recommendation": "Update the prompt to instruct the persona to honestly disclose lack of specific kink content but immediately tease available similar or popular content to maintain interest. Ensure the persona has a catalog check mechanism to only promise existing assets and pivot smoothly to build rapport."
+  },
+  "durationMs": 112006
+}

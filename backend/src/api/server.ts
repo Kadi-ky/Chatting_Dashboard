@@ -8,7 +8,7 @@ import { inboundQueue, serializeEvent } from "../queue/inbound.js";
 import { env } from "../config/index.js";
 import { db } from "../db/client.js";
 import { getPlatformAdapter } from "../platform/index.js";
-import { loadAccountByPlatformId } from "../db/repos/accounts.js";
+import { loadAccountByPlatformId, upsertShadowAccount } from "../db/repos/accounts.js";
 
 export interface AdminServerHandle {
   stop(): Promise<void>;
@@ -82,10 +82,27 @@ async function handle(
     return;
   }
 
-  // ─── webhook ingress (no bearer auth — signature-gated) ───────────────
+  // ─── webhook ingress (signature-gated OR IP-gated when no signature) ──
   // Platform POSTs deliveries here. Every payload carries its own account id
   // so this endpoint is truly multi-tenant: one URL, N creators.
-  if (method === "POST" && path === "/webhooks/platform") {
+  //
+  // Two URL paths supported:
+  //   /webhooks/platform     — original / generic
+  //   /webhooks/onlyfansapi  — alias matching what we configured on the
+  //                            OFAPI dashboard tunnel URL
+  //
+  // Trust:
+  //   - If PLATFORM_WEBHOOK_SECRET is set → adapter verifies HMAC signature.
+  //   - Else if PLATFORM_WEBHOOK_TRUSTED_IPS is set → require source IP match.
+  //   - Else (dev mode) → accept all (with a logged warning).
+  if (method === "POST" && (path === "/webhooks/platform" || path === "/webhooks/onlyfansapi")) {
+    const sourceIp = clientIp(req);
+    const trustOk = trustedSource(sourceIp);
+    if (!trustOk) {
+      logger.warn({ sourceIp, path }, "webhook rejected: source ip not in trusted list");
+      return text(res, 403, "untrusted source");
+    }
+
     const rawBody = await readRawBody(req);
     const adapter = getPlatformAdapter();
     const events = adapter.parseWebhook({ rawBody, headers: req.headers });
@@ -93,13 +110,44 @@ async function handle(
       return text(res, 401, "invalid signature");
     }
     let enqueued = 0;
+    let autoCreated = 0;
     let unknownAccounts = 0;
+    let blockedByAllowlist = 0;
+    const allowlist = parseAllowlist();
     for (const event of events) {
-      const account = await loadAccountByPlatformId("onlyfans", event.platformAccountId);
-      if (!account) {
-        unknownAccounts++;
-        logger.warn({ platformAccountId: event.platformAccountId }, "webhook for unknown account");
+      // Allowlist guard: drop events for accounts we're not testing. This
+      // runs BEFORE auto-create / DB lookup so disallowed traffic costs us
+      // nothing and never lands a row. Critical when our tunnel is pointed
+      // at OFAPI alongside a different production bot that owns those other
+      // creators — we must not accidentally observe / log their conversations.
+      if (allowlist && !allowlist.has(event.platformAccountId)) {
+        blockedByAllowlist++;
         continue;
+      }
+
+      let account = await loadAccountByPlatformId("onlyfans", event.platformAccountId);
+      if (!account) {
+        // SHADOW_MODE: auto-provision an account row so production traffic for
+        // any creator can land without manual setup. The created row is marked
+        // active with creator_uuid mirroring platform_account_id (OFAPI uses
+        // the same value on both sides). When NOT in shadow mode, an unknown
+        // account is dropped so we don't accidentally start replying as a
+        // creator we haven't been provisioned for.
+        if (env.SHADOW_MODE) {
+          account = await upsertShadowAccount({
+            platform: "onlyfans",
+            platformAccountId: event.platformAccountId,
+          });
+          autoCreated++;
+          logger.info(
+            { platformAccountId: event.platformAccountId, accountId: account.id },
+            "shadow auto-created account row for incoming webhook",
+          );
+        } else {
+          unknownAccounts++;
+          logger.warn({ platformAccountId: event.platformAccountId }, "webhook for unknown account");
+          continue;
+        }
       }
       await inboundQueue().add(
         event.kind,
@@ -108,7 +156,7 @@ async function handle(
       );
       enqueued++;
     }
-    return json(res, 200, { received: events.length, enqueued, unknownAccounts });
+    return json(res, 200, { received: events.length, enqueued, autoCreated, unknownAccounts, blockedByAllowlist });
   }
 
   if (path.startsWith("/admin")) {
@@ -227,13 +275,22 @@ async function handle(
 
     if (method === "POST" && path === "/admin/test/inject") {
       const body = await readBody(req);
-      const { subscriberExternalId, text: msgText, subscriberName } = body as Record<string, unknown>;
+      const { subscriberExternalId, text: msgText, subscriberName, accountId: overrideAccountId } = body as Record<string, unknown>;
       if (typeof subscriberExternalId !== "string" || !subscriberExternalId) {
         return json(res, 400, { error: "subscriberExternalId required" });
       }
       if (typeof msgText !== "string" || !msgText.trim()) {
         return json(res, 400, { error: "text required" });
       }
+      // Test isolation: callers (e.g. the auto-improve loop) can pass a
+      // dedicated test accountId so test conversations land in a separate
+      // account that the Home Tab does not query. Falls back to the worker's
+      // configured account when omitted (preserves existing behaviour for the
+      // V3 Testing Ground tab).
+      const targetAccountId =
+        typeof overrideAccountId === "string" && overrideAccountId.length > 0
+          ? overrideAccountId
+          : env.ACCOUNT_ID;
       const event = serializeEvent({
         externalId: `test-${randomUUID()}`,
         kind: "message.received",
@@ -249,11 +306,11 @@ async function handle(
 
       await inboundQueue().add(
         "inbound",
-        { accountId: env.ACCOUNT_ID, event },
+        { accountId: targetAccountId, event },
         { jobId: event.externalId },
       );
-      logger.info({ subscriberExternalId, text: msgText.trim() }, "test event injected");
-      return json(res, 200, { ok: true, externalId: event.externalId });
+      logger.info({ subscriberExternalId, text: msgText.trim(), accountId: targetAccountId }, "test event injected");
+      return json(res, 200, { ok: true, externalId: event.externalId, accountId: targetAccountId });
     }
   }
 
@@ -264,17 +321,21 @@ async function loadThreads(): Promise<unknown> {
   const rows = await db
     .selectFrom("v3.conversations as c")
     .innerJoin("v3.subscribers as s", "s.id", "c.subscriber_id")
+    .innerJoin("v3.accounts as a", "a.id", "c.account_id")
     .select([
       "c.id as conversation_id",
       "c.phase as phase",
       "c.substate as substate",
       "c.last_activity_at as last_activity_at",
+      "c.account_id as account_id",
       "s.id as subscriber_id",
       "s.external_id as subscriber_external_id",
       "s.display_name as display_name",
+      "a.platform_account_id as platform_account_id",
+      "a.config as account_config",
     ])
     .orderBy("c.last_activity_at", "desc")
-    .limit(100)
+    .limit(200)
     .execute();
 
   const convIds = rows.map((r) => r.conversation_id);
@@ -292,23 +353,48 @@ async function loadThreads(): Promise<unknown> {
     if (!lastByConv.has(m.conversation_id)) lastByConv.set(m.conversation_id, m);
   }
 
-  const threads = rows.map((r) => ({
-    conversationId: r.conversation_id,
-    subscriberId: r.subscriber_id,
-    subscriberExternalId: r.subscriber_external_id,
-    displayName: r.display_name,
-    phase: r.phase,
-    substate: r.substate,
-    lastActivityAt: r.last_activity_at,
-    lastMessage: lastByConv.get(r.conversation_id)
-      ? {
-          direction: lastByConv.get(r.conversation_id)!.direction,
-          kind: lastByConv.get(r.conversation_id)!.kind,
-          text: lastByConv.get(r.conversation_id)!.text,
-          createdAt: lastByConv.get(r.conversation_id)!.created_at,
-        }
-      : null,
-  }));
+  // Source classifier — used by the dashboard to split conversations into:
+  //   "test"       — synthetic loop testers (the seeded TEST_ACCOUNT_ID)
+  //   "shadow"     — real OFAPI traffic, observed but not replied to
+  //   "production" — real OFAPI traffic with full reply (future state)
+  // Frontend shows them in different sections + colour codes the badges.
+  const TEST_ACCOUNT_ID = "00000000-0000-0000-0000-00000000beef";
+
+  const threads = rows.map((r) => {
+    const cfg = (r.account_config ?? {}) as Record<string, unknown>;
+    const isShadow = cfg.shadow === true;
+    const isTest = r.account_id === TEST_ACCOUNT_ID;
+    // "production" requires a real platform_account_id AND not shadow flag.
+    // Anything missing platform_account_id is a manual /admin/test/inject and
+    // gets bucketed as "test" so it doesn't pollute the production lane.
+    const hasPlatformId = Boolean(r.platform_account_id);
+    const source: "test" | "shadow" | "production" = isShadow
+      ? "shadow"
+      : isTest || !hasPlatformId
+        ? "test"
+        : "production";
+
+    return {
+      conversationId: r.conversation_id,
+      subscriberId: r.subscriber_id,
+      subscriberExternalId: r.subscriber_external_id,
+      displayName: r.display_name,
+      phase: r.phase,
+      substate: r.substate,
+      lastActivityAt: r.last_activity_at,
+      accountId: r.account_id,
+      platformAccountId: r.platform_account_id,
+      source,
+      lastMessage: lastByConv.get(r.conversation_id)
+        ? {
+            direction: lastByConv.get(r.conversation_id)!.direction,
+            kind: lastByConv.get(r.conversation_id)!.kind,
+            text: lastByConv.get(r.conversation_id)!.text,
+            createdAt: lastByConv.get(r.conversation_id)!.created_at,
+          }
+        : null,
+    };
+  });
   return { threads };
 }
 
@@ -520,4 +606,66 @@ function json(res: http.ServerResponse, status: number, body: unknown): void {
 function text(res: http.ServerResponse, status: number, body: string): void {
   res.writeHead(status, { "content-type": "text/plain" });
   res.end(body);
+}
+
+/**
+ * Pull the originating client IP. Cloudflare Tunnel + standard reverse proxies
+ * set `cf-connecting-ip` or `x-forwarded-for`; fall back to the socket address.
+ * For `x-forwarded-for` (which can be a comma-separated chain), use the LEFT-
+ * most entry — that's the original client per RFC 7239.
+ */
+function clientIp(req: http.IncomingMessage): string | null {
+  const cf = req.headers["cf-connecting-ip"];
+  if (typeof cf === "string" && cf) return cf;
+  const xff = req.headers["x-forwarded-for"];
+  if (typeof xff === "string" && xff) {
+    const first = xff.split(",")[0]?.trim();
+    if (first) return first;
+  }
+  return req.socket?.remoteAddress ?? null;
+}
+
+/**
+ * Trust check for the unsigned webhook endpoint.
+ *
+ * If `PLATFORM_WEBHOOK_TRUSTED_IPS` is unset, fall through (dev / shadow-mode
+ * behaviour). When set, expect a comma-separated list of IPs / CIDRs — any
+ * exact match passes. CIDR support is intentionally minimal: only `IP/64`
+ * and `IP/32` style prefix matches, since we just need to whitelist OFAPI's
+ * known egress (a couple of IPs).
+ */
+/**
+ * Parse PLATFORM_ACCOUNT_ALLOWLIST into a Set for O(1) lookup. Memoised at
+ * module scope so we don't re-split per request. Returns null when no
+ * allowlist is configured (i.e. accept any account — only safe in dev).
+ */
+let _allowlistCache: Set<string> | null | undefined;
+function parseAllowlist(): Set<string> | null {
+  if (_allowlistCache !== undefined) return _allowlistCache;
+  const raw = env.PLATFORM_ACCOUNT_ALLOWLIST;
+  if (!raw) {
+    _allowlistCache = null;
+    return null;
+  }
+  _allowlistCache = new Set(raw.split(",").map((s) => s.trim()).filter(Boolean));
+  return _allowlistCache;
+}
+
+function trustedSource(sourceIp: string | null): boolean {
+  const list = env.PLATFORM_WEBHOOK_TRUSTED_IPS;
+  if (!list) return true; // open by default — secret + signature is the alternate gate
+  if (!sourceIp) return false;
+  for (const entry of list.split(",").map((s) => s.trim()).filter(Boolean)) {
+    if (entry === sourceIp) return true;
+    // IPv6 prefix match (e.g. "2a01:4ff:f0:46fb::/64" trusts a whole subnet).
+    const slashIdx = entry.indexOf("/");
+    if (slashIdx > 0) {
+      const prefix = entry.slice(0, slashIdx);
+      // Naive prefix-string match — fine for whitelisting one or two known
+      // egress subnets; not a substitute for a real CIDR library if you need
+      // production-grade matching.
+      if (sourceIp.startsWith(prefix.split("::")[0] ?? prefix)) return true;
+    }
+  }
+  return false;
 }

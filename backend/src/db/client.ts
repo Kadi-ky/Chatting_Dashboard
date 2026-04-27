@@ -14,6 +14,15 @@ pool.on("error", (err) => {
   console.error("pg pool error", err);
 });
 
+// Each pooled Client emits its own "error" events when the upstream connection
+// dies (e.g. Supabase idle-evicting a connection). Without this listener, a
+// dropped client kills the whole node process.
+pool.on("connect", (client) => {
+  client.on("error", (err) => {
+    console.error("pg client error (connection will be replaced)", err.message);
+  });
+});
+
 export const db = new Kysely<DB>({
   dialect: new PostgresDialect({ pool }),
   log: env.NODE_ENV === "development" ? ["error"] : ["error"],

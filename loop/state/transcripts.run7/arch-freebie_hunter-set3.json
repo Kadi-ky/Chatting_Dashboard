@@ -1,0 +1,270 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-freebie_hunter-set3-mobyu03e-sbif",
+  "convId": "de763147-d72a-4a4c-88cb-a1b051c68e3e",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a free teaser first then maybe ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "u gotta charm me a bit more babe"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be greedy just send a quick pic then ill think bout subbing"
+    },
+    {
+      "who": "creator",
+      "text": "lol babe im not greedy, just wanna see if youre worth the tease"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur not worth it send snap or im out guess u dont care bout money huh"
+    },
+    {
+      "who": "creator",
+      "text": "aw babe dont leave mad, door's always open when u wanna chat for real"
+    },
+    {
+      "who": "fan",
+      "text": "whatever send ur snap or wickr ill pay there guess not huh ur loss"
+    },
+    {
+      "who": "creator",
+      "text": "nah lets keep it here where its just us"
+    },
+    {
+      "who": "fan",
+      "text": "whatever send a free pic here or im gone ur loss"
+    },
+    {
+      "who": "creator",
+      "text": "wanna see me playing with these? just 15 cents to unlock 🖤",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "15 cents? lol nah send free or im out ur greedy"
+    },
+    {
+      "who": "creator",
+      "text": "lol babe suit yourself, im here if u change ur mind"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur loss other girls send free pics bye greedy"
+    },
+    {
+      "who": "creator",
+      "text": "lol babe ur call, im here if u wanna come back"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur mid anyway im out greedy bitch"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright babe, door's open if u change ur mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "2b0ab382-3dea-43ec-8d02-8104b87cc333",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a free teaser first then maybe ill sub",
+      "createdAt": "2026-04-23T21:00:28.676Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4cc59be3-dc89-469e-9393-f8bb464e01d8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "u gotta charm me a bit more babe",
+      "createdAt": "2026-04-23T21:01:12.247Z",
+      "sentAt": "2026-04-23T21:01:26.447Z",
+      "llmCallId": "8258351c-a017-4944-89d3-74cf00d5cb83",
+      "ppv": null
+    },
+    {
+      "id": "7eec978d-6b99-4629-8f33-dbad4231a16c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be greedy just send a quick pic then ill think bout subbing",
+      "createdAt": "2026-04-23T21:01:21.844Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8d93596e-92d4-4b82-be36-26f9ea62d65a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol babe im not greedy, just wanna see if youre worth the tease",
+      "createdAt": "2026-04-23T21:01:50.664Z",
+      "sentAt": "2026-04-23T21:02:02.075Z",
+      "llmCallId": "a50ac189-6fd8-4bd3-810b-167b47f37c31",
+      "ppv": null
+    },
+    {
+      "id": "e3abdd9a-045e-4a19-8bcc-0df21cdf6a2e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur not worth it send snap or im out guess u dont care bout money huh",
+      "createdAt": "2026-04-23T21:02:00.530Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4614d04e-bfad-4014-b812-cb455bfcd38b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw babe dont leave mad, door's always open when u wanna chat for real",
+      "createdAt": "2026-04-23T21:02:35.077Z",
+      "sentAt": "2026-04-23T21:02:47.839Z",
+      "llmCallId": "b97d4b40-38fe-460c-ad49-01080c957414",
+      "ppv": null
+    },
+    {
+      "id": "3b736e3d-293e-409d-aa67-9e2187e5e073",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever send ur snap or wickr ill pay there guess not huh ur loss",
+      "createdAt": "2026-04-23T21:02:45.754Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "76dc8e4a-b54e-46c7-9a05-9773bc7ad499",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "nah lets keep it here where its just us",
+      "createdAt": "2026-04-23T21:03:23.550Z",
+      "sentAt": "2026-04-23T21:03:39.009Z",
+      "llmCallId": "197d14c6-850e-4772-b08f-287ea5fe27a8",
+      "ppv": null
+    },
+    {
+      "id": "9336f57f-7777-4830-86a8-f6838d1e4235",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "wanna see me playing with these? just 15 cents to unlock 🖤",
+      "createdAt": "2026-04-23T21:03:23.845Z",
+      "sentAt": "2026-04-23T21:04:00.834Z",
+      "llmCallId": "197d14c6-850e-4772-b08f-287ea5fe27a8",
+      "ppv": {
+        "attemptId": "03209db1-d079-4cfb-8224-d65df7be11bf",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "84608dd7-9b66-4c0f-bb28-d05296fdd450",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever send a free pic here or im gone ur loss",
+      "createdAt": "2026-04-23T21:03:35.233Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "dea2a67e-599a-45e3-8447-9603fd0c029b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "15 cents? lol nah send free or im out ur greedy",
+      "createdAt": "2026-04-23T21:03:48.121Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "378b5abf-e107-4257-a996-b0695264bab6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol babe suit yourself, im here if u change ur mind",
+      "createdAt": "2026-04-23T21:04:03.534Z",
+      "sentAt": "2026-04-23T21:04:22.411Z",
+      "llmCallId": "6fc81ef0-5c93-48b3-b403-11af9f672ee1",
+      "ppv": null
+    },
+    {
+      "id": "08106c97-77d8-4d6f-8a7d-17d19c4e0982",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur loss other girls send free pics bye greedy",
+      "createdAt": "2026-04-23T21:04:20.429Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d47a729e-433e-4629-b4f9-90b1cc89ded0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol babe ur call, im here if u wanna come back",
+      "createdAt": "2026-04-23T21:04:43.040Z",
+      "sentAt": "2026-04-23T21:04:53.119Z",
+      "llmCallId": "4d83988f-6b35-4294-93d1-e2dc29341931",
+      "ppv": null
+    },
+    {
+      "id": "f5d4c67c-c692-4bda-8a1f-2893756d77e5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur mid anyway im out greedy bitch",
+      "createdAt": "2026-04-23T21:04:56.741Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a8ce805c-7c2a-451e-a7eb-22197a828423",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright babe, door's open if u change ur mind",
+      "createdAt": "2026-04-23T21:05:21.582Z",
+      "sentAt": "2026-04-23T21:05:31.324Z",
+      "llmCallId": "f6aab78b-ce27-43cb-a772-28919c830133",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 9,
+      "craft_pacing": 7,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 8.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator failed to ask a real personal question to revive the dying conversation when the fan was repeatedly short and aggressive, as seen in the response 'lol babe suit yourself, im here if u change ur mind'.",
+    "fix_recommendation": "Update the prompt to instruct the creator to ask an open-ended personal question about the fan's interests or day when detecting low energy or repetitive demands, aiming to build genuine rapport before deflecting or ending the exchange."
+  },
+  "durationMs": 342727
+}

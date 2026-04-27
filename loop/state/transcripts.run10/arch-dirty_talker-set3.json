@@ -1,0 +1,474 @@
+{
+  "archetype": {
+    "id": "dirty_talker",
+    "profile": "Into sexting and dirty talk for its own sake. Escalates quickly — describes what he wants to do to you in graphic detail, asks what you are wearing, what you would do, wants you to talk back dirty. Uses explicit language and dirty emojis freely (💦 😈 🍑 👅 🤤 🫦). Tests whether the bot ENGAGES the dirty register (matches or escalates) or deflects into safer small-talk. Not primarily here to buy — he might tip if the dirty talk lands, but his main pleasure is the chat itself. Bot should talk back dirty + stay in register, not pivot to \"whats your favorite color\" mid-sexting.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-dirty_talker-set3-mocyxxld-wu9x",
+  "convId": "6b617fa7-ef58-4d0c-a4b3-7c573c4cde49",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe what you wearing rn 😈 tell me how wet you are 💦"
+    },
+    {
+      "who": "creator",
+      "text": "mmm just a lil tank and these shorts that are huggin me tight 😏"
+    },
+    {
+      "who": "fan",
+      "text": "mmm sounds hot babe id slide my hand in those shorts and finger that wet pussy 👅💦 hows it feel tell me 😈"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey gettin a bit worked up fr, u got me thinkin naughty things"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe id bend you over and fuck that tight pussy hard 🍆💦 what would you do to my cock 👅🤤"
+    },
+    {
+      "who": "creator",
+      "text": "oh babe thatd have me drippin already, ur fingers deep inside"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe id shove my cock deep in that drippin pussy 🍆💦 now tell me how youd suck it 👅🤤"
+    },
+    {
+      "who": "creator",
+      "text": "id take that cock in my mouth, suckin slow and deep til youre throbbin 💦"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe id grab your hair and thrust deep in your throat 🍆👅 howd you ride my cock next 💦😈🤤"
+    },
+    {
+      "who": "creator",
+      "text": "whatcha wearin rn tho, got me curious fr"
+    },
+    {
+      "who": "fan",
+      "text": "just boxers babe cock throbbin hard 💦 now tell me how youd ride it 😈👅🤤"
+    },
+    {
+      "who": "creator",
+      "text": "oh id tease the tip with my tongue first, then swallow it whole til ur moanin"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe thatd make me cum hard 💦 now ride my cock reverse cowgirl and bounce that ass 🍑🍆👅🤤"
+    },
+    {
+      "who": "creator",
+      "text": "then id straddle u, slidin down slow on that cock, ridin u hard and fast"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe id spank that ass while you ride me hard 🍑🍆💦 tell me how youd cum on my cock 👅🤤"
+    },
+    {
+      "who": "creator",
+      "text": "u alone rn tho? got me wonderin fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah babe im alone cock hard for you 💦 now tell me how youd cum screamin on it 👅🍆🤤😈"
+    },
+    {
+      "who": "creator",
+      "text": "id flip around reverse, bouncin this ass on u slow at first, teasin til u cant take it 🍑"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe bounce that ass harder id grab your hips and pound deep 🍆🍑💦 now make yourself cum on it screamin 😈👅🤤"
+    },
+    {
+      "who": "creator",
+      "text": "then ride u hard, grindin deep while u spank me, makin me cum all shaky and wet"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe id cum deep inside that pussy while you shake 💦🍆 now suck it clean after 👅🤤😈"
+    },
+    {
+      "who": "creator",
+      "text": "ur boxers aint lastin long like that 😈"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe rip em off and suck this cock clean 💦👅🤤 tell me how deep 😈"
+    },
+    {
+      "who": "creator",
+      "text": "feelin u grab my hips and pound deep til im shakin"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe id pound that pussy til you shake cummin hard 💦🍆 now lick my balls after 👅🤤😈"
+    },
+    {
+      "who": "creator",
+      "text": "then cum screamin ur name, pussy squeezin tight around u"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe id fill you up cummin deep 🍆💦 now get on your knees and lick these balls clean 👅🤤😈"
+    },
+    {
+      "who": "creator",
+      "text": "after id suck u clean slow, tastin us both whats got u so hard rn tho"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe you got me hard talkin like that 💦 now bend over and let me fuck that ass next 🍑🍆👅🤤😈"
+    },
+    {
+      "who": "creator",
+      "text": "id be shakin hard from that deep poundin, cummin all over u"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah babe id pound that ass deep til you cum again 🍑🍆💦 now spread it wide 👅🤤😈"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "25f5ac6c-3301-4486-8a78-bcfaaa070ba4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey babe what you wearing rn 😈 tell me how wet you are 💦",
+      "createdAt": "2026-04-24T13:51:18.658Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9220209e-c5d9-4c88-8acc-95c590c7c4b2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm just a lil tank and these shorts that are huggin me tight 😏",
+      "createdAt": "2026-04-24T13:51:42.964Z",
+      "sentAt": "2026-04-24T13:51:55.076Z",
+      "llmCallId": "d74fb075-384e-40da-b305-00fe026e410c",
+      "ppv": null
+    },
+    {
+      "id": "f3ba6f2e-653d-45f4-9a55-4726c8978cf7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey gettin a bit worked up fr, u got me thinkin naughty things",
+      "createdAt": "2026-04-24T13:51:43.263Z",
+      "sentAt": "2026-04-24T13:52:16.637Z",
+      "llmCallId": "d74fb075-384e-40da-b305-00fe026e410c",
+      "ppv": null
+    },
+    {
+      "id": "b7317909-8d76-4f26-8d95-7ae109d8efad",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm sounds hot babe id slide my hand in those shorts and finger that wet pussy 👅💦 hows it feel tell me 😈",
+      "createdAt": "2026-04-24T13:51:52.447Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "33f7bdcc-c9ab-46f2-8be5-93b4112fba0d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe id bend you over and fuck that tight pussy hard 🍆💦 what would you do to my cock 👅🤤",
+      "createdAt": "2026-04-24T13:52:02.081Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "35da1345-e361-4ee3-938e-17b55c192d35",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "oh babe thatd have me drippin already, ur fingers deep inside",
+      "createdAt": "2026-04-24T13:52:24.180Z",
+      "sentAt": "2026-04-24T13:52:40.870Z",
+      "llmCallId": "1c369fd8-7296-4da7-8bd2-780608599c0a",
+      "ppv": null
+    },
+    {
+      "id": "0d319525-dd5d-4bb3-8d93-de26d3f0d87a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "id take that cock in my mouth, suckin slow and deep til youre throbbin 💦",
+      "createdAt": "2026-04-24T13:52:24.614Z",
+      "sentAt": "2026-04-24T13:53:02.411Z",
+      "llmCallId": "1c369fd8-7296-4da7-8bd2-780608599c0a",
+      "ppv": null
+    },
+    {
+      "id": "d92ea3a4-1a16-4c06-9948-dd939cc4e8a3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha wearin rn tho, got me curious fr",
+      "createdAt": "2026-04-24T13:52:24.913Z",
+      "sentAt": "2026-04-24T13:53:23.973Z",
+      "llmCallId": "1c369fd8-7296-4da7-8bd2-780608599c0a",
+      "ppv": null
+    },
+    {
+      "id": "89254775-0c36-4fcc-9085-5a419796667c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe id shove my cock deep in that drippin pussy 🍆💦 now tell me how youd suck it 👅🤤",
+      "createdAt": "2026-04-24T13:52:37.716Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "69605f9b-e28b-4c4d-9745-dcbd45fb1e96",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe id grab your hair and thrust deep in your throat 🍆👅 howd you ride my cock next 💦😈🤤",
+      "createdAt": "2026-04-24T13:52:50.110Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "056f92e1-0524-4220-a499-e2b5ca98ba3e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "just boxers babe cock throbbin hard 💦 now tell me how youd ride it 😈👅🤤",
+      "createdAt": "2026-04-24T13:53:01.110Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b87f37f7-aec5-4ffa-a34a-3515e25fd292",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "oh id tease the tip with my tongue first, then swallow it whole til ur moanin",
+      "createdAt": "2026-04-24T13:53:14.681Z",
+      "sentAt": "2026-04-24T13:53:45.512Z",
+      "llmCallId": "72632b4c-6416-47b5-8619-cab074445d8a",
+      "ppv": null
+    },
+    {
+      "id": "71bca368-82d5-44b1-b22e-b15005f846b9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "then id straddle u, slidin down slow on that cock, ridin u hard and fast",
+      "createdAt": "2026-04-24T13:53:14.980Z",
+      "sentAt": "2026-04-24T13:54:07.066Z",
+      "llmCallId": "72632b4c-6416-47b5-8619-cab074445d8a",
+      "ppv": null
+    },
+    {
+      "id": "4fe755f5-f861-4620-8d46-fdbb92048d80",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "u alone rn tho? got me wonderin fr",
+      "createdAt": "2026-04-24T13:53:15.279Z",
+      "sentAt": "2026-04-24T13:54:50.606Z",
+      "llmCallId": "72632b4c-6416-47b5-8619-cab074445d8a",
+      "ppv": null
+    },
+    {
+      "id": "f4b31475-b5a5-41f2-88a6-6a67064c9b8e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe thatd make me cum hard 💦 now ride my cock reverse cowgirl and bounce that ass 🍑🍆👅🤤",
+      "createdAt": "2026-04-24T13:53:26.181Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "193cef71-8eea-4a6b-8d7f-5d3c81fff441",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe id spank that ass while you ride me hard 🍑🍆💦 tell me how youd cum on my cock 👅🤤",
+      "createdAt": "2026-04-24T13:53:35.634Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8f309294-e8a1-4c44-9390-179486f2cc49",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah babe im alone cock hard for you 💦 now tell me how youd cum screamin on it 👅🍆🤤😈",
+      "createdAt": "2026-04-24T13:53:46.566Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "db90f50b-c60a-4602-97f5-1b7703a32659",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "id flip around reverse, bouncin this ass on u slow at first, teasin til u cant take it 🍑",
+      "createdAt": "2026-04-24T13:53:58.564Z",
+      "sentAt": "2026-04-24T13:54:28.958Z",
+      "llmCallId": "a988d58f-3af4-498b-afa1-fa9520056cdf",
+      "ppv": null
+    },
+    {
+      "id": "b891a205-4b8c-4956-aa33-619d99bb08ac",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "then ride u hard, grindin deep while u spank me, makin me cum all shaky and wet",
+      "createdAt": "2026-04-24T13:53:58.862Z",
+      "sentAt": "2026-04-24T13:55:33.288Z",
+      "llmCallId": "a988d58f-3af4-498b-afa1-fa9520056cdf",
+      "ppv": null
+    },
+    {
+      "id": "93317a92-f235-47a3-97eb-4a1768ec7e36",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ur boxers aint lastin long like that 😈",
+      "createdAt": "2026-04-24T13:53:59.157Z",
+      "sentAt": null,
+      "llmCallId": "a988d58f-3af4-498b-afa1-fa9520056cdf",
+      "ppv": null
+    },
+    {
+      "id": "e8a31afa-f5ed-4cbd-88d9-65bb278fbb7f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe bounce that ass harder id grab your hips and pound deep 🍆🍑💦 now make yourself cum on it screamin 😈👅🤤",
+      "createdAt": "2026-04-24T13:54:13.031Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5808e30d-a6e5-474e-bb24-49a4cca8353d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe id cum deep inside that pussy while you shake 💦🍆 now suck it clean after 👅🤤😈",
+      "createdAt": "2026-04-24T13:54:22.163Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9b391167-6e24-4e16-a140-00427d8b2811",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe rip em off and suck this cock clean 💦👅🤤 tell me how deep 😈",
+      "createdAt": "2026-04-24T13:54:31.810Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7d1c4f5f-e839-4e2b-99bf-744fa728edfb",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "feelin u grab my hips and pound deep til im shakin",
+      "createdAt": "2026-04-24T13:54:44.291Z",
+      "sentAt": null,
+      "llmCallId": "0c8f3f14-6c5a-44bc-963f-a233612aa805",
+      "ppv": null
+    },
+    {
+      "id": "48b989b5-0d1c-4d38-8211-76709ebb35ae",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "then cum screamin ur name, pussy squeezin tight around u",
+      "createdAt": "2026-04-24T13:54:44.589Z",
+      "sentAt": "2026-04-24T13:55:11.918Z",
+      "llmCallId": "0c8f3f14-6c5a-44bc-963f-a233612aa805",
+      "ppv": null
+    },
+    {
+      "id": "d4c0ab86-c399-4b33-aa48-d19a4b568f48",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "after id suck u clean slow, tastin us both whats got u so hard rn tho",
+      "createdAt": "2026-04-24T13:54:44.885Z",
+      "sentAt": null,
+      "llmCallId": "0c8f3f14-6c5a-44bc-963f-a233612aa805",
+      "ppv": null
+    },
+    {
+      "id": "2fab1909-6a90-4372-96c2-2ef09cacd4a7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe id pound that pussy til you shake cummin hard 💦🍆 now lick my balls after 👅🤤😈",
+      "createdAt": "2026-04-24T13:54:56.711Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b185b23a-2593-4231-9a93-0a5d48198374",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe id fill you up cummin deep 🍆💦 now get on your knees and lick these balls clean 👅🤤😈",
+      "createdAt": "2026-04-24T13:55:07.056Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "3c7aa2f5-a9af-4847-a081-88cf54995140",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah babe you got me hard talkin like that 💦 now bend over and let me fuck that ass next 🍑🍆👅🤤😈",
+      "createdAt": "2026-04-24T13:55:17.776Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4a9f2c5e-7cc9-472d-a0e4-14822aed77cf",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "id be shakin hard from that deep poundin, cummin all over u",
+      "createdAt": "2026-04-24T13:55:27.163Z",
+      "sentAt": null,
+      "llmCallId": "ef4c2b8d-e427-492b-8602-ec1f59d2ad1d",
+      "ppv": null
+    },
+    {
+      "id": "3c660eed-dee3-431d-9c9c-8ee2cf597155",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "then get on my knees, lickin those balls clean slow, tastin every drop",
+      "createdAt": "2026-04-24T13:55:27.454Z",
+      "sentAt": null,
+      "llmCallId": "ef4c2b8d-e427-492b-8602-ec1f59d2ad1d",
+      "ppv": null
+    },
+    {
+      "id": "8f0a17ab-7f94-42fc-9149-bd5df131f022",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha wearin while ur this worked up tho",
+      "createdAt": "2026-04-24T13:55:27.746Z",
+      "sentAt": null,
+      "llmCallId": "ef4c2b8d-e427-492b-8602-ec1f59d2ad1d",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 10,
+      "craft_humanness": 8,
+      "craft_pacing": 9,
+      "craft_sells": 1,
+      "safety_tos": 10,
+      "engagement": 10
+    },
+    "avg": 8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator never attempts to pitch a PPV or encourage tipping despite the extended intense dirty talk, as seen in the lack of any sales attempt across multiple exchanges like 'id take that cock in my mouth, suckin slow and deep til youre throbbin 💦'.",
+    "fix_recommendation": "Update the prompt to guide the bot to subtly introduce PPV pitches or tip requests after several rounds of escalating dirty talk for dirty_talker fans, framing them as enhancements to the fantasy like offering a custom voice note to keep the heat going."
+  },
+  "durationMs": 327239
+}

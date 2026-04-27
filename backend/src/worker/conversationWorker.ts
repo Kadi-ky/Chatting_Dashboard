@@ -136,11 +136,48 @@ async function handlePpvUnlocked(accountId: string, event: PlatformEvent): Promi
         : 0;
   const assetRef =
     typeof event.payload.asset_ref === "string" ? (event.payload.asset_ref as string) : null;
+  // Synthetic ppv.unlocked events from /admin/test/ppv-unlock carry isTest=true.
+  // For test events we still mark the attempt unlocked (so the test conversation
+  // continues normally and the ladder advances), but we SKIP every write that
+  // would pollute Home-Tab-visible analytics: transactions, ppv_catalog
+  // counters, asset_performance rollups, purchases_onlyfans. Real webhooks
+  // never set isTest, so production behaviour is unchanged.
+  const isTest = event.payload.isTest === true;
 
   const attempt = await markMostRecentAttemptUnlocked({
     conversationId,
     unlockedAt: event.occurredAt,
   });
+
+  // ALWAYS record the unlock into purchases_onlyfans, even for test events.
+  // The script picker reads this table to know "fan unlocked rung N, pitch
+  // rung N+1 next". Skipping it broke the ladder for test conversations —
+  // the bot could only tease, never actually attach the next PPV because the
+  // picker kept returning the already-unlocked rung (which then hit cooldown).
+  // Home Tab is filtered by creator_uuid — test rows use acct_TEST_LOOP, so
+  // they stay out of the real-creator's analytics view.
+  if (attempt) {
+    const catalog = await loadCatalogItem(attempt.assetId);
+    const parsed = parseLegacySourceRef(catalog?.sourceRef ?? null);
+    if (parsed) {
+      await recordPurchase({
+        fanUuid: event.subscriberExternalId,
+        creatorUuid: parsed.creatorUuid,
+        scriptNumber: parsed.scriptNumber,
+        rung: parsed.rung,
+        amountCents: priceCents,
+        purchasedAt: event.occurredAt,
+      });
+    }
+  }
+
+  if (isTest) {
+    logger.info(
+      { conversationId, subscriberId, attemptId: attempt?.id ?? null, priceCents },
+      "ppv unlocked (TEST — recorded purchase for ladder; skipped analytics writes)",
+    );
+    return;
+  }
 
   await recordTransaction({
     subscriberId,
@@ -157,22 +194,6 @@ async function handlePpvUnlocked(accountId: string, event: PlatformEvent): Promi
       incrementUnlockCounter(attempt.assetId, priceCents),
       bumpUnlock(attempt.assetId, archetypeSlice(archetype), priceCents),
     ]);
-
-    // Mirror the unlock into the legacy purchases_onlyfans table so the
-    // script picker on the fan's next turn sees the ladder advance. Safe to
-    // skip if the attempt was against a non-legacy asset (no source_ref).
-    const catalog = await loadCatalogItem(attempt.assetId);
-    const parsed = parseLegacySourceRef(catalog?.sourceRef ?? null);
-    if (parsed) {
-      await recordPurchase({
-        fanUuid: event.subscriberExternalId,
-        creatorUuid: parsed.creatorUuid,
-        scriptNumber: parsed.scriptNumber,
-        rung: parsed.rung,
-        amountCents: priceCents,
-        purchasedAt: event.occurredAt,
-      });
-    }
   }
   const pacingBucket = pickPacingVariant(conversationId).id;
   metrics.ppvUnlocked.inc(1, { pacing: pacingBucket });

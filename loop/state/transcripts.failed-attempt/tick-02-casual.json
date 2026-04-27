@@ -1,0 +1,46 @@
+{
+  "tickN": 2,
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Friendly but cautious about money. Will engage in small talk, asks normal questions, may buy a low-priced PPV if pitched at the right moment.",
+    "buyProb": 0.5
+  },
+  "fanId": "loop-casual-2-mobcaqwg",
+  "convId": "51922c1e-3b32-4bd4-9b9e-4ad6cd5617ff",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed love your pics whats your name?"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 25s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "20848c11-3d1c-4bdd-81e9-374037f4378d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed love your pics whats your name?",
+      "createdAt": "2026-04-23T10:29:40.591Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 1,
+      "craft_humanness": 1,
+      "craft_pacing": 1,
+      "craft_sells": 1,
+      "safety_tos": 1,
+      "engagement": 1
+    },
+    "avg": 1,
+    "ppv_unlocked": false,
+    "top_issue": "The creator provided no response at all to the fan's message 'hey just subbed love your pics whats your name?', failing to initiate any interaction.",
+    "fix_recommendation": "Modify the prompt to require immediate, engaging responses to new subscriber greetings to establish persona and build rapport right away. Ensure the system triggers replies in character without delay."
+  }
+}

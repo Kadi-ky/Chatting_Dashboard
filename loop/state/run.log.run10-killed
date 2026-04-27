@@ -1,0 +1,94 @@
+[2026-04-24T09:24:09.655Z] loop v3 start | RUN 10 | archetypes=9 | sets/archetype=3 | parallel testers=5 | model=grok-4
+[2026-04-24T09:24:09.657Z] run artifacts → C:\Users\Predator\Desktop\PeachBot V2\loop\state\transcripts.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\run.log.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\summary.json.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\backup-run10
+[2026-04-24T09:24:09.657Z] PHASE 1 (parallel): 27 conversations across 5 testers
+[2026-04-24T09:24:09.658Z] [w0] whale/set1 start | fan=loop-whale-set1-mocpejwa-pjjx
+[2026-04-24T09:24:09.659Z] [w2] whale/set3 start | fan=loop-whale-set3-mocpejwb-94ad
+[2026-04-24T09:24:09.658Z] [w1] whale/set2 start | fan=loop-whale-set2-mocpejwa-vwru
+[2026-04-24T09:24:09.659Z] [w4] casual/set2 start | fan=loop-casual-set2-mocpejwb-j302
+[2026-04-24T09:24:09.659Z] [w3] casual/set1 start | fan=loop-casual-set1-mocpejwb-692m
+[2026-04-24T09:25:51.979Z]   set 2 turn 0 no bot reply
+[2026-04-24T09:25:52.449Z]   set 1 turn 0 no bot reply
+[2026-04-24T09:25:53.052Z]   set 2 turn 0 no bot reply
+[2026-04-24T09:25:57.520Z]   set 1 turn 0 no bot reply
+[2026-04-24T09:25:57.623Z]   set 3 turn 0 no bot reply
+[2026-04-24T09:26:12.474Z] [w4] casual/set2 done avg=2.5 ppv=false dur=123s
+[2026-04-24T09:26:12.475Z] [w4] casual/set3 start | fan=loop-casual-set3-mocph6nv-am51
+[2026-04-24T09:26:13.240Z] [w3] casual/set1 done avg=1 ppv=false dur=124s
+[2026-04-24T09:26:13.241Z] [w3] freebie_hunter/set1 start | fan=loop-freebie_hunter-set1-mocph794-wvyh
+[2026-04-24T09:26:14.604Z] [w2] whale/set3 done avg=1 ppv=false dur=125s
+[2026-04-24T09:26:14.604Z] [w2] freebie_hunter/set2 start | fan=loop-freebie_hunter-set2-mocph8b0-rjc6
+[2026-04-24T09:26:16.954Z] [w4] casual/set3 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:16.955Z] [w4] freebie_hunter/set3 start | fan=loop-freebie_hunter-set3-mocpha4b-99ub
+[2026-04-24T09:26:18.155Z] [w3] freebie_hunter/set1 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:18.156Z] [w3] kink_specific/set1 start | fan=loop-kink_specific-set1-mocphb1o-fd4a
+[2026-04-24T09:26:19.869Z] [w2] freebie_hunter/set2 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:19.870Z] [w2] kink_specific/set2 start | fan=loop-kink_specific-set2-mocphcda-2qlv
+[2026-04-24T09:26:22.108Z] [w4] freebie_hunter/set3 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:22.109Z] [w4] kink_specific/set3 start | fan=loop-kink_specific-set3-mocphe3h-t4jt
+[2026-04-24T09:26:22.169Z] [w3] kink_specific/set1 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:22.169Z] [w3] chatter/set1 start | fan=loop-chatter-set1-mocphe55-hye0
+[2026-04-24T09:26:23.366Z] [w2] kink_specific/set2 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:23.367Z] [w2] chatter/set2 start | fan=loop-chatter-set2-mocphf2f-oyan
+[2026-04-24T09:26:23.628Z] [w1] whale/set2 done avg=2.5 ppv=false dur=134s
+[2026-04-24T09:26:23.628Z] [w1] chatter/set3 start | fan=loop-chatter-set3-mocphf9o-ukj0
+[2026-04-24T09:26:26.576Z] [w4] kink_specific/set3 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:26.577Z] [w4] slow_burn/set1 start | fan=loop-slow_burn-set1-mocphhjl-emk3
+[2026-04-24T09:26:26.811Z] [w0] whale/set1 done avg=2.5 ppv=false dur=137s
+[2026-04-24T09:26:26.811Z] [w0] slow_burn/set2 start | fan=loop-slow_burn-set2-mocphhq3-cmz3
+[2026-04-24T09:26:29.725Z] [w1] chatter/set3 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:29.726Z] [w1] slow_burn/set3 start | fan=loop-slow_burn-set3-mocphjz2-i8uy
+[2026-04-24T09:26:29.874Z] [w3] chatter/set1 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:29.875Z] [w3] time_waster/set1 start | fan=loop-time_waster-set1-mocphk37-zrf6
+[2026-04-24T09:26:31.229Z] [w2] chatter/set2 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:31.230Z] [w2] time_waster/set2 start | fan=loop-time_waster-set2-mocphl4u-m523
+[2026-04-24T09:26:32.849Z] [w4] slow_burn/set1 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:32.849Z] [w4] time_waster/set3 start | fan=loop-time_waster-set3-mocphmdt-4bf2
+[2026-04-24T09:26:33.540Z] [w0] slow_burn/set2 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:33.542Z] [w0] longtime_vip/set1 start | fan=longtime-longtime_vip-set1
+[2026-04-24T09:26:36.317Z] [w1] slow_burn/set3 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:36.318Z] [w1] longtime_vip/set2 start | fan=longtime-longtime_vip-set2
+[2026-04-24T09:26:36.447Z] [w2] time_waster/set2 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:36.447Z] [w2] longtime_vip/set3 start | fan=longtime-longtime_vip-set3
+[2026-04-24T09:26:36.761Z] [w3] time_waster/set1 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:36.762Z] [w3] dirty_talker/set1 start | fan=loop-dirty_talker-set1-mocphpei-1js7
+[2026-04-24T09:26:38.213Z] [w4] time_waster/set3 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:38.213Z] [w4] dirty_talker/set2 start | fan=loop-dirty_talker-set2-mocphqit-17lv
+[2026-04-24T09:26:38.547Z] [w0] longtime_vip/set1 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:38.548Z] [w0] dirty_talker/set3 start | fan=loop-dirty_talker-set3-mocphqs4-74ff
+[2026-04-24T09:26:41.408Z] [w1] longtime_vip/set2 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:41.639Z] [w2] longtime_vip/set3 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:41.985Z] [w3] dirty_talker/set1 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:43.264Z] [w4] dirty_talker/set2 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:43.540Z] [w0] dirty_talker/set3 CRASHED: admin /admin/test/inject 500: {"error":"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details"}
+[2026-04-24T09:26:43.542Z]   archetype whale aggregate avg=2.00
+[2026-04-24T09:26:43.542Z]   archetype casual aggregate avg=1.75
+[2026-04-24T09:26:43.543Z]   archetype freebie_hunter aggregate avg=?
+[2026-04-24T09:26:43.544Z]   archetype kink_specific aggregate avg=?
+[2026-04-24T09:26:43.544Z]   archetype chatter aggregate avg=?
+[2026-04-24T09:26:43.545Z]   archetype slow_burn aggregate avg=?
+[2026-04-24T09:26:43.545Z]   archetype time_waster aggregate avg=?
+[2026-04-24T09:26:43.546Z]   archetype longtime_vip aggregate avg=?
+[2026-04-24T09:26:43.546Z]   archetype dirty_talker aggregate avg=?
+[2026-04-24T09:26:43.546Z] PHASE 1 COMPLETE in 154s — moving to review/edit
+[2026-04-24T09:26:43.548Z] PHASE 2: proposing edits in parallel for 9 archetypes
+[2026-04-24T09:27:49.725Z]   whale: proposal phase → humanness edit ready
+[2026-04-24T09:27:49.726Z]   casual: proposal phase → humanness edit ready
+[2026-04-24T09:27:49.726Z]   freebie_hunter: proposal phase → skip (no valid scores)
+[2026-04-24T09:27:49.726Z]   kink_specific: proposal phase → skip (no valid scores)
+[2026-04-24T09:27:49.727Z]   chatter: proposal phase → skip (no valid scores)
+[2026-04-24T09:27:49.727Z]   slow_burn: proposal phase → skip (no valid scores)
+[2026-04-24T09:27:49.728Z]   time_waster: proposal phase → skip (no valid scores)
+[2026-04-24T09:27:49.728Z]   longtime_vip: proposal phase → skip (no valid scores)
+[2026-04-24T09:27:49.728Z]   dirty_talker: proposal phase → skip (no valid scores)
+[2026-04-24T09:27:49.729Z] PHASE 2 (propose) done in 66s — applying sequentially
+[2026-04-24T09:27:55.763Z]   whale: edit file=humanness applied=true systemic="Across all three runs, the bot fails to send any messages in response to the fan's initial messages," 
+[2026-04-24T09:27:59.800Z]   casual: edit file=humanness applied=true systemic="Across all three runs, the creator fails to provide any response to the fan's initial message as a n" 
+[2026-04-24T09:27:59.802Z]   freebie_hunter: SKIPPED edit (no valid scores)
+[2026-04-24T09:27:59.804Z]   kink_specific: SKIPPED edit (no valid scores)
+[2026-04-24T09:27:59.805Z]   chatter: SKIPPED edit (no valid scores)
+[2026-04-24T09:27:59.806Z]   slow_burn: SKIPPED edit (no valid scores)
+[2026-04-24T09:27:59.808Z]   time_waster: SKIPPED edit (no valid scores)
+[2026-04-24T09:27:59.809Z]   longtime_vip: SKIPPED edit (no valid scores)
+[2026-04-24T09:27:59.810Z]   dirty_talker: SKIPPED edit (no valid scores)
+[2026-04-24T09:27:59.811Z] LOOP COMPLETE (run 10) — 9 archetypes, 2 edits applied, 230s total
+[2026-04-24T09:27:59.812Z] artifacts: C:\Users\Predator\Desktop\PeachBot V2\loop\state\transcripts.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\run.log.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\summary.json.run10

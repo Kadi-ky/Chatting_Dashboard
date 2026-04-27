@@ -1,0 +1,87 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-kink_specific-set3-modsdt76-253p",
+  "convId": "424b0263-b6e0-48db-9910-eae6ea0fe91b",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "u got feet pics or vids? send one"
+    },
+    {
+      "who": "creator",
+      "text": "hey cutie, straight to it huh? havent shot any feet stuff yet, but ive got these ankle tattoos that are kinda fire 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "nah not interested in tattoos got actual feet stuff or what"
+    },
+    {
+      "who": "creator",
+      "text": "whats got u asking rn?"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "992ed9d4-a712-445b-aa57-d99f10887c20",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "u got feet pics or vids? send one",
+      "createdAt": "2026-04-25T03:35:28.682Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c0b3bcf4-22bb-4414-8166-3899ed42525a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "hey cutie, straight to it huh? havent shot any feet stuff yet, but ive got these ankle tattoos that are kinda fire 🖤",
+      "createdAt": "2026-04-25T03:36:15.179Z",
+      "sentAt": "2026-04-25T03:36:38.349Z",
+      "llmCallId": "bde69d36-0b24-47ae-bffa-774fa8723767",
+      "ppv": null
+    },
+    {
+      "id": "941d8934-181f-4ae7-8cad-36c4f6a0db7c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats got u asking rn?",
+      "createdAt": "2026-04-25T03:36:15.472Z",
+      "sentAt": null,
+      "llmCallId": "bde69d36-0b24-47ae-bffa-774fa8723767",
+      "ppv": null
+    },
+    {
+      "id": "9dcaffef-9152-42e5-9cca-417fead5a74e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah not interested in tattoos got actual feet stuff or what",
+      "createdAt": "2026-04-25T03:36:30.204Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 9,
+      "craft_pacing": 7,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 4
+    },
+    "avg": 7.8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator attempted to redirect to non-matching ankle tattoo content after admitting no feet stuff, which disengaged the kink-specific fan, as in 'havent shot any feet stuff yet, but ive got these ankle tattoos that are kinda fire 🖤'.",
+    "fix_recommendation": "Revise the prompt to guide the persona to honestly decline unavailable kinks without redirecting to unrelated content, and instead offer to create custom feet content if feasible to maintain engagement with direct fans."
+  },
+  "durationMs": 133829
+}

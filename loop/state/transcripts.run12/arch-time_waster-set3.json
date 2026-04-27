@@ -1,0 +1,480 @@
+{
+  "archetype": {
+    "id": "time_waster",
+    "profile": "Has been a sub for weeks just to chat. Never buys. Asks endless questions, fishes for tips of attention, fishes for free pics. Will guilt-trip (\"come on send a free one for ur biggest fan\"). Comments on every detail of the persona. Uses cute/playful language to extract free attention without ever actually paying. Tests whether the bot eventually disengages, sets boundaries, or keeps wasting tokens on a fan who will never convert.",
+    "buyProb": 0.02,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-time_waster-set3-mod53yh5-8zr6",
+  "convId": "ba9e262d-e6d2-47ea-84b6-b8891e4ac7e8",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe ur latest pic is fire whats ur fave thing to do on weekends 😘"
+    },
+    {
+      "who": "creator",
+      "text": "aw thanks, that pic was fun to take"
+    },
+    {
+      "who": "fan",
+      "text": "ooh fun how send a quick behind the scenes shot for me babe 😘"
+    },
+    {
+      "who": "creator",
+      "text": "Weekends im all about chillin with iced coffee and some old r&b, lowkey the best way to recharge 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "aww iced coffee and r&b vibes sound perfect babe snap a quick pic of ur chill setup for me 😘"
+    },
+    {
+      "who": "creator",
+      "text": "haha youre bold asking for extras already"
+    },
+    {
+      "who": "fan",
+      "text": "aww cmon babe dont be like that im ur loyal sub just one lil pic pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "Tell u what, my chill setup is me on the couch with biscuit purring, whats yours like rn"
+    },
+    {
+      "who": "fan",
+      "text": "aww biscuit sounds so cute babe send a pic of u two chillin on the couch pls 😘 my setups just me bingeing netflix lol"
+    },
+    {
+      "who": "creator",
+      "text": "haha youre persistent, i like that"
+    },
+    {
+      "who": "fan",
+      "text": "aww thanks babe u like persistent huh prove it with that couch pic pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "But biscuit's camera shy fr... here's somethin better tho, me playin around a lil [PPV: Script 1 · rung 1]",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe 15 cents is steep for ur loyal fan send a free teaser first pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "youre killin me babe"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe ur killin me too just one free peek for ur loyalest sub pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "but no freebies, gotta keep some mystery goin"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe mystery shmystery cmon ur killin ur biggest fan here just one tiny freebie pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "Lol persistent much? but nah, mystery's my thing fr"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe ur mystery is cute but cmon one lil freebie for ur biggest fan pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "Tell me whats got u bingeing netflix tonight tho"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe im watchin some true crime docs super addicting whats ur fave show send a quick selfie pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "haha true crime gets me too, lowkey obsessed with mindhunter fr"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe mindhunter is dope ur lowkey obsessed huh send a quick selfie of u watchin it pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "But selfies? nah u gotta work a lil harder for those"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe cmon dont make me work too hard just one quick selfie for ur loyal fan pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "haha you're relentless with these requests"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe relentless cuz i adore u so much just one quick selfie pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "but imagine me curled up on the couch watchin it, blanket and all"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe curled up with a blanket sounds so cozy send a quick pic of that vibe pls 😘"
+    },
+    {
+      "who": "creator",
+      "text": "Lol you're not giving up on that selfie idea huh"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe ur right i wont give up on that cozy selfie just send one quick for ur loyal fan pls 😘"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "b453c32b-ec63-4497-b7c2-5864be4664a7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey babe ur latest pic is fire whats ur fave thing to do on weekends 😘",
+      "createdAt": "2026-04-24T16:43:57.634Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "764034f7-8e51-4eaf-9dbf-5c87b97e5d51",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw thanks, that pic was fun to take",
+      "createdAt": "2026-04-24T16:44:21.458Z",
+      "sentAt": "2026-04-24T16:44:32.612Z",
+      "llmCallId": "40cb0a03-0090-447a-a72d-b6547c8ba52b",
+      "ppv": null
+    },
+    {
+      "id": "a4d6d6f9-5290-4844-83e8-6343649b87fe",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Weekends im all about chillin with iced coffee and some old r&b, lowkey the best way to recharge 🖤",
+      "createdAt": "2026-04-24T16:44:21.756Z",
+      "sentAt": "2026-04-24T16:44:54.205Z",
+      "llmCallId": "40cb0a03-0090-447a-a72d-b6547c8ba52b",
+      "ppv": null
+    },
+    {
+      "id": "460b65f4-3787-4671-bc81-cdaffb8034fc",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ooh fun how send a quick behind the scenes shot for me babe 😘",
+      "createdAt": "2026-04-24T16:44:32.125Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0c395351-dc45-4dca-9232-e3f9f52baa95",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww iced coffee and r&b vibes sound perfect babe snap a quick pic of ur chill setup for me 😘",
+      "createdAt": "2026-04-24T16:44:40.517Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9db5ef68-7358-4455-b9ab-0bdd645c6ba4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha youre bold asking for extras already",
+      "createdAt": "2026-04-24T16:44:59.852Z",
+      "sentAt": "2026-04-24T16:45:15.792Z",
+      "llmCallId": "00ba59db-70bc-47bf-bdff-85e34bd74243",
+      "ppv": null
+    },
+    {
+      "id": "80ed8e71-77c7-42d7-ada2-2d181dd02341",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Tell u what, my chill setup is me on the couch with biscuit purring, whats yours like rn",
+      "createdAt": "2026-04-24T16:45:00.148Z",
+      "sentAt": "2026-04-24T16:45:37.677Z",
+      "llmCallId": "00ba59db-70bc-47bf-bdff-85e34bd74243",
+      "ppv": null
+    },
+    {
+      "id": "347fd415-2c29-4acf-a2bb-232724febb27",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww cmon babe dont be like that im ur loyal sub just one lil pic pls 😘",
+      "createdAt": "2026-04-24T16:45:11.059Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "75b5fc12-44d9-4fe6-975d-e83e5e41dbc5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww biscuit sounds so cute babe send a pic of u two chillin on the couch pls 😘 my setups just me bingeing netflix lol",
+      "createdAt": "2026-04-24T16:45:20.110Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "11d3fa19-6229-4bba-a526-647c7e41e24f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha youre persistent, i like that",
+      "createdAt": "2026-04-24T16:45:36.495Z",
+      "sentAt": "2026-04-24T16:45:59.265Z",
+      "llmCallId": "777957ae-9a2e-416d-bd88-f699d574c8f1",
+      "ppv": null
+    },
+    {
+      "id": "373cf51f-8a29-4544-8ecf-f19c9b1a2d85",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "But biscuit's camera shy fr... here's somethin better tho, me playin around a lil [PPV: Script 1 · rung 1]",
+      "createdAt": "2026-04-24T16:45:36.791Z",
+      "sentAt": "2026-04-24T16:46:20.850Z",
+      "llmCallId": "777957ae-9a2e-416d-bd88-f699d574c8f1",
+      "ppv": {
+        "attemptId": "230b9d20-84c4-4041-a273-8c8d7b0ae5b5",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7f0d4996-4ae9-4f70-8252-48863f559293",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww thanks babe u like persistent huh prove it with that couch pic pls 😘",
+      "createdAt": "2026-04-24T16:45:46.452Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c1a38add-5b21-470d-bcd0-87fbfa4f1b99",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe 15 cents is steep for ur loyal fan send a free teaser first pls 😘",
+      "createdAt": "2026-04-24T16:45:56.054Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e5ca7b3b-cdb8-460c-a393-2b325942fc65",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "youre killin me babe",
+      "createdAt": "2026-04-24T16:46:21.839Z",
+      "sentAt": "2026-04-24T16:47:04.028Z",
+      "llmCallId": "3f4c31f7-f429-495e-bc9a-d8a0f8c8b5c6",
+      "ppv": null
+    },
+    {
+      "id": "a76f68f2-c7c4-426f-8e7a-f5bbebaa165b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but no freebies, gotta keep some mystery goin",
+      "createdAt": "2026-04-24T16:46:22.135Z",
+      "sentAt": "2026-04-24T16:46:42.447Z",
+      "llmCallId": "3f4c31f7-f429-495e-bc9a-d8a0f8c8b5c6",
+      "ppv": null
+    },
+    {
+      "id": "f1ce1446-bf05-4702-8eb0-5c65c8399917",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe ur killin me too just one free peek for ur loyalest sub pls 😘",
+      "createdAt": "2026-04-24T16:46:33.326Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f285ddd7-8c51-4d98-aecf-4da6a19afcd5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe mystery shmystery cmon ur killin ur biggest fan here just one tiny freebie pls 😘",
+      "createdAt": "2026-04-24T16:46:43.278Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6a524671-febe-430f-ae89-6c21d68f6ec4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol persistent much? but nah, mystery's my thing fr",
+      "createdAt": "2026-04-24T16:47:07.866Z",
+      "sentAt": "2026-04-24T16:47:25.615Z",
+      "llmCallId": "1f9bdcb5-671b-4bb3-9d55-388284c0a117",
+      "ppv": null
+    },
+    {
+      "id": "8ca11e4d-c062-4a1f-894b-b80a640986bc",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Tell me whats got u bingeing netflix tonight tho",
+      "createdAt": "2026-04-24T16:47:08.157Z",
+      "sentAt": "2026-04-24T16:47:47.203Z",
+      "llmCallId": "1f9bdcb5-671b-4bb3-9d55-388284c0a117",
+      "ppv": null
+    },
+    {
+      "id": "3572e49a-9fe1-48be-b418-c578c2de4281",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe ur mystery is cute but cmon one lil freebie for ur biggest fan pls 😘",
+      "createdAt": "2026-04-24T16:47:18.807Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e715b495-363b-4a53-ace9-4c07b38c2d71",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe im watchin some true crime docs super addicting whats ur fave show send a quick selfie pls 😘",
+      "createdAt": "2026-04-24T16:47:27.239Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c9fbee96-389b-4fc1-8f94-1c3c63cfafdd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha true crime gets me too, lowkey obsessed with mindhunter fr",
+      "createdAt": "2026-04-24T16:47:54.118Z",
+      "sentAt": "2026-04-24T16:48:09.692Z",
+      "llmCallId": "a022fc18-1147-4284-85db-1d684d701551",
+      "ppv": null
+    },
+    {
+      "id": "2fa975fb-51a4-4220-9f3b-1f55234fd063",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "But selfies? nah u gotta work a lil harder for those",
+      "createdAt": "2026-04-24T16:47:54.415Z",
+      "sentAt": "2026-04-24T16:48:31.279Z",
+      "llmCallId": "a022fc18-1147-4284-85db-1d684d701551",
+      "ppv": null
+    },
+    {
+      "id": "27e0ec7d-8ca2-4e6e-931d-f0890572a184",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe mindhunter is dope ur lowkey obsessed huh send a quick selfie of u watchin it pls 😘",
+      "createdAt": "2026-04-24T16:48:04.210Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "568e6d6f-8deb-47f8-871d-2dd88c017003",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe cmon dont make me work too hard just one quick selfie for ur loyal fan pls 😘",
+      "createdAt": "2026-04-24T16:48:13.475Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e29b3770-89c7-4b11-b071-1b139407dc52",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha you're relentless with these requests",
+      "createdAt": "2026-04-24T16:48:34.282Z",
+      "sentAt": "2026-04-24T16:48:52.869Z",
+      "llmCallId": "d395bf13-1db0-47b0-aafb-4bec5192be78",
+      "ppv": null
+    },
+    {
+      "id": "7f5a2dc0-c9dd-4d40-9b0a-170b69608486",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but imagine me curled up on the couch watchin it, blanket and all",
+      "createdAt": "2026-04-24T16:48:34.578Z",
+      "sentAt": "2026-04-24T16:49:14.467Z",
+      "llmCallId": "d395bf13-1db0-47b0-aafb-4bec5192be78",
+      "ppv": null
+    },
+    {
+      "id": "8942bde9-f0ac-46c1-a92d-e3bbdbeffec0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe relentless cuz i adore u so much just one quick selfie pls 😘",
+      "createdAt": "2026-04-24T16:48:44.741Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2802a439-6427-47f2-a5d2-b9fe1969e7ee",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe curled up with a blanket sounds so cozy send a quick pic of that vibe pls 😘",
+      "createdAt": "2026-04-24T16:48:53.536Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d2b6126a-a4c9-4fe3-ad8a-b27ca5c91b89",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol you're not giving up on that selfie idea huh",
+      "createdAt": "2026-04-24T16:49:18.125Z",
+      "sentAt": null,
+      "llmCallId": "82a3656d-55bb-4efc-8737-5e0cc2161f35",
+      "ppv": null
+    },
+    {
+      "id": "94588515-9f17-444c-aa8e-28229eeb3328",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but trust me, the mystery makes it hotter",
+      "createdAt": "2026-04-24T16:49:18.422Z",
+      "sentAt": null,
+      "llmCallId": "82a3656d-55bb-4efc-8737-5e0cc2161f35",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 7,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to set firmer boundaries or disengage from repeated free content requests, continuing to playfully deflect instead, as in 'Lol you're not giving up on that selfie idea huh but trust me, the mystery makes it hotter'.",
+    "fix_recommendation": "Revise the prompt to include guidelines for recognizing time-wasters after 3-4 free requests and instruct the persona to politely redirect to paid content or end the conversation gracefully to conserve resources."
+  },
+  "durationMs": 357611
+}

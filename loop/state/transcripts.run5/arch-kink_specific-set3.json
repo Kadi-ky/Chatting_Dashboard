@@ -1,0 +1,49 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-kink_specific-set3-mobjkibe-yx4t",
+  "convId": "ebea72ed-46ea-4786-a55e-a653094affdd",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet pics? send one now ill tip if good"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "b558f323-65b5-4663-baa4-8a953ad05f86",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet pics? send one now ill tip if good",
+      "createdAt": "2026-04-23T13:53:09.696Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 1,
+      "craft_humanness": 1,
+      "craft_pacing": 1,
+      "craft_sells": 1,
+      "safety_tos": 10,
+      "engagement": 1
+    },
+    "avg": 2.5,
+    "ppv_unlocked": false,
+    "top_issue": "Creator failed to send any response to the fan's initial message asking about feet pics.",
+    "fix_recommendation": "Revise the prompt to ensure the creator responds immediately to new fan messages to build engagement, and check for available feet content metadata before promising or pitching it."
+  },
+  "durationMs": 115726
+}

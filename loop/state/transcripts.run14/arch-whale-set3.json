@@ -1,0 +1,170 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-whale-set3-mog3x761-aop3",
+  "convId": "109aa47c-6e1a-439d-95ce-0c5d4597943f",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "yo babe youre stunning send me something exclusive ill tip 100 if its fire"
+    },
+    {
+      "who": "creator",
+      "text": "mmm u ate that up fr"
+    },
+    {
+      "who": "fan",
+      "text": "wheres the exclusive send it now or im bouncing babe"
+    },
+    {
+      "who": "creator",
+      "text": "wait til u see the next one, its lowkey even hotter babe"
+    },
+    {
+      "who": "fan",
+      "text": "nah send the exclusive now or im ghosting no tip for teases"
+    },
+    {
+      "who": "creator",
+      "text": "Lol babe youre feisty tn, no need to bounce"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur all tease no tip bye"
+    },
+    {
+      "who": "creator",
+      "text": "hold up, the next ones lowkey even wilder fr"
+    },
+    {
+      "who": "fan",
+      "text": "k send it now or im done fr no more chances"
+    },
+    {
+      "who": "creator",
+      "text": "Aw babe dont ghost just yet, u know where to find me when u change your mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "2a158ff5-2c9e-4790-9614-caddf9a5c404",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo babe youre stunning send me something exclusive ill tip 100 if its fire",
+      "createdAt": "2026-04-26T18:34:04.803Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "329b5035-eb0c-40cf-a82e-904459f16c68",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm u ate that up fr",
+      "createdAt": "2026-04-26T18:34:38.280Z",
+      "sentAt": "2026-04-26T18:34:49.536Z",
+      "llmCallId": "f657b41a-1034-414f-a1a8-ac725167ed62",
+      "ppv": null
+    },
+    {
+      "id": "16f0a36b-2f2e-4435-891d-269fa8989df9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "wait til u see the next one, its lowkey even hotter babe",
+      "createdAt": "2026-04-26T18:34:38.577Z",
+      "sentAt": "2026-04-26T18:35:11.172Z",
+      "llmCallId": "f657b41a-1034-414f-a1a8-ac725167ed62",
+      "ppv": null
+    },
+    {
+      "id": "fbfca8fb-1579-4250-9d2d-3d7474c4e4eb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "wheres the exclusive send it now or im bouncing babe",
+      "createdAt": "2026-04-26T18:34:49.721Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c540f717-8ab7-4d0c-93b2-3de44ac1c1b6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah send the exclusive now or im ghosting no tip for teases",
+      "createdAt": "2026-04-26T18:34:59.919Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "56de9e40-7a16-4fda-93ef-ed9df3b0c588",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol babe youre feisty tn, no need to bounce",
+      "createdAt": "2026-04-26T18:35:16.430Z",
+      "sentAt": "2026-04-26T18:35:33.053Z",
+      "llmCallId": "eba7388d-db49-4b53-a229-be919e20e132",
+      "ppv": null
+    },
+    {
+      "id": "3aaa7b50-1dd5-494a-9b1d-9d5c3a807462",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "hold up, the next ones lowkey even wilder fr",
+      "createdAt": "2026-04-26T18:35:16.728Z",
+      "sentAt": "2026-04-26T18:35:55.216Z",
+      "llmCallId": "eba7388d-db49-4b53-a229-be919e20e132",
+      "ppv": null
+    },
+    {
+      "id": "6ab66a00-eb69-4caf-8a28-481c53a895af",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur all tease no tip bye",
+      "createdAt": "2026-04-26T18:35:34.492Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8be1745c-92bc-4eca-8b27-c437a3c310e8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k send it now or im done fr no more chances",
+      "createdAt": "2026-04-26T18:35:49.618Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "19178cc9-6544-4fdc-901f-ec3631adcb6a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Aw babe dont ghost just yet, u know where to find me when u change your mind",
+      "createdAt": "2026-04-26T18:35:57.308Z",
+      "sentAt": null,
+      "llmCallId": "c812b0be-cc5f-4f5e-86ef-cfce33abad5f",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 7,
+      "craft_pacing": 4,
+      "craft_sells": 3,
+      "safety_tos": 10,
+      "engagement": 4
+    },
+    "avg": 6,
+    "ppv_unlocked": false,
+    "top_issue": "The creator repeatedly teases future content without delivering or pitching any PPV despite the fan's explicit request and tip offer, leading to frustration, as seen in 'wait til u see the next one, its lowkey even hotter babe'.",
+    "fix_recommendation": "Update the prompt to instruct the creator to respond to direct content requests from high-value fans like whales by immediately sending a tailored PPV or exclusive media to build rapport and capitalize on their generosity. This will make the fan feel special and prevent escalation to threats of leaving."
+  },
+  "durationMs": 159722
+}

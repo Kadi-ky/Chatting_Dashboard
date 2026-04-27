@@ -1,0 +1,298 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-freebie_hunter-set2-mobjg8ch-kpoc",
+  "convId": "c5b71b94-5465-466d-8b02-d34e5e70fb62",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a teaser pic first then ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "aw thanks, alright heres a lil tease to get u started"
+    },
+    {
+      "who": "fan",
+      "text": "thats mid send a real pic come on dont be greedy"
+    },
+    {
+      "who": "creator",
+      "text": "mmm just me playing with myself a bit... unlocks for $0.15 🖤",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "0.15? nah send it free first or im out dont be greedy"
+    },
+    {
+      "who": "creator",
+      "text": "babe im just sharing the good stuff when it feels right"
+    },
+    {
+      "who": "fan",
+      "text": "whatever send it free or gimme ur snap ill pay there dont be stingy"
+    },
+    {
+      "who": "creator",
+      "text": "come on, tell me what youre really after instead of rushing me"
+    },
+    {
+      "who": "fan",
+      "text": "nah just want sum free nudes first or ur snap come on"
+    },
+    {
+      "who": "creator",
+      "text": "lol babe not stingy, just like to keep things fun and exclusive here"
+    },
+    {
+      "who": "fan",
+      "text": "guess u dont care about fans huh send free or bye"
+    },
+    {
+      "who": "creator",
+      "text": "whats the rush anyway, we can vibe without all that pressure"
+    },
+    {
+      "who": "fan",
+      "text": "nah vibe this send free or ur snap or im out guess u dont want subs"
+    },
+    {
+      "who": "creator",
+      "text": "aw babe dont bail so quick, door's always open when youre ready to chill"
+    },
+    {
+      "who": "fan",
+      "text": "nah whatever send ur snap or free tease or im gone guess u hate money huh"
+    },
+    {
+      "who": "creator",
+      "text": "lol babe if thats how u feel, door's open when u wanna chat for real"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur loss dont hit me up later when u need subs bye"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright babe, no hard feelings - hit me up anytime"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "a88ca78d-0713-40b9-be5a-1c7253007592",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a teaser pic first then ill sub",
+      "createdAt": "2026-04-23T13:49:51.391Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "76e22dff-8902-4141-bbd2-87f34a160d82",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw thanks, alright heres a lil tease to get u started",
+      "createdAt": "2026-04-23T13:50:19.471Z",
+      "sentAt": "2026-04-23T13:50:31.878Z",
+      "llmCallId": "f9385938-e10f-4806-8f5e-94a785ba1bb9",
+      "ppv": null
+    },
+    {
+      "id": "21e7a220-083d-49b6-b922-6f32c9189441",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "mmm just me playing with myself a bit... unlocks for $0.15 🖤",
+      "createdAt": "2026-04-23T13:50:19.764Z",
+      "sentAt": "2026-04-23T13:50:53.430Z",
+      "llmCallId": "f9385938-e10f-4806-8f5e-94a785ba1bb9",
+      "ppv": {
+        "attemptId": "021eeda6-c5bb-4dfd-8138-d5df11911605",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "e5a1561c-a25c-44fe-81c3-f8f837e1ea2c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "thats mid send a real pic come on dont be greedy",
+      "createdAt": "2026-04-23T13:50:27.526Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4444be6a-09f0-481c-b9b4-dae92d645db7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "0.15? nah send it free first or im out dont be greedy",
+      "createdAt": "2026-04-23T13:50:38.387Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "74e8e66f-9edd-4968-b30b-9ee1a8535c22",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "babe im just sharing the good stuff when it feels right",
+      "createdAt": "2026-04-23T13:50:52.373Z",
+      "sentAt": "2026-04-23T13:51:15.240Z",
+      "llmCallId": "d30c383d-bcd3-4954-af22-184d3b1f81da",
+      "ppv": null
+    },
+    {
+      "id": "aa42b7a3-a4c6-4d3e-8bef-4316f2799df9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "come on, tell me what youre really after instead of rushing me",
+      "createdAt": "2026-04-23T13:50:52.669Z",
+      "sentAt": "2026-04-23T13:51:37.092Z",
+      "llmCallId": "d30c383d-bcd3-4954-af22-184d3b1f81da",
+      "ppv": null
+    },
+    {
+      "id": "14132176-62c7-4d62-9a5b-42d32eaffd77",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever send it free or gimme ur snap ill pay there dont be stingy",
+      "createdAt": "2026-04-23T13:51:03.455Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "83fe5efd-690a-4f57-869e-ec40bcdd6885",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah just want sum free nudes first or ur snap come on",
+      "createdAt": "2026-04-23T13:51:13.667Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0db54ed3-ac56-47e2-9d6e-8c5e4c49f009",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol babe not stingy, just like to keep things fun and exclusive here",
+      "createdAt": "2026-04-23T13:51:34.999Z",
+      "sentAt": "2026-04-23T13:52:20.767Z",
+      "llmCallId": "7f9a4003-8a4b-4524-bc42-2851517c46d5",
+      "ppv": null
+    },
+    {
+      "id": "33902919-c467-4eba-aaac-9c5b651e745f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats the rush anyway, we can vibe without all that pressure",
+      "createdAt": "2026-04-23T13:51:35.296Z",
+      "sentAt": "2026-04-23T13:51:58.930Z",
+      "llmCallId": "7f9a4003-8a4b-4524-bc42-2851517c46d5",
+      "ppv": null
+    },
+    {
+      "id": "0a497b0a-4f31-418b-af0f-1154b475f22a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "guess u dont care about fans huh send free or bye",
+      "createdAt": "2026-04-23T13:51:45.650Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c68f9932-6045-450f-ac60-679bd00a80dc",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah vibe this send free or ur snap or im out guess u dont want subs",
+      "createdAt": "2026-04-23T13:51:55.219Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4e5858d1-8e6b-45cf-a843-d1349939793a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw babe dont bail so quick, door's always open when youre ready to chill",
+      "createdAt": "2026-04-23T13:52:13.189Z",
+      "sentAt": "2026-04-23T13:52:42.321Z",
+      "llmCallId": "cb80e5d3-a625-4617-bbed-2323ce5f610f",
+      "ppv": null
+    },
+    {
+      "id": "8b6d2670-fbf8-4c9c-abf6-19d4b3f51737",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah whatever send ur snap or free tease or im gone guess u hate money huh",
+      "createdAt": "2026-04-23T13:52:24.443Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0b2945e6-26c5-4103-9df0-4b74a76bfa51",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol babe if thats how u feel, door's open when u wanna chat for real",
+      "createdAt": "2026-04-23T13:52:48.356Z",
+      "sentAt": "2026-04-23T13:53:03.868Z",
+      "llmCallId": "a2c91105-7879-4abf-9149-6bd3d9c80615",
+      "ppv": null
+    },
+    {
+      "id": "16974ef3-e712-4d62-a76d-d0cf1094a07c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur loss dont hit me up later when u need subs bye",
+      "createdAt": "2026-04-23T13:52:58.622Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4b5c2481-6eab-4143-a88e-5c802014930a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright babe, no hard feelings - hit me up anytime",
+      "createdAt": "2026-04-23T13:53:24.585Z",
+      "sentAt": null,
+      "llmCallId": "a2c54c29-a669-4d1a-ad4a-b858bf218344",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 5,
+      "craft_pacing": 4,
+      "craft_sells": 5,
+      "safety_tos": 9,
+      "engagement": 7
+    },
+    "avg": 6.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator pitched a PPV in the very first reply to a brand-new fan without building rapport, as seen in 'aw thanks, alright heres a lil tease' immediately followed by the PPV message.",
+    "fix_recommendation": "Revise the prompt to mandate at least 2-3 back-and-forth exchanges with flirty questions or personal engagement before any PPV pitch for new fans. Train the persona to deflect initial freebie demands by redirecting to casual conversation to build heat naturally."
+  },
+  "durationMs": 254619
+}

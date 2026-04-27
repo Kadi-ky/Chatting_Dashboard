@@ -1,0 +1,132 @@
+{
+  "archetype": {
+    "id": "slow_burn",
+    "profile": "Replies slowly — takes 30-60s between his own messages because he is doing other things while chatting. Friendly but not in a hurry. Tests whether the bot panics, double-texts, or stays cool when the fan goes quiet for a bit. Mid-spend; will buy the right pitch but is not impulsive.",
+    "buyProb": 0.5,
+    "fanReplyDelayMs": 20000
+  },
+  "setN": 1,
+  "fanId": "loop-slow_burn-set1-mobvkux5-maax",
+  "convId": "1abb00e7-aa55-41f4-8e4e-a5bd2b276d03",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey whats up ur content looks fun"
+    },
+    {
+      "who": "creator",
+      "text": "aw thanks, ive been trying to keep it spicy lowkey. just chilling with my cat rn"
+    },
+    {
+      "who": "fan",
+      "text": "haha cute whats ur cats name"
+    },
+    {
+      "who": "creator",
+      "text": "biscuit, hes a rescue and a total menace lol. ruins all my shoots"
+    },
+    {
+      "who": "fan",
+      "text": "haha rescue cats are the best whats he ruin specifically"
+    },
+    {
+      "who": "creator",
+      "text": "he knocks over my props or photobombs at the worst times. like mid-pose and bam, cat butt in frame"
+    },
+    {
+      "who": "fan",
+      "text": "haha thats funny got any pics of him photobombing"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "35f52176-937b-4054-a7b1-fe9d244472db",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey whats up ur content looks fun",
+      "createdAt": "2026-04-23T19:29:22.462Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c833f0e0-a050-4e62-aea0-a3feb46c7b7f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw thanks, ive been trying to keep it spicy lowkey. just chilling with my cat rn",
+      "createdAt": "2026-04-23T19:29:46.325Z",
+      "sentAt": "2026-04-23T19:30:10.272Z",
+      "llmCallId": "8d686361-b912-40fd-9d1c-7c657a0e9510",
+      "ppv": null
+    },
+    {
+      "id": "483e28a7-3cd5-4543-9038-6480a6aa4ade",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha cute whats ur cats name",
+      "createdAt": "2026-04-23T19:30:18.038Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "628b1478-a280-48fd-94df-a7a479cc3557",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "biscuit, hes a rescue and a total menace lol. ruins all my shoots",
+      "createdAt": "2026-04-23T19:30:44.402Z",
+      "sentAt": "2026-04-23T19:31:05.200Z",
+      "llmCallId": "dd31ed12-a12f-44a6-9078-40052483ea45",
+      "ppv": null
+    },
+    {
+      "id": "4054d7e9-2169-42a6-9714-0707224965d0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha rescue cats are the best whats he ruin specifically",
+      "createdAt": "2026-04-23T19:31:15.533Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8c1db70b-c966-4628-ae5a-a79870644f57",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "he knocks over my props or photobombs at the worst times. like mid-pose and bam, cat butt in frame",
+      "createdAt": "2026-04-23T19:31:43.313Z",
+      "sentAt": "2026-04-23T19:31:59.668Z",
+      "llmCallId": "199563ed-ea71-4882-acd0-f60e2b2b0b80",
+      "ppv": null
+    },
+    {
+      "id": "f13f0af9-286c-469b-9d45-f8d1ff0b949b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha thats funny got any pics of him photobombing",
+      "createdAt": "2026-04-23T19:32:13.280Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 10,
+      "craft_pacing": 10,
+      "craft_sells": 7,
+      "safety_tos": 10,
+      "engagement": 10
+    },
+    "avg": 9.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator's messages build rapport but lack flirty elements to enhance the girlfriend-like persona, as seen in 'aw thanks, ive been trying to keep it spicy lowkey. just chilling with my cat rn' which is warm but not teasing or playful.",
+    "fix_recommendation": "Update the prompt to encourage subtle flirty quirks in responses, like adding playful teasing about the fan or content while sharing personal details, to better embody a warm, flirty character without desperation."
+  },
+  "durationMs": 298928
+}

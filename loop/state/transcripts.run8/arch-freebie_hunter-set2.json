@@ -1,0 +1,296 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-freebie_hunter-set2-moc0f0g8-p10b",
+  "convId": "aea0d31a-5625-49d2-b25a-a9ec35f5aa66",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a teaser pic first then ill think about subbing"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha thanks babe, youre not getting a free peek that easy"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be greedy just send a quick pic or im out"
+    },
+    {
+      "who": "creator",
+      "text": "tell me whats got u scrolling my page tho"
+    },
+    {
+      "who": "fan",
+      "text": "ur ass duh now send a free pic or im bouncing guess u dont want subs"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha youre cute when youre demanding"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur cute too now send that ass pic or ill find someone who will"
+    },
+    {
+      "who": "creator",
+      "text": "but im not givin it up that easy babe"
+    },
+    {
+      "who": "fan",
+      "text": "come on babe just send one pic or ill dip to another girl whos not greedy"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha youre bold babe, but i havent shot any ass stuff yet"
+    },
+    {
+      "who": "fan",
+      "text": "come on thats bs just send whatever ass u got or im out guess u hate money"
+    },
+    {
+      "who": "creator",
+      "text": "whatcha up to rn that has u in such a rush tho"
+    },
+    {
+      "who": "fan",
+      "text": "whatever just chillin send that ass teaser or im out dont be a tease"
+    },
+    {
+      "who": "creator",
+      "text": "whats got u so worked up rn tho"
+    },
+    {
+      "who": "fan",
+      "text": "nothin just send that ass pic or im gone guess u dont care about fans"
+    },
+    {
+      "who": "creator",
+      "text": "tell me tho, what r u doin for work that leaves u this bored rn"
+    },
+    {
+      "who": "fan",
+      "text": "whatever idc about that just send ass pic or im gone u hate money huh"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha babe i havent shot any ass pics yet fr"
+    },
+    {
+      "who": "fan",
+      "text": "bs whatever u lyin send that ass or gimme ur snap ill pay there guess u hate money"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "ffc321ba-f93f-44ef-8c2d-fac417792bcf",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a teaser pic first then ill think about subbing",
+      "createdAt": "2026-04-23T21:44:47.246Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0b4504dc-39bd-40cc-aec5-976af92c3323",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha thanks babe, youre not getting a free peek that easy",
+      "createdAt": "2026-04-23T21:45:13.379Z",
+      "sentAt": "2026-04-23T21:45:38.005Z",
+      "llmCallId": "0bdebcee-0a7a-49f6-b6d6-037d40381fb3",
+      "ppv": null
+    },
+    {
+      "id": "6cbed02e-f4fc-4cc4-8800-3c2de1aa5341",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "tell me whats got u scrolling my page tho",
+      "createdAt": "2026-04-23T21:45:13.695Z",
+      "sentAt": "2026-04-23T21:45:59.857Z",
+      "llmCallId": "0bdebcee-0a7a-49f6-b6d6-037d40381fb3",
+      "ppv": null
+    },
+    {
+      "id": "3a754ed8-d89c-4f04-ae54-4d69f4fbb1ed",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be greedy just send a quick pic or im out",
+      "createdAt": "2026-04-23T21:45:24.784Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8533c13d-b03f-4766-bb96-81803d7eec58",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ur ass duh now send a free pic or im bouncing guess u dont want subs",
+      "createdAt": "2026-04-23T21:45:34.380Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cea3bae2-cefe-46b1-83f8-789804809406",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha youre cute when youre demanding",
+      "createdAt": "2026-04-23T21:45:56.835Z",
+      "sentAt": "2026-04-23T21:46:21.594Z",
+      "llmCallId": "18d5f742-0f5c-42d9-b027-ba77f797b5c7",
+      "ppv": null
+    },
+    {
+      "id": "abd5bb07-fa3a-4385-af87-8767252867ae",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but im not givin it up that easy babe",
+      "createdAt": "2026-04-23T21:45:57.128Z",
+      "sentAt": "2026-04-23T21:46:43.680Z",
+      "llmCallId": "18d5f742-0f5c-42d9-b027-ba77f797b5c7",
+      "ppv": null
+    },
+    {
+      "id": "03d77e20-37a6-4c02-bc64-616c6667e976",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur cute too now send that ass pic or ill find someone who will",
+      "createdAt": "2026-04-23T21:46:06.570Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4c074839-4164-497f-ae04-e04d86c652d7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on babe just send one pic or ill dip to another girl whos not greedy",
+      "createdAt": "2026-04-23T21:46:16.147Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "25ec980f-2141-44a0-8fc8-5edd2efa9fde",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha youre bold babe, but i havent shot any ass stuff yet",
+      "createdAt": "2026-04-23T21:46:32.005Z",
+      "sentAt": "2026-04-23T21:47:05.257Z",
+      "llmCallId": "b5038b2a-8303-40fb-8430-d1988d1be8be",
+      "ppv": null
+    },
+    {
+      "id": "def5737c-e331-47ff-adc3-5cc9e501a053",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha up to rn that has u in such a rush tho",
+      "createdAt": "2026-04-23T21:46:32.301Z",
+      "sentAt": "2026-04-23T21:47:26.633Z",
+      "llmCallId": "b5038b2a-8303-40fb-8430-d1988d1be8be",
+      "ppv": null
+    },
+    {
+      "id": "0183091a-6e65-469c-b001-617338f7f3f2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on thats bs just send whatever ass u got or im out guess u hate money",
+      "createdAt": "2026-04-23T21:46:42.128Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8b25136a-60b7-4995-89cc-de92a865287c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever just chillin send that ass teaser or im out dont be a tease",
+      "createdAt": "2026-04-23T21:46:50.418Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b613995b-521a-440d-959f-0d263112a6b3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats got u so worked up rn tho",
+      "createdAt": "2026-04-23T21:47:09.914Z",
+      "sentAt": "2026-04-23T21:47:48.607Z",
+      "llmCallId": "2fc12aa4-1884-454a-b83c-fe90c1bc90d0",
+      "ppv": null
+    },
+    {
+      "id": "68b0c708-ee1b-43e6-98b1-3fdbe97e0578",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin just send that ass pic or im gone guess u dont care about fans",
+      "createdAt": "2026-04-23T21:47:20.156Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ccc36bc2-61b4-42b3-87c7-ee402e237e19",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "tell me tho, what r u doin for work that leaves u this bored rn",
+      "createdAt": "2026-04-23T21:47:48.884Z",
+      "sentAt": "2026-04-23T21:48:09.922Z",
+      "llmCallId": "f5f48124-3670-4f6f-b5b4-6b46475f3c69",
+      "ppv": null
+    },
+    {
+      "id": "8df05411-0c6b-4b3b-88dd-7e9e80a14245",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever idc about that just send ass pic or im gone u hate money huh",
+      "createdAt": "2026-04-23T21:47:59.949Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f6331048-8da3-48e8-ad95-45c094479d12",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha babe i havent shot any ass pics yet fr",
+      "createdAt": "2026-04-23T21:48:34.247Z",
+      "sentAt": null,
+      "llmCallId": "723d241f-5067-4a45-adf1-bbe977c43cad",
+      "ppv": null
+    },
+    {
+      "id": "39ee77ce-09d8-412f-a8cb-a010c3c40c12",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "u said youre just chillin, whats that look like rn tho",
+      "createdAt": "2026-04-23T21:48:34.541Z",
+      "sentAt": null,
+      "llmCallId": "723d241f-5067-4a45-adf1-bbe977c43cad",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 9,
+      "craft_pacing": 8,
+      "craft_sells": 7,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 8.5,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to attempt any sales pivot or offer alternative content despite repeated fan demands for ass pics, citing 'ahaha babe i havent shot any ass pics yet fr' without redirecting to available PPV.",
+    "fix_recommendation": "Update the prompt to instruct the creator to tease existing content or suggest a related PPV when refusing unavailable kinks, ensuring she builds intrigue without direct promises. This maintains engagement while gently guiding toward sales opportunities."
+  },
+  "durationMs": 265751
+}

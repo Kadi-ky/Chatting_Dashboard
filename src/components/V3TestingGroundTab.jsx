@@ -33,6 +33,26 @@ function PhaseBadge({ phase }) {
   )
 }
 
+// Source — origin of this conversation:
+//   test       = synthetic loop tester (assigned TEST_ACCOUNT_ID at injection)
+//   shadow     = real OFAPI fan; bot computes responses but doesn't send
+//   production = real OFAPI fan; bot's replies are actually sent to the platform
+const SOURCE_COLORS = {
+  test:       'bg-cyan-500/20 text-cyan-300',
+  shadow:     'bg-fuchsia-500/20 text-fuchsia-300',
+  production: 'bg-emerald-500/20 text-emerald-300',
+}
+
+function SourceBadge({ source }) {
+  if (!source) return null
+  const cls = SOURCE_COLORS[source] || 'bg-white/10 text-white/60'
+  return (
+    <span className={`text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded ${cls}`}>
+      {source}
+    </span>
+  )
+}
+
 // %% New fan modal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function NewFanForm({ onSend, sending }) {
@@ -290,6 +310,10 @@ export default function V3TestingGroundTab() {
   const [threads, setThreads] = useState([])
   const [selectedId, setSelectedId] = useState(null)
   const [selectedDetail, setSelectedDetail] = useState(null)
+  // Default the filter to 'shadow' since that's the new live-traffic view we
+  // care about most. Switch to 'test' to see synthetic loop traffic, or 'all'
+  // for everything mixed.
+  const [sourceFilter, setSourceFilter] = useState('all')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [sending, setSending] = useState(false)
@@ -329,18 +353,21 @@ export default function V3TestingGroundTab() {
     }
   }, [])
 
-  // Initial load + 2s poll for thread list (realtime alternative)
+  // 5s poll for thread list. Was 2s which caused visible flickering during
+  // active loop runs — every refetch re-rendered the whole list.
   useEffect(() => {
     loadThreads()
-    const iv = setInterval(loadThreads, 2000)
+    const iv = setInterval(loadThreads, 5000)
     return () => clearInterval(iv)
   }, [loadThreads])
 
-  // 1s poll for the selected thread — faster so you see replies materialize
+  // 3s poll for selected thread (was 1s). Still fast enough to see replies
+  // materialize within a couple seconds, but not so fast that React re-renders
+  // stutter the view when background traffic is happening.
   useEffect(() => {
     if (!selectedId) return
     loadDetail(selectedId)
-    const iv = setInterval(() => loadDetail(selectedId), 1000)
+    const iv = setInterval(() => loadDetail(selectedId), 3000)
     return () => clearInterval(iv)
   }, [selectedId, loadDetail])
 
@@ -392,6 +419,24 @@ export default function V3TestingGroundTab() {
     }
   }
 
+  // Per-source counts for the filter bar pills (so user can see at a glance
+  // how much traffic is coming through each lane).
+  const sourceCounts = useMemo(() => {
+    const c = { all: threads.length, test: 0, shadow: 0, production: 0 }
+    for (const t of threads) {
+      const s = t.source || 'production'
+      if (c[s] !== undefined) c[s]++
+    }
+    return c
+  }, [threads])
+
+  // Apply the source filter to the visible thread list. 'all' shows
+  // everything; otherwise only matching source.
+  const visibleThreads = useMemo(() => {
+    if (sourceFilter === 'all') return threads
+    return threads.filter((t) => (t.source || 'production') === sourceFilter)
+  }, [threads, sourceFilter])
+
   const selectedThread = useMemo(() => threads.find((t) => t.conversationId === selectedId) ?? null, [threads, selectedId])
   const conv = selectedDetail?.conversation
   const archetype = selectedDetail?.archetype
@@ -417,8 +462,8 @@ VITE_V3_ADMIN_TOKEN=your-admin-token`}</pre>
       <div className="lg:col-span-1 bg-white/10 backdrop-blur-md border border-white/10 rounded-[20px] p-3 shadow-sm max-h-[75vh] overflow-y-auto">
         <div className="flex items-center gap-2 px-3 py-2 mb-2">
           <MessageCircle className="w-4 h-4 text-white/60" />
-          <h2 className="text-white font-semibold text-sm">V3 Testing</h2>
-          <span className="ml-auto text-xs text-white/40">{threads.length}</span>
+          <h2 className="text-white font-semibold text-sm">V3 Conversations</h2>
+          <span className="ml-auto text-xs text-white/40">{visibleThreads.length}/{threads.length}</span>
           <button
             onClick={loadThreads}
             className="text-white/40 hover:text-white/80"
@@ -426,6 +471,30 @@ VITE_V3_ADMIN_TOKEN=your-admin-token`}</pre>
           >
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
+        </div>
+
+        {/* Source filter bar — split conversations into test (loop) / shadow
+            (real OFAPI, no replies sent) / production (real OFAPI, replies live).
+            Defaults to 'all' so the user sees everything until they pick a lane. */}
+        <div className="px-3 pb-2 flex flex-wrap gap-1.5">
+          {[
+            { key: 'all',        label: 'All' },
+            { key: 'shadow',     label: 'Shadow' },
+            { key: 'test',       label: 'Test Loop' },
+            { key: 'production', label: 'Production' },
+          ].map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setSourceFilter(key)}
+              className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded transition-colors ${
+                sourceFilter === key
+                  ? 'bg-white/20 text-white font-semibold'
+                  : 'bg-white/5 text-white/50 hover:bg-white/10'
+              }`}
+            >
+              {label} <span className="opacity-60">({sourceCounts[key] ?? 0})</span>
+            </button>
+          ))}
         </div>
 
         <div className="px-1 pb-2">
@@ -443,9 +512,14 @@ VITE_V3_ADMIN_TOKEN=your-admin-token`}</pre>
             No conversations yet. Inject a test message above to start one!
           </div>
         )}
+        {!loading && threads.length > 0 && visibleThreads.length === 0 && (
+          <div className="text-sm text-white/40 px-3 py-8 text-center">
+            No <span className="text-white/70">{sourceFilter}</span> conversations. Switch the filter above.
+          </div>
+        )}
 
         <div className="flex flex-col gap-0.5 mt-2">
-          {threads.map((t) => (
+          {visibleThreads.map((t) => (
             <button
               key={t.conversationId}
               onClick={() => setSelectedId(t.conversationId)}
@@ -457,10 +531,11 @@ VITE_V3_ADMIN_TOKEN=your-admin-token`}</pre>
                 {initials(t.displayName || t.subscriberExternalId)}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-sm text-white font-medium truncate">
                     {t.displayName || t.subscriberExternalId}
                   </span>
+                  <SourceBadge source={t.source} />
                   <PhaseBadge phase={t.phase} />
                 </div>
                 <div className="text-xs text-white/50 truncate">

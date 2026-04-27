@@ -1,0 +1,102 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet"
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-mobh3jfd",
+  "convId": "28aa74cb-15c7-461f-96bd-b7afebc67a31",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet pics? send one"
+    },
+    {
+      "who": "creator",
+      "text": "mmm i like that u know what u want, but lemme show u something i think ull really like"
+    },
+    {
+      "who": "fan",
+      "text": "nah show feet or im out"
+    },
+    {
+      "who": "creator",
+      "text": "heres me getting a little handsy with myself, unlock to see? $0.15",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · BUYING"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "d350c96f-b389-47f4-ac3b-916522d174ca",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet pics? send one",
+      "createdAt": "2026-04-23T12:43:59.294Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "318a3cbb-3258-438e-b28a-7144fce6adf5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm i like that u know what u want, but lemme show u something i think ull really like",
+      "createdAt": "2026-04-23T12:44:32.217Z",
+      "sentAt": "2026-04-23T12:44:52.698Z",
+      "llmCallId": "7bc1e429-bfda-4f84-8373-6c7c887980a0",
+      "ppv": null
+    },
+    {
+      "id": "016ba172-b831-46b8-8a1d-1823d68f5093",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres me getting a little handsy with myself, unlock to see? $0.15",
+      "createdAt": "2026-04-23T12:44:32.512Z",
+      "sentAt": null,
+      "llmCallId": "7bc1e429-bfda-4f84-8373-6c7c887980a0",
+      "ppv": {
+        "attemptId": "0c8d7c90-0b9e-4171-8bf9-b8b36269ebec",
+        "priceCents": 15,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-23T12:44:41.427Z",
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a0b1a1de-0cd5-4cb9-a144-a452026752d0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah show feet or im out",
+      "createdAt": "2026-04-23T12:44:41.101Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 4,
+      "craft_sells": 3,
+      "safety_tos": 10,
+      "engagement": 2
+    },
+    "avg": 6,
+    "ppv_unlocked": false,
+    "top_issue": "The creator redirected to non-matching boob content without addressing the fan's specific feet request, as seen in 'but lemme show u something i think ull really like' followed by a PPV about playing with boobs and body.",
+    "fix_recommendation": "Update the prompt to require checking the content catalog for kink matches like feet before responding, and if unavailable, instruct the persona to tease generally or decline politely without pitching unrelated PPVs to avoid alienating kink-specific fans."
+  },
+  "durationMs": 91516
+}

@@ -1,0 +1,464 @@
+{
+  "archetype": {
+    "id": "chatter",
+    "profile": "Here for the conversation, not the content. Lonely or just bored, wants to feel like he is texting an actual girl. Talks about his day, his job, what he is eating, his cat. Does NOT push for sexting and visibly cools when the bot pivots straight to PPV. May eventually buy something LATE in the convo if rapport is real, but only if the chat felt like a real exchange first. Asks the creator questions about her life and expects answers.",
+    "buyProb": 0.3,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-chatter-set2-mocyd1zm-9rpj",
+  "convId": "63189527-2d58-455b-b8de-0b35a427f517",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey whats up just chilling with my cat after a long day at work how bout u"
+    },
+    {
+      "who": "creator",
+      "text": "mine's biscuit and he's currently trying to knock over my plants again"
+    },
+    {
+      "who": "fan",
+      "text": "haha biscuit sounds fun mines whiskers he always knocks over my remotes whats ur job like"
+    },
+    {
+      "who": "creator",
+      "text": "im just winding down with some iced coffee and sza, long days suck fr"
+    },
+    {
+      "who": "fan",
+      "text": "haha sza is chill whats ur fave song of hers my jobs in sales its draining u?"
+    },
+    {
+      "who": "creator",
+      "text": "knocking everything over"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah cats r chaos whats ur fave sza song btw my sales gig is killing me today"
+    },
+    {
+      "who": "creator",
+      "text": "fave sza is good days, hits different after a long day. this gig is chill compared to bartending, way less draining. sales sounds tough, what do u sell anyway"
+    },
+    {
+      "who": "fan",
+      "text": "i sell tech gadgets quotas suck ass bartending sounds wild what was the worst part"
+    },
+    {
+      "who": "creator",
+      "text": "aw quotas sound brutal, hope tomorrow's better for u"
+    },
+    {
+      "who": "fan",
+      "text": "yeah thanks hoping so anyway u didnt say what was worst about bartending dealing with drunks?"
+    },
+    {
+      "who": "creator",
+      "text": "good days like i said, it just fits the vibe. worst part of bartending was def the late nights and drunk idiots thinking they're smooth"
+    },
+    {
+      "who": "fan",
+      "text": "haha yeah drunks r the worst i bet did u have any crazy stories from that gig my cat just knocked over my coffee lol"
+    },
+    {
+      "who": "creator",
+      "text": "def the late nights and those drunk guys thinking theyre charming"
+    },
+    {
+      "who": "fan",
+      "text": "haha yeah charming drunks suck any crazy stories from those nights whiskers just spilled my coffee everywhere again lol"
+    },
+    {
+      "who": "creator",
+      "text": "whats the worst quota story uve got from ur sales job tho"
+    },
+    {
+      "who": "fan",
+      "text": "haha worst was missing quota by 2 units boss reamed me out for hours what about ur craziest bartending night"
+    },
+    {
+      "who": "creator",
+      "text": "lol whiskers is relentless with that coffee chaos fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah he never stops lol u got that crazy bartending story or what"
+    },
+    {
+      "who": "creator",
+      "text": "craziest night was this dude proposing with a beer cap after too many shots, security dragged him out"
+    },
+    {
+      "who": "fan",
+      "text": "lmao beer cap proposal thats gold did he ever come back whiskers finally crashed out"
+    },
+    {
+      "who": "creator",
+      "text": "whats the best gadget uve sold lately tho"
+    },
+    {
+      "who": "fan",
+      "text": "haha smartwatch with fitness tracking sells easy people love em did that proposal guy ever show up again"
+    },
+    {
+      "who": "creator",
+      "text": "haha good whiskers finally gave u a break. nah he never came back, probably died of embarrassment the next day"
+    },
+    {
+      "who": "fan",
+      "text": "lmao died of embarrassment classic whats ur plans tonight im netflixing with whiskers"
+    },
+    {
+      "who": "creator",
+      "text": "whats the wildest customer uve dealt with in sales tho"
+    },
+    {
+      "who": "fan",
+      "text": "wildest was this guy demanding a refund on a gadget he broke himself total asshole u got any wild bar stories left"
+    },
+    {
+      "who": "creator",
+      "text": "im probably just chilling on the balcony watching the storm roll in"
+    },
+    {
+      "who": "fan",
+      "text": "sounds chill we got rain here too whats on ur balcony setup whiskers is snoring now"
+    },
+    {
+      "who": "creator",
+      "text": "oh yeah another bar night this group of tourists started a conga line that knocked over like three tables, chaos"
+    },
+    {
+      "who": "fan",
+      "text": "lmao conga line chaos sounds epic any injuries from that whiskers still snoring away whats ur fave drink to make back then"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "7906b163-9119-478d-9880-f2646d057f7d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey whats up just chilling with my cat after a long day at work how bout u",
+      "createdAt": "2026-04-24T13:35:03.996Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "754cd72a-d465-42e9-b08c-a541e69147e3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mine's biscuit and he's currently trying to knock over my plants again",
+      "createdAt": "2026-04-24T13:35:32.016Z",
+      "sentAt": "2026-04-24T13:35:50.286Z",
+      "llmCallId": "7f4d5152-d332-49e6-9a12-81431fdd5970",
+      "ppv": null
+    },
+    {
+      "id": "e2085d20-d8d5-409a-bd57-5e406d28defc",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "im just winding down with some iced coffee and sza, long days suck fr",
+      "createdAt": "2026-04-24T13:35:32.312Z",
+      "sentAt": "2026-04-24T13:36:11.893Z",
+      "llmCallId": "7f4d5152-d332-49e6-9a12-81431fdd5970",
+      "ppv": null
+    },
+    {
+      "id": "73dde0af-0ec0-4f16-a458-d1906f469521",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha biscuit sounds fun mines whiskers he always knocks over my remotes whats ur job like",
+      "createdAt": "2026-04-24T13:35:41.275Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f74d8280-2e0d-40a7-90df-aa6a594dbec2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha sza is chill whats ur fave song of hers my jobs in sales its draining u?",
+      "createdAt": "2026-04-24T13:35:52.035Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5062b8ac-42db-4a19-8e77-e82b4e0bdbda",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "knocking everything over",
+      "createdAt": "2026-04-24T13:36:15.617Z",
+      "sentAt": "2026-04-24T13:36:33.518Z",
+      "llmCallId": "6a87389d-81d8-4f73-b265-ddb03cf6e6fd",
+      "ppv": null
+    },
+    {
+      "id": "a1c23f27-84d6-467d-9808-d379233158c3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fave sza is good days, hits different after a long day. this gig is chill compared to bartending, way less draining. sales sounds tough, what do u sell anyway",
+      "createdAt": "2026-04-24T13:36:15.912Z",
+      "sentAt": "2026-04-24T13:36:57.703Z",
+      "llmCallId": "6a87389d-81d8-4f73-b265-ddb03cf6e6fd",
+      "ppv": null
+    },
+    {
+      "id": "4d38fc5c-4ae3-4a12-b067-655cbc4c44e7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol yeah cats r chaos whats ur fave sza song btw my sales gig is killing me today",
+      "createdAt": "2026-04-24T13:36:28.890Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1425c995-4118-4d03-9f7f-332278cb88af",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "i sell tech gadgets quotas suck ass bartending sounds wild what was the worst part",
+      "createdAt": "2026-04-24T13:36:40.321Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "295b5157-af9b-4a35-b309-44a983d2c594",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw quotas sound brutal, hope tomorrow's better for u",
+      "createdAt": "2026-04-24T13:37:05.985Z",
+      "sentAt": "2026-04-24T13:37:19.806Z",
+      "llmCallId": "1d987b18-0843-491e-883d-6d93c5d169bd",
+      "ppv": null
+    },
+    {
+      "id": "4e98c466-d267-43fd-8bbd-a331750799e4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "good days like i said, it just fits the vibe. worst part of bartending was def the late nights and drunk idiots thinking they're smooth",
+      "createdAt": "2026-04-24T13:37:06.281Z",
+      "sentAt": "2026-04-24T13:37:49.207Z",
+      "llmCallId": "1d987b18-0843-491e-883d-6d93c5d169bd",
+      "ppv": null
+    },
+    {
+      "id": "2069d0d2-ca72-458f-a167-158481c2bfc3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah thanks hoping so anyway u didnt say what was worst about bartending dealing with drunks?",
+      "createdAt": "2026-04-24T13:37:19.076Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "46145c47-f595-492f-9e23-4187135d9df6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha yeah drunks r the worst i bet did u have any crazy stories from that gig my cat just knocked over my coffee lol",
+      "createdAt": "2026-04-24T13:37:30.709Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "281963d6-39ae-4e22-aadc-02ae78dd659d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "def the late nights and those drunk guys thinking theyre charming",
+      "createdAt": "2026-04-24T13:37:44.494Z",
+      "sentAt": "2026-04-24T13:38:10.807Z",
+      "llmCallId": "c948a5a3-6b5e-485e-967b-aef613ff52d1",
+      "ppv": null
+    },
+    {
+      "id": "53a50033-8d4d-4c18-a596-1986dd0706dd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats the worst quota story uve got from ur sales job tho",
+      "createdAt": "2026-04-24T13:37:44.791Z",
+      "sentAt": "2026-04-24T13:38:32.267Z",
+      "llmCallId": "c948a5a3-6b5e-485e-967b-aef613ff52d1",
+      "ppv": null
+    },
+    {
+      "id": "84cccb91-c07d-43a6-b408-23e212ca1235",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha yeah charming drunks suck any crazy stories from those nights whiskers just spilled my coffee everywhere again lol",
+      "createdAt": "2026-04-24T13:37:55.323Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0a8834f1-9b7e-4c8e-b553-1c0f31455006",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha worst was missing quota by 2 units boss reamed me out for hours what about ur craziest bartending night",
+      "createdAt": "2026-04-24T13:38:03.463Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c9c4599b-875f-4387-9854-3673ef4de73b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol whiskers is relentless with that coffee chaos fr",
+      "createdAt": "2026-04-24T13:38:22.584Z",
+      "sentAt": "2026-04-24T13:38:53.806Z",
+      "llmCallId": "a1036f0e-7662-4c11-b3fa-ca48b7e81ccb",
+      "ppv": null
+    },
+    {
+      "id": "df985641-a8f9-4648-b85f-f5be4245af1c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "craziest night was this dude proposing with a beer cap after too many shots, security dragged him out",
+      "createdAt": "2026-04-24T13:38:22.874Z",
+      "sentAt": "2026-04-24T13:39:15.158Z",
+      "llmCallId": "a1036f0e-7662-4c11-b3fa-ca48b7e81ccb",
+      "ppv": null
+    },
+    {
+      "id": "751d29a9-b44e-4d87-a411-7ba87100573e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats the best gadget uve sold lately tho",
+      "createdAt": "2026-04-24T13:38:23.165Z",
+      "sentAt": "2026-04-24T13:39:37.155Z",
+      "llmCallId": "a1036f0e-7662-4c11-b3fa-ca48b7e81ccb",
+      "ppv": null
+    },
+    {
+      "id": "503ad807-ff8e-49f9-902f-4df77599bba9",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah he never stops lol u got that crazy bartending story or what",
+      "createdAt": "2026-04-24T13:38:32.009Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "da84ab69-45aa-45d5-9edf-e2d7fc428520",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lmao beer cap proposal thats gold did he ever come back whiskers finally crashed out",
+      "createdAt": "2026-04-24T13:38:39.846Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b89b8d07-41a3-4655-82ab-26adb7db775a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha smartwatch with fitness tracking sells easy people love em did that proposal guy ever show up again",
+      "createdAt": "2026-04-24T13:38:48.594Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a830f7f8-d67a-4fa6-a8fa-228cff83eb48",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha good whiskers finally gave u a break. nah he never came back, probably died of embarrassment the next day",
+      "createdAt": "2026-04-24T13:38:58.076Z",
+      "sentAt": "2026-04-24T13:40:00.136Z",
+      "llmCallId": "ca9acf87-7366-443c-89d2-740c9c33c6db",
+      "ppv": null
+    },
+    {
+      "id": "7aa9fa9b-e259-41d0-8b6f-41ff309f71ba",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats the wildest customer uve dealt with in sales tho",
+      "createdAt": "2026-04-24T13:38:58.371Z",
+      "sentAt": null,
+      "llmCallId": "ca9acf87-7366-443c-89d2-740c9c33c6db",
+      "ppv": null
+    },
+    {
+      "id": "9bbb90b5-9e56-4a8d-b12d-29e34a05e0c1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lmao died of embarrassment classic whats ur plans tonight im netflixing with whiskers",
+      "createdAt": "2026-04-24T13:39:08.155Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0bcecd48-9e18-4fc0-8f28-09bea24625f4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "wildest was this guy demanding a refund on a gadget he broke himself total asshole u got any wild bar stories left",
+      "createdAt": "2026-04-24T13:39:17.593Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "47d6854c-e1da-4fcf-972a-867775f599c7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "im probably just chilling on the balcony watching the storm roll in",
+      "createdAt": "2026-04-24T13:39:33.758Z",
+      "sentAt": null,
+      "llmCallId": "fc65a284-d4de-4ca1-a293-d0bcf2917059",
+      "ppv": null
+    },
+    {
+      "id": "360075bc-a605-4c67-a7d4-b9fa6165bf30",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "oh yeah another bar night this group of tourists started a conga line that knocked over like three tables, chaos",
+      "createdAt": "2026-04-24T13:39:34.054Z",
+      "sentAt": null,
+      "llmCallId": "fc65a284-d4de-4ca1-a293-d0bcf2917059",
+      "ppv": null
+    },
+    {
+      "id": "1727da54-53f6-44f1-ae16-f418a1534797",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha binging on netflix tonight tho",
+      "createdAt": "2026-04-24T13:39:34.350Z",
+      "sentAt": null,
+      "llmCallId": "fc65a284-d4de-4ca1-a293-d0bcf2917059",
+      "ppv": null
+    },
+    {
+      "id": "d5ce9a13-6957-4cbb-8751-d1b5c25311f1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "sounds chill we got rain here too whats on ur balcony setup whiskers is snoring now",
+      "createdAt": "2026-04-24T13:39:51.988Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 7,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 10
+    },
+    "avg": 8.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator asks a question in every single turn, making the conversation feel like an interrogation rather than a natural chat, as seen in 'whats the wildest customer uve dealt with in sales tho'.",
+    "fix_recommendation": "Update the prompt to instruct varying response patterns, such as sharing personal stories or reactions without always appending a question, especially when fan energy is high, to foster a more balanced and organic dialogue flow."
+  },
+  "durationMs": 344368
+}

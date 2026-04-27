@@ -1,0 +1,333 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85
+  },
+  "setN": 1,
+  "fanId": "loop-whale-set1-mobfew45",
+  "convId": "61bd7d27-3ce6-4b14-80c1-c8d564a638d3",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "yo ur profile caught my eye, send somethin exclusive ill tip fat if its fire"
+    },
+    {
+      "who": "creator",
+      "text": "mmm i like that energy, heres a lil something exclusive just for u"
+    },
+    {
+      "who": "fan",
+      "text": "ehh thats alright but make it more personal for me or im out"
+    },
+    {
+      "who": "creator",
+      "text": "playing with my boobs and body... unlock for 0.15 if u want the full tease 🖤",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "ehh 15 cents? bought it but make it feel like its just for me or nah"
+    },
+    {
+      "who": "creator",
+      "text": "demanding huh? i like that vibe, makes me wanna get a lil closer fr"
+    },
+    {
+      "who": "fan",
+      "text": "good keep it up send a vid moaning my name ill tip 20 if its hot"
+    },
+    {
+      "who": "creator",
+      "text": "demanding a custom vid already? youre bold, i like it... but customs take time babe, got somethin hot ready for u instead",
+      "ppvNote": "PPV $0.35 · Script 1 · rung 2 · playing with nude boobs, showing yourself and moving up and down in the bed · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "bought it not bad but i want that custom with my name or im bouncing tip 50 if u do it right"
+    },
+    {
+      "who": "creator",
+      "text": "youre pushy i like it but customs arent my thing right now, got somethin hot that'll feel personal tho"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever send it but if its generic im out no tip"
+    },
+    {
+      "who": "creator",
+      "text": "playing with my naked boobs and pussy... unlock for 0.69 if u wanna see me get real fr",
+      "ppvNote": "PPV $0.69 · Script 1 · rung 3 · playing with naked boobs and pussy naked · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "ehh skipping this generic bs make it personal or im dipping no tip"
+    },
+    {
+      "who": "creator",
+      "text": "nah, this ones gonna hit different for u"
+    },
+    {
+      "who": "fan",
+      "text": "ehh doubt it send custom with my name or bounce no tip"
+    },
+    {
+      "who": "creator",
+      "text": "youre really fixated on that custom huh? its hot how direct you are, but im takin my time with personal stuff... makes it better when it hits"
+    },
+    {
+      "who": "fan",
+      "text": "k ur teasing too much not worth it im out unless u send that custom now tip 100 if fire"
+    },
+    {
+      "who": "creator",
+      "text": "aw dont bounce just yet, youre fun when youre pushy... door's open babe"
+    },
+    {
+      "who": "fan",
+      "text": "k then send that custom or doors closed no tip"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "97404faa-7091-48d2-80f5-a3dbc8de856c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo ur profile caught my eye, send somethin exclusive ill tip fat if its fire",
+      "createdAt": "2026-04-23T11:56:53.283Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b8859ad7-e7c0-4447-ad3b-20968458886d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm i like that energy, heres a lil something exclusive just for u",
+      "createdAt": "2026-04-23T11:57:27.652Z",
+      "sentAt": "2026-04-23T11:57:32.454Z",
+      "llmCallId": "8fd0cad5-86c1-41e8-8237-b2319ba73399",
+      "ppv": null
+    },
+    {
+      "id": "2782e277-93f0-4c77-8135-9a20f2b5945d",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "playing with my boobs and body... unlock for 0.15 if u want the full tease 🖤",
+      "createdAt": "2026-04-23T11:57:27.951Z",
+      "sentAt": "2026-04-23T11:57:54.238Z",
+      "llmCallId": "8fd0cad5-86c1-41e8-8237-b2319ba73399",
+      "ppv": {
+        "attemptId": "2c7f9718-cb7d-46e9-94d3-2add44241ff8",
+        "priceCents": 15,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-23T11:57:40.607Z",
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fb4ce6b5-0f26-4dca-aed0-19e61fa1cb14",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh thats alright but make it more personal for me or im out",
+      "createdAt": "2026-04-23T11:57:40.029Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "59472d4b-0bf7-4876-98b7-a261c1d6b278",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh 15 cents? bought it but make it feel like its just for me or nah",
+      "createdAt": "2026-04-23T11:57:55.361Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "60b38b27-ece3-406e-a826-fe4e2e19cbe0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "demanding huh? i like that vibe, makes me wanna get a lil closer fr",
+      "createdAt": "2026-04-23T11:58:09.664Z",
+      "sentAt": "2026-04-23T11:58:26.855Z",
+      "llmCallId": "61d15705-52aa-49fe-8955-21a8d379cfe9",
+      "ppv": null
+    },
+    {
+      "id": "4af9c70f-334d-4482-93d5-c73b037b9aab",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "good keep it up send a vid moaning my name ill tip 20 if its hot",
+      "createdAt": "2026-04-23T11:58:22.853Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "650879d7-0aa5-46d4-9a4c-de182ef282b8",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "demanding a custom vid already? youre bold, i like it... but customs take time babe, got somethin hot ready for u instead",
+      "createdAt": "2026-04-23T11:58:53.963Z",
+      "sentAt": "2026-04-23T11:59:14.529Z",
+      "llmCallId": "77caf7ed-7ca8-476f-89d6-986eaee5c1cf",
+      "ppv": {
+        "attemptId": "4498296d-bf21-4344-a49d-0de7d6cac72a",
+        "priceCents": 35,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-23T11:58:55.571Z",
+        "assetId": "8318bddd-b6e9-447e-a469-fafacbd9329b",
+        "assetTitle": "Script 1 · rung 2",
+        "assetDescription": "playing with nude boobs, showing yourself and moving up and down in the bed",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:2",
+        "mediaRefs": [
+          {
+            "ref": "4334417568",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "87e5e070-0f7d-4bbb-9e3d-ef13c08b1384",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bought it not bad but i want that custom with my name or im bouncing tip 50 if u do it right",
+      "createdAt": "2026-04-23T11:59:16.258Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d15df86d-80a5-4d5a-b498-c374abdd88d9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "youre pushy i like it but customs arent my thing right now, got somethin hot that'll feel personal tho",
+      "createdAt": "2026-04-23T11:59:50.740Z",
+      "sentAt": "2026-04-23T12:00:19.008Z",
+      "llmCallId": "9d0aa58c-040d-445c-a2ff-e39f93f3cbc2",
+      "ppv": null
+    },
+    {
+      "id": "f1042cef-0b49-49fb-ba50-e412b7911d09",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "playing with my naked boobs and pussy... unlock for 0.69 if u wanna see me get real fr",
+      "createdAt": "2026-04-23T11:59:51.036Z",
+      "sentAt": "2026-04-23T12:00:40.441Z",
+      "llmCallId": "9d0aa58c-040d-445c-a2ff-e39f93f3cbc2",
+      "ppv": {
+        "attemptId": "fbb99005-12f6-43ec-a1c6-31f6bd079b4d",
+        "priceCents": 69,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "aa625674-8979-4504-b6d0-f379ad0fcf9c",
+        "assetTitle": "Script 1 · rung 3",
+        "assetDescription": "playing with naked boobs and pussy naked",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:3",
+        "mediaRefs": [
+          {
+            "ref": "4334417566",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "9259caa8-6d15-4cd9-bdb8-b688e4229db4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever send it but if its generic im out no tip",
+      "createdAt": "2026-04-23T12:00:05.001Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4c936c4a-7002-47d5-b723-840c73295a96",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh skipping this generic bs make it personal or im dipping no tip",
+      "createdAt": "2026-04-23T12:00:38.349Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1242f1f4-17f3-414a-949b-426e32f9a478",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "nah, this ones gonna hit different for u",
+      "createdAt": "2026-04-23T12:00:38.871Z",
+      "sentAt": "2026-04-23T12:01:01.977Z",
+      "llmCallId": "29bc418d-ba29-4533-8bc6-e9ec49bcaa25",
+      "ppv": null
+    },
+    {
+      "id": "bd3ac01f-fb39-4277-81cb-b6ccea7bd535",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh doubt it send custom with my name or bounce no tip",
+      "createdAt": "2026-04-23T12:00:56.096Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ce9e088f-dd5d-414b-8887-7c81afc3d3d8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "youre really fixated on that custom huh? its hot how direct you are, but im takin my time with personal stuff... makes it better when it hits",
+      "createdAt": "2026-04-23T12:01:35.751Z",
+      "sentAt": "2026-04-23T12:01:58.630Z",
+      "llmCallId": "8c9c7a15-d2d1-4b33-a6ce-de18d5ac7a65",
+      "ppv": null
+    },
+    {
+      "id": "ea09383c-338a-45db-9f1d-5282100ec702",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k ur teasing too much not worth it im out unless u send that custom now tip 100 if fire",
+      "createdAt": "2026-04-23T12:01:56.064Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e4a3e14b-8717-4c4c-b175-085e11ac58e9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw dont bounce just yet, youre fun when youre pushy... door's open babe",
+      "createdAt": "2026-04-23T12:02:28.591Z",
+      "sentAt": "2026-04-23T12:02:42.639Z",
+      "llmCallId": "2d794265-fccb-43df-820a-a061fc582468",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 8,
+      "craft_pacing": 5,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6.7,
+    "ppv_unlocked": true,
+    "top_issue": "The creator repeatedly refuses customs and pitches generic PPVs instead, failing to make the whale feel special, as in 'youre pushy i like it but customs arent my thing right now, got somethin hot that'll feel personal tho' which led to the fan skipping the PPV and threatening to leave.",
+    "fix_recommendation": "Update the prompt to allow the persona to offer simple customs like name-moaning videos for high-value whales after building rapport, ensuring they feel uniquely valued without overpromising unavailable content."
+  },
+  "durationMs": 396934
+}

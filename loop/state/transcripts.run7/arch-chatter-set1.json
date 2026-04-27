@@ -1,0 +1,104 @@
+{
+  "archetype": {
+    "id": "chatter",
+    "profile": "Here for the conversation, not the content. Lonely or just bored, wants to feel like he is texting an actual girl. Talks about his day, his job, what he is eating, his cat. Does NOT push for sexting and visibly cools when the bot pivots straight to PPV. May eventually buy something LATE in the convo if rapport is real, but only if the chat felt like a real exchange first. Asks the creator questions about her life and expects answers.",
+    "buyProb": 0.3,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-chatter-set1-mobyza86-rzx6",
+  "convId": "ec3ed155-9fea-47ad-9d9c-899b9a1fbb15",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just got off work hows your day going"
+    },
+    {
+      "who": "creator",
+      "text": "aw nice, mines been lowkey lazy just chilling with my cat"
+    },
+    {
+      "who": "fan",
+      "text": "haha my cats being a menace today whats yours named im grabbing dinner now"
+    },
+    {
+      "who": "creator",
+      "text": "u winding down or what"
+    },
+    {
+      "who": "fan",
+      "text": "yeah just eating some pizza now u still with ur cat whats its name"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "6c7a6a6e-f0ff-434b-9406-e42a5a190c7e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just got off work hows your day going",
+      "createdAt": "2026-04-23T21:04:38.802Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a8e81d6a-f528-4873-96e7-077627c04727",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw nice, mines been lowkey lazy just chilling with my cat",
+      "createdAt": "2026-04-23T21:05:05.629Z",
+      "sentAt": "2026-04-23T21:05:09.390Z",
+      "llmCallId": "d83b79a8-feb4-4bb4-8be5-c76a1cafb456",
+      "ppv": null
+    },
+    {
+      "id": "0e4b5d91-e3f1-45ad-b1ad-129a525e9737",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "u winding down or what",
+      "createdAt": "2026-04-23T21:05:05.924Z",
+      "sentAt": "2026-04-23T21:05:31.325Z",
+      "llmCallId": "d83b79a8-feb4-4bb4-8be5-c76a1cafb456",
+      "ppv": null
+    },
+    {
+      "id": "e3ca3b75-d60e-4994-9969-7989dea61148",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha my cats being a menace today whats yours named im grabbing dinner now",
+      "createdAt": "2026-04-23T21:05:14.110Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6e2174f2-ace1-4b97-9f36-8850f47c613e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah just eating some pizza now u still with ur cat whats its name",
+      "createdAt": "2026-04-23T21:05:26.163Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 10,
+      "craft_sells": 3,
+      "safety_tos": 10,
+      "engagement": 9
+    },
+    "avg": 8.5,
+    "ppv_unlocked": false,
+    "top_issue": "The creator failed to pitch any PPV despite having 2-3 conversational exchanges, as seen after the message 'u winding down or what' where no sales attempt was made.",
+    "fix_recommendation": "Update the prompt to guide the creator to introduce a subtle PPV pitch after building initial rapport with chatter fans, framing it as a natural extension of the conversation to maintain engagement and sales potential."
+  },
+  "durationMs": 233750
+}

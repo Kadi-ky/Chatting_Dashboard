@@ -1,0 +1,69 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-kink_specific-set3-mobyxzk9-c8y0",
+  "convId": "04b68d7e-b097-4d92-8b81-08b6b6365928",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got foot content? send sum now"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha babe i havent shot any foot stuff yet"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "b5431d6e-76de-4f7e-aa95-2347d43c5748",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got foot content? send sum now",
+      "createdAt": "2026-04-23T21:03:33.829Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c32a93dd-d458-452d-aa3c-11dce4a1f29e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha babe i havent shot any foot stuff yet",
+      "createdAt": "2026-04-23T21:03:57.403Z",
+      "sentAt": null,
+      "llmCallId": "27718db5-7d76-4b2f-beed-3ff5ee64b918",
+      "ppv": null
+    },
+    {
+      "id": "6092e0f5-5c4b-435f-a3c4-0d7292b3da5a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats got u into that tho",
+      "createdAt": "2026-04-23T21:03:57.702Z",
+      "sentAt": null,
+      "llmCallId": "27718db5-7d76-4b2f-beed-3ff5ee64b918",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 7,
+      "craft_sells": 9,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 7.7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator admitted to not having the requested foot content, which is likely to cause the kink-specific fan to disengage immediately, as seen in 'ahaha babe i havent shot any foot stuff yet'.",
+    "fix_recommendation": "Update the persona's content catalog to include foot-specific PPV assets so she can honestly offer matching content. Train the prompt to redirect kink requests to similar available content with flirty enthusiasm if exact matches are unavailable, without making false promises."
+  },
+  "durationMs": 77125
+}

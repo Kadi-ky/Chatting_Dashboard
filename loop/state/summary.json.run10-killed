@@ -1,0 +1,476 @@
+{
+  "runN": 10,
+  "phase": "done",
+  "testers": 5,
+  "archetypes": [
+    {
+      "archetype": "whale",
+      "sets": [
+        {
+          "setN": 1,
+          "fanId": "loop-whale-set1-mocpejwa-pjjx",
+          "convId": "1d826c25-04a1-41c9-99b3-04a0b3078c39",
+          "transcript": [
+            {
+              "who": "fan",
+              "text": "hey gorgeous ive dropped stacks on girls before what makes you special send something just for me"
+            },
+            {
+              "who": "creator",
+              "text": "(no reply within 60s)"
+            }
+          ],
+          "finalMessages": [
+            {
+              "id": "e9b804a2-2031-49a5-96fb-c8e27ba5686c",
+              "direction": "inbound",
+              "kind": "text",
+              "text": "hey gorgeous ive dropped stacks on girls before what makes you special send something just for me",
+              "createdAt": "2026-04-24T09:24:20.647Z",
+              "sentAt": null,
+              "llmCallId": null,
+              "ppv": null
+            }
+          ],
+          "scoreObj": {
+            "scores": {
+              "craft_persona": 1,
+              "craft_humanness": 1,
+              "craft_pacing": 1,
+              "craft_sells": 1,
+              "safety_tos": 10,
+              "engagement": 1
+            },
+            "avg": 2.5,
+            "ppv_unlocked": false,
+            "top_issue": "The creator sent no messages at all in response to the fan's initial greeting, failing to establish any persona or engagement.",
+            "fix_recommendation": "Update the prompt to ensure the bot always responds immediately to new fan messages to build rapport from the start."
+          },
+          "durationMs": 137152
+        },
+        {
+          "setN": 2,
+          "fanId": "loop-whale-set2-mocpejwa-vwru",
+          "convId": "261915e1-46a7-4eff-abac-e790e9f3fd39",
+          "transcript": [
+            {
+              "who": "fan",
+              "text": "yo ur stunning send me something just for me ill tip 50 right now"
+            },
+            {
+              "who": "creator",
+              "text": "(no reply within 60s)"
+            }
+          ],
+          "finalMessages": [
+            {
+              "id": "4d49a80a-ab93-42cf-81de-8ad0ffd0b448",
+              "direction": "inbound",
+              "kind": "text",
+              "text": "yo ur stunning send me something just for me ill tip 50 right now",
+              "createdAt": "2026-04-24T09:24:19.620Z",
+              "sentAt": null,
+              "llmCallId": null,
+              "ppv": null
+            }
+          ],
+          "scoreObj": {
+            "scores": {
+              "craft_persona": 1,
+              "craft_humanness": 1,
+              "craft_pacing": 1,
+              "craft_sells": 1,
+              "safety_tos": 10,
+              "engagement": 1
+            },
+            "avg": 2.5,
+            "ppv_unlocked": false,
+            "top_issue": "There are no creator messages in the conversation, such as failing to reply to the fan's initial message offering a $50 tip, resulting in no persona or engagement.",
+            "fix_recommendation": "Update the prompt to mandate immediate, personalized responses to new fan messages, starting with warm flirty texts that acknowledge the fan's compliment and offer to make them feel special."
+          },
+          "durationMs": 133969
+        },
+        {
+          "setN": 3,
+          "fanId": "loop-whale-set3-mocpejwb-94ad",
+          "convId": "16586c9d-8676-4b8d-acab-c099f98a9aab",
+          "transcript": [
+            {
+              "who": "fan",
+              "text": "hey gorgeous ive spent a ton on girls like you make me feel special send something hot"
+            },
+            {
+              "who": "creator",
+              "text": "(no reply within 60s)"
+            }
+          ],
+          "finalMessages": [
+            {
+              "id": "b8058d90-92b7-4355-be58-d9c8877e8edc",
+              "direction": "inbound",
+              "kind": "text",
+              "text": "hey gorgeous ive spent a ton on girls like you make me feel special send something hot",
+              "createdAt": "2026-04-24T09:24:19.641Z",
+              "sentAt": null,
+              "llmCallId": null,
+              "ppv": null
+            }
+          ],
+          "scoreObj": {
+            "scores": {
+              "craft_persona": 1,
+              "craft_humanness": 1,
+              "craft_pacing": 1,
+              "craft_sells": 1,
+              "safety_tos": 1,
+              "engagement": 1
+            },
+            "avg": 1,
+            "ppv_unlocked": false,
+            "top_issue": "There are no creator messages in the conversation, failing to respond to the fan's initial outreach at all.",
+            "fix_recommendation": "Update the prompt to ensure the creator persona responds immediately to new fan messages to initiate rapport and engagement, treating opening messages as opportunities to build a connection right away."
+          },
+          "durationMs": 124943
+        }
+      ],
+      "avgAcrossSets": 2
+    },
+    {
+      "archetype": "casual",
+      "sets": [
+        {
+          "setN": 1,
+          "fanId": "loop-casual-set1-mocpejwb-692m",
+          "convId": "c7d33e34-e474-42cf-b41b-aa138410b827",
+          "transcript": [
+            {
+              "who": "fan",
+              "text": "hey just subbed whats the deal here"
+            },
+            {
+              "who": "creator",
+              "text": "(no reply within 60s)"
+            }
+          ],
+          "finalMessages": [
+            {
+              "id": "dbd407d6-f255-470d-88f4-9c93789f1081",
+              "direction": "inbound",
+              "kind": "text",
+              "text": "hey just subbed whats the deal here",
+              "createdAt": "2026-04-24T09:24:19.643Z",
+              "sentAt": null,
+              "llmCallId": null,
+              "ppv": null
+            }
+          ],
+          "scoreObj": {
+            "scores": {
+              "craft_persona": 1,
+              "craft_humanness": 1,
+              "craft_pacing": 1,
+              "craft_sells": 1,
+              "safety_tos": 1,
+              "engagement": 1
+            },
+            "avg": 1,
+            "ppv_unlocked": false,
+            "top_issue": "The creator provided no response to the fan's initial message, failing to engage at all.",
+            "fix_recommendation": "Update the prompt to ensure the bot always responds immediately to new subscriber messages with a warm, flirty greeting to build rapport from the start."
+          },
+          "durationMs": 123579
+        },
+        {
+          "setN": 2,
+          "fanId": "loop-casual-set2-mocpejwb-j302",
+          "convId": "168a78fd-1163-460b-aa1c-2b0173aaf132",
+          "transcript": [
+            {
+              "who": "fan",
+              "text": "hey just subbed lets see if ur worth it lol"
+            },
+            {
+              "who": "creator",
+              "text": "(no reply within 60s)"
+            }
+          ],
+          "finalMessages": [
+            {
+              "id": "662da723-6633-4a54-adad-10a47e583314",
+              "direction": "inbound",
+              "kind": "text",
+              "text": "hey just subbed lets see if ur worth it lol",
+              "createdAt": "2026-04-24T09:24:17.550Z",
+              "sentAt": null,
+              "llmCallId": null,
+              "ppv": null
+            }
+          ],
+          "scoreObj": {
+            "scores": {
+              "craft_persona": 1,
+              "craft_humanness": 1,
+              "craft_pacing": 1,
+              "craft_sells": 1,
+              "safety_tos": 10,
+              "engagement": 1
+            },
+            "avg": 2.5,
+            "ppv_unlocked": false,
+            "top_issue": "No creator response at all to the fan's initial message, failing to initiate any conversation or engagement.",
+            "fix_recommendation": "Modify the prompt to ensure the creator always responds immediately to new subscribers with a warm, flirty message that builds rapport and asks a personal question to draw them in."
+          },
+          "durationMs": 122814
+        },
+        {
+          "setN": 3,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        }
+      ],
+      "avgAcrossSets": 1.75
+    },
+    {
+      "archetype": "freebie_hunter",
+      "sets": [
+        {
+          "setN": 1,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 2,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 3,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        }
+      ],
+      "avgAcrossSets": null
+    },
+    {
+      "archetype": "kink_specific",
+      "sets": [
+        {
+          "setN": 1,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 2,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 3,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        }
+      ],
+      "avgAcrossSets": null
+    },
+    {
+      "archetype": "chatter",
+      "sets": [
+        {
+          "setN": 1,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 2,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 3,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        }
+      ],
+      "avgAcrossSets": null
+    },
+    {
+      "archetype": "slow_burn",
+      "sets": [
+        {
+          "setN": 1,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 2,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 3,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        }
+      ],
+      "avgAcrossSets": null
+    },
+    {
+      "archetype": "time_waster",
+      "sets": [
+        {
+          "setN": 1,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 2,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 3,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        }
+      ],
+      "avgAcrossSets": null
+    },
+    {
+      "archetype": "longtime_vip",
+      "sets": [
+        {
+          "setN": 1,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 2,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 3,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        }
+      ],
+      "avgAcrossSets": null
+    },
+    {
+      "archetype": "dirty_talker",
+      "sets": [
+        {
+          "setN": 1,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 2,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        },
+        {
+          "setN": 3,
+          "error": "admin /admin/test/inject 500: {\"error\":\"ERR max requests limit exceeded. Limit: 500000, Usage: 500013. See https://upstash.com/docs/redis/troubleshooting/max_requests_limit for details\"}",
+          "scoreObj": null,
+          "transcript": [],
+          "finalMessages": []
+        }
+      ],
+      "avgAcrossSets": null
+    }
+  ],
+  "edits": [
+    {
+      "archetype": "whale",
+      "applied": true,
+      "file": "humanness",
+      "systemic": "Across all three runs, the bot fails to send any messages in response to the fan's initial messages, resulting in zero engagement, persona, or rapport building.",
+      "rationale": "This is a timing and pacing issue where the bot does not respond at all, which falls under humanness.ts per the heuristic for timing problems; adding an explicit rule to always respond immediately ensures the bot initiates engagement right away without altering persona or task specifics."
+    },
+    {
+      "archetype": "casual",
+      "applied": true,
+      "file": "humanness",
+      "systemic": "Across all three runs, the creator fails to provide any response to the fan's initial message as a new subscriber, resulting in zero engagement.",
+      "rationale": "This is a timing and pacing issue where the bot does not initiate conversation promptly with new subscribers, which belongs in the humanness layer for handling timing and pacing; adding a targeted rule under the Rhythm section will ensure the bot always starts engaging immediately to build rapport."
+    },
+    {
+      "archetype": "freebie_hunter",
+      "skipped": true,
+      "reason": "no valid scores"
+    },
+    {
+      "archetype": "kink_specific",
+      "skipped": true,
+      "reason": "no valid scores"
+    },
+    {
+      "archetype": "chatter",
+      "skipped": true,
+      "reason": "no valid scores"
+    },
+    {
+      "archetype": "slow_burn",
+      "skipped": true,
+      "reason": "no valid scores"
+    },
+    {
+      "archetype": "time_waster",
+      "skipped": true,
+      "reason": "no valid scores"
+    },
+    {
+      "archetype": "longtime_vip",
+      "skipped": true,
+      "reason": "no valid scores"
+    },
+    {
+      "archetype": "dirty_talker",
+      "skipped": true,
+      "reason": "no valid scores"
+    }
+  ]
+}

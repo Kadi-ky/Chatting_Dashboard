@@ -1,0 +1,318 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-whale-set1-mobva6aa-qjbf",
+  "convId": "a054872f-c4dd-4ca6-bc88-0d5538cee5be",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey gorgeous ive dropped stacks on girls before what makes u special"
+    },
+    {
+      "who": "creator",
+      "text": "alright, lemme show u why im different"
+    },
+    {
+      "who": "fan",
+      "text": "show me dont just talk"
+    },
+    {
+      "who": "creator",
+      "text": "mmm heres me getting playful with my body... unlocks for $0.15",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "bought it not bad but make me feel vip send sum exclusive"
+    },
+    {
+      "who": "creator",
+      "text": "alright babe, lemme give u a lil peek"
+    },
+    {
+      "who": "fan",
+      "text": "peek? make it worth my time or im bouncing"
+    },
+    {
+      "who": "creator",
+      "text": "mmm watch me getting frisky on the bed, playing with everything... unlocks for $0.35",
+      "ppvNote": "PPV $0.35 · Script 1 · rung 2 · playing with nude boobs, showing yourself and moving up and down in the bed · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "bought ok thats hotter but send sum only for me not this generic shit"
+    },
+    {
+      "who": "creator",
+      "text": "aw babe youre greedy in the best way"
+    },
+    {
+      "who": "fan",
+      "text": "greedy? prove ur worth my cash send custom vid just for me or im gone"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey love that u want something special from me, makes me wanna tease u more 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "tease all u want but send that custom vid or im out spending elsewhere"
+    },
+    {
+      "who": "creator",
+      "text": "mmm dont bounce yet babe, youre too fun to let go that easy"
+    },
+    {
+      "who": "fan",
+      "text": "fun? send that custom now or im done here"
+    },
+    {
+      "who": "creator",
+      "text": "aw youre demanding tonight, lowkey turns me on"
+    },
+    {
+      "who": "fan",
+      "text": "turns u on? prove it with that custom vid now or im ghosting"
+    },
+    {
+      "who": "creator",
+      "text": "tell me what youd want in that vid, make it hot for me"
+    },
+    {
+      "who": "fan",
+      "text": "make me cum hard use toys and moan my name - alex or no deal"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "bf2f70d1-b460-425e-adde-5dffb1afad29",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey gorgeous ive dropped stacks on girls before what makes u special",
+      "createdAt": "2026-04-23T19:21:06.320Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d7494632-db62-4188-a132-e2fef80fa6fb",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "alright, lemme show u why im different",
+      "createdAt": "2026-04-23T19:21:42.502Z",
+      "sentAt": "2026-04-23T19:21:54.371Z",
+      "llmCallId": "4f4ffe67-666e-4f06-b140-ae7e91704aea",
+      "ppv": null
+    },
+    {
+      "id": "afeb111c-1f3f-4920-a265-56649091cbdc",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "mmm heres me getting playful with my body... unlocks for $0.15",
+      "createdAt": "2026-04-23T19:21:42.794Z",
+      "sentAt": "2026-04-23T19:22:15.951Z",
+      "llmCallId": "4f4ffe67-666e-4f06-b140-ae7e91704aea",
+      "ppv": {
+        "attemptId": "6497d005-c9b4-44e2-90fc-c1c1c5f96b94",
+        "priceCents": 15,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-23T19:21:54.399Z",
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "1736153e-7642-4d7d-b74d-d0ada51b161b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "show me dont just talk",
+      "createdAt": "2026-04-23T19:21:53.151Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a35e4300-cca6-4657-a96d-f41192898c32",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bought it not bad but make me feel vip send sum exclusive",
+      "createdAt": "2026-04-23T19:22:08.309Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1887502c-ef15-4b52-a081-4fcb370051b3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "alright babe, lemme give u a lil peek",
+      "createdAt": "2026-04-23T19:22:21.723Z",
+      "sentAt": "2026-04-23T19:22:37.528Z",
+      "llmCallId": "62784960-01ff-4e9b-a819-626142f3a40d",
+      "ppv": null
+    },
+    {
+      "id": "674a8b06-b62e-4de1-9481-0531d541040e",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "mmm watch me getting frisky on the bed, playing with everything... unlocks for $0.35",
+      "createdAt": "2026-04-23T19:22:22.022Z",
+      "sentAt": "2026-04-23T19:22:59.099Z",
+      "llmCallId": "62784960-01ff-4e9b-a819-626142f3a40d",
+      "ppv": {
+        "attemptId": "e3846111-ff73-4333-95df-69a8ad91cfbc",
+        "priceCents": 35,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "8318bddd-b6e9-447e-a469-fafacbd9329b",
+        "assetTitle": "Script 1 · rung 2",
+        "assetDescription": "playing with nude boobs, showing yourself and moving up and down in the bed",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:2",
+        "mediaRefs": [
+          {
+            "ref": "4334417568",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "e033c464-bfb9-4e2d-925d-a9be3820ada1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "peek? make it worth my time or im bouncing",
+      "createdAt": "2026-04-23T19:22:40.732Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bd4344d5-4afe-42f6-bd10-e5ec48c67e78",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bought ok thats hotter but send sum only for me not this generic shit",
+      "createdAt": "2026-04-23T19:22:52.794Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e400dc4f-6bb0-490c-b122-6b10a82ee254",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw babe youre greedy in the best way",
+      "createdAt": "2026-04-23T19:23:10.617Z",
+      "sentAt": "2026-04-23T19:23:20.480Z",
+      "llmCallId": "ccba74e7-620f-4c5e-af41-14e753d29435",
+      "ppv": null
+    },
+    {
+      "id": "699aebd8-0a75-4eb9-ad06-069c429b9e04",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey love that u want something special from me, makes me wanna tease u more 🖤",
+      "createdAt": "2026-04-23T19:23:10.912Z",
+      "sentAt": "2026-04-23T19:23:42.152Z",
+      "llmCallId": "ccba74e7-620f-4c5e-af41-14e753d29435",
+      "ppv": null
+    },
+    {
+      "id": "52b67784-611a-4efd-bc19-a66aa5ba73d4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "greedy? prove ur worth my cash send custom vid just for me or im gone",
+      "createdAt": "2026-04-23T19:23:26.002Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2e060a4a-8149-4fbf-9878-3ce36fe46d58",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "tease all u want but send that custom vid or im out spending elsewhere",
+      "createdAt": "2026-04-23T19:23:40.490Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d4fff3cf-01d6-49af-b32c-a8158234abf7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm dont bounce yet babe, youre too fun to let go that easy",
+      "createdAt": "2026-04-23T19:23:54.152Z",
+      "sentAt": "2026-04-23T19:24:08.105Z",
+      "llmCallId": "6d86b56c-f3c8-433d-9dba-0a8f60f3c4a2",
+      "ppv": null
+    },
+    {
+      "id": "e40b906a-5b63-431d-989d-823ff81eef09",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fun? send that custom now or im done here",
+      "createdAt": "2026-04-23T19:24:05.833Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "73b7e82c-829c-44ce-a29e-ec291c48ce27",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw youre demanding tonight, lowkey turns me on",
+      "createdAt": "2026-04-23T19:24:39.242Z",
+      "sentAt": "2026-04-23T19:24:42.794Z",
+      "llmCallId": "a05d8fc3-360e-4282-a195-6da7be9eabaa",
+      "ppv": null
+    },
+    {
+      "id": "835dbb2e-a08f-485f-9fa9-1a515aa66910",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "tell me what youd want in that vid, make it hot for me",
+      "createdAt": "2026-04-23T19:24:39.537Z",
+      "sentAt": null,
+      "llmCallId": "a05d8fc3-360e-4282-a195-6da7be9eabaa",
+      "ppv": null
+    },
+    {
+      "id": "1f12a29b-cbb6-4f76-9847-6fe69510b7f3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "turns u on? prove it with that custom vid now or im ghosting",
+      "createdAt": "2026-04-23T19:24:54.316Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 6,
+      "craft_pacing": 4,
+      "craft_sells": 5,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 6.7,
+    "ppv_unlocked": true,
+    "top_issue": "The creator pitches a PPV in the very first reply to a brand-new fan without building any rapport, as seen in 'alright, lemme show u why im different' immediately followed by the $0.15 PPV.",
+    "fix_recommendation": "Update the prompt to require at least 2-3 conversational exchanges with new fans to build rapport before any PPV pitch. Emphasize reacting to the fan's initial message with flirty questions or compliments to establish a personal connection first."
+  },
+  "durationMs": 273848
+}

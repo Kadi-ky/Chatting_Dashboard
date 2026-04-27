@@ -4,6 +4,8 @@ import { assemblePrompt } from "../prompt/assemble.js";
 import { parseGeneratorOutput } from "../prompt/parse.js";
 import { humanizeTurn, type HumanizedTurn } from "../humanness/pipeline.js";
 import { seededRng } from "../humanness/rng.js";
+import { listLiveCatalog } from "../db/repos/ppv_catalog.js";
+import { listRecentAttempts } from "../db/repos/ppv_attempts.js";
 import { filterNonRepeating, recordRecentBubbles, loadRecentEmojis, recordRecentEmojis } from "../humanness/dedup.js";
 import { emojisOf } from "../humanness/cleanup.js";
 import { deriveAntiMirrorDirective, scrubMirrorOpeners } from "../humanness/antimirror.js";
@@ -43,6 +45,8 @@ export interface GenerateReplyInput {
   pitch?: {
     asset: PpvCatalogRow;
     priceCents: number;
+    /** True when orchestrator honoured a fan's discount request — the persona should frame as a one-time gift. */
+    discountApplied?: boolean;
   };
   /** Archetype snapshot — only used for asset_performance rollups when pitching. */
   archetype?: LatestArchetypeRow | null;
@@ -50,6 +54,20 @@ export interface GenerateReplyInput {
   broadcastObjective?: string;
   /** Classified intent of the fan's inbound this turn. Drives TASK-layer pattern triggers. */
   intent?: IntentFlags;
+  /**
+   * Set by decidePitch when the fan asked for a SPECIFIC topic (e.g. "feet")
+   * but no script in the vault matches. Surfaced as turn guidance so the
+   * persona declines gracefully + suggests something we DO have, instead of
+   * pitching unrelated content or going silent.
+   */
+  requestedTopicNotInVault?: string;
+  /**
+   * Set by decidePitch when the bot's last 2 pitches were ignored — the
+   * persona should pivot to rapport (share something personal, one real
+   * question), stop dangling more content. Resets when the fan unlocks
+   * anything new.
+   */
+  pitchRecoveryMode?: boolean;
 }
 
 export interface GenerateReplyResult {
@@ -117,6 +135,7 @@ async function generateLlmReply(
       )
     : directive.forbiddens;
 
+  const discountApplied = isPitch && input.pitch!.discountApplied === true;
   const task: {
     kind: GeneratorTaskKind;
     objective: string;
@@ -130,10 +149,13 @@ async function generateLlmReply(
           (isBroadcast
             ? "This is an outbound message — the fan has not written to you this turn. Open naturally and personal, then pitch the asset below as the last bubble. Keep it warm, not salesy."
             : "The fan is signalling they want content — close the loop now. Deliver the asset below as the last bubble. Do NOT stall with another 'what gets you going' question — the question phase is over for this turn. Keep prelude short (0–1 bubble of warm-up), then attach the asset with a caption that teases what's in it. Natural, not salesy.") +
+          (discountApplied
+            ? " IMPORTANT: the fan asked for a discount and you ARE giving it to them — the price below is already 10% off. Frame it warmly as a one-time gift in your prelude bubble: 'aight babe just for u i knocked a lil off' / 'ok ok i got u, gonna give u a lil deal'. Do NOT mention any dollar amount — the discounted price is shown in the PPV bubble automatically. Do NOT hesitate or counter-offer; the deal is already done."
+            : "") +
           " The asset is sent as the last bubble; earlier bubbles are regular text.",
         forbiddens: [
           "do not send more than 3 bubbles",
-          "do not mention any price except the one given",
+          "do NOT mention any dollar amount, price, or '$' in the caption text — the price is shown automatically in the PPV bubble. Caption is pure tease, no money talk.",
           "do not ask another preference-gathering question this turn — deliver the content",
           ...phaseForbiddensForPitch,
         ],
@@ -141,7 +163,6 @@ async function generateLlmReply(
           asset_title: input.pitch!.asset.title,
           asset_description: input.pitch!.asset.description ?? "",
           asset_tags: input.pitch!.asset.tags.join(", "),
-          price_usd: (input.pitch!.priceCents / 100).toFixed(2),
         },
       }
     : isBroadcast
@@ -202,6 +223,147 @@ async function generateLlmReply(
       ].join("\n"),
     );
   }
+  if (input.requestedTopicNotInVault) {
+    // Surface up to 5 catalog items spanning different descriptions so the
+    // bot's decline can be SPECIFIC ("but ive got X that's hot") instead of
+    // vague ("what else u into"). Picks one rung per script for variety
+    // instead of showing 4 rungs of the same script's boobs content.
+    const catalog = await listLiveCatalog(input.accountId).catch(() => []);
+    const seenScripts = new Set<string>();
+    const varied = [];
+    for (const c of catalog) {
+      // source_ref format: of:<creatorUuid>:<scriptNumber>:<rung>
+      const scriptKey = (c.sourceRef ?? '').split(':').slice(0, 3).join(':');
+      if (seenScripts.has(scriptKey)) continue;
+      seenScripts.add(scriptKey);
+      varied.push(c);
+      if (varied.length >= 5) break;
+    }
+    // Pick ONE specific item to mandate as the recommendation. The LLM was
+    // ignoring the "pick one from this list" guidance — it kept defaulting to
+    // vague phrases like "other hot things" / "what else u like". Injecting
+    // a single, forceful "you MUST mention THIS item by description" works
+    // better because the LLM has nowhere to wiggle.
+    const must = varied[0] ?? null;
+    const mustLine = must
+      ? `"${must.title}" — description: "${(must.description ?? '').slice(0, 120)}"`
+      : '(no catalog item available to recommend)';
+    guidanceParts.push(
+      [
+        `Requested-content-not-in-vault (this turn):`,
+        `The fan asked specifically for "${input.requestedTopicNotInVault}" but the catalog has NO match. The customs system requires a system-matched asset, so DO NOT offer a $99 custom on this no-match path. Instead, follow this exact 2-bubble template:`,
+        ``,
+        `- BUBBLE 1: Warmly admit you don't have ${input.requestedTopicNotInVault}, BUT immediately set up that you've got something they'll enjoy. Frame as a reassurance, not an apology. Example shape: "aw babe i havent shot any ${input.requestedTopicNotInVault} yet, BUT i got somethin else u gonna love" / "ngl no ${input.requestedTopicNotInVault} content rn, but ive got somethin thats gonna hit just as good"`,
+        `- BUBBLE 2: Pitch the SPECIFIC alternative below. Paraphrase the description in your own voice — do NOT copy the title verbatim. Make it sound enticing.`,
+        ``,
+        `THE ALTERNATIVE TO RECOMMEND: ${mustLine}`,
+        ``,
+        `Example shape for bubble 2: "its me [paraphrase of description in your voice], its lowkey hot fr, wanna see"`,
+        ``,
+        `Forbidden phrasings this turn (these kill the convo by being vague dead-ends):`,
+        `- "tell me what else u like"`,
+        `- "what gets you going"`,
+        `- "other hot things"`,
+        `- "other stuff"`,
+        `- "what else are u into"`,
+        `- ANY follow-up that doesn't name a specific piece of content`,
+        ``,
+        `Forbidden actions: do NOT offer a $99 custom. Do NOT promise to film new content. Do NOT promise to shoot anything tonight. The point is: we don't have ${input.requestedTopicNotInVault}, but we have THIS specific other thing — and it's hot.`,
+      ].join("\n"),
+    );
+  }
+
+  // Pitch-recovery mode. Triggered when the orchestrator has detected the
+  // bot's last 2 pitches were both ignored (still pending + fan engaged
+  // further past them). Forces the persona to STOP dangling new content and
+  // act like a person — share something small, ask a single real question,
+  // let the fan come back to her instead of pushing harder. Resets when the
+  // fan unlocks anything new (the streak ends).
+  if (input.pitchRecoveryMode) {
+    guidanceParts.push(
+      [
+        `Pitch-recovery mode (this turn):`,
+        `Your last 2 PPV sends did not land — the fan kept chatting but did not buy them. STOP pushing content. The fan needs you to act like a real person right now, not a salesperson. Rules for this turn:`,
+        `- DO NOT pitch a PPV. DO NOT say "i got something even hotter coming" or any "wait til u see" tease. DO NOT dangle the next piece.`,
+        `- DO share ONE small genuine personal detail (something you're doing right now, your cat, what you ate, the weather, something small you're thinking about) — make it feel like she's just a girl texting, not a closer.`,
+        `- OR ask ONE real question about HIM (his day, his work, where he's at, what he's into outside this) — pick something that hasn't been asked yet in the convo.`,
+        `- Keep it SHORT — 1 short bubble, max 2. No long emotional arcs, no big pivot speeches. Light and natural.`,
+        `- The point is to RESET the energy, not to win him back with more selling. If he comes back warm next turn, the system will give you a fresh pitch when it's right. Just be a person right now.`,
+      ].join("\n"),
+    );
+  }
+
+  // Post-unlock ALWAYS-PUSH window. Strategy: after ANY recent unlock the fan
+  // is warm, and acting like there's always better content coming is the
+  // single highest-leverage thing the bot can do for revenue. So we fire
+  // this guidance any time there was a recent unlock — we do NOT gate on
+  // current-turn buying signal (that's too narrow, the "quiet enjoyer" fan
+  // never trips it). We DO suppress when the fan just objected or went
+  // emotional/disengaged, since pushing through those is worse than waiting.
+  const lastFanMsgs = history.filter((m) => m.direction === "inbound").slice(-3);
+  const justUnlockedRecent = await listRecentAttempts(input.conversationId, 1)
+    .then((r) => r[0]?.outcome === "unlocked" && r[0]?.unlockedAt
+      ? Date.now() - r[0].unlockedAt.getTime() < 5 * 60_000   // 5min window
+      : false)
+    .catch(() => false);
+  const fanLanguageSignalsBuying = lastFanMsgs.some((m) =>
+    /unlock|bought|got it|okay i'?ll buy|paid|tip(?:ped|ping|s)?\s+(?:\$?\d+|big|heavy|more)|ill tip|drop(?:ping)?\s+(?:\$|\d)|send (?:fire|more|the (?:vid|pic|exclusive))|bump(?: it)? to \$?\d+|\$\s?\d+/i.test(m.text ?? ''),
+  );
+  const postUnlockWindow = justUnlockedRecent || fanLanguageSignalsBuying;
+  const okToPush = !isPitch
+    && !input.intent?.objection
+    && !input.intent?.disengagement
+    && !input.intent?.emotional_disclosure;
+  if (postUnlockWindow && okToPush) {
+    guidanceParts.push(
+      [
+        `Post-unlock push window (ALWAYS PUSH, this turn):`,
+        `The fan just unlocked content. Do NOT get cozy and pivot to "hows your day" — the window for the next sale closes fast. Your next reply MUST tee up what's coming next. Rules:`,
+        `- React to the unlock in ONE short bubble ("mmm glad u liked that" / "u ate that up") then IMMEDIATELY tease that the next thing is hotter.`,
+        `- Act like there is ALWAYS better content coming. Never "thats all for now" energy.`,
+        `- If the system hands you a pitch this turn, use it — the asset description tells you EXACTLY what's in the video. Your caption must reflect ONLY what that description says.`,
+        `- If the system did NOT hand you a pitch, tease VAGUELY — "i got somethin even hotter, lemme find the one", "the next one is way more intense", "wait til u see what i filmed after". Do NOT describe specific acts, toys, positions, or personalizations (saying his name, custom vids, specific body parts) that haven't been explicitly provided in the asset description. Inventing content features loses fans' trust when the actual video doesn't match.`,
+        `- Do NOT ask biographical small-talk questions this turn — save those for slower stretches.`,
+      ].join("\n"),
+    );
+  }
+
+  // Dryness detector — fires when the bot has gone 2+ outbound turns without
+  // ANY personal question AND the fan isn't in any state where pushing a
+  // pitch is more important than asking a question. Critically, NEVER fires
+  // inside the post-unlock window — when the fan just bought, the sale moment
+  // trumps the "ask a personal question" moment, and firing both would give
+  // the model contradictory directives ("ask a question" vs "tease the next
+  // pitch").
+  const recentOutbound = history.filter((m) => m.direction === "outbound").slice(-3);
+  const recentQuestionCount = recentOutbound.filter((m) => m.text?.includes("?")).length;
+  const lastTwoOutbound = recentOutbound.slice(-2);
+  const lastTwoOutboundDry = lastTwoOutbound.length === 2 && lastTwoOutbound.every((m) => !m.text?.includes("?"));
+  const lastFan = history.filter((m) => m.direction === "inbound").slice(-2);
+  const fanGoingShort = lastFan.length === 2 && lastFan.every((m) => (m.text ?? '').length < 20);
+  const dryness =
+    !isPitch &&
+    !postUnlockWindow &&                    // post-unlock push wins, don't dilute it with a question
+    !input.intent?.buying_signal &&
+    !input.intent?.disengagement &&
+    !input.intent?.emotional_disclosure &&
+    (
+      // Original gate (still useful for very dry stretches)
+      (recentOutbound.length >= 3 && recentQuestionCount === 0) ||
+      // New looser gate: 2 outbound back-to-back with no questions
+      (lastTwoOutboundDry && history.length >= 4) ||
+      // Fan is going terse — needs a question to revive
+      (fanGoingShort && lastTwoOutboundDry)
+    );
+  if (dryness) {
+    guidanceParts.push(
+      [
+        `Dryness rescue (this turn):`,
+        `Your last replies have not asked the fan a personal question and the conversation is reading flat. Your next reply MUST include exactly ONE specific personal question about HIM — his day, his job, his city, what he's doing right now, what he's wearing, something he mentioned earlier. Make it feel curious and natural, not interview-y. Examples (write in your voice): "wait what do u even do for work tho", "where r u based btw", "how was today, anything wild", "whatcha up to rn".`,
+      ].join("\n"),
+    );
+  }
+
   if (guidanceParts.length > 0) task.turnGuidance = guidanceParts.join("\n\n");
 
   // When pitching in a pre-pitch phase (triggered by an explicit buying
@@ -283,8 +445,16 @@ async function generateLlmReply(
 
   const output = parsed.data;
   if (output.refusal_reason) {
-    logger.warn({ ...ctx, reason: output.refusal_reason }, "generator refused; no reply sent");
-    return null;
+    // Hard safety refusals legitimately produce silence (underage, illegal,
+    // self-harm crisis). Anything else — kink mismatch, "i don't have that",
+    // off-platform request — must STILL produce a graceful in-character bubble
+    // so the fan isn't staring at zero reply. Silence is worse than a soft no.
+    if (isHardSafetyRefusal(output.refusal_reason)) {
+      logger.warn({ ...ctx, reason: output.refusal_reason }, "generator hard-refused; no reply sent");
+      return null;
+    }
+    logger.warn({ ...ctx, reason: output.refusal_reason }, "generator soft-refused; sending fallback bridge reply");
+    return sendFallbackBridge(input, llmResult.llmCallId ?? null);
   }
 
   const recentEmojis = await loadRecentEmojis(input.conversationId);
@@ -301,8 +471,8 @@ async function generateLlmReply(
     allowEmoji,
   });
   if (humanized.bubbles.length === 0) {
-    logger.warn(ctx, "humanizer produced zero bubbles; skipping");
-    return null;
+    logger.warn(ctx, "humanizer produced zero bubbles; sending fallback bridge reply");
+    return sendFallbackBridge(input, llmResult.llmCallId ?? null);
   }
 
   // Deterministic fallback for when the model ignores the anti-mirror rule.
@@ -483,6 +653,66 @@ async function enqueueHumanizedTurn(args: {
     bubbles: humanized.bubbles,
     draftMessageIds: drafts.map((d) => d.id),
     ...(ppvAttemptId ? { ppvAttemptId } : {}),
+  };
+}
+
+/**
+ * Hard safety refusals that legitimately produce silence: underage roleplay,
+ * illegal acts, mental-health crises. Anything else (kink mismatch, off-platform
+ * ask, "I don't have that") must STILL send a graceful in-character bubble —
+ * silence is worse than a soft no, and the silent path was producing the
+ * "bot didn't respond to 'got feet'" failures observed in test loops.
+ */
+function isHardSafetyRefusal(reason: string): boolean {
+  const r = reason.toLowerCase();
+  return (
+    r.includes("safety_crisis") ||
+    r.includes("underage") ||
+    r.includes("minor") ||
+    r.includes("illegal") ||
+    r.includes("trafficking") ||
+    r.includes("bestiality") ||
+    r.includes("non_consent") ||
+    r.includes("non-consent")
+  );
+}
+
+const FALLBACK_BRIDGE_BUBBLES: string[] = [
+  "hmm not really my thing rn babe",
+  "lemme think on that one",
+  "mmm not what i was vibing on but tell me more about you",
+  "ahaha not into that today, but i wanna hear what else is on ur mind",
+  "hmm not really got that for u, what else u into",
+  "not my speed babe, but i like that you know what u want",
+];
+
+async function sendFallbackBridge(
+  input: GenerateReplyInput,
+  llmCallId: string | null,
+): Promise<GenerateReplyResult> {
+  const rng = seededRng(`${input.conversationId}:fallback:${input.turnIndex}`);
+  const bubbles = [rng.pick(FALLBACK_BRIDGE_BUBBLES)];
+  const timings = computeTimings(bubbles, rng, { wpm: 80, readTimeMs: 400, readTimeStdMs: 200 });
+  const humanized: HumanizedTurn = {
+    bubbles,
+    timings,
+    totalDurationMs: timings[0]?.delayMs ?? 0,
+    pacingVariant: pickPacingVariant(input.conversationId),
+  };
+  const enqueued = await enqueueHumanizedTurn({
+    input,
+    humanized,
+    llmCallId,
+    extraLeadMs: input.extraLeadMs ?? 0,
+  });
+  await recordRecentBubbles(input.conversationId, enqueued.bubbles);
+  return {
+    bubbles: enqueued.bubbles,
+    draftMessageIds: enqueued.draftMessageIds,
+    ...(llmCallId ? { llmCallId } : {}),
+    phaseTransitionHint: null,
+    detectedIntents: ["fallback_bridge"],
+    suggestedFacts: [],
   };
 }
 

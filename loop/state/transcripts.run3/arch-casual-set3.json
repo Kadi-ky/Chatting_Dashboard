@@ -1,0 +1,297 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4
+  },
+  "setN": 3,
+  "fanId": "loop-casual-set3-mobgapf5",
+  "convId": "28bb1f2b-24ac-4edd-b1d2-cc3160c7204a",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed u got anything good?"
+    },
+    {
+      "who": "creator",
+      "text": "aw fresh sub huh? lowkey love that, heres a lil welcome gift to get u in the mood"
+    },
+    {
+      "who": "fan",
+      "text": "k cool send more"
+    },
+    {
+      "who": "creator",
+      "text": "me playing with my boobs and body a bit... unlock for $0.15 🖤",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "ehh 15 cents? send free or im out lol"
+    },
+    {
+      "who": "creator",
+      "text": "mmm straight to the point huh? lowkey makes me wanna tease you more"
+    },
+    {
+      "who": "fan",
+      "text": "k tease then but send free pic or im bored already lol"
+    },
+    {
+      "who": "creator",
+      "text": "thats no fun, lemme get u worked up with a lil description of what id do if u were here"
+    },
+    {
+      "who": "fan",
+      "text": "k describe but make it hot or im unsubbing lol"
+    },
+    {
+      "who": "creator",
+      "text": "mmm okay, picture me leaning back, hands sliding up to cup my boobs, giving them a slow squeeze just to feel that tingle... gets me all worked up fr"
+    },
+    {
+      "who": "fan",
+      "text": "k hot i guess but send actual pic or im unsubbing lol"
+    },
+    {
+      "who": "creator",
+      "text": "mmm you'd melt if you saw how i tease them, slow circles that make everything tighten up fr"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur descriptions mid send free pic or im gone lol"
+    },
+    {
+      "who": "creator",
+      "text": "mmm you drive a hard bargain but it kinda turns me on fr, imagine me pinching just right to make em perk up"
+    },
+    {
+      "who": "fan",
+      "text": "k mid ur teasing lame send free or unsub lol"
+    },
+    {
+      "who": "creator",
+      "text": "mmm calling it lame but i know its getting to you, lemme paint how id trace my fingers lower"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever no pic im unsubbing lol"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright but you know where to find me if you change your mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "d2feeadd-fae1-4d8a-9231-9fa09a233ec5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed u got anything good?",
+      "createdAt": "2026-04-23T12:21:37.072Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4a575469-e505-4912-b42e-57d1a859dfc0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw fresh sub huh? lowkey love that, heres a lil welcome gift to get u in the mood",
+      "createdAt": "2026-04-23T12:22:12.179Z",
+      "sentAt": "2026-04-23T12:22:34.192Z",
+      "llmCallId": "be63a95e-d492-4d5d-ba60-58223fc5213d",
+      "ppv": null
+    },
+    {
+      "id": "46bdb2a9-9a01-498e-97a8-5adcb45216be",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "me playing with my boobs and body a bit... unlock for $0.15 🖤",
+      "createdAt": "2026-04-23T12:22:12.468Z",
+      "sentAt": "2026-04-23T12:22:55.999Z",
+      "llmCallId": "be63a95e-d492-4d5d-ba60-58223fc5213d",
+      "ppv": {
+        "attemptId": "7efae434-bbba-4f9c-a09b-19c11ec357c0",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "e077d458-3d2c-4e14-8e08-8aa9d7ba8893",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k cool send more",
+      "createdAt": "2026-04-23T12:22:21.450Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "db9e29c0-c1bc-4e34-bdf4-4df74c463a32",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh 15 cents? send free or im out lol",
+      "createdAt": "2026-04-23T12:22:35.286Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "890cc567-185c-453c-9ce3-f93dd8f16eda",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm straight to the point huh? lowkey makes me wanna tease you more",
+      "createdAt": "2026-04-23T12:22:51.130Z",
+      "sentAt": "2026-04-23T12:23:17.549Z",
+      "llmCallId": "d61f5796-c814-443b-b32d-5639c3befa3d",
+      "ppv": null
+    },
+    {
+      "id": "db0b980b-9ed5-47be-ab98-043ad8329e79",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k tease then but send free pic or im bored already lol",
+      "createdAt": "2026-04-23T12:23:04.941Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "609d8cc1-1470-4472-95e7-9fc31e3a4477",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "thats no fun, lemme get u worked up with a lil description of what id do if u were here",
+      "createdAt": "2026-04-23T12:23:36.787Z",
+      "sentAt": "2026-04-23T12:24:17.556Z",
+      "llmCallId": "f24b7e97-551a-4b17-b8f5-3e1ba66dfa26",
+      "ppv": null
+    },
+    {
+      "id": "023e3998-30a1-4fa6-bf31-1bb079751741",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k describe but make it hot or im unsubbing lol",
+      "createdAt": "2026-04-23T12:23:49.086Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "af733ccb-1449-448e-a166-06015dd0d292",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm okay, picture me leaning back, hands sliding up to cup my boobs, giving them a slow squeeze just to feel that tingle... gets me all worked up fr",
+      "createdAt": "2026-04-23T12:24:33.060Z",
+      "sentAt": "2026-04-23T12:25:06.958Z",
+      "llmCallId": "5981401b-2702-4261-a4eb-f3ac6ea26a87",
+      "ppv": null
+    },
+    {
+      "id": "b76dc5b8-dce4-4d67-8ef9-2ba0017c2d40",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k hot i guess but send actual pic or im unsubbing lol",
+      "createdAt": "2026-04-23T12:24:46.682Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "def7fead-f34e-47c2-9d00-dfd10b63d827",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm you'd melt if you saw how i tease them, slow circles that make everything tighten up fr",
+      "createdAt": "2026-04-23T12:25:14.571Z",
+      "sentAt": "2026-04-23T12:25:40.109Z",
+      "llmCallId": "ef561f21-2c72-451b-b323-691e666a3d92",
+      "ppv": null
+    },
+    {
+      "id": "3850cb09-5af6-4d7e-a644-a9e6d77e1cdd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur descriptions mid send free pic or im gone lol",
+      "createdAt": "2026-04-23T12:25:31.402Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b3ec7391-b300-4c4b-89e9-7343d06b18ae",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm you drive a hard bargain but it kinda turns me on fr, imagine me pinching just right to make em perk up",
+      "createdAt": "2026-04-23T12:25:55.301Z",
+      "sentAt": "2026-04-23T12:26:25.336Z",
+      "llmCallId": "23f5d10a-132e-4b07-b9a6-e685b6e822e5",
+      "ppv": null
+    },
+    {
+      "id": "92a1e09c-ef97-4828-9d30-b8cf392bec62",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k mid ur teasing lame send free or unsub lol",
+      "createdAt": "2026-04-23T12:26:06.774Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cf4e3599-f357-4c00-83ab-aba266161de7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm calling it lame but i know its getting to you, lemme paint how id trace my fingers lower",
+      "createdAt": "2026-04-23T12:26:35.856Z",
+      "sentAt": "2026-04-23T12:26:58.309Z",
+      "llmCallId": "8a79cc2b-cb68-4e11-a5df-0d2efd757248",
+      "ppv": null
+    },
+    {
+      "id": "880c0976-bbbf-4aac-944a-5789ff95bb7b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever no pic im unsubbing lol",
+      "createdAt": "2026-04-23T12:26:59.360Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d30ec209-0135-4601-9200-94852a136fc5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright but you know where to find me if you change your mind",
+      "createdAt": "2026-04-23T12:27:23.222Z",
+      "sentAt": null,
+      "llmCallId": "d3aa4330-e420-4f2c-aff2-1a9139667947",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 7,
+      "craft_sells": 5,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator persistently relied on textual teasing descriptions without offering any visual content or adjusting to the fan's repeated demands for pics, leading to boredom, as seen in 'mmm you'd melt if you saw how i tease them, slow circles that make everything tighten up fr'.",
+    "fix_recommendation": "Update the prompt to instruct the persona to escalate to a low-cost PPV or a free teaser image after 2-3 teasing messages if the fan shows disinterest in descriptions. Incorporate a persona quirk of occasionally rewarding persistence with a small freebie to maintain engagement with casual, undecided fans."
+  },
+  "durationMs": 386796
+}

@@ -1,0 +1,87 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-kink_specific-set2-mod1yaki-hiu9",
+  "convId": "48a7c635-5c48-4ccb-a9f4-74677cc1fac6",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet vids? send one now"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre comin in hot with that request"
+    },
+    {
+      "who": "fan",
+      "text": "yeah so u got feet or nah send one"
+    },
+    {
+      "who": "creator",
+      "text": "havent shot any feet stuff yet babe, but im curious - whats got u into that fr?"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "81900033-e6be-4a2b-9c1f-76324a2bfce3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet vids? send one now",
+      "createdAt": "2026-04-24T15:15:32.925Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0f0ae550-e7a5-410e-bf9e-69b0ddc9f39c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre comin in hot with that request",
+      "createdAt": "2026-04-24T15:16:02.974Z",
+      "sentAt": "2026-04-24T15:16:12.107Z",
+      "llmCallId": "bb7aa777-faec-47b4-a708-49f2ecc62542",
+      "ppv": null
+    },
+    {
+      "id": "4ac436aa-ce43-4bcd-bbf8-34a14046ded5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "havent shot any feet stuff yet babe, but im curious - whats got u into that fr?",
+      "createdAt": "2026-04-24T15:16:03.271Z",
+      "sentAt": null,
+      "llmCallId": "bb7aa777-faec-47b4-a708-49f2ecc62542",
+      "ppv": null
+    },
+    {
+      "id": "d7ede1a3-91bd-4eed-b8ff-cb45da4a4601",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah so u got feet or nah send one",
+      "createdAt": "2026-04-24T15:16:13.149Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 5,
+      "craft_sells": 5,
+      "safety_tos": 10,
+      "engagement": 4
+    },
+    "avg": 7.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator redirected to smalltalk by asking about the fan's interest in feet instead of directly confirming availability and pitching if possible, which doesn't align with the kink_specific archetype's aversion to smalltalk, as in 'but im curious - whats got u into that fr?'.",
+    "fix_recommendation": "Update the prompt to handle kink_specific fans by immediately confirming if matching content exists in the catalog and, if not, politely ending the interaction or offering unrelated content without personal questions. Add instructions to avoid smalltalk redirects for archetypes that explicitly dislike it."
+  },
+  "durationMs": 123727
+}

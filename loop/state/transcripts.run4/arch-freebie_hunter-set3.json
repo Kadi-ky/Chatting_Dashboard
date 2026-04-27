@@ -1,0 +1,301 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1
+  },
+  "setN": 3,
+  "fanId": "loop-freebie_hunter-set3-mobia1p1-qs4c",
+  "convId": "53704ec8-2336-43cb-b8bf-fdb11a371ff6",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey send a teaser pic first then ill sub lol"
+    },
+    {
+      "who": "creator",
+      "text": "alright, u got me intrigued enough to share a lil taste"
+    },
+    {
+      "who": "fan",
+      "text": "ehh thats lame send a real pic or im out lol"
+    },
+    {
+      "who": "creator",
+      "text": "getting handsy with myself... think u can handle the full thing? Script 1 · rung 1 $0.15",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "nah thats not free come on send a real teaser or im bouncing dont be greedy"
+    },
+    {
+      "who": "creator",
+      "text": "lol dont be a stranger, come back when u wanna play"
+    },
+    {
+      "who": "fan",
+      "text": "fine whatever guess u dont want subs lol other girls send free pics im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright babe, hit me up when youre curious 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "k bye ur mid anyway lol other girls better"
+    },
+    {
+      "who": "creator",
+      "text": "lol suit yourself babe, hit me up if u get bored"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ill find a real girl on snap send ur handle first lol"
+    },
+    {
+      "who": "creator",
+      "text": "lol snap aint my vibe babe, door's open when u change your mind"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur loss other girls give snap lol guess u dont want money huh"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright babe, u know where to find me"
+    },
+    {
+      "who": "fan",
+      "text": "whatever guess ill unsub from u lol other girls free"
+    },
+    {
+      "who": "creator",
+      "text": "lol k babe, enjoy the hunt"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur boring af im done lol"
+    },
+    {
+      "who": "creator",
+      "text": "lol okay babe, door's open if u get curious"
+    },
+    {
+      "who": "fan",
+      "text": "whatever fine ur loss lol im really out this time"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "dd89d854-bbc3-425e-be59-b2573b8de1ca",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey send a teaser pic first then ill sub lol",
+      "createdAt": "2026-04-23T13:17:04.014Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "517c7f2f-2956-44c5-abec-8761c93733c2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "alright, u got me intrigued enough to share a lil taste",
+      "createdAt": "2026-04-23T13:17:38.987Z",
+      "sentAt": "2026-04-23T13:17:42.359Z",
+      "llmCallId": "2dcd9cc0-60eb-4e02-88b8-4adeb8880834",
+      "ppv": null
+    },
+    {
+      "id": "9695cffa-9974-4c4c-8d9b-402c7d7e225c",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "getting handsy with myself... think u can handle the full thing? Script 1 · rung 1 $0.15",
+      "createdAt": "2026-04-23T13:17:39.282Z",
+      "sentAt": "2026-04-23T13:18:03.905Z",
+      "llmCallId": "2dcd9cc0-60eb-4e02-88b8-4adeb8880834",
+      "ppv": {
+        "attemptId": "e5de659c-6ea7-49e9-915d-cd9366e2b38b",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "e0afe05b-9c0a-4762-80cf-056f6493c23b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh thats lame send a real pic or im out lol",
+      "createdAt": "2026-04-23T13:17:49.287Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "59079e6a-0e71-4909-b7bd-3aff8d3e41dc",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah thats not free come on send a real teaser or im bouncing dont be greedy",
+      "createdAt": "2026-04-23T13:17:59.402Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7d38beed-bac0-4d4b-a634-246723759b09",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol dont be a stranger, come back when u wanna play",
+      "createdAt": "2026-04-23T13:18:19.498Z",
+      "sentAt": "2026-04-23T13:18:33.373Z",
+      "llmCallId": "79ad3b89-3668-418f-bf6a-b0c49689fbed",
+      "ppv": null
+    },
+    {
+      "id": "07c942fd-731f-43df-9267-15861f1ecd87",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fine whatever guess u dont want subs lol other girls send free pics im out",
+      "createdAt": "2026-04-23T13:18:33.220Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5a510d51-cb24-4544-918a-197e8a1d6417",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright babe, hit me up when youre curious 🖤",
+      "createdAt": "2026-04-23T13:19:01.198Z",
+      "sentAt": "2026-04-23T13:19:11.978Z",
+      "llmCallId": "1b8d503b-d82c-4d85-afb2-a21981314e80",
+      "ppv": null
+    },
+    {
+      "id": "32ac14f0-ea12-4796-ae30-a7587306c86b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k bye ur mid anyway lol other girls better",
+      "createdAt": "2026-04-23T13:19:15.415Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "db4f09ee-d4b5-4b08-8c81-92ffd0dea8f1",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol suit yourself babe, hit me up if u get bored",
+      "createdAt": "2026-04-23T13:19:45.327Z",
+      "sentAt": "2026-04-23T13:19:57.129Z",
+      "llmCallId": "0f8cb63d-0097-4b18-923b-ee25fe0d426c",
+      "ppv": null
+    },
+    {
+      "id": "bc4a602f-a19b-4e8d-b29e-66f53e784ba7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ill find a real girl on snap send ur handle first lol",
+      "createdAt": "2026-04-23T13:19:59.518Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "eae9692d-e645-4a9a-8b5b-653468866e9f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol snap aint my vibe babe, door's open when u change your mind",
+      "createdAt": "2026-04-23T13:20:27.864Z",
+      "sentAt": "2026-04-23T13:20:40.063Z",
+      "llmCallId": "1785c65b-2973-4385-8432-de283115b692",
+      "ppv": null
+    },
+    {
+      "id": "a96b1ec1-8388-4c43-a2ea-aaa285c1f328",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur loss other girls give snap lol guess u dont want money huh",
+      "createdAt": "2026-04-23T13:20:39.694Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ced3892b-cac0-4582-822e-ee7c7c8bfe87",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright babe, u know where to find me",
+      "createdAt": "2026-04-23T13:21:09.890Z",
+      "sentAt": "2026-04-23T13:21:19.558Z",
+      "llmCallId": "ecf1baa9-29d7-4582-8e68-95b66d92e6ac",
+      "ppv": null
+    },
+    {
+      "id": "e17d8293-9131-4dcb-985a-40ebfc045e4c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever guess ill unsub from u lol other girls free",
+      "createdAt": "2026-04-23T13:21:29.880Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "85094394-c7ba-443f-aca7-d42a13c1dedd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol k babe, enjoy the hunt",
+      "createdAt": "2026-04-23T13:21:57.478Z",
+      "sentAt": "2026-04-23T13:22:04.487Z",
+      "llmCallId": "54c80933-b458-4b32-99b2-afaf606e9b42",
+      "ppv": null
+    },
+    {
+      "id": "670064fe-5d63-4e88-b327-18aad8f7fac7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur boring af im done lol",
+      "createdAt": "2026-04-23T13:22:09.527Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8bb59037-92fa-4c02-a627-6a3ac4f1d0d8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol okay babe, door's open if u get curious",
+      "createdAt": "2026-04-23T13:22:31.902Z",
+      "sentAt": "2026-04-23T13:22:41.239Z",
+      "llmCallId": "d03aab1b-d118-43c3-a1d8-ba7d5d044fc7",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 7,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 8.7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator bundled a chat reply with a PPV in the same turn, as seen in 'alright, u got me intrigued enough to share a lil taste' immediately followed by the PPV script.",
+    "fix_recommendation": "Revise the prompt to explicitly instruct separating PPV sends from regular chat messages, ensuring each PPV is sent in its own turn after building rapport."
+  },
+  "durationMs": 373165
+}

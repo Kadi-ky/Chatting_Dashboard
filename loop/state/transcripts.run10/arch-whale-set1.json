@@ -1,0 +1,316 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-whale-set1-mocxzd6s-chhz",
+  "convId": "ad4a3b8c-5816-4fd0-8966-76ec49e43c79",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey gorgeous ive dropped stacks on creators before impress me with something exclusive"
+    },
+    {
+      "who": "creator",
+      "text": "oh u sound like u dont play around fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah so send that exclusive shit make it worth my time"
+    },
+    {
+      "who": "creator",
+      "text": "i like a guy who knows what he wants 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "words are cheap babe send that exclusive now or im bouncing"
+    },
+    {
+      "who": "creator",
+      "text": "whats got u messaging me tonight babe"
+    },
+    {
+      "who": "fan",
+      "text": "bored of chit chat send that exclusive or im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol u dont waste time do u"
+    },
+    {
+      "who": "fan",
+      "text": "yeah whatever send the exclusive or im tipping someone else"
+    },
+    {
+      "who": "creator",
+      "text": "alright big spender heres something exclusive - me getting playful with my boobs and body, just for eyes like yours unlock for $0.15",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "k unlocking it but better be worth the hype or im tipping elsewhere"
+    },
+    {
+      "who": "creator",
+      "text": "lol u didnt hesitate on that one"
+    },
+    {
+      "who": "fan",
+      "text": "hot but make the next one personal for me ill tip 50"
+    },
+    {
+      "who": "creator",
+      "text": "wait til u see whats next - me really turning up the heat, even more exclusive for a guy like u"
+    },
+    {
+      "who": "fan",
+      "text": "alright send it now make it personal or no tip"
+    },
+    {
+      "who": "creator",
+      "text": "lol u ate that up quick"
+    },
+    {
+      "who": "fan",
+      "text": "yeah fire now make one saying my name or im out tip 50 if u do"
+    },
+    {
+      "who": "creator",
+      "text": "mmm the next ones gonna be even hotter, way more personal just for a big tipper like u"
+    },
+    {
+      "who": "fan",
+      "text": "dont tease babe send the one with my name now or the tips gone"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "617b606a-028e-4173-bfca-34cf124ca8c7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey gorgeous ive dropped stacks on creators before impress me with something exclusive",
+      "createdAt": "2026-04-24T13:24:28.810Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a22fcc8f-d70a-4225-a98e-ffbe50ba277d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "oh u sound like u dont play around fr",
+      "createdAt": "2026-04-24T13:25:04.652Z",
+      "sentAt": "2026-04-24T13:25:13.418Z",
+      "llmCallId": "58828a9e-ecde-4509-b3f8-004363798091",
+      "ppv": null
+    },
+    {
+      "id": "8bee2dd5-132b-438e-b3ff-88f4cb9c4cb2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "i like a guy who knows what he wants 🖤",
+      "createdAt": "2026-04-24T13:25:04.958Z",
+      "sentAt": "2026-04-24T13:26:17.841Z",
+      "llmCallId": "58828a9e-ecde-4509-b3f8-004363798091",
+      "ppv": null
+    },
+    {
+      "id": "3da98998-0f2d-4c70-828a-a2fdfa9cdcf2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats got u messaging me tonight babe",
+      "createdAt": "2026-04-24T13:25:05.256Z",
+      "sentAt": "2026-04-24T13:25:35.024Z",
+      "llmCallId": "58828a9e-ecde-4509-b3f8-004363798091",
+      "ppv": null
+    },
+    {
+      "id": "c7938e4c-d0c4-46f7-95f3-1fd6ba9aa9a8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah so send that exclusive shit make it worth my time",
+      "createdAt": "2026-04-24T13:25:16.033Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6f7f3078-7052-4e96-9364-a3af1d099932",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "words are cheap babe send that exclusive now or im bouncing",
+      "createdAt": "2026-04-24T13:25:26.003Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4263f571-bd5a-4931-85c3-1d2f61c1398e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bored of chit chat send that exclusive or im out",
+      "createdAt": "2026-04-24T13:25:36.565Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "954c7385-a500-455c-8373-599b82cd2df5",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol u dont waste time do u",
+      "createdAt": "2026-04-24T13:25:49.170Z",
+      "sentAt": "2026-04-24T13:25:56.229Z",
+      "llmCallId": "5d13c40f-796c-4819-b3de-9503e87052d7",
+      "ppv": null
+    },
+    {
+      "id": "4d17aec2-d220-4671-a27b-8c6e8ec28827",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "alright big spender heres something exclusive - me getting playful with my boobs and body, just for eyes like yours unlock for $0.15",
+      "createdAt": "2026-04-24T13:25:49.462Z",
+      "sentAt": "2026-04-24T13:26:39.188Z",
+      "llmCallId": "5d13c40f-796c-4819-b3de-9503e87052d7",
+      "ppv": {
+        "attemptId": "312f04ee-fb6f-4d8b-8372-c941bdddd982",
+        "priceCents": 15,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-24T13:25:58.800Z",
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "f7ab8114-0f1c-46d1-8acb-cc15b576e2cb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah whatever send the exclusive or im tipping someone else",
+      "createdAt": "2026-04-24T13:25:58.058Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "99f4b8ff-3d23-4a99-96d7-606200090ef8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k unlocking it but better be worth the hype or im tipping elsewhere",
+      "createdAt": "2026-04-24T13:26:16.077Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "60fd965b-3c98-4ddb-9eb9-1978cca8645b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol u didnt hesitate on that one",
+      "createdAt": "2026-04-24T13:26:46.138Z",
+      "sentAt": "2026-04-24T13:27:00.530Z",
+      "llmCallId": "6a9259e3-fd9c-4111-8f32-31810cf10616",
+      "ppv": null
+    },
+    {
+      "id": "2e6b0797-fc71-4c31-90ef-0f0242f1a7c3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "wait til u see whats next - me really turning up the heat, even more exclusive for a guy like u",
+      "createdAt": "2026-04-24T13:26:46.434Z",
+      "sentAt": "2026-04-24T13:27:22.073Z",
+      "llmCallId": "6a9259e3-fd9c-4111-8f32-31810cf10616",
+      "ppv": null
+    },
+    {
+      "id": "a238ff03-632b-486d-bee5-dbc6b71d24b0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hot but make the next one personal for me ill tip 50",
+      "createdAt": "2026-04-24T13:26:57.729Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c487b1ef-3ac7-48ca-989e-df9a76587061",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "alright send it now make it personal or no tip",
+      "createdAt": "2026-04-24T13:27:08.152Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "61f41bc0-93cb-40ba-a31e-cb4ffbd9738e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol u ate that up quick",
+      "createdAt": "2026-04-24T13:27:39.246Z",
+      "sentAt": "2026-04-24T13:27:45.288Z",
+      "llmCallId": "681a4b4e-66b0-4edc-87b9-0fb30981bcb5",
+      "ppv": null
+    },
+    {
+      "id": "6a426c5d-8116-4280-afab-1fef3a76c949",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm the next ones gonna be even hotter, way more personal just for a big tipper like u",
+      "createdAt": "2026-04-24T13:27:39.541Z",
+      "sentAt": "2026-04-24T13:28:06.892Z",
+      "llmCallId": "681a4b4e-66b0-4edc-87b9-0fb30981bcb5",
+      "ppv": null
+    },
+    {
+      "id": "3ae4a946-61a3-443e-91d1-36e01cfe77d4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah fire now make one saying my name or im out tip 50 if u do",
+      "createdAt": "2026-04-24T13:27:52.419Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6ba87b44-45a0-409a-ab05-54769137bd90",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "dont tease babe send the one with my name now or the tips gone",
+      "createdAt": "2026-04-24T13:28:00.651Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 7,
+      "craft_pacing": 5,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 7.3,
+    "ppv_unlocked": true,
+    "top_issue": "The creator pitched a PPV too early without building sufficient rapport through at least 2-3 conversational exchanges with a brand-new fan, as seen in 'alright big spender heres something exclusive - me getting playful with my boobs and body, just for eyes like yours unlock for $0.15'.",
+    "fix_recommendation": "Revise the prompt to require at least 2-3 back-and-forth exchanges focused on asking personal questions and sharing quirky opinions before any PPV pitch to new fans. This will help build a sense of special connection for demanding archetypes like whales."
+  },
+  "durationMs": 334718
+}

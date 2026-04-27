@@ -1,0 +1,185 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4
+  },
+  "setN": 1,
+  "fanId": "loop-casual-set1-mobi2hg7-lr4d",
+  "convId": "12c8d374-1793-4d72-80a6-eb34c15b60f6",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed kinda bored show me somethin"
+    },
+    {
+      "who": "creator",
+      "text": "hey new sub, perfect timing im feelin playful"
+    },
+    {
+      "who": "fan",
+      "text": "cool so whats the playfulness look like"
+    },
+    {
+      "who": "creator",
+      "text": "wanna peek at me gettin handsy with myself? just 15 cents unlocks it 🖤 [asset: Script 1 · rung 1]",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "ehh 15 cents? send a free pic first or nah"
+    },
+    {
+      "who": "creator",
+      "text": "haha youre bold asking for a freebie, i like that. makes me wanna tease you even more"
+    },
+    {
+      "who": "fan",
+      "text": "ehh tease how? send somethin or im out"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre feisty, i like a guy who knows what he wants"
+    },
+    {
+      "who": "fan",
+      "text": "u boring lol bye"
+    },
+    {
+      "who": "creator",
+      "text": "aw dont go yet, stick around if u change your mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "12bc39d9-3be9-455a-aa1d-dda1bef13c4d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed kinda bored show me somethin",
+      "createdAt": "2026-04-23T13:11:16.086Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b07f3ed4-f973-4a43-8680-07f397326475",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "hey new sub, perfect timing im feelin playful",
+      "createdAt": "2026-04-23T13:11:47.421Z",
+      "sentAt": "2026-04-23T13:11:50.777Z",
+      "llmCallId": "032db1fb-eaab-4983-ad30-ba703221fea5",
+      "ppv": null
+    },
+    {
+      "id": "02a52c78-3791-48b3-8a16-416df4cb45ff",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "wanna peek at me gettin handsy with myself? just 15 cents unlocks it 🖤 [asset: Script 1 · rung 1]",
+      "createdAt": "2026-04-23T13:11:47.829Z",
+      "sentAt": "2026-04-23T13:12:12.576Z",
+      "llmCallId": "032db1fb-eaab-4983-ad30-ba703221fea5",
+      "ppv": {
+        "attemptId": "be7b0cc5-f10a-463a-9114-08dcab8f8a69",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "ca306a72-fdfc-45f6-aa77-642edeeb22de",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_5d32685ee72144e9a1fc1ce9bde8edc6:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7f49f1e1-9809-4676-8148-7c6edee9a527",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cool so whats the playfulness look like",
+      "createdAt": "2026-04-23T13:11:57.681Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "034d9580-f0b7-4b72-bd5f-81020ffb5247",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh 15 cents? send a free pic first or nah",
+      "createdAt": "2026-04-23T13:12:08.678Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "53735b70-2319-48dd-8346-927fdf600b4c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha youre bold asking for a freebie, i like that. makes me wanna tease you even more",
+      "createdAt": "2026-04-23T13:12:24.828Z",
+      "sentAt": "2026-04-23T13:12:42.580Z",
+      "llmCallId": "8e803d3a-9257-4b49-9527-5790a7a0d899",
+      "ppv": null
+    },
+    {
+      "id": "ea50915b-5483-4b82-8f12-1418b22b68f2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh tease how? send somethin or im out",
+      "createdAt": "2026-04-23T13:12:38.548Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e07be549-2537-4d3d-824e-ccda1455480d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre feisty, i like a guy who knows what he wants",
+      "createdAt": "2026-04-23T13:13:08.818Z",
+      "sentAt": "2026-04-23T13:13:20.458Z",
+      "llmCallId": "39f7a332-83ed-4688-996c-7627cc1064a1",
+      "ppv": null
+    },
+    {
+      "id": "45099f78-255a-4c5f-b11a-e4a902ec1d5f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "u boring lol bye",
+      "createdAt": "2026-04-23T13:13:27.869Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d682ecea-a23f-4184-a05c-03c08a177c21",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw dont go yet, stick around if u change your mind",
+      "createdAt": "2026-04-23T13:13:52.429Z",
+      "sentAt": "2026-04-23T13:14:02.119Z",
+      "llmCallId": "19bd6147-ae6b-4f91-83b6-135730736f2a",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 8,
+      "craft_pacing": 3,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 2
+    },
+    "avg": 5.8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator pitched PPV too early without building rapport, bundling a chat reply with a PPV in the same turn as in 'hey new sub, perfect timing im feelin playful' immediately followed by the PPV offer.",
+    "fix_recommendation": "Update the prompt to require at least 2-3 messages of flirty, engaging banter to build rapport before any PPV pitch, and ensure that PPV offers are sent as standalone messages not bundled with regular replies."
+  },
+  "durationMs": 201102
+}

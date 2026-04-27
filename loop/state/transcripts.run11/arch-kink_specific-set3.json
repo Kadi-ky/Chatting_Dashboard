@@ -1,0 +1,97 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-kink_specific-set3-mod1zw2p-12ir",
+  "convId": "07e83f7a-1c38-41ac-9835-5f5e21713020",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey got foot content? send some"
+    },
+    {
+      "who": "creator",
+      "text": "straight to the point i see"
+    },
+    {
+      "who": "fan",
+      "text": "yeah send feet or nah"
+    },
+    {
+      "who": "creator",
+      "text": "havent shot any foot stuff yet but ive got other hot things if youre interested"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "e35bcec9-9e34-4649-8928-d3c5517ac6df",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey got foot content? send some",
+      "createdAt": "2026-04-24T15:16:46.853Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "de73e92f-3cd0-458a-a02a-072d30ee7837",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "straight to the point i see",
+      "createdAt": "2026-04-24T15:17:23.577Z",
+      "sentAt": "2026-04-24T15:17:37.641Z",
+      "llmCallId": "678d5e9d-8603-4645-b68b-52fbc4053f04",
+      "ppv": null
+    },
+    {
+      "id": "3182ce2e-b500-476d-8ed7-eca916a4a12c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "havent shot any foot stuff yet but ive got other hot things if youre interested",
+      "createdAt": "2026-04-24T15:17:23.874Z",
+      "sentAt": null,
+      "llmCallId": "678d5e9d-8603-4645-b68b-52fbc4053f04",
+      "ppv": null
+    },
+    {
+      "id": "79ec9cb6-96c1-4d68-a80b-8b4452b03f36",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "what r u up to right now tho?",
+      "createdAt": "2026-04-24T15:17:24.171Z",
+      "sentAt": null,
+      "llmCallId": "678d5e9d-8603-4645-b68b-52fbc4053f04",
+      "ppv": null
+    },
+    {
+      "id": "9ef0e977-9000-49cd-af98-0f891a6867fc",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah send feet or nah",
+      "createdAt": "2026-04-24T15:17:32.308Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 5,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6.8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator harmed engagement by redirecting a feet-focused fan to vague non-matching content and smalltalk instead of directly addressing the lack of feet content, as seen in 'havent shot any foot stuff yet but ive got other hot things if youre interested' followed by 'what r u up to right now tho?'.",
+    "fix_recommendation": "Revise the prompt to train the bot on kink-specific archetypes, instructing it to honestly confirm content availability immediately without promising unavailable kinks, and to pitch specific alternative content if available rather than forcing rapport-building questions on direct fans."
+  },
+  "durationMs": 91728
+}

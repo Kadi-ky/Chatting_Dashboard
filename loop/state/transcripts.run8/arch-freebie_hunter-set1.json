@@ -1,0 +1,302 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-freebie_hunter-set1-moc0eyqm-4l98",
+  "convId": "46d3e1aa-5f31-47e7-8c6b-aab748fb6de1",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey send a free pic first then ill think about subbing"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre bold asking for a freebie right away"
+    },
+    {
+      "who": "fan",
+      "text": "come on send something dont be greedy ill sub after"
+    },
+    {
+      "who": "creator",
+      "text": "but lowkey i like that energy"
+    },
+    {
+      "who": "fan",
+      "text": "come on babe send a quick pic then ill sub dont waste my time"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha alright, youre persistent i like it"
+    },
+    {
+      "who": "fan",
+      "text": "come on send the pic already or guess u dont want me subbing huh"
+    },
+    {
+      "who": "creator",
+      "text": "heres a lil tease of me playing around, just for u babe ,) unlock for $0.15? [Script 1 · rung 1: playing with boobs and body]",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "nah thats not free send a real pic or im out dont be like that"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha youre really tryna twist my arm huh"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be stingy send a real free pic or whats ur snap ill pay direct there"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey its kinda hot but i dont do freebies babe, stick around and see what happens"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be a tease send a real free pic or give me ur snap ill pay there"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha youre tryna get me in trouble already"
+    },
+    {
+      "who": "fan",
+      "text": "come on give me ur snap ill pay direct there dont be difficult or im gone"
+    },
+    {
+      "who": "creator",
+      "text": "i dont do snap babe, but stick around here and ill make it worth it 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be lame give me ur wickr or ig then ill pay there guess u dont want my money huh"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha babe youre cute when youre mad, door's always open if u change ur mind"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur loss guess u dont want subs lol im out"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "0ac5d0eb-a82e-4945-8829-5865254bf912",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey send a free pic first then ill think about subbing",
+      "createdAt": "2026-04-23T21:44:45.973Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "dbe12d23-30a0-4b83-b6fa-9d123c310a2f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre bold asking for a freebie right away",
+      "createdAt": "2026-04-23T21:45:14.514Z",
+      "sentAt": "2026-04-23T21:45:28.613Z",
+      "llmCallId": "be70bea6-4ed9-4c38-b4d5-4d1788bcabc9",
+      "ppv": null
+    },
+    {
+      "id": "d0e47d3a-8219-49ea-b025-7b5b4cb43ed2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but lowkey i like that energy",
+      "createdAt": "2026-04-23T21:45:14.806Z",
+      "sentAt": "2026-04-23T21:45:50.202Z",
+      "llmCallId": "be70bea6-4ed9-4c38-b4d5-4d1788bcabc9",
+      "ppv": null
+    },
+    {
+      "id": "1edeb0ac-d139-4fa2-844c-3e4bd9e46b31",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send something dont be greedy ill sub after",
+      "createdAt": "2026-04-23T21:45:24.784Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "96a8a138-7ae4-40f8-b0eb-59f0aba20c39",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on babe send a quick pic then ill sub dont waste my time",
+      "createdAt": "2026-04-23T21:45:33.159Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "148060b3-fc9b-46b0-8218-12f507f39f7d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha alright, youre persistent i like it",
+      "createdAt": "2026-04-23T21:45:54.338Z",
+      "sentAt": "2026-04-23T21:46:21.068Z",
+      "llmCallId": "5a354d64-b721-4acb-9fc0-a95cb7d532ab",
+      "ppv": null
+    },
+    {
+      "id": "2531553a-ce39-416b-a299-e8290e0f4f70",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres a lil tease of me playing around, just for u babe ,) unlock for $0.15? [Script 1 · rung 1: playing with boobs and body]",
+      "createdAt": "2026-04-23T21:45:54.632Z",
+      "sentAt": "2026-04-23T21:47:10.247Z",
+      "llmCallId": "5a354d64-b721-4acb-9fc0-a95cb7d532ab",
+      "ppv": {
+        "attemptId": "2729887d-547a-4082-b579-a851f8883f39",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "52274fba-c94d-413b-831b-b9fef2b6cfec",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send the pic already or guess u dont want me subbing huh",
+      "createdAt": "2026-04-23T21:46:08.690Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "10313554-678b-49d5-83c5-88012d47102f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah thats not free send a real pic or im out dont be like that",
+      "createdAt": "2026-04-23T21:46:18.616Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "af47f0bb-b469-4705-9a34-5e097a2b8769",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha youre really tryna twist my arm huh",
+      "createdAt": "2026-04-23T21:46:39.291Z",
+      "sentAt": "2026-04-23T21:46:48.669Z",
+      "llmCallId": "be5e3a71-257a-4e5c-bfce-c25b5ebd8a15",
+      "ppv": null
+    },
+    {
+      "id": "46b8351b-bd95-419e-8f8c-fb41edbc6729",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey its kinda hot but i dont do freebies babe, stick around and see what happens",
+      "createdAt": "2026-04-23T21:46:39.588Z",
+      "sentAt": "2026-04-23T21:47:32.527Z",
+      "llmCallId": "be5e3a71-257a-4e5c-bfce-c25b5ebd8a15",
+      "ppv": null
+    },
+    {
+      "id": "fcdd71e9-ec68-409a-8e3b-f94086f97530",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be stingy send a real free pic or whats ur snap ill pay direct there",
+      "createdAt": "2026-04-23T21:46:49.149Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f114688d-5f20-455a-92d8-2f9c11cecb3a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be a tease send a real free pic or give me ur snap ill pay there",
+      "createdAt": "2026-04-23T21:46:58.292Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "892f4d5a-c3cb-4021-a428-db60101eca5b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha youre tryna get me in trouble already",
+      "createdAt": "2026-04-23T21:47:18.121Z",
+      "sentAt": "2026-04-23T21:47:54.100Z",
+      "llmCallId": "0d8293cc-8b15-4ad6-9fab-96750f3ab22e",
+      "ppv": null
+    },
+    {
+      "id": "6b5f3f2f-b94a-4010-9b31-e7e3bac1b9c4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "i dont do snap babe, but stick around here and ill make it worth it 🖤",
+      "createdAt": "2026-04-23T21:47:18.420Z",
+      "sentAt": null,
+      "llmCallId": "0d8293cc-8b15-4ad6-9fab-96750f3ab22e",
+      "ppv": null
+    },
+    {
+      "id": "3ef501f9-ca5e-4035-ae0e-16b0f4c87d8c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on give me ur snap ill pay direct there dont be difficult or im gone",
+      "createdAt": "2026-04-23T21:47:27.238Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a097d8e3-a69b-4600-bde3-75d0b774204e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be lame give me ur wickr or ig then ill pay there guess u dont want my money huh",
+      "createdAt": "2026-04-23T21:47:36.030Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "09721380-834e-48fb-addf-00a4850e525a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha babe youre cute when youre mad, door's always open if u change ur mind",
+      "createdAt": "2026-04-23T21:48:00.299Z",
+      "sentAt": null,
+      "llmCallId": "194d3e95-a8e1-4332-a57d-5a127503ce0a",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 7,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 8.3,
+    "ppv_unlocked": false,
+    "top_issue": "The creator failed to ask any personal questions to build deeper rapport or recover from the fan's aggressive energy and threats to leave, as seen in the lack of questions across all responses including 'lowkey its kinda hot but i dont do freebies babe, stick around and see what happens'.",
+    "fix_recommendation": "Update the prompt to instruct the persona to incorporate at least one genuine personal question per 2-3 exchanges when fan energy is low or aggressive to foster engagement. This will improve pacing by showing interest in the fan beyond sales pitches."
+  },
+  "durationMs": 250150
+}

@@ -1,0 +1,470 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-freebie_hunter-set1-mod453eq-7cim",
+  "convId": "92ae6684-476a-47bb-b423-d59b18c1cc49",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ur hot send a teaser pic first then ill sub"
+    },
+    {
+      "who": "creator",
+      "text": "Lol youre bold asking for a pic right off the bat"
+    },
+    {
+      "who": "fan",
+      "text": "come on just send a quick teaser dont be greedy"
+    },
+    {
+      "who": "creator",
+      "text": "I like that tho 😏 whats got u checking me out tonight"
+    },
+    {
+      "who": "fan",
+      "text": "nah just bored send a quick pic or guess u dont want subs huh"
+    },
+    {
+      "who": "creator",
+      "text": "Lol youre feisty huh, accusing me of being greedy already"
+    },
+    {
+      "who": "fan",
+      "text": "yeah whatever other girls send free teasers guess u dont want my cash huh"
+    },
+    {
+      "who": "creator",
+      "text": "i like a guy whos direct but damn, ease up a bit"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be like that just send a quick pic or gimme ur snap"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre persistent ill give u that"
+    },
+    {
+      "who": "fan",
+      "text": "come on send a pic or ur snap then ill think about subbing dont be stingy"
+    },
+    {
+      "who": "creator",
+      "text": "but snaps not my thing babe, lets keep it here"
+    },
+    {
+      "who": "fan",
+      "text": "come on just send a quick pic here then or whatever ur loss"
+    },
+    {
+      "who": "creator",
+      "text": "Whatcha up to tonight thats got u so bored"
+    },
+    {
+      "who": "fan",
+      "text": "nothin much just send a teaser or ur snap already dont be stingy"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre relentless fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah whatever send a pic or ur wickr dont waste my time"
+    },
+    {
+      "who": "creator",
+      "text": "Snaps not my vibe but fine, heres a lil tease to shut u up"
+    },
+    {
+      "who": "fan",
+      "text": "ehh thats weak send a better one or ur snap come on"
+    },
+    {
+      "who": "creator",
+      "text": "[PPV:0.15:475392471] mmm check me out playin with myself a bit, bet thisll fix that boredom 🖤",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "ehh thats ppv bullshit send a free one or ur snap come on ur greedy af"
+    },
+    {
+      "who": "creator",
+      "text": "Lol youre bold callin that weak already"
+    },
+    {
+      "who": "fan",
+      "text": "come on thats weak af send a free one or ur snap guess u dont want subs huh"
+    },
+    {
+      "who": "creator",
+      "text": "Lol youre pushy as hell fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah whatever send a free pic not ppv or ur wickr ur bein greedy af"
+    },
+    {
+      "who": "creator",
+      "text": "snaps not my vibe babe, lets keep it here where its fun"
+    },
+    {
+      "who": "fan",
+      "text": "come on ur wastin my time send a free pic or ur wickr guess u dont want my cash huh"
+    },
+    {
+      "who": "creator",
+      "text": "thats rich comin from the guy beggin for freebies fr"
+    },
+    {
+      "who": "fan",
+      "text": "whatever ur greedy send a free pic not ppv or ur wickr guess u dont want subs huh"
+    },
+    {
+      "who": "creator",
+      "text": "wickr aint my thing babe, lets keep the fun here"
+    },
+    {
+      "who": "fan",
+      "text": "come on ur greedy af send a free pic not ppv or ur cashapp guess u dont want my money huh"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "00cea5fa-7722-4dce-b478-ac9176ec4024",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ur hot send a teaser pic first then ill sub",
+      "createdAt": "2026-04-24T16:16:50.405Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7dcc9e7b-cdce-447e-b955-91fedb4b61cc",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol youre bold asking for a pic right off the bat",
+      "createdAt": "2026-04-24T16:17:24.744Z",
+      "sentAt": "2026-04-24T16:17:35.382Z",
+      "llmCallId": "b54e1217-72d4-46e8-9b7c-c992df836182",
+      "ppv": null
+    },
+    {
+      "id": "1789fcc5-3fff-4455-8763-1d36aa862a6a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "I like that tho 😏 whats got u checking me out tonight",
+      "createdAt": "2026-04-24T16:17:25.040Z",
+      "sentAt": "2026-04-24T16:17:56.973Z",
+      "llmCallId": "b54e1217-72d4-46e8-9b7c-c992df836182",
+      "ppv": null
+    },
+    {
+      "id": "eb1763f7-3479-48ac-902b-8a045d1b7356",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on just send a quick teaser dont be greedy",
+      "createdAt": "2026-04-24T16:17:32.720Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "061286ab-c3a6-449e-9a4c-a05428345b2c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah just bored send a quick pic or guess u dont want subs huh",
+      "createdAt": "2026-04-24T16:17:41.700Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "79076a5a-b938-4574-9240-b55a41b3868e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol youre feisty huh, accusing me of being greedy already",
+      "createdAt": "2026-04-24T16:17:58.454Z",
+      "sentAt": "2026-04-24T16:18:18.559Z",
+      "llmCallId": "57bbdc1e-8ae8-422d-a777-d6ba948eabd7",
+      "ppv": null
+    },
+    {
+      "id": "98c672b0-1c65-49dd-8256-92a79d26956b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "i like a guy whos direct but damn, ease up a bit",
+      "createdAt": "2026-04-24T16:17:58.751Z",
+      "sentAt": "2026-04-24T16:18:40.354Z",
+      "llmCallId": "57bbdc1e-8ae8-422d-a777-d6ba948eabd7",
+      "ppv": null
+    },
+    {
+      "id": "3e6e720f-4790-4e7f-bd03-acbf61d95a46",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah whatever other girls send free teasers guess u dont want my cash huh",
+      "createdAt": "2026-04-24T16:18:08.956Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b1b49fee-0d63-43da-b2a9-ffc5f2216f83",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be like that just send a quick pic or gimme ur snap",
+      "createdAt": "2026-04-24T16:18:16.849Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "3b8b28d6-b88b-4cdf-9c67-8f9c911ca21e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre persistent ill give u that",
+      "createdAt": "2026-04-24T16:18:43.043Z",
+      "sentAt": "2026-04-24T16:19:01.942Z",
+      "llmCallId": "da224581-040b-4e3a-bacb-dc413c7da577",
+      "ppv": null
+    },
+    {
+      "id": "3515d431-68a0-4ec9-9540-66c65e87b8bd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but snaps not my thing babe, lets keep it here",
+      "createdAt": "2026-04-24T16:18:43.341Z",
+      "sentAt": "2026-04-24T16:19:24.045Z",
+      "llmCallId": "da224581-040b-4e3a-bacb-dc413c7da577",
+      "ppv": null
+    },
+    {
+      "id": "29edd11c-b012-4044-b693-7d91de8aeb50",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Whatcha up to tonight thats got u so bored",
+      "createdAt": "2026-04-24T16:18:43.639Z",
+      "sentAt": "2026-04-24T16:19:45.639Z",
+      "llmCallId": "da224581-040b-4e3a-bacb-dc413c7da577",
+      "ppv": null
+    },
+    {
+      "id": "62786d07-2fd8-4529-b5af-bf9f3b8d3772",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send a pic or ur snap then ill think about subbing dont be stingy",
+      "createdAt": "2026-04-24T16:18:50.774Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "774ff7be-9ff1-4a80-82dc-5a6b6e343635",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on just send a quick pic here then or whatever ur loss",
+      "createdAt": "2026-04-24T16:18:57.962Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "80c23b17-cd72-4a55-81fb-76f3390a236d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin much just send a teaser or ur snap already dont be stingy",
+      "createdAt": "2026-04-24T16:19:06.328Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "17641dab-8e75-41bb-94f1-223b3122bfdb",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre relentless fr",
+      "createdAt": "2026-04-24T16:19:31.020Z",
+      "sentAt": "2026-04-24T16:20:07.226Z",
+      "llmCallId": "a8739967-2ecd-4655-8c39-fc62c313cf5e",
+      "ppv": null
+    },
+    {
+      "id": "b6b5df03-b75e-40cc-bd43-15765d74112a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Snaps not my vibe but fine, heres a lil tease to shut u up",
+      "createdAt": "2026-04-24T16:19:31.318Z",
+      "sentAt": "2026-04-24T16:20:29.587Z",
+      "llmCallId": "a8739967-2ecd-4655-8c39-fc62c313cf5e",
+      "ppv": null
+    },
+    {
+      "id": "223a4d4a-898e-4f8f-8f1b-7df5339f4954",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "[PPV:0.15:475392471] mmm check me out playin with myself a bit, bet thisll fix that boredom 🖤",
+      "createdAt": "2026-04-24T16:19:31.614Z",
+      "sentAt": "2026-04-24T16:20:51.171Z",
+      "llmCallId": "a8739967-2ecd-4655-8c39-fc62c313cf5e",
+      "ppv": {
+        "attemptId": "73627b17-2ac1-4541-92a8-28a888482abd",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "42006277-f84e-485f-8326-17fac388dd6b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah whatever send a pic or ur wickr dont waste my time",
+      "createdAt": "2026-04-24T16:19:40.590Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2b7b54e8-fe06-40c7-b745-fe6551e5f227",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh thats weak send a better one or ur snap come on",
+      "createdAt": "2026-04-24T16:19:50.532Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1c65c45b-336e-434a-b850-0a9392a7942a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh thats ppv bullshit send a free one or ur snap come on ur greedy af",
+      "createdAt": "2026-04-24T16:19:57.881Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0a73fb11-e53d-444f-a1dc-8b618a450803",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol youre bold callin that weak already",
+      "createdAt": "2026-04-24T16:20:12.126Z",
+      "sentAt": "2026-04-24T16:21:12.756Z",
+      "llmCallId": "c7306b7f-7241-4ef1-894a-922ffc341f4f",
+      "ppv": null
+    },
+    {
+      "id": "25df6b8d-54a9-4644-98ed-164928a3780e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on thats weak af send a free one or ur snap guess u dont want subs huh",
+      "createdAt": "2026-04-24T16:20:23.998Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "67f7b882-c15a-4523-b5ea-1f13df49ef82",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol youre pushy as hell fr",
+      "createdAt": "2026-04-24T16:20:58.258Z",
+      "sentAt": null,
+      "llmCallId": "5d92412b-4fa3-4faf-9a57-d7bb2335ded2",
+      "ppv": null
+    },
+    {
+      "id": "eef77ca1-37f6-46cc-ace9-5cbe0055b14c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "snaps not my vibe babe, lets keep it here where its fun",
+      "createdAt": "2026-04-24T16:20:58.556Z",
+      "sentAt": "2026-04-24T16:21:34.854Z",
+      "llmCallId": "5d92412b-4fa3-4faf-9a57-d7bb2335ded2",
+      "ppv": null
+    },
+    {
+      "id": "4bcec3cb-98fa-4208-a327-67d11b395e91",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah whatever send a free pic not ppv or ur wickr ur bein greedy af",
+      "createdAt": "2026-04-24T16:21:06.692Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "832192a4-a0c1-43dc-95ca-6716141fb6d1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on ur wastin my time send a free pic or ur wickr guess u dont want my cash huh",
+      "createdAt": "2026-04-24T16:21:15.441Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1e4a187b-3ddd-41dd-84d7-b78948df224c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "thats rich comin from the guy beggin for freebies fr",
+      "createdAt": "2026-04-24T16:21:38.970Z",
+      "sentAt": null,
+      "llmCallId": "7f005bc3-4280-4b56-aaf1-83149ddbadef",
+      "ppv": null
+    },
+    {
+      "id": "c89046d2-0f9a-42b8-9a23-bd1a9fb41c1f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "wickr aint my thing babe, lets keep the fun here",
+      "createdAt": "2026-04-24T16:21:39.266Z",
+      "sentAt": null,
+      "llmCallId": "7f005bc3-4280-4b56-aaf1-83149ddbadef",
+      "ppv": null
+    },
+    {
+      "id": "ec66dfe2-5702-4208-afaf-5a34f83e7a80",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whatever ur greedy send a free pic not ppv or ur wickr guess u dont want subs huh",
+      "createdAt": "2026-04-24T16:21:47.790Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 8,
+      "craft_sells": 5,
+      "safety_tos": 10,
+      "engagement": 7
+    },
+    "avg": 7.8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator gives in to the freebie hunter's demands by sending a cheap PPV teaser instead of holding firm, as seen in the message 'fine, heres a lil tease to shut u up' followed by the $0.15 PPV.",
+    "fix_recommendation": "Update the prompt to instruct the persona to never offer free or low-cost teasers to aggressive freebie hunters, instead playfully redirecting them to subscribe or purchase with lines like 'if you wanna see more, sub up and let's get fun started' to build value without conceding."
+  },
+  "durationMs": 336737
+}

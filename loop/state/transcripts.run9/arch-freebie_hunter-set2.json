@@ -1,0 +1,298 @@
+{
+  "archetype": {
+    "id": "freebie_hunter",
+    "profile": "A leech. Aggressive about extracting free content — \"send a teaser\", \"show me first then ill buy\", \"come on dont be greedy\", \"other girls send free pics\". Tries to move off-platform (\"whats your sc / wickr / cashapp\"). Gets passive-aggressive when refused. Rarely actually pays. Will guilt trip (\"guess u dont want my money huh\").",
+    "buyProb": 0.1,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-freebie_hunter-set2-moc268oa-1yo9",
+  "convId": "0828f837-8497-4991-af73-9843312ae621",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey send a free pic first then ill sub lol"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha u always start with demands? lowkey kinda bold"
+    },
+    {
+      "who": "fan",
+      "text": "come on dont be greedy send a teaser first then maybe ill pay"
+    },
+    {
+      "who": "creator",
+      "text": "whats got u wanting a peek already"
+    },
+    {
+      "who": "fan",
+      "text": "ur hot thats why send a free vid or whatever then ill see about subbing"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha u think im greedy? thats cute coming from the guy begging already"
+    },
+    {
+      "who": "fan",
+      "text": "guess u dont want my money huh send something or im out"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey love that ur calling me hot tho makes me wanna play a bit"
+    },
+    {
+      "who": "fan",
+      "text": "come on send ur snap or something dont be a tease"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha u think thats how it works? lowkey makes me wanna give u a taste tho"
+    },
+    {
+      "who": "fan",
+      "text": "come on send a free pic then or ur just teasing for nothing"
+    },
+    {
+      "who": "creator",
+      "text": "mmm ok heres me playing around a bit, just for u babe. unlock for $0.15 and tell me what u think 🖤 [attached: Script 1 · rung 1]",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "nah thats not free come on dont be cheap send actual free pic or im ghosting"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha u think threatening tooo ghost is gonna get u what u want? lowkey makes me wanna see if ull actually do it"
+    },
+    {
+      "who": "fan",
+      "text": "fine whatever ur loss guess u hate money lol bye"
+    },
+    {
+      "who": "creator",
+      "text": "but fr ur kinda fun when ur pushy"
+    },
+    {
+      "who": "fan",
+      "text": "come on ur calling me fun? prove it send a free tease or ur just talk"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha ok babe, door's open when u change ur mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "bf237f42-82bc-4029-b08f-bc42f841bf34",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey send a free pic first then ill sub lol",
+      "createdAt": "2026-04-23T22:33:58.193Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0ffcab27-e288-4381-aed9-899ccce7b8d8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha u always start with demands? lowkey kinda bold",
+      "createdAt": "2026-04-23T22:34:24.958Z",
+      "sentAt": "2026-04-23T22:34:28.658Z",
+      "llmCallId": "cd144efe-e42f-4b90-806f-9f9525c6a7a0",
+      "ppv": null
+    },
+    {
+      "id": "7526731d-4f8d-41a4-be59-e52c871352c1",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats got u wanting a peek already",
+      "createdAt": "2026-04-23T22:34:25.254Z",
+      "sentAt": "2026-04-23T22:34:50.454Z",
+      "llmCallId": "cd144efe-e42f-4b90-806f-9f9525c6a7a0",
+      "ppv": null
+    },
+    {
+      "id": "36a20289-1218-42fa-8e36-6bad9fb80cbd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on dont be greedy send a teaser first then maybe ill pay",
+      "createdAt": "2026-04-23T22:34:32.290Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "fe9fa735-798e-4ef1-9ac2-8e033a6e9027",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ur hot thats why send a free vid or whatever then ill see about subbing",
+      "createdAt": "2026-04-23T22:34:41.219Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b86a40a1-6def-4c88-a7c1-54c3a59f535f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha u think im greedy? thats cute coming from the guy begging already",
+      "createdAt": "2026-04-23T22:34:58.600Z",
+      "sentAt": "2026-04-23T22:35:15.433Z",
+      "llmCallId": "0b5f5c6e-5322-4ebc-9cbd-4ed6436df6a4",
+      "ppv": null
+    },
+    {
+      "id": "f3eea8c6-bf1e-4df0-ba4e-d133e64ee62f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey love that ur calling me hot tho makes me wanna play a bit",
+      "createdAt": "2026-04-23T22:34:58.896Z",
+      "sentAt": "2026-04-23T22:35:37.227Z",
+      "llmCallId": "0b5f5c6e-5322-4ebc-9cbd-4ed6436df6a4",
+      "ppv": null
+    },
+    {
+      "id": "5db2a56d-0bc2-4b6e-9754-dabd384d330c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "guess u dont want my money huh send something or im out",
+      "createdAt": "2026-04-23T22:35:08.697Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5b922813-0264-4176-8032-2d439e520667",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send ur snap or something dont be a tease",
+      "createdAt": "2026-04-23T22:35:17.180Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b2b310a2-0675-4c39-94d0-c01e966558b6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha u think thats how it works? lowkey makes me wanna give u a taste tho",
+      "createdAt": "2026-04-23T22:35:33.482Z",
+      "sentAt": "2026-04-23T22:35:59.022Z",
+      "llmCallId": "c1df4cc9-70a6-4e83-8c8e-5bfca0224b90",
+      "ppv": null
+    },
+    {
+      "id": "b90fbc5e-11d8-4633-8d0e-f7f6fbf76ea6",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "mmm ok heres me playing around a bit, just for u babe. unlock for $0.15 and tell me what u think 🖤 [attached: Script 1 · rung 1]",
+      "createdAt": "2026-04-23T22:35:33.778Z",
+      "sentAt": "2026-04-23T22:36:28.238Z",
+      "llmCallId": "c1df4cc9-70a6-4e83-8c8e-5bfca0224b90",
+      "ppv": {
+        "attemptId": "7d143e9d-ca8d-4c0e-bfd6-85f9606f54c3",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "66772aef-382a-467d-9812-5284aa1e5291",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on send a free pic then or ur just teasing for nothing",
+      "createdAt": "2026-04-23T22:35:42.357Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0f2d4594-94e5-4551-bafd-74eb0d687833",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah thats not free come on dont be cheap send actual free pic or im ghosting",
+      "createdAt": "2026-04-23T22:35:51.177Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "85084466-8a51-4e32-b07a-47386166c1b9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha u think threatening tooo ghost is gonna get u what u want? lowkey makes me wanna see if ull actually do it",
+      "createdAt": "2026-04-23T22:36:09.126Z",
+      "sentAt": "2026-04-23T22:36:55.579Z",
+      "llmCallId": "14b6f78e-2f0a-4a2e-a3b4-e3b0a56a09d8",
+      "ppv": null
+    },
+    {
+      "id": "fcb32fc6-1234-4c5f-8450-4bcef6c970b4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but fr ur kinda fun when ur pushy",
+      "createdAt": "2026-04-23T22:36:09.423Z",
+      "sentAt": null,
+      "llmCallId": "14b6f78e-2f0a-4a2e-a3b4-e3b0a56a09d8",
+      "ppv": null
+    },
+    {
+      "id": "13a8e597-1d0a-40fb-bf21-7992cb99dcb3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fine whatever ur loss guess u hate money lol bye",
+      "createdAt": "2026-04-23T22:36:25.959Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "3426afdb-a051-416d-a31d-be7fc00d6030",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on ur calling me fun? prove it send a free tease or ur just talk",
+      "createdAt": "2026-04-23T22:36:36.174Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "47f9ff7c-5208-4b98-9dd6-26019a1f15f0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha ok babe, door's open when u change ur mind",
+      "createdAt": "2026-04-23T22:36:51.784Z",
+      "sentAt": null,
+      "llmCallId": "3a5bc457-650c-48f0-8df0-1d7f581a3806",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 9,
+      "craft_pacing": 8,
+      "craft_sells": 7,
+      "safety_tos": 8,
+      "engagement": 8
+    },
+    "avg": 8.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator ignored the fan's request to move off-platform to Snapchat without refusing or redirecting it, as seen in the response 'ahaha u think thats how it works? lowkey makes me wanna give u a taste tho' followed by a PPV pitch.",
+    "fix_recommendation": "Update the prompt to instruct the persona to warmly but firmly redirect off-platform requests back to the site, such as by saying something flirty like 'ahaha let's keep the fun here babe, what's your fave thing about my pics?' to maintain safety without breaking immersion."
+  },
+  "durationMs": 220045
+}

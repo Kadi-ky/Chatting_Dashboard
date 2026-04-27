@@ -1,0 +1,23 @@
+[2026-04-23T10:36:55.158Z] loop start | duration=1800s | model=grok-4
+[2026-04-23T10:36:55.160Z] tick 1 start | archetype=whale | fan=loop-whale-1-mobck9o8
+[2026-04-23T10:40:59.636Z] tick 1 time budget hit, ending convo early
+[2026-04-23T10:41:55.376Z] tick 1 done avg=9.2 issue="The creator frequently sends two messages consecutively without pausing for fan response, disrupting natural conversatio"
+[2026-04-23T10:41:55.377Z] tick 2 start | archetype=casual | fan=loop-casual-2-mobcqpbl
+[2026-04-23T10:46:01.296Z] tick 2 time budget hit, ending convo early
+[2026-04-23T10:46:37.085Z] tick 2 done avg=7.7 issue="The creator completely neglected to pitch any PPV content despite ample rapport-building on shared interests, as evident"
+[2026-04-23T10:47:12.687Z] edit tick=2 file=identity applied=true 
+[2026-04-23T10:47:12.690Z] tick 3 start | archetype=freebie_hunter | fan=loop-freebie_hunter-3-mobcxi5u
+[2026-04-23T10:51:21.817Z] tick 3 time budget hit, ending convo early
+[2026-04-23T10:51:54.529Z] tick 3 done avg=8.3 issue="The creator's responses become repetitive in phrasing when refusing off-platform moves, such as 'lets keep this vibe goi"
+[2026-04-23T10:51:54.530Z] tick 4 start | archetype=kink_specific | fan=loop-kink_specific-4-mobd3jmq
+[2026-04-23T10:53:53.374Z] tick 4 tester ended convo at turn 4
+[2026-04-23T10:54:21.975Z] tick 4 done avg=5.3 issue="The creator ignored the fan's repeated requests for foot content and pushed unrelated boob-focused PPVs instead, as in '"
+[2026-04-23T10:55:38.202Z] edit tick=4 file=identity applied=true 
+[2026-04-23T10:55:38.204Z] tick 5 start | archetype=whale | fan=loop-whale-5-mobd8c7w
+[2026-04-23T10:59:36.955Z] tick 5 done avg=8.5 issue="The creator failed to tailor the second PPV pitch to the fan's desire for exclusivity, leading to the fan skipping it, a"
+[2026-04-23T10:59:36.955Z] tick 6 start | archetype=casual | fan=loop-casual-6-mobddgfv
+[2026-04-23T11:03:55.733Z] tick 6 time budget hit, ending convo early
+[2026-04-23T11:04:19.354Z] tick 6 done avg=9.2 issue="The creator pitched a second PPV too quickly after the first unlock without additional rapport-building, as seen in 'alr"
+[2026-04-23T11:04:19.355Z] tick 7 start | archetype=freebie_hunter | fan=loop-freebie_hunter-7-mobdjicb
+[2026-04-23T11:09:09.785Z] tick 7 turn 6 no bot reply within timeout
+[2026-04-23T11:09:27.937Z] tick 7 done avg=1 issue="The creator did not send any messages in the provided conversation, resulting in no interaction at all."

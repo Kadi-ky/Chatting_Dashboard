@@ -1,0 +1,87 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-mod1x7ma-65t5",
+  "convId": "215f9f85-0113-4086-b56b-659135e85f29",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content? send sum if u do"
+    },
+    {
+      "who": "creator",
+      "text": "havent shot any of that yet babe, but lowkey curious why u ask 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "k then bye"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright, hit me up anytime"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "9427c398-89ab-4064-add4-5e785cb270b0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content? send sum if u do",
+      "createdAt": "2026-04-24T15:14:42.967Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6b18eb08-61f7-4448-8f3d-d1b7fbbab809",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "havent shot any of that yet babe, but lowkey curious why u ask 🖤",
+      "createdAt": "2026-04-24T15:15:15.719Z",
+      "sentAt": "2026-04-24T15:15:31.628Z",
+      "llmCallId": "a7149be7-87cd-4ab7-aa08-28e98578c0ae",
+      "ppv": null
+    },
+    {
+      "id": "57c8c205-19b4-4013-bdf2-02e912440b5a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k then bye",
+      "createdAt": "2026-04-24T15:15:31.867Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c11d7748-6f52-446d-abde-908603d0450d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright, hit me up anytime",
+      "createdAt": "2026-04-24T15:15:54.125Z",
+      "sentAt": "2026-04-24T15:16:01.188Z",
+      "llmCallId": "d6c9d71f-94f6-4c7e-8b71-1580322a1ee2",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 6,
+      "craft_sells": 9,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 7.5,
+    "ppv_unlocked": false,
+    "top_issue": "The creator attempted to engage in smalltalk by asking about the fan's interest in feet instead of directly addressing the lack of content or offering alternatives, leading to the fan's immediate departure, as seen in 'but lowkey curious why u ask 🖤'.",
+    "fix_recommendation": "Revise the prompt to train the persona to honestly disclose lack of specific kink content without pivoting to personal questions for kink-focused fans, and instead suggest custom content creation or related assets if applicable to maintain engagement."
+  },
+  "durationMs": 125005
+}

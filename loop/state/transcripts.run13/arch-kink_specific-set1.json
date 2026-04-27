@@ -1,0 +1,69 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-kink_specific-set1-mods9u7d-3yga",
+  "convId": "55b2429a-e8cc-4a45-90d7-23bbeae6cbaa",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content? send sum if u do"
+    },
+    {
+      "who": "creator",
+      "text": "Ahaha bold ask babe. havent shot that kinda thing yet fr"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "97414341-d669-4584-8dc1-b25c822e9c00",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content? send sum if u do",
+      "createdAt": "2026-04-25T03:32:22.684Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "67711f9e-cb87-4093-93fa-08b8409d4712",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Ahaha bold ask babe. havent shot that kinda thing yet fr",
+      "createdAt": "2026-04-25T03:33:08.077Z",
+      "sentAt": null,
+      "llmCallId": "a64ae9bb-4b23-4aa0-bf17-3c8a483807c8",
+      "ppv": null
+    },
+    {
+      "id": "ecad0abf-35f6-4b63-967d-75d7d768e6e8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey intriguing tho, makes me wonder what else youre into",
+      "createdAt": "2026-04-25T03:33:08.369Z",
+      "sentAt": null,
+      "llmCallId": "a64ae9bb-4b23-4aa0-bf17-3c8a483807c8",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 9,
+      "craft_sells": 8,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 8.2,
+    "ppv_unlocked": false,
+    "top_issue": "The creator admitted to not having the requested feet content without pitching any alternative or custom options, likely causing the kink-specific fan to disengage, as seen in 'havent shot that kinda thing yet fr'.",
+    "fix_recommendation": "Update the prompt to instruct the creator to offer custom content creation for unmatched kinks when appropriate, presenting it as a paid option to explore the fan's interest and potentially secure a sale without overpromising."
+  },
+  "durationMs": 121505
+}

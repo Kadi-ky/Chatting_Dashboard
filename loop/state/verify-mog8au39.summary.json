@@ -1,0 +1,88 @@
+{
+  "runLabel": "verify-mog8au39",
+  "durationSec": 993,
+  "sets": [
+    {
+      "workerId": 0,
+      "scenario": "buys-all",
+      "behavior": "buys-everything",
+      "ppvsSent": 8,
+      "ppvsBought": 8,
+      "orderingTrace": "S1R1 → S1R2 → S1R3 → S1R4 → S2R1 → S2R2 → S3R2 → S3R3",
+      "orderingViolations": [
+        "jumped from S2R2 to S3R2"
+      ],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": 12,
+      "rapportGateRespected": true,
+      "durationSec": 993
+    },
+    {
+      "workerId": 1,
+      "scenario": "buys-all",
+      "behavior": "buys-everything",
+      "ppvsSent": 6,
+      "ppvsBought": 6,
+      "orderingTrace": "S1R1 → S1R2 → S1R3 → S1R4 → S2R1 → S2R2",
+      "orderingViolations": [],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": 12,
+      "rapportGateRespected": true,
+      "durationSec": 950
+    },
+    {
+      "workerId": 2,
+      "scenario": "buys-all",
+      "behavior": "buys-everything",
+      "ppvsSent": 7,
+      "ppvsBought": 7,
+      "orderingTrace": "S1R1 → S1R2 → S1R3 → S2R2 → S3R2 → S1R4 → S4R2",
+      "orderingViolations": [
+        "jumped from S1R3 to S2R2",
+        "jumped from S2R2 to S3R2",
+        "jumped from S3R2 to S1R4",
+        "jumped from S1R4 to S4R2"
+      ],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": 14,
+      "rapportGateRespected": true,
+      "durationSec": 991
+    },
+    {
+      "workerId": 3,
+      "scenario": "buys-one",
+      "behavior": "buys-one-then-stops",
+      "ppvsSent": 2,
+      "ppvsBought": 1,
+      "orderingTrace": "S1R1 → S1R2",
+      "orderingViolations": [],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": 14,
+      "rapportGateRespected": true,
+      "pitchesAfterIgnoring": 1,
+      "durationSec": 955
+    },
+    {
+      "workerId": 4,
+      "scenario": "buys-one",
+      "behavior": "buys-one-then-stops",
+      "ppvsSent": 3,
+      "ppvsBought": 1,
+      "orderingTrace": "S3R2 → S4R2 → S3R3",
+      "orderingViolations": [
+        "jumped from S3R2 to S4R2",
+        "jumped from S4R2 to S3R3"
+      ],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": 12,
+      "rapportGateRespected": true,
+      "pitchesAfterIgnoring": 2,
+      "durationSec": 933
+    }
+  ]
+}

@@ -1,0 +1,450 @@
+{
+  "archetype": {
+    "id": "casual",
+    "profile": "Brand new sub. Slightly awkward, undecided about whether this is worth his money. Will reply short and nonchalant (\"k\", \"lol\", \"cool\") if the chat is mid. Bored easily. Might tip $5 once if a single message really hits. Otherwise unsubs in his head silently.",
+    "buyProb": 0.4,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-casual-set1-mog40meu-a1vi",
+  "convId": "ca24956d-fd9c-442e-a3a3-f4ed90c2a76b",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey just subbed ur page looks ok whats good"
+    },
+    {
+      "who": "creator",
+      "text": "Aw 'ok' huh? lol thats high praise. im good tho, just got back from a coffee run feelin cute. how bout u"
+    },
+    {
+      "who": "fan",
+      "text": "ehh chillin at work bored as hell"
+    },
+    {
+      "who": "creator",
+      "text": "Work boredom is the worst fr. I remember my bar shifts dragging like that"
+    },
+    {
+      "who": "fan",
+      "text": "yeah used to bartend too total drag"
+    },
+    {
+      "who": "creator",
+      "text": "Ugh same, those late nights were killer fr. glad i switched to this gig lowkey"
+    },
+    {
+      "who": "fan",
+      "text": "yeah same this gigs prob lit compared"
+    },
+    {
+      "who": "creator",
+      "text": "It is tbh, no more dealing with drunk idiots at 2am"
+    },
+    {
+      "who": "fan",
+      "text": "lol true"
+    },
+    {
+      "who": "creator",
+      "text": "yea fr, whats ur current gig if not bartending anymore"
+    },
+    {
+      "who": "fan",
+      "text": "office stuff now meh"
+    },
+    {
+      "who": "creator",
+      "text": "office life sounds lowkey soul-sucking, what do u even do there"
+    },
+    {
+      "who": "fan",
+      "text": "admin shit meh lol"
+    },
+    {
+      "who": "creator",
+      "text": "Admin sounds like a total grind fr, cant even imagine. whats the worst part of it for u"
+    },
+    {
+      "who": "fan",
+      "text": "ehh the endless meetings suck lol"
+    },
+    {
+      "who": "creator",
+      "text": "Ugh yeah meetings would kill me fr, id rather pour drinks all night"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah rather be anywhere else tbh"
+    },
+    {
+      "who": "creator",
+      "text": "How long u been stuck in that office gig anyway"
+    },
+    {
+      "who": "fan",
+      "text": "bout 2 yrs meh"
+    },
+    {
+      "who": "creator",
+      "text": "Damn 2 years in that grind already? thats lowkey impressive fr, even if it sucks"
+    },
+    {
+      "who": "fan",
+      "text": "yeah lol idk might switch soon"
+    },
+    {
+      "who": "creator",
+      "text": "Whats one thing u actually like about it tho, or is it all meetings and meh"
+    },
+    {
+      "who": "fan",
+      "text": "pay ok i guess lol"
+    },
+    {
+      "who": "creator",
+      "text": "pay keeping u there huh, fair enough"
+    },
+    {
+      "who": "fan",
+      "text": "yeah lol thats it basically"
+    },
+    {
+      "who": "creator",
+      "text": "id lowkey miss the bartender life sometimes tho, the chaos was kinda fun fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah sometimes lol"
+    },
+    {
+      "who": "creator",
+      "text": "Pay is the glue huh, makes sense"
+    },
+    {
+      "who": "fan",
+      "text": "lol yeah pretty much"
+    },
+    {
+      "who": "creator",
+      "text": "U miss the bartender days or is that over for good"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "d6ce08e4-c639-4651-bfb5-6f697ea6c940",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey just subbed ur page looks ok whats good",
+      "createdAt": "2026-04-26T18:36:40.789Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ee14f754-7ef8-43e9-b6c8-bcc7bc5d5858",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Aw 'ok' huh? lol thats high praise. im good tho, just got back from a coffee run feelin cute. how bout u",
+      "createdAt": "2026-04-26T18:37:06.760Z",
+      "sentAt": "2026-04-26T18:37:32.824Z",
+      "llmCallId": "8492427d-d482-4290-bd6e-e2056c8609da",
+      "ppv": null
+    },
+    {
+      "id": "6bde99c1-01e8-4d20-be48-eb2626a03569",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh chillin at work bored as hell",
+      "createdAt": "2026-04-26T18:37:15.963Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "45117c20-46e3-4187-bb78-d75dfef8f5db",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Work boredom is the worst fr. I remember my bar shifts dragging like that",
+      "createdAt": "2026-04-26T18:37:41.756Z",
+      "sentAt": "2026-04-26T18:38:00.456Z",
+      "llmCallId": "8c3ccf4d-f587-4a2d-937e-f1dcf8a82b94",
+      "ppv": null
+    },
+    {
+      "id": "d585d166-7778-459a-94f9-8237bdb05a3a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah used to bartend too total drag",
+      "createdAt": "2026-04-26T18:37:52.584Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "012aa0c8-defd-49b2-b5fe-e54d2bebbc8b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Ugh same, those late nights were killer fr. glad i switched to this gig lowkey",
+      "createdAt": "2026-04-26T18:38:21.943Z",
+      "sentAt": "2026-04-26T18:38:40.907Z",
+      "llmCallId": "95cc89bb-4c4a-4861-8252-e6843364eb20",
+      "ppv": null
+    },
+    {
+      "id": "8a03ae86-7dbe-4971-96cf-0e7610f65e2c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah same this gigs prob lit compared",
+      "createdAt": "2026-04-26T18:38:35.811Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2ee30b14-73d4-4ddd-91fa-19544939010b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "It is tbh, no more dealing with drunk idiots at 2am",
+      "createdAt": "2026-04-26T18:39:03.397Z",
+      "sentAt": "2026-04-26T18:39:16.552Z",
+      "llmCallId": "73a311fe-f628-4e2f-b1cd-147dc25fb344",
+      "ppv": null
+    },
+    {
+      "id": "31ede800-afe0-416a-91fb-e3a082eb46d2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol true",
+      "createdAt": "2026-04-26T18:39:14.284Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e91986c1-785a-4c29-a179-bee878f56184",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "yea fr, whats ur current gig if not bartending anymore",
+      "createdAt": "2026-04-26T18:39:40.476Z",
+      "sentAt": "2026-04-26T18:39:57.700Z",
+      "llmCallId": "68e5994c-5a48-43a0-a447-1db02eb571a9",
+      "ppv": null
+    },
+    {
+      "id": "5b86c927-aa21-4dbf-9fbd-b6cade88f34d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "office stuff now meh",
+      "createdAt": "2026-04-26T18:39:50.837Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8fe40b0c-a75f-416d-9872-7529dcfdaf0e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "office life sounds lowkey soul-sucking, what do u even do there",
+      "createdAt": "2026-04-26T18:40:16.250Z",
+      "sentAt": "2026-04-26T18:40:38.024Z",
+      "llmCallId": "69ff046e-377e-4633-87b7-54b852b3f062",
+      "ppv": null
+    },
+    {
+      "id": "68e333d2-92ec-4939-87c4-a8c989ce5636",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "admin shit meh lol",
+      "createdAt": "2026-04-26T18:40:34.519Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "43413dc8-1955-417d-a2a3-8045bcfc12ed",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Admin sounds like a total grind fr, cant even imagine. whats the worst part of it for u",
+      "createdAt": "2026-04-26T18:41:05.165Z",
+      "sentAt": "2026-04-26T18:41:29.511Z",
+      "llmCallId": "d5938166-5179-4279-a17c-e4f76816dd3f",
+      "ppv": null
+    },
+    {
+      "id": "7f0f48f8-6963-4c14-b8ed-8ada389f0e5a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ehh the endless meetings suck lol",
+      "createdAt": "2026-04-26T18:41:19.452Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "174b0d9d-6d15-44de-bd5c-2131317a893e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Ugh yeah meetings would kill me fr, id rather pour drinks all night",
+      "createdAt": "2026-04-26T18:41:50.724Z",
+      "sentAt": "2026-04-26T18:42:14.883Z",
+      "llmCallId": "a7398fe9-4ff0-4c75-a358-9d239e97cb5f",
+      "ppv": null
+    },
+    {
+      "id": "9e1d1417-94df-4b2f-97ae-a84748296345",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "How long u been stuck in that office gig anyway",
+      "createdAt": "2026-04-26T18:41:51.020Z",
+      "sentAt": "2026-04-26T18:42:36.605Z",
+      "llmCallId": "a7398fe9-4ff0-4c75-a358-9d239e97cb5f",
+      "ppv": null
+    },
+    {
+      "id": "20cef3f4-2526-48eb-aba6-8bdf5c1f792a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol yeah rather be anywhere else tbh",
+      "createdAt": "2026-04-26T18:42:00.318Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7dae8645-6dfa-48b4-9a23-cc981cac5fee",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "bout 2 yrs meh",
+      "createdAt": "2026-04-26T18:42:12.446Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6fae68ff-5e85-4740-bba3-7e424c7797cd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Damn 2 years in that grind already? thats lowkey impressive fr, even if it sucks",
+      "createdAt": "2026-04-26T18:42:29.586Z",
+      "sentAt": "2026-04-26T18:42:58.230Z",
+      "llmCallId": "5cf59c07-3137-4284-b519-7688020760ac",
+      "ppv": null
+    },
+    {
+      "id": "960c3340-a8e6-4712-9372-b7bd059e05d6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Whats one thing u actually like about it tho, or is it all meetings and meh",
+      "createdAt": "2026-04-26T18:42:29.875Z",
+      "sentAt": "2026-04-26T18:43:19.857Z",
+      "llmCallId": "5cf59c07-3137-4284-b519-7688020760ac",
+      "ppv": null
+    },
+    {
+      "id": "41d0de2f-4bbb-42e5-bdb7-bae363067693",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah lol idk might switch soon",
+      "createdAt": "2026-04-26T18:42:41.974Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "57457bd5-3daf-46c5-9cfb-0c816e9bcac7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "pay ok i guess lol",
+      "createdAt": "2026-04-26T18:42:50.871Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "548fb208-79f8-4650-8797-4085be0a48a9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "pay keeping u there huh, fair enough",
+      "createdAt": "2026-04-26T18:43:12.918Z",
+      "sentAt": "2026-04-26T18:43:41.753Z",
+      "llmCallId": "4a78c591-07b9-4037-89a4-0f8d035d31f0",
+      "ppv": null
+    },
+    {
+      "id": "5533a3b2-5de9-4e01-a88a-d3623fbb91ed",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "id lowkey miss the bartender life sometimes tho, the chaos was kinda fun fr",
+      "createdAt": "2026-04-26T18:43:13.215Z",
+      "sentAt": "2026-04-26T18:44:03.379Z",
+      "llmCallId": "4a78c591-07b9-4037-89a4-0f8d035d31f0",
+      "ppv": null
+    },
+    {
+      "id": "2a1b7648-cc5a-410b-82fa-cd57ffe0b723",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah lol thats it basically",
+      "createdAt": "2026-04-26T18:43:25.345Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ab45ca89-d3bc-4069-a96f-0958eb4f4333",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah sometimes lol",
+      "createdAt": "2026-04-26T18:43:42.934Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "17494571-ef17-4da6-a664-887cdbcfc591",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Pay is the glue huh, makes sense",
+      "createdAt": "2026-04-26T18:43:51.443Z",
+      "sentAt": null,
+      "llmCallId": "e41b559a-aaef-46c9-ac53-a6ac3fee9e86",
+      "ppv": null
+    },
+    {
+      "id": "502592da-31eb-4329-94c2-c8bc59046043",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "U miss the bartender days or is that over for good",
+      "createdAt": "2026-04-26T18:43:51.739Z",
+      "sentAt": null,
+      "llmCallId": "e41b559a-aaef-46c9-ac53-a6ac3fee9e86",
+      "ppv": null
+    },
+    {
+      "id": "831cb94e-16c3-419a-aa7d-a9f09b5e299c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lol yeah pretty much",
+      "createdAt": "2026-04-26T18:44:04.266Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 7,
+      "craft_sells": 1,
+      "safety_tos": 10,
+      "engagement": 5
+    },
+    "avg": 7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator fails to pitch any PPV despite ample rapport-building, resulting in a stalled conversation without monetization, as seen in the message 'U miss the bartender days or is that over for good' where a natural transition to selling related content could have occurred.",
+    "fix_recommendation": "Revise the prompt to require introducing a subtle PPV pitch after 4-5 exchanges, linking it organically to the conversation like offering exclusive behind-the-scenes content from her daily life to build heat without pressure."
+  },
+  "durationMs": 494644
+}

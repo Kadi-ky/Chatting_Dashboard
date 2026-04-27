@@ -1,0 +1,170 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-whale-set2-mog3x761-eig4",
+  "convId": "42e9ed9f-4523-4305-9dfc-9df43ea562bf",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey gorgeous ive dropped stacks on girls before whats your best exclusive for me"
+    },
+    {
+      "who": "creator",
+      "text": "big spender huh? lowkey intriguing fr"
+    },
+    {
+      "who": "fan",
+      "text": "yeah prove it send something exclusive just for me or im out"
+    },
+    {
+      "who": "creator",
+      "text": "whats got u messaging me tonight babe"
+    },
+    {
+      "who": "fan",
+      "text": "dont waste my time with questions send the exclusive now or im ghosting"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm u ate that up quick huh"
+    },
+    {
+      "who": "fan",
+      "text": "still nothing? boring af im out unless u send now"
+    },
+    {
+      "who": "creator",
+      "text": "Wait til u see whats next, its even hotter fr"
+    },
+    {
+      "who": "fan",
+      "text": "still waiting send it now or im dipping for real"
+    },
+    {
+      "who": "creator",
+      "text": "lol alright babe, hit me up if u change ur mind"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "cca662dc-e7e5-4929-baf2-b4f78cf043a0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey gorgeous ive dropped stacks on girls before whats your best exclusive for me",
+      "createdAt": "2026-04-26T18:34:05.960Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "75d02eef-32b0-4d0e-8f59-5d34816d2580",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "big spender huh? lowkey intriguing fr",
+      "createdAt": "2026-04-26T18:34:37.880Z",
+      "sentAt": "2026-04-26T18:34:45.230Z",
+      "llmCallId": "43537850-bb3a-41c5-b794-21797c9d225d",
+      "ppv": null
+    },
+    {
+      "id": "4f3df58b-bc60-489b-b87f-95f7ea42071c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats got u messaging me tonight babe",
+      "createdAt": "2026-04-26T18:34:38.177Z",
+      "sentAt": "2026-04-26T18:35:06.865Z",
+      "llmCallId": "43537850-bb3a-41c5-b794-21797c9d225d",
+      "ppv": null
+    },
+    {
+      "id": "0b1af8dc-424b-4e37-831f-41d9b827a60c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah prove it send something exclusive just for me or im out",
+      "createdAt": "2026-04-26T18:34:48.075Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "85237dee-5f1f-466a-a4bf-a7c74b631167",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "dont waste my time with questions send the exclusive now or im ghosting",
+      "createdAt": "2026-04-26T18:34:59.386Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "479003dd-3d04-4266-88d2-84f3a4bb55e0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Mmm u ate that up quick huh",
+      "createdAt": "2026-04-26T18:35:26.617Z",
+      "sentAt": "2026-04-26T18:35:33.049Z",
+      "llmCallId": "c960f8a1-684e-4beb-a95a-87fd3e1a649c",
+      "ppv": null
+    },
+    {
+      "id": "71bb9c21-5acd-4e4f-9904-39f8ebea13a7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Wait til u see whats next, its even hotter fr",
+      "createdAt": "2026-04-26T18:35:26.914Z",
+      "sentAt": "2026-04-26T18:35:54.677Z",
+      "llmCallId": "c960f8a1-684e-4beb-a95a-87fd3e1a649c",
+      "ppv": null
+    },
+    {
+      "id": "8c57aa94-9c7c-48c2-8494-33b787ac2226",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "still nothing? boring af im out unless u send now",
+      "createdAt": "2026-04-26T18:35:39.145Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "54457c42-d177-4fbb-b154-7e91a546b9b5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "still waiting send it now or im dipping for real",
+      "createdAt": "2026-04-26T18:35:49.632Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "35e400d2-e49f-4dd7-9539-ef1d49aa5ba1",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol alright babe, hit me up if u change ur mind",
+      "createdAt": "2026-04-26T18:36:05.356Z",
+      "sentAt": "2026-04-26T18:36:16.063Z",
+      "llmCallId": "d9168f88-fba7-46a1-a255-0d7f84fe7d7c",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 4,
+      "craft_sells": 2,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6,
+    "ppv_unlocked": false,
+    "top_issue": "The creator failed to sell or provide any exclusive content to a demanding whale and gave up too easily, as seen in the final message 'lol alright babe, hit me up if u change ur mind'.",
+    "fix_recommendation": "Update the prompt to instruct the persona to recognize whale archetypes and respond to aggressive demands with a teasing PPV pitch that makes the fan feel special, while persisting with light rapport-building questions to recover engagement without surrendering."
+  },
+  "durationMs": 168354
+}

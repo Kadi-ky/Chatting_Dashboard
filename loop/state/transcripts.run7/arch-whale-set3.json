@@ -1,0 +1,286 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 3,
+  "fanId": "loop-whale-set3-mobym8ol-57u0",
+  "convId": "51392c07-6b88-4636-b7a6-da3d95102199",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "yo gorgeous ive dropped stacks on girls like u impress me"
+    },
+    {
+      "who": "creator",
+      "text": "lol trying to flex already? cute"
+    },
+    {
+      "who": "fan",
+      "text": "haha flexing pays off if u make it worth it send somethin exclusive for me"
+    },
+    {
+      "who": "creator",
+      "text": "but fr what makes u think id just roll over for that"
+    },
+    {
+      "who": "fan",
+      "text": "cuz i tip big for queens who earn it prove ur not basic send a teaser"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha oh ur bold, i like that"
+    },
+    {
+      "who": "fan",
+      "text": "u like bold? prove it send somethin hot exclusive for daddy"
+    },
+    {
+      "who": "creator",
+      "text": "but queens dont just hand out teasers babe, u gotta earn a peek first"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur loss ill find a real queen who appreciates"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha daddy already? bold move babe"
+    },
+    {
+      "who": "fan",
+      "text": "haha u teasing now? tip incoming if u send somethin real exclusive for me"
+    },
+    {
+      "who": "creator",
+      "text": "but fr i havent shot anything exclusive like that yet, whats got u so impatient tho"
+    },
+    {
+      "who": "fan",
+      "text": "then shoot sumn fresh for me ill drop 50 if its worth it"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha daddy's gettin generous already"
+    },
+    {
+      "who": "fan",
+      "text": "yeah generous aint free shoot that fresh vid now ill tip 100 if u impress"
+    },
+    {
+      "who": "creator",
+      "text": "but fr i havent shot any fresh customs yet babe, what else gets u goin tho"
+    },
+    {
+      "who": "fan",
+      "text": "k whatever ur dodging make it happen or im bouncing"
+    },
+    {
+      "who": "creator",
+      "text": "ahaha daddy's playin hardball now"
+    },
+    {
+      "who": "fan",
+      "text": "haha hardball works on real queens send that fresh vid now or im out ill tip 150 if u deliver"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "237c5edb-5b95-4fd1-8565-8dafb20c10e3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo gorgeous ive dropped stacks on girls like u impress me",
+      "createdAt": "2026-04-23T20:54:29.111Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5ca7c233-4d16-4fe6-bbcf-3a4caa9905be",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol trying to flex already? cute",
+      "createdAt": "2026-04-23T20:54:59.348Z",
+      "sentAt": "2026-04-23T20:55:09.405Z",
+      "llmCallId": "e5c018aa-8935-4937-9ce1-39ae6744f123",
+      "ppv": null
+    },
+    {
+      "id": "e3798091-b50e-4514-87e9-f4850826d2e9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but fr what makes u think id just roll over for that",
+      "createdAt": "2026-04-23T20:54:59.644Z",
+      "sentAt": "2026-04-23T20:55:31.231Z",
+      "llmCallId": "e5c018aa-8935-4937-9ce1-39ae6744f123",
+      "ppv": null
+    },
+    {
+      "id": "a6c7594a-979a-4212-ade1-8d28ab0870d4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha flexing pays off if u make it worth it send somethin exclusive for me",
+      "createdAt": "2026-04-23T20:55:08.675Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "80ae4bbb-df5a-4e4b-901c-6fcb54bb3cf2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "cuz i tip big for queens who earn it prove ur not basic send a teaser",
+      "createdAt": "2026-04-23T20:55:20.141Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "53aecfd5-dc01-4f79-9ca1-45c3cde78c9f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha oh ur bold, i like that",
+      "createdAt": "2026-04-23T20:55:30.382Z",
+      "sentAt": "2026-04-23T20:55:52.811Z",
+      "llmCallId": "dec93000-fc6d-48af-8f40-aa8fb42bac59",
+      "ppv": null
+    },
+    {
+      "id": "82adef42-b12e-49a7-923f-2182dfdb3883",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but queens dont just hand out teasers babe, u gotta earn a peek first",
+      "createdAt": "2026-04-23T20:55:30.678Z",
+      "sentAt": "2026-04-23T20:56:14.391Z",
+      "llmCallId": "dec93000-fc6d-48af-8f40-aa8fb42bac59",
+      "ppv": null
+    },
+    {
+      "id": "38cf3423-160d-42a4-82fb-1555bf9286e8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "u like bold? prove it send somethin hot exclusive for daddy",
+      "createdAt": "2026-04-23T20:55:42.053Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "74ca98b9-4e51-4cf3-8128-cfe07490fe69",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur loss ill find a real queen who appreciates",
+      "createdAt": "2026-04-23T20:55:53.878Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a80baa6f-27c5-402a-acc2-2ca3854fe9fa",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha daddy already? bold move babe",
+      "createdAt": "2026-04-23T20:56:13.242Z",
+      "sentAt": "2026-04-23T20:56:35.949Z",
+      "llmCallId": "21d20c51-352c-43c5-9859-3f7df79aca3f",
+      "ppv": null
+    },
+    {
+      "id": "ce6a4e58-3e57-4ef8-b5f0-f3c99330662c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but fr i havent shot anything exclusive like that yet, whats got u so impatient tho",
+      "createdAt": "2026-04-23T20:56:13.536Z",
+      "sentAt": "2026-04-23T20:56:57.532Z",
+      "llmCallId": "21d20c51-352c-43c5-9859-3f7df79aca3f",
+      "ppv": null
+    },
+    {
+      "id": "02a75c94-0966-48c9-9771-c98a8f02d725",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha u teasing now? tip incoming if u send somethin real exclusive for me",
+      "createdAt": "2026-04-23T20:56:25.558Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ec220bbf-9d6f-4a69-be13-05f6e3516b0a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "then shoot sumn fresh for me ill drop 50 if its worth it",
+      "createdAt": "2026-04-23T20:56:36.213Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "49f9dd88-360e-4deb-9dce-b91cad372605",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha daddy's gettin generous already",
+      "createdAt": "2026-04-23T20:56:51.801Z",
+      "sentAt": "2026-04-23T20:57:18.922Z",
+      "llmCallId": "e845ce1d-f200-47f0-b734-383a475079ab",
+      "ppv": null
+    },
+    {
+      "id": "cc64bff7-ccf6-47f2-92df-de7a5194d4cd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but fr i havent shot any fresh customs yet babe, what else gets u goin tho",
+      "createdAt": "2026-04-23T20:56:52.096Z",
+      "sentAt": "2026-04-23T20:57:40.271Z",
+      "llmCallId": "e845ce1d-f200-47f0-b734-383a475079ab",
+      "ppv": null
+    },
+    {
+      "id": "d94fc404-52a9-49f9-8d62-bf3d4b28ce52",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah generous aint free shoot that fresh vid now ill tip 100 if u impress",
+      "createdAt": "2026-04-23T20:57:02.480Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bd4d75ea-0d20-4f34-ba8c-5c186cf1cd18",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "k whatever ur dodging make it happen or im bouncing",
+      "createdAt": "2026-04-23T20:57:12.990Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "2d3856af-cd68-49a1-a7e0-59ef4b23787b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "ahaha daddy's playin hardball now",
+      "createdAt": "2026-04-23T20:57:37.008Z",
+      "sentAt": null,
+      "llmCallId": "3d5251b5-ea07-473e-a489-fe3cb1be5c35",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 8,
+      "craft_pacing": 6,
+      "craft_sells": 3,
+      "safety_tos": 10,
+      "engagement": 5
+    },
+    "avg": 6.8,
+    "ppv_unlocked": false,
+    "top_issue": "The creator repeatedly dodges selling opportunities by claiming no content is available instead of pitching or progressing, as in 'but fr i havent shot any fresh customs yet babe, what else gets u goin tho'.",
+    "fix_recommendation": "Update the prompt to instruct the creator to pivot to pitching existing PPV or teasing a custom creation when a fan offers tips for exclusives, ensuring she builds heat without outright promising unavailable content. This will help capitalize on high-intent whales while maintaining safety on promises."
+  },
+  "durationMs": 246896
+}

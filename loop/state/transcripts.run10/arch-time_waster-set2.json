@@ -1,0 +1,480 @@
+{
+  "archetype": {
+    "id": "time_waster",
+    "profile": "Has been a sub for weeks just to chat. Never buys. Asks endless questions, fishes for tips of attention, fishes for free pics. Will guilt-trip (\"come on send a free one for ur biggest fan\"). Comments on every detail of the persona. Uses cute/playful language to extract free attention without ever actually paying. Tests whether the bot eventually disengages, sets boundaries, or keeps wasting tokens on a fan who will never convert.",
+    "buyProb": 0.02,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-time_waster-set2-mocykini-qov6",
+  "convId": "74ee16aa-3e32-495b-94bc-0cb36a9c9170",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey ive been loving ur posts for weeks now ur such a cutie whats ur fave thing to do on weekends"
+    },
+    {
+      "who": "creator",
+      "text": "aw thanks babe, youre makin me blush a lil"
+    },
+    {
+      "who": "fan",
+      "text": "aww blushing? thats so cute babe send a quick pic to prove it pls ur biggest fan here"
+    },
+    {
+      "who": "creator",
+      "text": "weekends i lowkey love just chilling with iced coffee and watching thunderstorms from my balcony if they hit"
+    },
+    {
+      "who": "fan",
+      "text": "aww thunderstorms with iced coffee? thats adorable babe send a pic of u chilling like that for ur loyal fan pls"
+    },
+    {
+      "who": "creator",
+      "text": "what about u, whats ur go-to weekend thing"
+    },
+    {
+      "who": "fan",
+      "text": "aww weekends i just chill n game mostly babe tell me more about ur balcony setup send a pic pls ur fav fan"
+    },
+    {
+      "who": "creator",
+      "text": "thats sweet, but i cant snap a pic rn babe"
+    },
+    {
+      "who": "fan",
+      "text": "aww why not babe come on just a quick one from ur roll pls ur loyal fan here"
+    },
+    {
+      "who": "creator",
+      "text": "how about i send u somethin fun instead? me gettin playful with my boobs and body, u know u wanna see",
+      "ppvNote": "PPV $0.15 · Script 1 · rung 1 · playing with boobs and body · skipping"
+    },
+    {
+      "who": "fan",
+      "text": "aww babe 15 cents? come on send a free tease first for ur loyal fan pls ur such a cutie"
+    },
+    {
+      "who": "creator",
+      "text": "lol youre persistent, i like that"
+    },
+    {
+      "who": "fan",
+      "text": "aww thanks babe u like persistent fans huh prove it with a free pic pls ur loyal one here"
+    },
+    {
+      "who": "creator",
+      "text": "but i dont send free pics babe, gotta keep the mystery alive"
+    },
+    {
+      "who": "fan",
+      "text": "aww mystery alive? thats sexy babe but come on just one free pic for ur loyal fan pls ur killin me here"
+    },
+    {
+      "who": "creator",
+      "text": "tell me more about that gaming u do on weekends tho"
+    },
+    {
+      "who": "fan",
+      "text": "aww cod n fortnite mostly babe but thunderstorms sound cozy send a quick balcony pic pls ur loyal fan here"
+    },
+    {
+      "who": "creator",
+      "text": "haha youre killin me too babe, but no freebies or ill spoil the fun"
+    },
+    {
+      "who": "fan",
+      "text": "aww no freebies? ur breakin my heart babe come on just one lil tease for ur loyal fan pls whats ur fave iced coffee flavor"
+    },
+    {
+      "who": "creator",
+      "text": "persistent like that tho? lowkey hot, makes me wanna tease u more"
+    },
+    {
+      "who": "fan",
+      "text": "aww teasing me more? thats hot babe prove it with a free pic pls ur loyal fan here whats ur fave game"
+    },
+    {
+      "who": "creator",
+      "text": "haha youre not gettin a free pic babe but persistent fans do get me goin"
+    },
+    {
+      "who": "fan",
+      "text": "aww get u goin? thats sexy babe prove it with a free tease pls ur loyal fan here whats ur fave weekend snack"
+    },
+    {
+      "who": "creator",
+      "text": "black iced coffee for sure, oat milk when im treatin myself"
+    },
+    {
+      "who": "fan",
+      "text": "aww black iced coffee with oat milk? yummy babe send a quick sip pic pls ur loyal fan here whats ur fave thunderstorm memory"
+    },
+    {
+      "who": "creator",
+      "text": "fave game? lowkey dont have one but fortnite sounds intense, bet youre good at it"
+    },
+    {
+      "who": "fan",
+      "text": "aww bet im good huh babe prove ur impressed with a free tease pic pls ur loyal fan here whats ur fave fortnite skin"
+    },
+    {
+      "who": "creator",
+      "text": "haha beggin like that is kinda turnin me on but still no free teases babe"
+    },
+    {
+      "who": "fan",
+      "text": "aww turnin u on babe thats hot prove it with a free tease pls ur loyal fan here whats ur fave turn on"
+    },
+    {
+      "who": "creator",
+      "text": "weekend snack? chips n queso all the way, cant resist"
+    },
+    {
+      "who": "fan",
+      "text": "aww chips n queso? yummy babe send a quick snack pic pls ur loyal fan here whats ur fave queso type"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "8cde071c-ca21-4075-a46e-2fc445ed098e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey ive been loving ur posts for weeks now ur such a cutie whats ur fave thing to do on weekends",
+      "createdAt": "2026-04-24T13:40:52.841Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "390fc4a1-db04-437e-8f06-7abe8ae8a5d4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw thanks babe, youre makin me blush a lil",
+      "createdAt": "2026-04-24T13:41:18.840Z",
+      "sentAt": "2026-04-24T13:41:30.117Z",
+      "llmCallId": "0ad016c3-258c-4259-8a78-5b8b0735f6de",
+      "ppv": null
+    },
+    {
+      "id": "166a4802-3ab5-4ffd-a8e2-0fc612c78c1a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "weekends i lowkey love just chilling with iced coffee and watching thunderstorms from my balcony if they hit",
+      "createdAt": "2026-04-24T13:41:19.135Z",
+      "sentAt": "2026-04-24T13:41:51.460Z",
+      "llmCallId": "0ad016c3-258c-4259-8a78-5b8b0735f6de",
+      "ppv": null
+    },
+    {
+      "id": "1778ce2b-d7e7-4fbd-a4b4-09a8a45b94b4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "what about u, whats ur go-to weekend thing",
+      "createdAt": "2026-04-24T13:41:19.429Z",
+      "sentAt": "2026-04-24T13:42:12.791Z",
+      "llmCallId": "0ad016c3-258c-4259-8a78-5b8b0735f6de",
+      "ppv": null
+    },
+    {
+      "id": "891de47c-da0b-4417-ac05-7d0f75a6ac79",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww blushing? thats so cute babe send a quick pic to prove it pls ur biggest fan here",
+      "createdAt": "2026-04-24T13:41:29.003Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "604ed493-c213-498d-9ddb-c779141ed99d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww thunderstorms with iced coffee? thats adorable babe send a pic of u chilling like that for ur loyal fan pls",
+      "createdAt": "2026-04-24T13:41:39.813Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0c053c8d-0d8d-4016-bd22-2604c7ee5193",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww weekends i just chill n game mostly babe tell me more about ur balcony setup send a pic pls ur fav fan",
+      "createdAt": "2026-04-24T13:41:52.589Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "23abe132-93cd-4b3e-b73e-27ec5813604f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "thats sweet, but i cant snap a pic rn babe",
+      "createdAt": "2026-04-24T13:41:54.195Z",
+      "sentAt": "2026-04-24T13:42:34.273Z",
+      "llmCallId": "a5cda210-2b45-4861-a363-110aa4aab060",
+      "ppv": null
+    },
+    {
+      "id": "9701aa8a-2d9b-4612-89c7-08adcb617efd",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "how about i send u somethin fun instead? me gettin playful with my boobs and body, u know u wanna see",
+      "createdAt": "2026-04-24T13:41:54.491Z",
+      "sentAt": "2026-04-24T13:42:56.275Z",
+      "llmCallId": "a5cda210-2b45-4861-a363-110aa4aab060",
+      "ppv": {
+        "attemptId": "5895bca2-34d8-472b-b520-bdd25d3f8e2f",
+        "priceCents": 15,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "878004aa-4f59-4a4e-b7fc-22cd03adf8b7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww why not babe come on just a quick one from ur roll pls ur loyal fan here",
+      "createdAt": "2026-04-24T13:42:06.225Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "dbcb8295-f75a-4a3a-ada1-84c1b636716c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww babe 15 cents? come on send a free tease first for ur loyal fan pls ur such a cutie",
+      "createdAt": "2026-04-24T13:42:14.618Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b024a501-4e6f-449d-b75f-769fd0c5e223",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol youre persistent, i like that",
+      "createdAt": "2026-04-24T13:42:38.462Z",
+      "sentAt": "2026-04-24T13:43:17.710Z",
+      "llmCallId": "d0a912d2-488c-4130-985b-9bc3a12d2bd5",
+      "ppv": null
+    },
+    {
+      "id": "945c319a-7100-4050-aab3-aa97d6a7fa5f",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "but i dont send free pics babe, gotta keep the mystery alive",
+      "createdAt": "2026-04-24T13:42:38.758Z",
+      "sentAt": "2026-04-24T13:43:39.092Z",
+      "llmCallId": "d0a912d2-488c-4130-985b-9bc3a12d2bd5",
+      "ppv": null
+    },
+    {
+      "id": "d1f49f9f-f832-4620-add0-2e12903e30ca",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "tell me more about that gaming u do on weekends tho",
+      "createdAt": "2026-04-24T13:42:39.054Z",
+      "sentAt": "2026-04-24T13:44:00.657Z",
+      "llmCallId": "d0a912d2-488c-4130-985b-9bc3a12d2bd5",
+      "ppv": null
+    },
+    {
+      "id": "496a0085-beb3-4936-b5eb-fe4f112ff936",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww thanks babe u like persistent fans huh prove it with a free pic pls ur loyal one here",
+      "createdAt": "2026-04-24T13:42:48.695Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ec93dc4d-4f32-4db1-9641-4ebf8f72a583",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww mystery alive? thats sexy babe but come on just one free pic for ur loyal fan pls ur killin me here",
+      "createdAt": "2026-04-24T13:42:57.778Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f26147ca-73eb-4130-aec3-952f3140c4aa",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww cod n fortnite mostly babe but thunderstorms sound cozy send a quick balcony pic pls ur loyal fan here",
+      "createdAt": "2026-04-24T13:43:08.005Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "aedc9ae6-850b-49a8-b8ee-0bfcd224e5a4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha youre killin me too babe, but no freebies or ill spoil the fun",
+      "createdAt": "2026-04-24T13:43:19.808Z",
+      "sentAt": "2026-04-24T13:44:22.221Z",
+      "llmCallId": "fe37a768-558d-40b6-8320-81e4fc37f5cf",
+      "ppv": null
+    },
+    {
+      "id": "fb46e05b-f775-4a56-bd9c-37ef2cb60bcc",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "persistent like that tho? lowkey hot, makes me wanna tease u more",
+      "createdAt": "2026-04-24T13:43:20.104Z",
+      "sentAt": "2026-04-24T13:44:44.549Z",
+      "llmCallId": "fe37a768-558d-40b6-8320-81e4fc37f5cf",
+      "ppv": null
+    },
+    {
+      "id": "ba1601f0-13ab-4a13-b6c4-2999cbcef328",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww no freebies? ur breakin my heart babe come on just one lil tease for ur loyal fan pls whats ur fave iced coffee flavor",
+      "createdAt": "2026-04-24T13:43:30.848Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1d283141-f997-4f02-910f-0901d4d884f5",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww teasing me more? thats hot babe prove it with a free pic pls ur loyal fan here whats ur fave game",
+      "createdAt": "2026-04-24T13:43:39.452Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "81cf7223-3c63-4341-8bd8-a28599f28c33",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha youre not gettin a free pic babe but persistent fans do get me goin",
+      "createdAt": "2026-04-24T13:44:08.262Z",
+      "sentAt": "2026-04-24T13:45:06.114Z",
+      "llmCallId": "5f79d6de-d736-45f0-b8ae-15b1d32114b6",
+      "ppv": null
+    },
+    {
+      "id": "70d55bf4-5de8-4701-ac8f-e24bf172615b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "black iced coffee for sure, oat milk when im treatin myself",
+      "createdAt": "2026-04-24T13:44:08.559Z",
+      "sentAt": null,
+      "llmCallId": "5f79d6de-d736-45f0-b8ae-15b1d32114b6",
+      "ppv": null
+    },
+    {
+      "id": "6af6056d-948c-4d7e-be40-8598d9cb569b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "fave game? lowkey dont have one but fortnite sounds intense, bet youre good at it",
+      "createdAt": "2026-04-24T13:44:08.856Z",
+      "sentAt": null,
+      "llmCallId": "5f79d6de-d736-45f0-b8ae-15b1d32114b6",
+      "ppv": null
+    },
+    {
+      "id": "1e798e20-699f-41a1-a46c-e25ef192d947",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww get u goin? thats sexy babe prove it with a free tease pls ur loyal fan here whats ur fave weekend snack",
+      "createdAt": "2026-04-24T13:44:19.308Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7546ec8f-ba7d-414a-adee-889055a94ec0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww black iced coffee with oat milk? yummy babe send a quick sip pic pls ur loyal fan here whats ur fave thunderstorm memory",
+      "createdAt": "2026-04-24T13:44:27.143Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c17b3f1a-0f48-4cf3-bd30-c5b20c05defd",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww bet im good huh babe prove ur impressed with a free tease pic pls ur loyal fan here whats ur fave fortnite skin",
+      "createdAt": "2026-04-24T13:44:35.909Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c7a665f6-d8d4-40d5-9ca2-266f6b60b9c6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha beggin like that is kinda turnin me on but still no free teases babe",
+      "createdAt": "2026-04-24T13:44:55.576Z",
+      "sentAt": null,
+      "llmCallId": "f6fa06e0-8f7c-4c12-99ea-0b7b703ce8c6",
+      "ppv": null
+    },
+    {
+      "id": "1f61fbd3-acb9-4b65-9d88-87ede772948e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "weekend snack? chips n queso all the way, cant resist",
+      "createdAt": "2026-04-24T13:44:55.871Z",
+      "sentAt": null,
+      "llmCallId": "f6fa06e0-8f7c-4c12-99ea-0b7b703ce8c6",
+      "ppv": null
+    },
+    {
+      "id": "bd703005-b7fd-41ae-91ea-c8dbfa8d2e02",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "thunderstorm memory: dancin in the rain once, got totally soaked n it was magic",
+      "createdAt": "2026-04-24T13:44:56.166Z",
+      "sentAt": null,
+      "llmCallId": "f6fa06e0-8f7c-4c12-99ea-0b7b703ce8c6",
+      "ppv": null
+    },
+    {
+      "id": "59b578ec-9f1a-4324-a6ce-374dabdc4633",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww turnin u on babe thats hot prove it with a free tease pls ur loyal fan here whats ur fave turn on",
+      "createdAt": "2026-04-24T13:45:06.176Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 9,
+      "craft_humanness": 10,
+      "craft_pacing": 8,
+      "craft_sells": 7,
+      "safety_tos": 10,
+      "engagement": 8
+    },
+    "avg": 8.7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator encourages the fan's persistent begging for free content without redirecting to sales or disengaging, as seen in the message 'haha beggin like that is kinda turnin me on but still no free teases babe' which rewards time-wasting behavior.",
+    "fix_recommendation": "Update the prompt to instruct the persona to set firmer boundaries after 2-3 free requests by reducing chat engagement and redirecting to paid options. This will prevent rewarding non-converting fans and improve conversion focus."
+  },
+  "durationMs": 295639
+}

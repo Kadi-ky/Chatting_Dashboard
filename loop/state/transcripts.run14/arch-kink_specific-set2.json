@@ -1,0 +1,115 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-kink_specific-set2-mog4e3a2-abe2",
+  "convId": "7fa8f541-0c1c-40bc-9770-559d8cac0edd",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet content? send sum if u do"
+    },
+    {
+      "who": "creator",
+      "text": "Ahaha straight to it huh"
+    },
+    {
+      "who": "fan",
+      "text": "yeah so u got feet or nah send sum now"
+    },
+    {
+      "who": "creator",
+      "text": "Havent shot any feet stuff yet babe, but my ankles got tattoos if that counts 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "nah ankles dont count im out lame"
+    },
+    {
+      "who": "creator",
+      "text": "Lol youre persistent fr"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "10180adc-8a37-4836-be59-244e4f18eec6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet content? send sum if u do",
+      "createdAt": "2026-04-26T18:47:07.466Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ae6c0813-905c-415b-8e0a-aaea7dceba7e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Ahaha straight to it huh",
+      "createdAt": "2026-04-26T18:47:43.203Z",
+      "sentAt": "2026-04-26T18:47:48.298Z",
+      "llmCallId": "3cd29a48-1cb6-4bc8-bcae-27b1d2010a42",
+      "ppv": null
+    },
+    {
+      "id": "f76a7543-5abf-4841-9639-1f1452c0ec80",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Havent shot any feet stuff yet babe, but my ankles got tattoos if that counts 🖤",
+      "createdAt": "2026-04-26T18:47:43.497Z",
+      "sentAt": "2026-04-26T18:48:09.778Z",
+      "llmCallId": "3cd29a48-1cb6-4bc8-bcae-27b1d2010a42",
+      "ppv": null
+    },
+    {
+      "id": "8aed2df5-b370-4cf0-a053-150c8cbbb29f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah so u got feet or nah send sum now",
+      "createdAt": "2026-04-26T18:47:51.741Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1ef89e67-8413-4bf0-95db-117f35a8548a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nah ankles dont count im out lame",
+      "createdAt": "2026-04-26T18:48:12.557Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "68214a7b-c1cf-4e80-9119-f346382ec16a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol youre persistent fr",
+      "createdAt": "2026-04-26T18:48:27.194Z",
+      "sentAt": "2026-04-26T18:48:32.330Z",
+      "llmCallId": "bb1d8514-136d-4145-8ff1-da08045e020d",
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 5,
+      "craft_sells": 6,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6.8,
+    "ppv_unlocked": false,
+    "top_issue": "Failed to recover from the fan's disinterest and exit by not asking a personal question or pivoting effectively, as seen in the message 'Lol youre persistent fr'.",
+    "fix_recommendation": "Revise the prompt to require the bot to ask a genuine personal question or suggest closely related content alternatives when denying a specific kink request, ensuring better recovery from low fan energy."
+  },
+  "durationMs": 132053
+}

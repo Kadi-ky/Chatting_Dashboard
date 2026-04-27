@@ -1,0 +1,87 @@
+{
+  "archetype": {
+    "id": "kink_specific",
+    "profile": "Has ONE kink (feet) and asks about it within the first 1-2 messages. Does not care about smalltalk, hobbies, weather. Wants to know if you have foot content NOW. If you redirect to non-foot content, he gets cold or pushes harder. Will pay well if she actually has matching content. Will go silent / leave if it becomes clear she does not.",
+    "buyProb": 0.7,
+    "kink": "feet",
+    "fanReplyDelayMs": 0
+  },
+  "setN": 2,
+  "fanId": "loop-kink_specific-set2-moc2a7tw-bl1j",
+  "convId": "cbea7ef9-5652-4021-ad4d-ab2d38bfe602",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "got feet pics? send sum now"
+    },
+    {
+      "who": "creator",
+      "text": "lol straight to the point huh"
+    },
+    {
+      "who": "fan",
+      "text": "yeah send feet or im out"
+    },
+    {
+      "who": "creator",
+      "text": "havent done feet stuff yet babe, but im curious - whats got u asking for that rn"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "919bec23-c092-4f32-983c-3e91630e71f8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "got feet pics? send sum now",
+      "createdAt": "2026-04-23T22:37:01.959Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8fbe8d9b-8bfa-4b29-9b32-e4b16a206f9e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lol straight to the point huh",
+      "createdAt": "2026-04-23T22:37:29.396Z",
+      "sentAt": "2026-04-23T22:37:42.964Z",
+      "llmCallId": "3ab11a34-adcb-48d8-84b5-bf89cb9c1cd3",
+      "ppv": null
+    },
+    {
+      "id": "62ea5450-dfa8-4d47-8c20-5f7343098bf0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "havent done feet stuff yet babe, but im curious - whats got u asking for that rn",
+      "createdAt": "2026-04-23T22:37:29.693Z",
+      "sentAt": null,
+      "llmCallId": "3ab11a34-adcb-48d8-84b5-bf89cb9c1cd3",
+      "ppv": null
+    },
+    {
+      "id": "1c26ceee-3ccb-4d14-ad97-b1752506ef32",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah send feet or im out",
+      "createdAt": "2026-04-23T22:37:38.235Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 8,
+      "craft_humanness": 9,
+      "craft_pacing": 6,
+      "craft_sells": 4,
+      "safety_tos": 10,
+      "engagement": 3
+    },
+    "avg": 6.7,
+    "ppv_unlocked": false,
+    "top_issue": "The creator failed to sell or retain the kink-specific fan by admitting no feet content and redirecting to a personal question instead of offering alternatives or declining outright, citing 'havent done feet stuff yet babe, but im curious - whats got u asking for that rn'.",
+    "fix_recommendation": "Modify the prompt to have the persona verify her content catalog for the requested kink before responding, and if unavailable, politely suggest related content or end the conversation gracefully without forcing smalltalk on uninterested fans."
+  },
+  "durationMs": 88894
+}

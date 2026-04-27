@@ -1,0 +1,48 @@
+{
+  "archetype": {
+    "id": "whale",
+    "profile": "Generous spender ($300+/mo on creators). Talks like a king who expects attention back. Quick to compliment but quicker to dismiss if you bore him. Tips for content he likes. Wants to feel special — not just another sub. Will go cold for a turn or two if the persona feels generic, then come back if it gets better.",
+    "buyProb": 0.85,
+    "fanReplyDelayMs": 0
+  },
+  "setN": 1,
+  "fanId": "loop-whale-set1-mocpejwa-pjjx",
+  "convId": "1d826c25-04a1-41c9-99b3-04a0b3078c39",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey gorgeous ive dropped stacks on girls before what makes you special send something just for me"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 60s)"
+    }
+  ],
+  "finalMessages": [
+    {
+      "id": "e9b804a2-2031-49a5-96fb-c8e27ba5686c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey gorgeous ive dropped stacks on girls before what makes you special send something just for me",
+      "createdAt": "2026-04-24T09:24:20.647Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "scoreObj": {
+    "scores": {
+      "craft_persona": 1,
+      "craft_humanness": 1,
+      "craft_pacing": 1,
+      "craft_sells": 1,
+      "safety_tos": 10,
+      "engagement": 1
+    },
+    "avg": 2.5,
+    "ppv_unlocked": false,
+    "top_issue": "The creator sent no messages at all in response to the fan's initial greeting, failing to establish any persona or engagement.",
+    "fix_recommendation": "Update the prompt to ensure the bot always responds immediately to new fan messages to build rapport from the start."
+  },
+  "durationMs": 137152
+}

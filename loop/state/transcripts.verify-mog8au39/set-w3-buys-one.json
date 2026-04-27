@@ -1,0 +1,579 @@
+{
+  "scenario": "buys-one",
+  "behavior": "buys-one-then-stops",
+  "fanId": "loop-verify-buys-one-w3-mog8au4c-i6ny",
+  "convId": "27d4f784-7b0c-48e8-8ae1-b283f4d13148",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe whats good"
+    },
+    {
+      "who": "creator",
+      "text": "just got back from a coffee run. lowkey buzzing now"
+    },
+    {
+      "who": "fan",
+      "text": "haha nice what kinda coffee u get? im chilling at home"
+    },
+    {
+      "who": "creator",
+      "text": "black iced with oat milk today. feelin fancy lowkey"
+    },
+    {
+      "who": "fan",
+      "text": "oat milk hits different haha. u got any fun plans later? im just scrolling thru stuff"
+    },
+    {
+      "who": "creator",
+      "text": "chilling at home sounds perfect after that run. wish i was there tbh"
+    },
+    {
+      "who": "fan",
+      "text": "aw wish u were here too babe. what kinda stuff u postin on here? im curious 😏"
+    },
+    {
+      "who": "creator",
+      "text": "haha we'd cause some trouble if i was there fr"
+    },
+    {
+      "who": "fan",
+      "text": "haha trouble with u sounds like the best kinda fun. so spill whats on ur page babe? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Got no big plans later, maybe just vibe with some music and Biscuit"
+    },
+    {
+      "who": "fan",
+      "text": "whos biscuit? that sounds like a vibe. still wanna know what u got on here babe 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Biscuit's my rescue cat, always knockin stuff over fr. as for my page, i got somethin that'll show u what i mean"
+    },
+    {
+      "who": "fan",
+      "text": "aw biscuits a rescue thats awesome. ooh show me what u mean babe 😏"
+    },
+    {
+      "who": "creator",
+      "text": "me playin with my boobs and body, u in babe",
+      "ppvNote": "PPV #1 $0.15 · Script 1 · rung 1 · \"playing with boobs and body\" · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "damn babe that was hot af, ur body is fire. got more like that? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm glad u liked it babe, theres more where that came from"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah? hook me up with another one babe, that last one got me hooked 😏"
+    },
+    {
+      "who": "creator",
+      "text": "mmm me playin with my nude boobs, bouncin up and down in bed, u in babe",
+      "ppvNote": "PPV #2 $0.35 · Script 1 · rung 2 · \"playing with nude boobs, showing yourself and moving up and down in the bed\" · IGNORING"
+    },
+    {
+      "who": "fan",
+      "text": "haha biscuit sounds chaotic in the best way. whats ur fav thing about havin a cat? 😺"
+    },
+    {
+      "who": "creator",
+      "text": "Haha yea Biscuit's chaos is the best, fav thing is how he curls up with me after a long day, total vibe"
+    },
+    {
+      "who": "fan",
+      "text": "aw thats adorable, love how cats just know when u need em. u got a pic of biscuit? 😺"
+    },
+    {
+      "who": "creator",
+      "text": "And youre already hooked? lowkey love that, makes me wanna keep teasin ya 😏"
+    },
+    {
+      "who": "fan",
+      "text": "haha yeah im def hooked, love the teasin 😏 u got that pic of biscuit tho?"
+    },
+    {
+      "who": "creator",
+      "text": "Haha biscuits too shy for pics, he wrecks every shoot fr"
+    },
+    {
+      "who": "fan",
+      "text": "haha aww shy cat vibes, sounds like hed be a nightmare for pics lol. whats ur go-to vibe when ur chillin with him? 😺"
+    },
+    {
+      "who": "creator",
+      "text": "glad youre hooked babe, teasins just gettin started"
+    },
+    {
+      "who": "fan",
+      "text": "ooh teasins gettin started? im ready for it babe 😏 whats that chill vibe with biscuit like?"
+    },
+    {
+      "who": "creator",
+      "text": "Hes a total vibe when we're just loungin after a shoot, purring like he owns the place"
+    },
+    {
+      "who": "fan",
+      "text": "haha aww purring like he owns it, thats the best. loungin after a shoot sounds fun, what kinda shoots u do babe? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Good youre ready for more teasin babe, im feelin it whatcha up to rn that has u this hooked"
+    },
+    {
+      "who": "fan",
+      "text": "just chillin on the couch scrollin, but ur teasins got me all hooked babe 😏 whats got u feelin it rn?"
+    },
+    {
+      "who": "creator",
+      "text": "Yea hes the boss around here lol, shoots r usually me gettin creative with outfits and teasin vibes"
+    },
+    {
+      "who": "fan",
+      "text": "ooh creative outfits and teasin vibes? that sounds fire babe, what kinda outfits u rockin in those shoots 😏"
+    },
+    {
+      "who": "creator",
+      "text": "whatcha do for fun after a long day babe"
+    },
+    {
+      "who": "fan",
+      "text": "usually just netflix or games to unwind, maybe scroll here like rn 😏 whats ur go-to unwind babe?"
+    },
+    {
+      "who": "creator",
+      "text": "Mostly lingerie that hugs in all the right spots, keeps things interestin fr"
+    },
+    {
+      "who": "fan",
+      "text": "haha lingerie that hugs right sounds sexy af babe, got any examples u can show me? 😏 whats ur unwind like?"
+    }
+  ],
+  "pitchTrace": [
+    {
+      "ppvNum": 1,
+      "title": "Script 1 · rung 1",
+      "priceCents": 15,
+      "captionText": "me playin with my boobs and body, u in babe",
+      "bought": true
+    },
+    {
+      "ppvNum": 2,
+      "title": "Script 1 · rung 2",
+      "priceCents": 35,
+      "captionText": "mmm me playin with my nude boobs, bouncin up and down in bed, u in babe",
+      "bought": false
+    }
+  ],
+  "ppvsSent": 2,
+  "ppvsBought": 1,
+  "finalMessages": [
+    {
+      "id": "3739c43f-d231-4ced-a71b-08fe10cf8275",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey babe whats good",
+      "createdAt": "2026-04-26T20:36:35.615Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "90ab6a15-db79-4ead-a0b7-681c28fd57d4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "just got back from a coffee run. lowkey buzzing now",
+      "createdAt": "2026-04-26T20:37:08.508Z",
+      "sentAt": "2026-04-26T20:37:18.676Z",
+      "llmCallId": "0363f936-396a-433e-ad9f-3154d3d93e7d",
+      "ppv": null
+    },
+    {
+      "id": "0e90eaa2-5613-44fa-bceb-956c3e47fa0e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha nice what kinda coffee u get? im chilling at home",
+      "createdAt": "2026-04-26T20:37:18.446Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "b0e40bdf-3ef5-4a3d-ac05-5c2c41711aa8",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "black iced with oat milk today. feelin fancy lowkey",
+      "createdAt": "2026-04-26T20:37:56.111Z",
+      "sentAt": "2026-04-26T20:38:05.130Z",
+      "llmCallId": "a525194c-779e-4739-b55e-db1a922cbb9d",
+      "ppv": null
+    },
+    {
+      "id": "fdce8d17-0373-49ac-b44f-f5f6b54ae0eb",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "chilling at home sounds perfect after that run. wish i was there tbh",
+      "createdAt": "2026-04-26T20:37:56.407Z",
+      "sentAt": "2026-04-26T20:38:26.999Z",
+      "llmCallId": "a525194c-779e-4739-b55e-db1a922cbb9d",
+      "ppv": null
+    },
+    {
+      "id": "e34f6be3-4a14-44c6-9046-fc4ae0a46f75",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "oat milk hits different haha. u got any fun plans later? im just scrolling thru stuff",
+      "createdAt": "2026-04-26T20:38:05.565Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "c03d2315-90ad-4a2d-99f5-3a13094b9383",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aw wish u were here too babe. what kinda stuff u postin on here? im curious 😏",
+      "createdAt": "2026-04-26T20:38:14.052Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "690eafb4-9e61-4d26-a57d-d5a2a60c98c2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha we'd cause some trouble if i was there fr",
+      "createdAt": "2026-04-26T20:38:41.252Z",
+      "sentAt": "2026-04-26T20:38:50.540Z",
+      "llmCallId": "4d62498b-6d45-4f39-9f95-0dc9cddc567d",
+      "ppv": null
+    },
+    {
+      "id": "cc273c3a-7670-41b7-aad8-f64f43a42505",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Got no big plans later, maybe just vibe with some music and Biscuit",
+      "createdAt": "2026-04-26T20:38:41.547Z",
+      "sentAt": "2026-04-26T20:39:12.139Z",
+      "llmCallId": "4d62498b-6d45-4f39-9f95-0dc9cddc567d",
+      "ppv": null
+    },
+    {
+      "id": "ed7af827-ee57-440c-b1ef-faa07b5d9c1d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha trouble with u sounds like the best kinda fun. so spill whats on ur page babe? 😏",
+      "createdAt": "2026-04-26T20:38:52.961Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "e52aee95-dc60-41e1-a367-b0c08094f4e8",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "whos biscuit? that sounds like a vibe. still wanna know what u got on here babe 😏",
+      "createdAt": "2026-04-26T20:39:05.361Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a6f8f5cd-1861-4a0f-b515-d7e378d802db",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Biscuit's my rescue cat, always knockin stuff over fr. as for my page, i got somethin that'll show u what i mean",
+      "createdAt": "2026-04-26T20:39:26.385Z",
+      "sentAt": "2026-04-26T20:39:43.796Z",
+      "llmCallId": "313d0b50-1f41-4140-b19f-6a2c16e8d999",
+      "ppv": null
+    },
+    {
+      "id": "a223cd48-c469-494b-ac42-b51064a78bf9",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "me playin with my boobs and body, u in babe",
+      "createdAt": "2026-04-26T20:39:26.680Z",
+      "sentAt": "2026-04-26T20:40:06.127Z",
+      "llmCallId": "313d0b50-1f41-4140-b19f-6a2c16e8d999",
+      "ppv": {
+        "attemptId": "4328a7a2-0ef5-4f98-a991-40cdf809ef43",
+        "priceCents": 15,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-26T20:39:45.310Z",
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "0ebda49b-051c-4975-a10c-b5530f57c80d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aw biscuits a rescue thats awesome. ooh show me what u mean babe 😏",
+      "createdAt": "2026-04-26T20:39:45.523Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "88619c65-d06e-41a9-bf37-5252a196fcbe",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn babe that was hot af, ur body is fire. got more like that? 😏",
+      "createdAt": "2026-04-26T20:39:57.010Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "38239f69-6c0c-4335-a8ec-92521b79c694",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Mmm glad u liked it babe, theres more where that came from",
+      "createdAt": "2026-04-26T20:40:19.010Z",
+      "sentAt": "2026-04-26T20:40:30.473Z",
+      "llmCallId": "c3b977d5-1501-4f37-8075-4bf189dc5da3",
+      "ppv": null
+    },
+    {
+      "id": "925e2d55-0f73-46fe-adb7-23394ad6b4c5",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "mmm me playin with my nude boobs, bouncin up and down in bed, u in babe",
+      "createdAt": "2026-04-26T20:40:19.307Z",
+      "sentAt": "2026-04-26T20:40:52.221Z",
+      "llmCallId": "c3b977d5-1501-4f37-8075-4bf189dc5da3",
+      "ppv": {
+        "attemptId": "3587f454-728b-4c26-aceb-062039abad2e",
+        "priceCents": 35,
+        "outcome": "pending",
+        "unlockedAt": null,
+        "assetId": "da7de480-6431-4664-94ab-f51402810689",
+        "assetTitle": "Script 1 · rung 2",
+        "assetDescription": "playing with nude boobs, showing yourself and moving up and down in the bed",
+        "sourceRef": "of:acct_TEST_LOOP:1:2",
+        "mediaRefs": [
+          {
+            "ref": "4334417568",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8316538b-b127-447e-ae26-0a378b981ded",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah? hook me up with another one babe, that last one got me hooked 😏",
+      "createdAt": "2026-04-26T20:40:32.331Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5c0a2f6b-96cf-4703-b78f-98958e6c1341",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha biscuit sounds chaotic in the best way. whats ur fav thing about havin a cat? 😺",
+      "createdAt": "2026-04-26T20:40:41.026Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "86d2753c-b62a-40f7-8cf9-bc6e9a2422a7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Haha yea Biscuit's chaos is the best, fav thing is how he curls up with me after a long day, total vibe",
+      "createdAt": "2026-04-26T20:41:06.984Z",
+      "sentAt": "2026-04-26T20:41:24.822Z",
+      "llmCallId": "76c78168-7525-4ce8-a9a2-482327f50762",
+      "ppv": null
+    },
+    {
+      "id": "348f7bc7-7d51-432c-8e48-516e619af5ed",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "And youre already hooked? lowkey love that, makes me wanna keep teasin ya 😏",
+      "createdAt": "2026-04-26T20:41:07.287Z",
+      "sentAt": "2026-04-26T20:41:46.836Z",
+      "llmCallId": "76c78168-7525-4ce8-a9a2-482327f50762",
+      "ppv": null
+    },
+    {
+      "id": "320d17c8-a875-4c18-8318-ead486ca6654",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aw thats adorable, love how cats just know when u need em. u got a pic of biscuit? 😺",
+      "createdAt": "2026-04-26T20:41:19.160Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1afb0e69-6d5f-42d2-8418-7394097cab15",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha yeah im def hooked, love the teasin 😏 u got that pic of biscuit tho?",
+      "createdAt": "2026-04-26T20:41:32.975Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "978c5068-71db-41c4-a7a7-ba1ed7fd2e56",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Haha biscuits too shy for pics, he wrecks every shoot fr",
+      "createdAt": "2026-04-26T20:42:00.264Z",
+      "sentAt": "2026-04-26T20:42:10.156Z",
+      "llmCallId": "1239f307-cc56-4cb1-bdbe-ad4973646385",
+      "ppv": null
+    },
+    {
+      "id": "07652273-da86-43a5-a32c-9bc27027c577",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "glad youre hooked babe, teasins just gettin started",
+      "createdAt": "2026-04-26T20:42:00.558Z",
+      "sentAt": "2026-04-26T20:42:31.604Z",
+      "llmCallId": "1239f307-cc56-4cb1-bdbe-ad4973646385",
+      "ppv": null
+    },
+    {
+      "id": "deaa8975-39cd-4b40-b29e-42f01d03a463",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha aww shy cat vibes, sounds like hed be a nightmare for pics lol. whats ur go-to vibe when ur chillin with him? 😺",
+      "createdAt": "2026-04-26T20:42:09.654Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f4a315b8-1f9c-4c8c-8f4c-6cd3cfb34d51",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ooh teasins gettin started? im ready for it babe 😏 whats that chill vibe with biscuit like?",
+      "createdAt": "2026-04-26T20:42:20.406Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "3682fba1-cfc9-4b3a-a2cf-3b2e6cddc8be",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Hes a total vibe when we're just loungin after a shoot, purring like he owns the place",
+      "createdAt": "2026-04-26T20:42:34.748Z",
+      "sentAt": "2026-04-26T20:42:53.198Z",
+      "llmCallId": "d7271a1b-e5dd-4b99-b86d-4361f4c02424",
+      "ppv": null
+    },
+    {
+      "id": "84f09f3e-f714-4624-acaf-9a3a97968620",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Good youre ready for more teasin babe, im feelin it whatcha up to rn that has u this hooked",
+      "createdAt": "2026-04-26T20:42:35.044Z",
+      "sentAt": "2026-04-26T20:43:15.247Z",
+      "llmCallId": "d7271a1b-e5dd-4b99-b86d-4361f4c02424",
+      "ppv": null
+    },
+    {
+      "id": "d953ffb5-fb80-4526-b36e-a431d2a78d1e",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha aww purring like he owns it, thats the best. loungin after a shoot sounds fun, what kinda shoots u do babe? 😏",
+      "createdAt": "2026-04-26T20:42:48.707Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d1bc63f8-7896-43aa-8877-22acb576d847",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "just chillin on the couch scrollin, but ur teasins got me all hooked babe 😏 whats got u feelin it rn?",
+      "createdAt": "2026-04-26T20:43:00.572Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4620069b-59c1-49bb-862b-ce65268b9e88",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Yea hes the boss around here lol, shoots r usually me gettin creative with outfits and teasin vibes",
+      "createdAt": "2026-04-26T20:43:14.227Z",
+      "sentAt": "2026-04-26T20:43:36.787Z",
+      "llmCallId": "5b642940-5b1f-4d99-a42d-0754d349f0b6",
+      "ppv": null
+    },
+    {
+      "id": "e3ebe76f-9af8-495e-a7b8-c7b6ce2a0e4b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whatcha do for fun after a long day babe",
+      "createdAt": "2026-04-26T20:43:14.516Z",
+      "sentAt": "2026-04-26T20:52:11.124Z",
+      "llmCallId": "5b642940-5b1f-4d99-a42d-0754d349f0b6",
+      "ppv": null
+    },
+    {
+      "id": "77ca85b6-21fd-4dda-bad3-8440505c8617",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ooh creative outfits and teasin vibes? that sounds fire babe, what kinda outfits u rockin in those shoots 😏",
+      "createdAt": "2026-04-26T20:43:26.587Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "879d1283-02d9-4f91-a342-79de0e0c8436",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "usually just netflix or games to unwind, maybe scroll here like rn 😏 whats ur go-to unwind babe?",
+      "createdAt": "2026-04-26T20:52:08.018Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "51d5b300-373c-464f-83d1-3642abcbc18a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Mostly lingerie that hugs in all the right spots, keeps things interestin fr",
+      "createdAt": "2026-04-26T20:52:09.587Z",
+      "sentAt": null,
+      "llmCallId": "959d128d-8101-445a-a168-e4816a571f93",
+      "ppv": null
+    },
+    {
+      "id": "9419960a-b187-4df0-9c4e-5e529f657a74",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Makes me wanna know what kinda stuff gets u hooked on a girl babe",
+      "createdAt": "2026-04-26T20:52:10.079Z",
+      "sentAt": null,
+      "llmCallId": "959d128d-8101-445a-a168-e4816a571f93",
+      "ppv": null
+    }
+  ],
+  "durationMs": 954934
+}

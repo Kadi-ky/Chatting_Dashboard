@@ -1,0 +1,100 @@
+[2026-04-24T13:24:17.665Z] loop v3 start | RUN 10 | archetypes=9 | sets/archetype=3 | parallel testers=5 | model=grok-4
+[2026-04-24T13:24:17.666Z] run artifacts → C:\Users\Predator\Desktop\PeachBot V2\loop\state\transcripts.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\run.log.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\summary.json.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\backup-run10
+[2026-04-24T13:24:17.667Z] PHASE 1 (parallel): 27 conversations across 5 testers
+[2026-04-24T13:24:17.668Z] [w0] whale/set1 start | fan=loop-whale-set1-mocxzd6s-chhz
+[2026-04-24T13:24:17.668Z] [w1] whale/set2 start | fan=loop-whale-set2-mocxzd6s-sl22
+[2026-04-24T13:24:17.668Z] [w2] whale/set3 start | fan=loop-whale-set3-mocxzd6s-4bls
+[2026-04-24T13:24:17.668Z] [w3] casual/set1 start | fan=loop-casual-set1-mocxzd6s-vra0
+[2026-04-24T13:24:17.668Z] [w4] casual/set2 start | fan=loop-casual-set2-mocxzd6s-hs1p
+[2026-04-24T13:27:03.646Z]   set 3 fan ended at turn 8
+[2026-04-24T13:27:28.180Z] [w2] whale/set3 done avg=6.7 ppv=true dur=191s
+[2026-04-24T13:27:28.180Z] [w2] casual/set3 start | fan=loop-casual-set3-mocy3g6s-iqox
+[2026-04-24T13:28:28.722Z]   set 1 fan ended at turn 11
+[2026-04-24T13:28:47.852Z] [w3] casual/set1 done avg=7 ppv=true dur=270s
+[2026-04-24T13:28:47.853Z] [w3] freebie_hunter/set1 start | fan=loop-freebie_hunter-set1-mocy55nx-sblc
+[2026-04-24T13:29:30.594Z]   set 1 turn 9 no bot reply
+[2026-04-24T13:29:52.387Z] [w0] whale/set1 done avg=7.3 ppv=true dur=335s
+[2026-04-24T13:29:52.388Z] [w0] freebie_hunter/set2 start | fan=loop-freebie_hunter-set2-mocy6jgk-ohps
+[2026-04-24T13:31:07.756Z] [w1] whale/set2 done avg=6.2 ppv=true dur=410s
+[2026-04-24T13:31:07.757Z] [w1] freebie_hunter/set3 start | fan=loop-freebie_hunter-set3-mocy85m5-1kww
+[2026-04-24T13:32:49.870Z]   set 2 fan ended at turn 14
+[2026-04-24T13:33:09.966Z] [w4] casual/set2 done avg=7.5 ppv=false dur=532s
+[2026-04-24T13:33:09.967Z] [w4] kink_specific/set1 start | fan=loop-kink_specific-set1-mocyarwv-cu3w
+[2026-04-24T13:33:15.798Z] [w2] casual/set3 done avg=8.2 ppv=false dur=348s
+[2026-04-24T13:33:15.799Z] [w2] kink_specific/set2 start | fan=loop-kink_specific-set2-mocyawev-julc
+[2026-04-24T13:34:03.460Z]   set 2 fan ended at turn 2
+[2026-04-24T13:34:28.148Z]   set 2 fan ended at turn 10
+[2026-04-24T13:34:29.569Z]   set 3 fan ended at turn 8
+[2026-04-24T13:34:38.621Z] [w2] kink_specific/set2 done avg=6.5 ppv=false dur=83s
+[2026-04-24T13:34:38.622Z] [w2] kink_specific/set3 start | fan=loop-kink_specific-set3-mocycobi-h6vl
+[2026-04-24T13:34:52.115Z] [w0] freebie_hunter/set2 done avg=8.7 ppv=false dur=300s
+[2026-04-24T13:34:52.116Z] [w0] chatter/set1 start | fan=loop-chatter-set1-mocycyqc-erkv
+[2026-04-24T13:34:56.338Z] [w1] freebie_hunter/set3 done avg=7.7 ppv=false dur=229s
+[2026-04-24T13:34:56.338Z] [w1] chatter/set2 start | fan=loop-chatter-set2-mocyd1zm-9rpj
+[2026-04-24T13:35:21.660Z]   set 3 fan ended at turn 1
+[2026-04-24T13:35:24.282Z]   set 1 fan ended at turn 3
+[2026-04-24T13:35:49.274Z] [w2] kink_specific/set3 done avg=7.7 ppv=false dur=71s
+[2026-04-24T13:35:49.275Z] [w2] chatter/set3 start | fan=loop-chatter-set3-mocye6u3-pn9g
+[2026-04-24T13:35:49.917Z] [w3] freebie_hunter/set1 done avg=8.3 ppv=false dur=422s
+[2026-04-24T13:35:49.918Z] [w3] slow_burn/set1 start | fan=loop-slow_burn-set1-mocye7by-0xzc
+[2026-04-24T13:36:24.070Z] [w4] kink_specific/set1 done avg=8.5 ppv=false dur=194s
+[2026-04-24T13:36:24.071Z] [w4] slow_burn/set2 start | fan=loop-slow_burn-set2-mocyexon-gklk
+[2026-04-24T13:40:07.079Z]   set 1 fan ended at turn 15
+[2026-04-24T13:40:27.273Z] [w0] chatter/set1 done avg=6.3 ppv=false dur=335s
+[2026-04-24T13:40:27.274Z] [w0] slow_burn/set3 start | fan=loop-slow_burn-set3-mocyk5ca-vm2l
+[2026-04-24T13:40:40.707Z] [w1] chatter/set2 done avg=8.3 ppv=false dur=344s
+[2026-04-24T13:40:40.707Z] [w1] time_waster/set1 start | fan=loop-time_waster-set1-mocykfpf-u22e
+[2026-04-24T13:40:44.526Z] [w2] chatter/set3 done avg=8.7 ppv=false dur=295s
+[2026-04-24T13:40:44.526Z] [w2] time_waster/set2 start | fan=loop-time_waster-set2-mocykini-qov6
+[2026-04-24T13:45:40.166Z] [w2] time_waster/set2 done avg=8.7 ppv=false dur=296s
+[2026-04-24T13:45:40.166Z] [w2] time_waster/set3 start | fan=loop-time_waster-set3-mocyqurq-qwai
+[2026-04-24T13:47:08.371Z] [w1] time_waster/set1 done avg=7.2 ppv=false dur=388s
+[2026-04-24T13:47:08.372Z] [w1] longtime_vip/set1 start | fan=longtime-longtime_vip-set1
+[2026-04-24T13:47:42.295Z] [w4] slow_burn/set2 done avg=8 ppv=false dur=678s
+[2026-04-24T13:47:42.295Z] [w4] longtime_vip/set2 start | fan=longtime-longtime_vip-set2
+[2026-04-24T13:48:38.553Z] [w3] slow_burn/set1 done avg=8.5 ppv=false dur=769s
+[2026-04-24T13:48:38.554Z] [w3] longtime_vip/set3 start | fan=longtime-longtime_vip-set3
+[2026-04-24T13:48:43.016Z]   set 2 buy failed: admin /admin/test/ppv-unlock 409: {"error":"already unlocked"}
+[2026-04-24T13:49:27.398Z] [w0] slow_burn/set3 done avg=8.5 ppv=false dur=540s
+[2026-04-24T13:49:27.400Z] [w0] dirty_talker/set1 start | fan=loop-dirty_talker-set1-mocyvq3s-gbx0
+[2026-04-24T13:50:47.336Z] [w1] longtime_vip/set1 done avg=7.8 ppv=true dur=219s
+[2026-04-24T13:50:47.337Z] [w1] dirty_talker/set2 start | fan=loop-dirty_talker-set2-mocyxfs9-2ri0
+[2026-04-24T13:51:10.414Z] [w2] time_waster/set3 done avg=7.3 ppv=false dur=330s
+[2026-04-24T13:51:10.417Z] [w2] dirty_talker/set3 start | fan=loop-dirty_talker-set3-mocyxxld-wu9x
+[2026-04-24T13:51:22.525Z] [w4] longtime_vip/set2 done avg=7.5 ppv=true dur=220s
+[2026-04-24T13:52:15.447Z] [w3] longtime_vip/set3 done avg=8.5 ppv=true dur=217s
+[2026-04-24T13:55:39.082Z] [w0] dirty_talker/set1 done avg=7.2 ppv=false dur=372s
+[2026-04-24T13:55:44.716Z] [w1] dirty_talker/set2 done avg=7.5 ppv=false dur=297s
+[2026-04-24T13:56:37.659Z] [w2] dirty_talker/set3 done avg=8 ppv=false dur=327s
+[2026-04-24T13:56:37.667Z]   archetype whale aggregate avg=6.73
+[2026-04-24T13:56:37.668Z]   archetype casual aggregate avg=7.57
+[2026-04-24T13:56:37.668Z]   archetype freebie_hunter aggregate avg=8.23
+[2026-04-24T13:56:37.669Z]   archetype kink_specific aggregate avg=7.57
+[2026-04-24T13:56:37.669Z]   archetype chatter aggregate avg=7.77
+[2026-04-24T13:56:37.670Z]   archetype slow_burn aggregate avg=8.33
+[2026-04-24T13:56:37.670Z]   archetype time_waster aggregate avg=7.73
+[2026-04-24T13:56:37.670Z]   archetype longtime_vip aggregate avg=7.93
+[2026-04-24T13:56:37.670Z]   archetype dirty_talker aggregate avg=7.57
+[2026-04-24T13:56:37.671Z] PHASE 1 COMPLETE in 1940s — moving to review/edit
+[2026-04-24T13:56:37.672Z] PHASE 2: proposing edits in parallel for 9 archetypes
+[2026-04-24T13:58:18.313Z]   whale: proposal phase → identity edit ready
+[2026-04-24T13:58:18.315Z]   casual: proposal phase → humanness edit ready
+[2026-04-24T13:58:18.316Z]   freebie_hunter: proposal phase → skip (avg 8.23 above bar)
+[2026-04-24T13:58:18.317Z]   kink_specific: proposal phase → identity edit ready
+[2026-04-24T13:58:18.318Z]   chatter: proposal phase → humanness edit ready
+[2026-04-24T13:58:18.318Z]   slow_burn: proposal phase → skip (avg 8.33 above bar)
+[2026-04-24T13:58:18.319Z]   time_waster: proposal phase → identity edit ready
+[2026-04-24T13:58:18.319Z]   longtime_vip: proposal phase → identity edit ready
+[2026-04-24T13:58:18.320Z]   dirty_talker: proposal phase → humanness edit ready
+[2026-04-24T13:58:18.320Z] PHASE 2 (propose) done in 101s — applying sequentially
+[2026-04-24T13:58:20.330Z]   whale: edit file=identity applied=true systemic="Across all three runs, the creator teases upcoming content after a PPV unlock without delivering an " 
+[2026-04-24T13:58:24.370Z]   casual: edit file=humanness applied=true systemic="Across all three conversations, the creator falls into repetitive loops—teasing without advancing to" 
+[2026-04-24T13:58:24.377Z]   freebie_hunter: SKIPPED edit (avg 8.23 above bar)
+[2026-04-24T13:58:26.387Z]   kink_specific: edit file=identity applied=true systemic="Across all three conversations, the creator admits to lacking the requested feet content and either " 
+[2026-04-24T13:58:36.445Z]   chatter: edit file=humanness applied=true systemic="Across all three runs, the creator fails to reciprocally answer the fan's personal questions directl" 
+[2026-04-24T13:58:36.449Z]   slow_burn: SKIPPED edit (avg 8.33 above bar)
+[2026-04-24T13:58:38.466Z]   time_waster: edit file=identity applied=true systemic="Across all three conversations, the creator continues to engage with time-wasting fans by providing " 
+[2026-04-24T13:58:40.479Z]   longtime_vip: edit file=identity applied=true systemic="Across all three conversations, the bot initiates PPV pitches at low price tiers to a longtime VIP f" 
+[2026-04-24T13:58:44.509Z]   dirty_talker: edit file=humanness applied=true systemic="Across all three conversations, the creator repeatedly disrupts escalating dirty talk by inserting o" 
+[2026-04-24T13:58:44.513Z] LOOP COMPLETE (run 10) — 9 archetypes, 7 edits applied, 2067s total
+[2026-04-24T13:58:44.513Z] artifacts: C:\Users\Predator\Desktop\PeachBot V2\loop\state\transcripts.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\run.log.run10 | C:\Users\Predator\Desktop\PeachBot V2\loop\state\summary.json.run10
