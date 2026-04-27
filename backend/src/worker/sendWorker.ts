@@ -106,20 +106,32 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
       } catch (err) {
         metrics.outboundFailures.inc();
         logger.error({ ...ctx, err: err instanceof Error ? err.message : err }, "send failed");
-        // 429 (OnlyFans rate limit): don't drop the message. Push the job
-        // back with a 5-minute delay so it retries after the rate limit has
-        // had time to clear. Better than burning the reply but also better
-        // than retrying immediately (which compounds the rate limit and
-        // turns one 429 into many).
-        if (err instanceof PlatformHttpError && err.status === 429) {
-          logger.warn({ ...ctx }, "send 429 — delaying job 5 min for retry");
-          await job.moveToDelayed(Date.now() + 5 * 60_000, token);
-          throw new DelayedError();
-        }
-        // 401 / 403 (auth): retries won't fix a bad/revoked token. Mark
-        // failed permanently so we don't waste capacity.
+        // 401 / 403: bad/revoked token won't fix itself — drop permanently.
         if (err instanceof PlatformHttpError && (err.status === 401 || err.status === 403)) {
           throw new UnrecoverableError(err.message);
+        }
+        // 429: keep retrying every 2 min until either it succeeds OR the
+        // message is too stale (15 min old) to be worth sending. Once a
+        // reply is 15 min late, the fan has moved on; saving the queue
+        // capacity matters more than a stale send.
+        if (err instanceof PlatformHttpError && err.status === 429) {
+          const ageMs = Date.now() - job.timestamp;
+          const STALE_AFTER_MS = 15 * 60_000;
+          if (ageMs > STALE_AFTER_MS) {
+            logger.warn(
+              { ...ctx, ageMs },
+              "send 429 — message too stale, dropping",
+            );
+            throw new UnrecoverableError(
+              `message too stale after repeated 429s (age=${Math.round(ageMs / 1000)}s)`,
+            );
+          }
+          logger.warn(
+            { ...ctx, ageMs },
+            "send 429 — delaying job 2 min for retry",
+          );
+          await job.moveToDelayed(Date.now() + 2 * 60_000, token);
+          throw new DelayedError();
         }
         throw err;
       }

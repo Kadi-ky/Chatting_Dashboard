@@ -24,12 +24,12 @@ const COOLDOWN_DAYS = 14;
  * behaviour anymore.
  */
 const MIN_TURNS_BETWEEN_PITCHES: Record<Phase, number> = {
-  WARMUP: Infinity, // never in warmup
-  RAPPORT: Infinity, // not yet — soft teasing only
-  QUALIFYING: 5,
-  MONETIZING: 3,
-  WHALE: 3,
-  REACTIVATION: Infinity, // never on a reactivation turn itself
+  WARMUP: Infinity, // still never — phase fix moved out of WARMUP fast anyway
+  RAPPORT: 4, // was Infinity — RAPPORT now allows pitches to start early
+  QUALIFYING: 3, // was 5 — pitch every 3 messages (was every 5)
+  MONETIZING: 2, // was 3 — pitch every 2 messages once they've bought
+  WHALE: 2, // was 3 — most aggressive pitch cadence
+  REACTIVATION: Infinity,
   COLD: Infinity,
 };
 
@@ -56,7 +56,7 @@ const MIN_TURNS_BETWEEN_PITCHES: Record<Phase, number> = {
  * Override with env var PITCH_RAPPORT_GATE_TURNS for tuning. Set to 0 or 1
  * to effectively disable.
  */
-const PITCH_RAPPORT_GATE_TURNS = Number(process.env.PITCH_RAPPORT_GATE_TURNS ?? "8");
+const PITCH_RAPPORT_GATE_TURNS = Number(process.env.PITCH_RAPPORT_GATE_TURNS ?? "5");
 
 export interface PitchDecision {
   shouldPitch: boolean;
