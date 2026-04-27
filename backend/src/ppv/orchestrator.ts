@@ -214,8 +214,21 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   // If this exact asset was pitched within the cooldown window, skip. Note
   // "continuing" an in-progress script is still a different asset_id from the
   // previous rung, so cooldowns apply per-rung, not per-script.
+  //
+  // EXCEPTION: when the fan EXPLICITLY asks for content right now ("send me",
+  // "how much", a buying signal), we bypass the cooldown. Otherwise on heavy
+  // chat days the picker can run out of un-pitched assets and the bot stalls
+  // forever — no pitches even when fans are explicitly buying. Better to
+  // re-pitch a recently-shown asset than to never pitch and lose the sale.
   if (pitchedRecently.has(picked.asset.id)) {
-    return { shouldPitch: false, reason: "asset pitched recently" };
+    if (args.explicitRequest) {
+      logger.info(
+        { fanUuid: args.subscriberExternalId, assetId: picked.asset.id },
+        "asset cooldown bypassed — fan explicitly asked for content",
+      );
+    } else {
+      return { shouldPitch: false, reason: "asset pitched recently" };
+    }
   }
 
   // Apply fan-requested discount AFTER picker has committed to an asset. We
