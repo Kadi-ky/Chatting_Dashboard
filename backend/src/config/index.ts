@@ -93,6 +93,13 @@ const envSchema = z.object({
   // send without calling OFAPI.
   NUDGE_ENABLED: stringBool(false),
   NUDGE_DRY_RUN: stringBool(false),
+  // Soft-resume ramp-up. When set to an ISO timestamp in the future, the
+  // per-account token bucket runs at HALF its normal refill rate until that
+  // time passes. Use this when un-pausing after a long 429 cooldown to
+  // give OnlyFans's rate-limit flag time to clear without triggering a new
+  // burst. Example: SEND_RAMP_UP_UNTIL=2026-04-27T13:00:00Z (60 min ramp).
+  // Unset / empty / past time → normal rate.
+  SEND_RAMP_UP_UNTIL: z.string().transform(v => v || undefined).optional(),
 
   BURST_WINDOW_MS: z.coerce.number().int().positive().default(4000),
   CONVERSATION_LOCK_TTL_MS: z.coerce.number().int().positive().default(60_000),

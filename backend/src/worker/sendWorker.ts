@@ -27,6 +27,15 @@ async function getAccountCooldownMs(accountId: string): Promise<number> {
 async function setAccountCooldown(accountId: string): Promise<void> {
   await sharedRedis().set(ACCOUNT_COOLDOWN_KEY(accountId), "1", "PX", ACCOUNT_COOLDOWN_MS);
 }
+
+/** True when SEND_RAMP_UP_UNTIL is set + still in the future. */
+function isInRampUp(): boolean {
+  const raw = process.env.SEND_RAMP_UP_UNTIL;
+  if (!raw) return false;
+  const target = Date.parse(raw);
+  if (!Number.isFinite(target)) return false;
+  return Date.now() < target;
+}
 import type { PlatformAdapter, SendResult } from "../platform/PlatformAdapter.js";
 import { markMessageSent } from "../db/repos/messages.js";
 import { markLastOutbound } from "../db/repos/subscribers.js";
@@ -50,19 +59,38 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
       // even ~3-5 messages within ~30s on a single creator account. Tuning
       // for that — capacity 3, refill 1 token per 30s (so sustained ~2/min,
       // burst 3). Was 20 capacity / 1 token per 5s which DEFINITELY tripped OF.
+      //
+      // RAMP-UP MODE: when SEND_RAMP_UP_UNTIL is set + future, halve the rate
+      // (1 token per 60s, sustained 1/min). Used after un-pausing a flagged
+      // account so OF's elevated-cooldown flag fully clears.
+      const inRampUp = isInRampUp();
       b = new TokenBucketRateLimiter({
         key: `send:${accountId}`,
-        capacity: 3,
-        refillPerSec: 1 / 30,
+        capacity: inRampUp ? 2 : 3,
+        refillPerSec: inRampUp ? 1 / 60 : 1 / 30,
       });
       buckets.set(accountId, b);
     }
+    // If we crossed the ramp-up boundary, recreate the bucket with normal
+    // limits. Cheap to reset; happens at most once per worker lifetime.
     return b;
+  };
+
+  // Reset buckets whenever ramp-up status flips. Cheap check on each job.
+  let lastInRampUp = isInRampUp();
+  const checkRampUpTransition = (): void => {
+    const now = isInRampUp();
+    if (now !== lastInRampUp) {
+      logger.info({ inRampUp: now }, "ramp-up boundary crossed; resetting buckets");
+      buckets.clear();
+      lastInRampUp = now;
+    }
   };
   const conversationGap = new ConversationGap(undefined, env.OUTBOUND_MIN_GAP_MS);
   const sendLock = new ConversationSendLock();
 
   const w = outboundWorker(async (job: OutboundJob, token) => {
+    checkRampUpTransition();
     const data = job.data;
     const ctx = {
       conversationId: data.conversationId,

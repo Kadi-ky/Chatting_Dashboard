@@ -108,6 +108,11 @@ async function handle(
       api_key_prefix: env.PLATFORM_API_KEY?.slice(0, 8) ?? null,
       always_awake_raw: process.env.PERSONA_ALWAYS_AWAKE ?? "(unset)",
       shadow_mode_raw: process.env.SHADOW_MODE ?? "(unset)",
+      send_ramp_up_until: env.SEND_RAMP_UP_UNTIL ?? null,
+      send_ramp_up_active: (() => {
+        const t = env.SEND_RAMP_UP_UNTIL ? Date.parse(env.SEND_RAMP_UP_UNTIL) : NaN;
+        return Number.isFinite(t) && Date.now() < t;
+      })(),
       node_env: env.NODE_ENV,
       booted_at: process.env.PEACHBOT_BOOTED_AT ?? "(unknown)",
     });
