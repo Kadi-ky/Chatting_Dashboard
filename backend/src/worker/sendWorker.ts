@@ -8,6 +8,25 @@ import {
   type OutboundJobData,
 } from "../queue/outbound.js";
 import { TokenBucketRateLimiter, ConversationGap, ConversationSendLock } from "../queue/rate_limit.js";
+import { sharedRedis } from "../queue/redis.js";
+
+/**
+ * Account-level cooldown after 429. When set, ALL outbound jobs to this
+ * account get delayed until the key expires. Stops the "every queued
+ * message individually hits 429" cascade where a single rate-limit window
+ * burns through dozens of retries.
+ */
+const ACCOUNT_COOLDOWN_KEY = (accountId: string): string => `acct_cooldown:${accountId}`;
+const ACCOUNT_COOLDOWN_MS = 5 * 60_000; // pause an account for 5 min after a 429
+
+async function getAccountCooldownMs(accountId: string): Promise<number> {
+  const ttl = await sharedRedis().pttl(ACCOUNT_COOLDOWN_KEY(accountId));
+  return ttl > 0 ? ttl : 0;
+}
+
+async function setAccountCooldown(accountId: string): Promise<void> {
+  await sharedRedis().set(ACCOUNT_COOLDOWN_KEY(accountId), "1", "PX", ACCOUNT_COOLDOWN_MS);
+}
 import type { PlatformAdapter, SendResult } from "../platform/PlatformAdapter.js";
 import { markMessageSent } from "../db/repos/messages.js";
 import { markLastOutbound } from "../db/repos/subscribers.js";
@@ -62,6 +81,17 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
     }
 
     try {
+      // Account-level cooldown (set when we hit a 429). If active, delay
+      // this job until the cooldown clears. ALL pending jobs for this
+      // account stack up here instead of each one trying to send and
+      // burning a retry budget on the same rate-limit window.
+      const acctCooldown = await getAccountCooldownMs(data.accountId);
+      if (acctCooldown > 0) {
+        logger.debug({ ...ctx, cooldownMs: acctCooldown }, "account in 429 cooldown; delaying");
+        await job.moveToDelayed(Date.now() + acctCooldown, token);
+        throw new DelayedError();
+      }
+
       // Per-conversation gap (cheap, local Redis GET). If blocked, delay
       // the job rather than busy-looping — BullMQ will re-enqueue it for us.
       const gapWait = await conversationGap.msUntilAllowed(data.conversationId);
@@ -110,27 +140,24 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
         if (err instanceof PlatformHttpError && (err.status === 401 || err.status === 403)) {
           throw new UnrecoverableError(err.message);
         }
-        // 429: keep retrying every 2 min until either it succeeds OR the
-        // message is too stale (15 min old) to be worth sending. Once a
-        // reply is 15 min late, the fan has moved on; saving the queue
-        // capacity matters more than a stale send.
+        // 429: trigger an account-wide cooldown so OTHER queued jobs stop
+        // hammering OF too. Then delay THIS job until the cooldown clears
+        // and try once more. Stale messages (>15 min) get dropped.
         if (err instanceof PlatformHttpError && err.status === 429) {
           const ageMs = Date.now() - job.timestamp;
           const STALE_AFTER_MS = 15 * 60_000;
           if (ageMs > STALE_AFTER_MS) {
-            logger.warn(
-              { ...ctx, ageMs },
-              "send 429 — message too stale, dropping",
-            );
+            logger.warn({ ...ctx, ageMs }, "send 429 — message too stale, dropping");
             throw new UnrecoverableError(
               `message too stale after repeated 429s (age=${Math.round(ageMs / 1000)}s)`,
             );
           }
+          await setAccountCooldown(data.accountId);
           logger.warn(
-            { ...ctx, ageMs },
-            "send 429 — delaying job 2 min for retry",
+            { ...ctx, ageMs, cooldownMs: ACCOUNT_COOLDOWN_MS },
+            "send 429 — account-wide cooldown triggered; delaying this job",
           );
-          await job.moveToDelayed(Date.now() + 2 * 60_000, token);
+          await job.moveToDelayed(Date.now() + ACCOUNT_COOLDOWN_MS, token);
           throw new DelayedError();
         }
         throw err;
