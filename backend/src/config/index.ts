@@ -59,6 +59,11 @@ const envSchema = z.object({
   // the `/inbox/events` endpoint we'd poll, so leave this OFF for OFAPI.
   // Default false; set to true for platforms that need it.
   POLLING_ENABLED: z.coerce.boolean().default(false),
+  // When true, bypass the persona's sleep-hours window — the bot replies
+  // immediately at any hour. Used for 24/7 production bots that should never
+  // defer replies to a "wake-up" time. Default true (most use cases want
+  // 24/7); set to false if you want the humanness sleep illusion.
+  PERSONA_ALWAYS_AWAKE: z.coerce.boolean().default(true),
 
   BURST_WINDOW_MS: z.coerce.number().int().positive().default(4000),
   CONVERSATION_LOCK_TTL_MS: z.coerce.number().int().positive().default(60_000),

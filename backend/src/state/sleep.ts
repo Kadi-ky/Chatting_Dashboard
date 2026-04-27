@@ -46,6 +46,11 @@ export function sleepDecision(
   if (process.env.LOOP_TEST_MODE === "1") {
     return { asleep: false, replyAt: null, delayMs: 0 };
   }
+  // Production override: 24/7 bots disable the sleep illusion entirely. Set
+  // PERSONA_ALWAYS_AWAKE=false to bring the sleep window back. Default true.
+  if (process.env.PERSONA_ALWAYS_AWAKE !== "false") {
+    return { asleep: false, replyAt: null, delayMs: 0 };
+  }
   const localHour = hourInTimezone(now, schedule.tz);
   const inWindow = isInWindow(localHour, schedule.startHour, schedule.endHour);
   if (!inWindow) return { asleep: false, replyAt: null, delayMs: 0 };
