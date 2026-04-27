@@ -273,4 +273,33 @@ export function logPitchDecision(conversationId: string, d: PitchDecision): void
     },
     "pitch decision",
   );
+  RECENT_PITCH_DECISIONS.unshift({
+    at: new Date().toISOString(),
+    conversationId,
+    shouldPitch: d.shouldPitch,
+    reason: d.reason,
+    assetId: d.asset?.id ?? null,
+    priceCents: d.priceCents ?? null,
+    scriptNumber: d.scriptNumber ?? null,
+    rung: d.rung ?? null,
+  });
+  if (RECENT_PITCH_DECISIONS.length > RECENT_PITCH_DECISIONS_MAX) {
+    RECENT_PITCH_DECISIONS.length = RECENT_PITCH_DECISIONS_MAX;
+  }
+}
+
+interface RecentPitchDecision {
+  at: string;
+  conversationId: string;
+  shouldPitch: boolean;
+  reason: string;
+  assetId: string | null;
+  priceCents: number | null;
+  scriptNumber: number | null;
+  rung: number | null;
+}
+const RECENT_PITCH_DECISIONS: RecentPitchDecision[] = [];
+const RECENT_PITCH_DECISIONS_MAX = 50;
+export function getRecentPitchDecisions(): RecentPitchDecision[] {
+  return RECENT_PITCH_DECISIONS.slice();
 }

@@ -11,6 +11,7 @@ import { getPlatformAdapter } from "../platform/index.js";
 import { loadAccountByPlatformId, upsertShadowAccount } from "../db/repos/accounts.js";
 import { getRecentPlatformErrors } from "../platform/impl/http/client.js";
 import { getRecentNudges } from "../worker/nudgeWorker.js";
+import { getRecentPitchDecisions } from "../ppv/orchestrator.js";
 
 export interface AdminServerHandle {
   stop(): Promise<void>;
@@ -94,6 +95,12 @@ async function handle(
   // ring buffer; clears on restart.
   if (method === "GET" && path === "/diag/recent-nudges") {
     return json(res, 200, { nudges: getRecentNudges() });
+  }
+
+  // Recent pitch decisions: WHY the picker decided to pitch (or not).
+  // Critical for debugging "bot didn't pitch when fan asked how much" cases.
+  if (method === "GET" && path === "/diag/recent-pitches") {
+    return json(res, 200, { decisions: getRecentPitchDecisions() });
   }
 
   if (method === "GET" && path === "/diag/runtime-flags") {
