@@ -54,6 +54,11 @@ const envSchema = z.object({
   // production bot is live for accounts we're not testing. Leave blank to
   // accept every account (unsafe in prod alongside another live bot).
   PLATFORM_ACCOUNT_ALLOWLIST: z.string().transform(v => v || undefined).optional(),
+  // Enable the catch-up poller. Designed for platforms whose webhook delivery
+  // is unreliable. OnlyFansAPI delivers webhooks reliably AND doesn't expose
+  // the `/inbox/events` endpoint we'd poll, so leave this OFF for OFAPI.
+  // Default false; set to true for platforms that need it.
+  POLLING_ENABLED: z.coerce.boolean().default(false),
 
   BURST_WINDOW_MS: z.coerce.number().int().positive().default(4000),
   CONVERSATION_LOCK_TTL_MS: z.coerce.number().int().positive().default(60_000),

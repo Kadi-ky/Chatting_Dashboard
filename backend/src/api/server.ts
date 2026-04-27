@@ -30,7 +30,9 @@ export interface AdminServerHandle {
  * so a misconfigured deploy can't accidentally expose the surface.
  */
 export function startAdminServer(): AdminServerHandle {
-  const port = env.ADMIN_PORT;
+  // Railway / Render / Fly inject a PORT env var the backend MUST bind to.
+  // Fall back to ADMIN_PORT (8787) for local dev.
+  const port = process.env.PORT ? Number(process.env.PORT) : env.ADMIN_PORT;
   const token = env.ADMIN_TOKEN ?? null;
 
   const server = http.createServer((req, res) => {

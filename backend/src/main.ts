@@ -74,7 +74,15 @@ async function boot(): Promise<void> {
   sendWorker = startSendWorker({ adapter: getPlatformAdapter() });
   broadcastRunner = startBroadcastRunner();
   adminServer = startAdminServer();
-  poller = startPoller();
+  // Poller is opt-in (POLLING_ENABLED=true). OnlyFansAPI delivers webhooks
+  // reliably and doesn't expose an /inbox/events endpoint, so polling just
+  // spams 404 errors. Other platforms may need it.
+  if (env.POLLING_ENABLED) {
+    poller = startPoller();
+    logger.info("poller enabled");
+  } else {
+    logger.info("poller disabled (POLLING_ENABLED=false)");
+  }
   logger.info("service up");
 }
 
