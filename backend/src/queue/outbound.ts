@@ -32,8 +32,14 @@ export function outboundQueue(): Queue<OutboundJobData> {
     queueInstance = new Queue<OutboundJobData>(OUTBOUND_QUEUE, {
       connection: createRedis(),
       defaultJobOptions: {
-        attempts: 6,
-        backoff: { type: "exponential", delay: 2_000 },
+        // Reduced from 6 → 2 retries on 2026-04-27. With 6 retries +
+        // exponential backoff, a single 429 from OnlyFans turned into 6
+        // additional API calls in 2 minutes — compounding the rate limit.
+        // sendWorker now throws UnrecoverableError on 429/401/403 so those
+        // never retry at all; for genuinely transient errors (network blip)
+        // 2 attempts with backoff is plenty.
+        attempts: 2,
+        backoff: { type: "exponential", delay: 5_000 },
         removeOnComplete: { count: 1000, age: 24 * 3600 },
         removeOnFail: { count: 5000, age: 7 * 24 * 3600 },
       },

@@ -1,4 +1,5 @@
-import { DelayedError, type Worker } from "bullmq";
+import { DelayedError, UnrecoverableError, type Worker } from "bullmq";
+import { PlatformHttpError } from "../platform/impl/http/client.js";
 import { logger } from "../observability/logger.js";
 import { env } from "../config/index.js";
 import {
@@ -26,10 +27,14 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
   const bucketFor = (accountId: string): TokenBucketRateLimiter => {
     let b = buckets.get(accountId);
     if (!b) {
+      // OnlyFans-Native rate limit (Cloudflare 1015): we hit 429s when sending
+      // even ~3-5 messages within ~30s on a single creator account. Tuning
+      // for that — capacity 3, refill 1 token per 30s (so sustained ~2/min,
+      // burst 3). Was 20 capacity / 1 token per 5s which DEFINITELY tripped OF.
       b = new TokenBucketRateLimiter({
         key: `send:${accountId}`,
-        capacity: 20,
-        refillPerSec: 0.2,
+        capacity: 3,
+        refillPerSec: 1 / 30,
       });
       buckets.set(accountId, b);
     }
@@ -101,6 +106,16 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
       } catch (err) {
         metrics.outboundFailures.inc();
         logger.error({ ...ctx, err: err instanceof Error ? err.message : err }, "send failed");
+        // Don't auto-retry rate-limit (429) or auth (401/403) errors.
+        // - 429: retrying immediately makes the rate limit WORSE (cf-rate-limit
+        //   compounds). Better to drop this one reply; the next fan message
+        //   will trigger a fresh attempt naturally spaced apart.
+        // - 401/403: token rotated or revoked — retries won't fix that.
+        // Throwing UnrecoverableError tells BullMQ to mark the job failed
+        // permanently and skip remaining attempts.
+        if (err instanceof PlatformHttpError && (err.status === 429 || err.status === 401 || err.status === 403)) {
+          throw new UnrecoverableError(err.message);
+        }
         throw err;
       }
 
