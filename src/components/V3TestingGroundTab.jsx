@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { MessageCircle, Sparkles, Send, PlusCircle, RefreshCw, AlertCircle, Pause, Play, Eye, Lock, Check, DollarSign } from 'lucide-react'
 import { v3api, v3Configured } from '../lib/v3api'
 
@@ -322,6 +322,14 @@ export default function V3TestingGroundTab() {
   const [unreadError, setUnreadError] = useState(null)
   const [triggeringFanId, setTriggeringFanId] = useState(null)
   const [skippedFanIds, setSkippedFanIds] = useState(new Set())
+  // Bulk auto-paced send: iterates through visible unread fans with a fixed
+  // gap between each so we don't burst-trigger OF's CF rate limit. The pace
+  // matches the backend's ramp-up token-bucket interval (~60s) plus a small
+  // buffer. cancelBulkRef lets the user abort mid-run without wrestling with
+  // setState's async nature.
+  const [bulkSending, setBulkSending] = useState(false)
+  const [bulkProgress, setBulkProgress] = useState({ current: 0, total: 0 })
+  const cancelBulkRef = useRef(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [sending, setSending] = useState(false)
@@ -390,6 +398,42 @@ export default function V3TestingGroundTab() {
 
   const skipFan = useCallback((fan) => {
     setSkippedFanIds((prev) => new Set(prev).add(fan.fanExternalId))
+  }, [])
+
+  // Auto-paced bulk send. Loops through visible unread fans, triggering one
+  // reply at a time with ~65s between each (slightly above the backend's
+  // 60s token-bucket interval so we don't fight the bucket). Cancel-able
+  // mid-run by clicking Stop.
+  const sendAllPaced = useCallback(async () => {
+    const fansToSend = unreadFans.filter((f) => !skippedFanIds.has(f.fanExternalId))
+    if (fansToSend.length === 0) return
+    setBulkSending(true)
+    cancelBulkRef.current = false
+    setBulkProgress({ current: 0, total: fansToSend.length })
+    for (let i = 0; i < fansToSend.length; i++) {
+      if (cancelBulkRef.current) break
+      const fan = fansToSend[i]
+      setBulkProgress({ current: i + 1, total: fansToSend.length })
+      try {
+        await triggerReply(fan)
+      } catch {
+        // swallow per-fan errors so one failure doesn't kill the batch
+      }
+      // Wait 65s before the next one (skip the wait after the last fan).
+      // Cancel-able: poll the cancel flag every second so user doesn't have
+      // to wait a full minute after clicking Stop.
+      if (i < fansToSend.length - 1 && !cancelBulkRef.current) {
+        for (let waited = 0; waited < 65 && !cancelBulkRef.current; waited++) {
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+        }
+      }
+    }
+    setBulkSending(false)
+    setBulkProgress({ current: 0, total: 0 })
+  }, [unreadFans, skippedFanIds, triggerReply])
+
+  const cancelBulk = useCallback(() => {
+    cancelBulkRef.current = true
   }, [])
 
   const loadDetail = useCallback(async (id) => {
@@ -543,12 +587,32 @@ VITE_V3_ADMIN_TOKEN=your-admin-token`}</pre>
             <div className="px-3 pb-3 pt-1 space-y-2">
               <button
                 onClick={loadUnread}
-                disabled={loadingUnread}
+                disabled={loadingUnread || bulkSending}
                 className="w-full text-xs px-2 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 disabled:opacity-50 text-amber-200 rounded font-semibold flex items-center justify-center gap-1.5"
               >
                 <RefreshCw className={`w-3 h-3 ${loadingUnread ? 'animate-spin' : ''}`} />
                 {loadingUnread ? 'Loading…' : 'Fetch unread from OnlyFans'}
               </button>
+              {/* Bulk auto-paced send: alternative to clicking each fan. Spaces
+                  sends ~65s apart so we stay under OF's rate-limit threshold. */}
+              {unreadFans.filter(f => !skippedFanIds.has(f.fanExternalId)).length > 0 && (
+                bulkSending ? (
+                  <button
+                    onClick={cancelBulk}
+                    className="w-full text-xs px-2 py-1.5 bg-red-500/30 hover:bg-red-500/50 text-red-200 rounded font-semibold flex items-center justify-center gap-1.5"
+                  >
+                    Stop sending ({bulkProgress.current}/{bulkProgress.total})
+                  </button>
+                ) : (
+                  <button
+                    onClick={sendAllPaced}
+                    disabled={loadingUnread}
+                    className="w-full text-xs px-2 py-1.5 bg-emerald-500/30 hover:bg-emerald-500/50 disabled:opacity-50 text-emerald-200 rounded font-semibold"
+                  >
+                    Send all ({unreadFans.filter(f => !skippedFanIds.has(f.fanExternalId)).length}) — auto-paced ~65s each
+                  </button>
+                )
+              )}
               {unreadError && (
                 <div className="text-[10px] text-red-300 bg-red-500/10 border border-red-500/20 px-2 py-1.5 rounded">
                   {unreadError}
@@ -580,14 +644,15 @@ VITE_V3_ADMIN_TOKEN=your-admin-token`}</pre>
                     <div className="flex gap-1.5">
                       <button
                         onClick={() => triggerReply(fan)}
-                        disabled={triggeringFanId === fan.fanExternalId}
+                        disabled={triggeringFanId === fan.fanExternalId || bulkSending}
                         className="flex-1 text-[10px] px-2 py-1 bg-emerald-500/30 hover:bg-emerald-500/50 disabled:opacity-50 text-emerald-200 rounded font-semibold"
                       >
                         {triggeringFanId === fan.fanExternalId ? 'Sending…' : '✓ Send V3 reply'}
                       </button>
                       <button
                         onClick={() => skipFan(fan)}
-                        className="flex-1 text-[10px] px-2 py-1 bg-white/10 hover:bg-white/20 text-white/70 rounded"
+                        disabled={bulkSending}
+                        className="flex-1 text-[10px] px-2 py-1 bg-white/10 hover:bg-white/20 disabled:opacity-50 text-white/70 rounded"
                       >
                         Skip
                       </button>
