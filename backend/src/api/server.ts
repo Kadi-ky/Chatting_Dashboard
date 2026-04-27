@@ -10,6 +10,7 @@ import { db } from "../db/client.js";
 import { getPlatformAdapter } from "../platform/index.js";
 import { loadAccountByPlatformId, upsertShadowAccount } from "../db/repos/accounts.js";
 import { getRecentPlatformErrors } from "../platform/impl/http/client.js";
+import { getRecentNudges } from "../worker/nudgeWorker.js";
 
 export interface AdminServerHandle {
   stop(): Promise<void>;
@@ -87,6 +88,12 @@ async function handle(
   // failures without finding Railway deploy logs. No auth required.
   if (method === "GET" && path === "/diag/recent-errors") {
     return json(res, 200, { errors: getRecentPlatformErrors() });
+  }
+
+  // Recent nudges (idle re-engagement + PPV no-buy follow-ups). Process-local
+  // ring buffer; clears on restart.
+  if (method === "GET" && path === "/diag/recent-nudges") {
+    return json(res, 200, { nudges: getRecentNudges() });
   }
 
   if (method === "GET" && path === "/diag/runtime-flags") {

@@ -87,6 +87,12 @@ const envSchema = z.object({
   // Use the explicit stringBool helper instead.
   POLLING_ENABLED: stringBool(false),
   PERSONA_ALWAYS_AWAKE: stringBool(true),
+  // NUDGE_ENABLED: turns on the auto-nudge worker that re-engages idle fans
+  // and follows up on pending PPVs. Default OFF — flip to true on Railway
+  // when ready. Even when on, NUDGE_DRY_RUN=true makes it log what it WOULD
+  // send without calling OFAPI.
+  NUDGE_ENABLED: stringBool(false),
+  NUDGE_DRY_RUN: stringBool(false),
 
   BURST_WINDOW_MS: z.coerce.number().int().positive().default(4000),
   CONVERSATION_LOCK_TTL_MS: z.coerce.number().int().positive().default(60_000),
