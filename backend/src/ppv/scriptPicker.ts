@@ -172,7 +172,7 @@ const GENERIC_TOPICS = new Set([
   'sext', 'sexting',
 ]);
 
-function isGenericTopic(topic: string): boolean {
+export function isGenericTopic(topic: string): boolean {
   return GENERIC_TOPICS.has(topic.toLowerCase().trim());
 }
 

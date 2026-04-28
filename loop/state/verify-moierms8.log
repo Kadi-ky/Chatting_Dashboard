@@ -1,3 +1,7 @@
 [2026-04-28T09:13:01.246Z] verify start | label=verify-moierms8 | testers=3 | model=grok-4
 [2026-04-28T09:13:01.247Z] [w0] starting serial buys-all (tester 1/3)
 [2026-04-28T09:13:01.248Z] [w0] buys-all start | fan=loop-verify-buys-all-w0-moiermtc-kolo | behavior=buys-everything
+[2026-04-28T09:19:08.044Z] [w0] buys-all turn 5 no bot reply
+[2026-04-28T09:19:08.906Z] [w1] starting serial buys-one (tester 2/3)
+[2026-04-28T09:19:08.907Z] [w1] buys-one start | fan=loop-verify-buys-one-w1-moiezii3-5ema | behavior=buys-one-then-stops
+[2026-04-28T09:20:44.260Z] [w1] buys-one buy failed: admin /admin/test/ppv-unlock 404: {"error":"no ppv attempt for that message"}

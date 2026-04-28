@@ -7,7 +7,7 @@ import {
   countUnboughtRecentPitches,
   listRecentAttempts,
 } from "../db/repos/ppv_attempts.js";
-import { pickNextForFan } from "./scriptPicker.js";
+import { pickNextForFan, isGenericTopic } from "./scriptPicker.js";
 import { getFunnelStep } from "./funnel.js";
 import { sql, type SqlBool } from "kysely";
 import { db } from "../db/client.js";
@@ -168,15 +168,21 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   //
   // - QUALIFYING / MONETIZING / WHALE: full pitch flow allowed (preview first,
   //   then priced PPV next turn). Cooldown applies unless fan explicitly asks.
-  // - WARMUP / RAPPORT / SEXTING: priced PPV is NOT allowed — those are
-  //   heat-building phases. BUT when the fan explicitly asks for content
-  //   ("send pic", "what u got", "show me"), we still send the FREE PREVIEW
-  //   so the ask gets a real response instead of a verbal-only tease. The
-  //   priced PPV still waits until QUALIFYING. previewOnly mode below.
+  // - WARMUP / RAPPORT / SEXTING: priced PPV is NOT allowed by default —
+  //   those are heat-building phases. BUT two cases unlock the pitch path:
+  //     (1) Generic explicit ask ("send pic", "what u got") → previewOnly
+  //         mode: free preview lands, priced PPV waits for QUALIFYING.
+  //     (2) Specific topic ask ("got feet?", "show me ur ass") that the
+  //         catalog can match → specificAskOverride: skip preview, fire
+  //         priced PPV directly. Specific asks signal high commitment;
+  //         the fan named what they want, no need for a teaser turn.
   const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
   const isPrePitchPhase = !Number.isFinite(minTurns);
-  const previewOnly = isPrePitchPhase && args.explicitRequest === true;
-  if (isPrePitchPhase && !previewOnly) {
+  const specificAsk =
+    args.requestedTopic != null && !isGenericTopic(args.requestedTopic);
+  const previewOnly = isPrePitchPhase && args.explicitRequest === true && !specificAsk;
+  const specificAskOverride = isPrePitchPhase && specificAsk;
+  if (isPrePitchPhase && !previewOnly && !specificAskOverride) {
     return { shouldPitch: false, reason: `phase ${args.phase} does not pitch` };
   }
   if (!isPrePitchPhase && !args.explicitRequest && args.turnsSinceLastPitch < (minTurns as number)) {
@@ -278,24 +284,29 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     ? Math.max(1, Math.round(picked.priceCents * (1 - DISCOUNT_RATE)))
     : picked.priceCents;
 
-  // Two-turn funnel: first time we pitch a rung, send the FREE PREVIEW with
-  // a tease caption. Next turn (after fan replies), send the priced PPV. If
-  // the rung has no preview_media_id configured, skip straight to the PPV
-  // step — preserves behavior for catalogs that haven't filled in previews.
+  // Decide which funnel step to fire.
   //
-  // PREVIEW-ONLY MODE (pre-pitch phase + explicit ask): we are allowed to
-  // send the preview but NOT the priced PPV. Two outcomes:
+  // SPECIFIC TOPIC MATCH (picker.reason === "topic_match") — fan named a
+  // specific kink/scene/body part AND the catalog had a match. High
+  // commitment ask: skip the preview, go straight to the priced PPV. Fires
+  // in any phase (specificAskOverride bypassed the pre-pitch phase gate).
+  //
+  // OTHERWISE — two-turn funnel:
   //   - preview not yet sent + asset has preview → send preview now
-  //   - preview already sent OR asset has no preview → no pitch this turn,
-  //     bot keeps flirting / sexting and the priced PPV waits for QUALIFYING
+  //   - else if pre-pitch + previewOnly mode → no pitch (priced PPV waits
+  //     for QUALIFYING; either preview already sent or no preview asset)
+  //   - else → priced PPV (continuation, repeat, or no-preview asset)
   const funnelStep = await getFunnelStep(args.conversationId, picked.asset.id);
   let kind: "preview" | "ppv";
-  if (funnelStep === "none" && picked.previewMediaRef) {
+  if (picked.reason === "topic_match") {
+    kind = "ppv";
+    logger.info(
+      { fanUuid: args.subscriberExternalId, assetId: picked.asset.id, topic: args.requestedTopic },
+      "specific-topic ask — skipping preview, firing priced PPV directly",
+    );
+  } else if (funnelStep === "none" && picked.previewMediaRef) {
     kind = "preview";
   } else if (previewOnly) {
-    // In a pre-pitch phase the priced PPV is not allowed yet — either we
-    // already showed the preview (don't double-send) or this asset has no
-    // preview to show. Either way, no pitch this turn.
     return {
       shouldPitch: false,
       reason: funnelStep !== "none"
