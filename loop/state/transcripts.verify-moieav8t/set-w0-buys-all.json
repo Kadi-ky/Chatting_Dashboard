@@ -1,0 +1,284 @@
+{
+  "scenario": "buys-all",
+  "behavior": "buys-everything",
+  "fanId": "loop-verify-buys-all-w0-moieav9y-tfvn",
+  "convId": "5a6e1797-4d6b-4b20-9fad-f48158fb8fae",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "yo whats up"
+    },
+    {
+      "who": "creator",
+      "text": "Hey stranger, just got back from grabbing coffee\n\nfeelin kinda lazy today"
+    },
+    {
+      "who": "fan",
+      "text": "lazy sundays hit different haha what coffee did ya grab? im chillin with some netflix"
+    },
+    {
+      "who": "creator",
+      "text": "black iced with oat milk, keepin it simple\n\nNetflix sounds way better than my lazy vibe rn, wish i was crashin that session with u 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "haha id love that, what show you think wed binge? im on stranger things rn"
+    },
+    {
+      "who": "creator",
+      "text": "lowkey overdue for a rewatch myself"
+    },
+    {
+      "who": "fan",
+      "text": "yo stranger things rewatch with you sounds lit haha hey what kinda content you got for fans?"
+    },
+    {
+      "who": "creator",
+      "text": "wed prob end up distractin each other more than watchin tho"
+    },
+    {
+      "who": "fan",
+      "text": "haha yeah distractions sound way better than the show anyway 😉 so whats on offer content wise?"
+    },
+    {
+      "who": "creator",
+      "text": "Whats ur setup like rn, couch or bed vibe?"
+    },
+    {
+      "who": "fan",
+      "text": "couch vibe with some snacks, super comfy. what about you, still feelin lazy? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Haha distractions are def the best part of a binge\n\ngot a mix of teasing pics and some hotter solo stuff for fans, lowkey fun sharin with someone who gets it"
+    },
+    {
+      "who": "fan",
+      "text": "haha teasing and solo stuff sounds fire, which ones your fave to share? id def get it 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Lowkey my fave is the playful ones where i get a lil lost in the moment\n\nEsp sharin with someone who vibes like u, makes me wanna crash ur couch session for real"
+    },
+    {
+      "who": "fan",
+      "text": "haha yeah crash my couch anytime, those playful ones sound hot. got any you wanna share rn? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Haha u know id love to share somethin playful with u\n\nim just loungin here in my softest tank and shorts, gettin all kinds of ideas from this chat"
+    },
+    {
+      "who": "fan",
+      "text": "haha tank and shorts vibe sounds hot, what ideas you gettin from our chat? def wanna see somethin playful 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm these ideas are all about u slidin over here, turnin this lazy vibe into somethin way more fun\n\nlowkey tempted to act on em if ur game 😏"
+    },
+    {
+      "who": "fan",
+      "text": "haha im so game, slide those ideas my way. what you thinkin of actin on? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 90s)"
+    }
+  ],
+  "pitchTrace": [],
+  "ppvsSent": 0,
+  "ppvsBought": 0,
+  "finalMessages": [
+    {
+      "id": "ad31787d-2ba3-446b-8f17-02b512bbaaff",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo whats up",
+      "createdAt": "2026-04-28T09:00:06.348Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "95e35aad-f3af-4e72-bff9-dab47d85529d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Hey stranger, just got back from grabbing coffee\n\nfeelin kinda lazy today",
+      "createdAt": "2026-04-28T09:00:25.187Z",
+      "sentAt": null,
+      "llmCallId": "98fe663d-393c-4ad8-9a3a-04eade344cdb",
+      "ppv": null
+    },
+    {
+      "id": "3b6a26e4-1f55-4b32-a627-34eae21a2087",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "lazy sundays hit different haha what coffee did ya grab? im chillin with some netflix",
+      "createdAt": "2026-04-28T09:00:33.112Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a1c676a6-ec2c-448c-ba23-4a98147144bf",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "black iced with oat milk, keepin it simple\n\nNetflix sounds way better than my lazy vibe rn, wish i was crashin that session with u 🖤",
+      "createdAt": "2026-04-28T09:00:52.321Z",
+      "sentAt": null,
+      "llmCallId": "1a82565f-e65b-4fab-b996-d03b53a7a5b5",
+      "ppv": null
+    },
+    {
+      "id": "45e971c4-49aa-4472-80fa-22fe21cf98b3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha id love that, what show you think wed binge? im on stranger things rn",
+      "createdAt": "2026-04-28T09:01:02.115Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "840cf9a9-e267-4577-b213-b5cc85e943b4",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "lowkey overdue for a rewatch myself",
+      "createdAt": "2026-04-28T09:01:31.601Z",
+      "sentAt": null,
+      "llmCallId": "fad4b5c4-eaf8-49ce-8294-dc9f2a22fa01",
+      "ppv": null
+    },
+    {
+      "id": "bce57e32-4655-4e60-9938-69065a7abe0b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "wed prob end up distractin each other more than watchin tho",
+      "createdAt": "2026-04-28T09:01:31.894Z",
+      "sentAt": null,
+      "llmCallId": "fad4b5c4-eaf8-49ce-8294-dc9f2a22fa01",
+      "ppv": null
+    },
+    {
+      "id": "9ea9c10b-04c1-4445-9d1c-2ebb58725a3e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Whats ur setup like rn, couch or bed vibe?",
+      "createdAt": "2026-04-28T09:01:32.187Z",
+      "sentAt": null,
+      "llmCallId": "fad4b5c4-eaf8-49ce-8294-dc9f2a22fa01",
+      "ppv": null
+    },
+    {
+      "id": "48ee6e58-0248-4354-9268-278833aed409",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo stranger things rewatch with you sounds lit haha hey what kinda content you got for fans?",
+      "createdAt": "2026-04-28T09:01:40.358Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a0233374-a69d-483d-9633-d47ce8bafa8f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha yeah distractions sound way better than the show anyway 😉 so whats on offer content wise?",
+      "createdAt": "2026-04-28T09:01:52.466Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "69d04e24-d937-4022-8d40-bf73b85dbc6c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "couch vibe with some snacks, super comfy. what about you, still feelin lazy? 😏",
+      "createdAt": "2026-04-28T09:01:59.583Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bb9f11de-2ff0-4dbd-ac8e-3814fe5621b7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Haha distractions are def the best part of a binge\n\ngot a mix of teasing pics and some hotter solo stuff for fans, lowkey fun sharin with someone who gets it",
+      "createdAt": "2026-04-28T09:02:05.777Z",
+      "sentAt": null,
+      "llmCallId": "80186da7-da80-4bdf-aa0d-6d5dbadc4d59",
+      "ppv": null
+    },
+    {
+      "id": "a589f0b8-20ae-49f7-8771-9eda21a85067",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha teasing and solo stuff sounds fire, which ones your fave to share? id def get it 😏",
+      "createdAt": "2026-04-28T09:02:15.609Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "5f44d687-5f35-4417-b320-c38e8a2400fb",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lowkey my fave is the playful ones where i get a lil lost in the moment\n\nEsp sharin with someone who vibes like u, makes me wanna crash ur couch session for real",
+      "createdAt": "2026-04-28T09:02:40.744Z",
+      "sentAt": null,
+      "llmCallId": "7a4a04b4-1823-4c4c-9d2f-15a2c4528bd1",
+      "ppv": null
+    },
+    {
+      "id": "18651006-e6bb-4f0b-8773-045a7b2d194c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha yeah crash my couch anytime, those playful ones sound hot. got any you wanna share rn? 😏",
+      "createdAt": "2026-04-28T09:02:50.286Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9dbbb77d-5759-4726-b295-8fe2831e79ad",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Haha u know id love to share somethin playful with u\n\nim just loungin here in my softest tank and shorts, gettin all kinds of ideas from this chat",
+      "createdAt": "2026-04-28T09:03:12.166Z",
+      "sentAt": null,
+      "llmCallId": "81ddd7a3-7a3a-48ef-9862-32e422cb44c2",
+      "ppv": null
+    },
+    {
+      "id": "bdc1d467-dde5-4d1b-af48-76791dc03997",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha tank and shorts vibe sounds hot, what ideas you gettin from our chat? def wanna see somethin playful 😏",
+      "createdAt": "2026-04-28T09:03:22.014Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4a8496c9-763d-4747-8b05-c0b0eed720e0",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Mmm these ideas are all about u slidin over here, turnin this lazy vibe into somethin way more fun\n\nlowkey tempted to act on em if ur game 😏",
+      "createdAt": "2026-04-28T09:03:46.362Z",
+      "sentAt": null,
+      "llmCallId": "20bf6587-6277-450e-86ca-76f535f3d3fb",
+      "ppv": null
+    },
+    {
+      "id": "865ca494-b2a1-4b4c-b839-8704b8940190",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha im so game, slide those ideas my way. what you thinkin of actin on? 😏",
+      "createdAt": "2026-04-28T09:03:54.581Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "durationMs": 476486
+}

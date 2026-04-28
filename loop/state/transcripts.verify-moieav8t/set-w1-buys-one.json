@@ -1,0 +1,32 @@
+{
+  "scenario": "buys-one",
+  "behavior": "buys-one-then-stops",
+  "fanId": "loop-verify-buys-one-w1-moiebapq-t61f",
+  "convId": "a0915408-5dfa-4210-acd1-0ce7f79c88fe",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "yo whats up babe"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 90s)"
+    }
+  ],
+  "pitchTrace": [],
+  "ppvsSent": 0,
+  "ppvsBought": 0,
+  "finalMessages": [
+    {
+      "id": "282d37c5-40a4-4c22-bd4a-9c302885b461",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo whats up babe",
+      "createdAt": "2026-04-28T09:00:24.729Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "durationMs": 250443
+}

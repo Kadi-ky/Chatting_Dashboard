@@ -164,16 +164,22 @@ const SUPPORT_DRIP_INTERVAL_TURNS = 10;
  * lazy-materialises a v3.ppv_catalog mirror row so downstream FKs resolve.
  */
 export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision> {
-  // Phase gate. Pitching only happens in QUALIFYING / MONETIZING / WHALE.
-  // WARMUP / RAPPORT / SEXTING are heat-building phases — even an explicit
-  // "send pic" buys nothing in those phases. The state machine advances on
-  // temperature signal so a fan who's actually hot lands in QUALIFYING fast;
-  // a chatty fan stays in RAPPORT and never gets force-pitched.
+  // Phase gate.
+  //
+  // - QUALIFYING / MONETIZING / WHALE: full pitch flow allowed (preview first,
+  //   then priced PPV next turn). Cooldown applies unless fan explicitly asks.
+  // - WARMUP / RAPPORT / SEXTING: priced PPV is NOT allowed — those are
+  //   heat-building phases. BUT when the fan explicitly asks for content
+  //   ("send pic", "what u got", "show me"), we still send the FREE PREVIEW
+  //   so the ask gets a real response instead of a verbal-only tease. The
+  //   priced PPV still waits until QUALIFYING. previewOnly mode below.
   const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
-  if (!Number.isFinite(minTurns)) {
+  const isPrePitchPhase = !Number.isFinite(minTurns);
+  const previewOnly = isPrePitchPhase && args.explicitRequest === true;
+  if (isPrePitchPhase && !previewOnly) {
     return { shouldPitch: false, reason: `phase ${args.phase} does not pitch` };
   }
-  if (!args.explicitRequest && args.turnsSinceLastPitch < (minTurns as number)) {
+  if (!isPrePitchPhase && !args.explicitRequest && args.turnsSinceLastPitch < (minTurns as number)) {
     return { shouldPitch: false, reason: "pitch cooldown active" };
   }
 
@@ -276,10 +282,26 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   // a tease caption. Next turn (after fan replies), send the priced PPV. If
   // the rung has no preview_media_id configured, skip straight to the PPV
   // step — preserves behavior for catalogs that haven't filled in previews.
+  //
+  // PREVIEW-ONLY MODE (pre-pitch phase + explicit ask): we are allowed to
+  // send the preview but NOT the priced PPV. Two outcomes:
+  //   - preview not yet sent + asset has preview → send preview now
+  //   - preview already sent OR asset has no preview → no pitch this turn,
+  //     bot keeps flirting / sexting and the priced PPV waits for QUALIFYING
   const funnelStep = await getFunnelStep(args.conversationId, picked.asset.id);
   let kind: "preview" | "ppv";
   if (funnelStep === "none" && picked.previewMediaRef) {
     kind = "preview";
+  } else if (previewOnly) {
+    // In a pre-pitch phase the priced PPV is not allowed yet — either we
+    // already showed the preview (don't double-send) or this asset has no
+    // preview to show. Either way, no pitch this turn.
+    return {
+      shouldPitch: false,
+      reason: funnelStep !== "none"
+        ? `preview_only: preview already sent for asset (funnelStep=${funnelStep}); priced PPV waits for QUALIFYING`
+        : `preview_only: asset has no preview_media_id; priced PPV waits for QUALIFYING`,
+    };
   } else {
     // funnelStep === "preview_sent" → fan reacted, time for the priced PPV
     // funnelStep === "ppv_sent"     → fan didn't unlock yet; this code path

@@ -401,20 +401,25 @@ async function main() {
   if (!ok) throw new Error('backend not healthy');
   await log(`verify start | label=${RUN_LABEL} | testers=${TESTERS} | model=${GROK_MODEL}`);
 
-  // Run testers in parallel but stagger start so they don't all hit the same
-  // turn boundary at the same instant — that pegs grok-4 with N concurrent
-  // calls per turn and pushes generator latency past the reply-poll timeout.
+  // SERIAL mode: one tester at a time. Each gets full grok-4 throughput so
+  // turns don't get pegged by parallel contention. Total wall time is ~3x
+  // longer but each conversation can actually reach QUALIFYING and verify
+  // the full preview→PPV funnel end-to-end. Parallel mode (Promise.all)
+  // produced reliable timeouts because 3 testers × {classify + generate}
+  // = 6 concurrent xAI calls saturated the model and turns took 60-120s
+  // each, blowing through the 240s waitForReply timeout before reaching
+  // QUALIFYING (which needs ~12-16 turns).
   const start = Date.now();
-  const results = await Promise.all(
-    SCENARIOS.map(async (s, i) => {
-      if (i > 0) await sleep(i * TESTER_STAGGER_MS);
-      try {
-        return await runConversation({ scenario: s.id, behavior: s.behavior, workerId: i });
-      } catch (e) {
-        return { scenario: s.id, behavior: s.behavior, workerId: i, error: e.message };
-      }
-    }),
-  );
+  const results = [];
+  for (let i = 0; i < SCENARIOS.length; i++) {
+    const s = SCENARIOS[i];
+    await log(`[w${i}] starting serial ${s.id} (tester ${i + 1}/${SCENARIOS.length})`);
+    try {
+      results.push(await runConversation({ scenario: s.id, behavior: s.behavior, workerId: i }));
+    } catch (e) {
+      results.push({ scenario: s.id, behavior: s.behavior, workerId: i, error: e.message });
+    }
+  }
 
   // Persist transcripts + analyze each
   const summary = { runLabel: RUN_LABEL, durationSec: Math.round((Date.now() - start) / 1000), sets: [] };
