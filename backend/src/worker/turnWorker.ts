@@ -142,6 +142,7 @@ export function startTurnWorker(): Worker<TurnJobData> {
         explicitRequest,
         requestedTopic: intent.requested_topic ?? null,
         discountRequest: intent.discount_request ?? false,
+        intent,
       });
       logPitchDecision(conversationId, pitchDecision);
 

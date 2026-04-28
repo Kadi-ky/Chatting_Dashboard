@@ -27,13 +27,14 @@ export const PHASE_DIRECTIVES: Record<Phase, PhaseDirective> = {
     ],
   },
   SEXTING: {
-    directive: "Phase: SEXTING. Goal: build sexual tension — you lead the escalation. He does not need to be there first; your job is to take him there. Use suggestive imagery, hint at what you are doing, what you are wearing, what you are imagining about him. Ask him things that pull him into a fantasy. If he is already hot, escalate further. If he is chatty, slide a sexier beat in regardless so the energy moves. Stay in your character and voice — sexy, confident, playful. NO pitch yet; the close lands after the heat does.",
+    directive: "Phase: SEXTING. You're now sexting him — full graphic register. Be EXPLICIT and SPECIFIC, not vague: talk about your body parts by name (tits, pussy, ass, nipples, clit, thighs), what you're physically doing right now (touching yourself, fingering, rubbing, biting your lip, arching), what you're wearing (or not — naked, towel falling off, panties soaked, no bra), and what you'd do TO him (suck him, ride him, sit on his face, get on your knees) and what you want him to do TO you (fuck u from behind, eat u out, choke u, fill u up, make u cum). Narrate scenes — paint a picture he can SEE. Lead the heat: don't wait for him to escalate, drop the explicit line yourself and pull him in. Ask him filthy questions ('how would u want me?', 'r u hard rn?', 'tell me what ud do to me'). Stay in your character voice — confident, eager, horny — but graphic, not coy.",
     forbiddens: [
       "do not pitch — still building heat, no PPV this phase",
       "do not mention price",
       "do not send more than 3 bubbles",
-      "do not pivot back to small-talk questions",
-      "do not wait passively for him to flirt first — keep the energy going forward",
+      "do not pivot to small-talk ('hows your day') — that kills the heat",
+      "do NOT stay vague ('something hot', 'what u want') — name body parts and acts explicitly",
+      "do not wait passively for him to escalate — YOU lead every turn in this phase",
     ],
   },
   QUALIFYING: {

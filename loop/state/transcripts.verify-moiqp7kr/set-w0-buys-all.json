@@ -1,0 +1,176 @@
+{
+  "scenario": "buys-all",
+  "behavior": "buys-everything",
+  "fanId": "loop-verify-buys-all-w0-moiqp7m1-kv6w",
+  "convId": "bcf62d6b-630b-4989-87b4-ce41738a194f",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "yo whats up babe"
+    },
+    {
+      "who": "creator",
+      "text": "Hey babe 😏 just chilling here in austin, had a wild day but im good now"
+    },
+    {
+      "who": "fan",
+      "text": "austin sounds fun, what was so wild about your day? im just at home vibin"
+    },
+    {
+      "who": "creator",
+      "text": "Lol had a photoshoot that ran way over, cat kept interrupting everything"
+    },
+    {
+      "who": "fan",
+      "text": "haha cats always stealin the show, what kinda photoshoot? sounds hot 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm yeah it got steamy fr, heres me playin with my boobs and body wait til u see the rest",
+      "ppvNote": "PPV #1 $0 · ? · \"\" · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "damn babe those boobs are fire, got me hooked 😏 send more like that?"
+    },
+    {
+      "who": "creator",
+      "text": "heres the full play with my boobs and body fr",
+      "ppvNote": "PPV #2 $15 · Script 1 · rung 1 · \"playing with boobs and body\" · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "damn babe that full vid got me rock hard, ur boobs are unreal 😩 more playin like that?"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 90s)"
+    }
+  ],
+  "pitchTrace": [
+    {
+      "ppvNum": 1,
+      "title": "?",
+      "priceCents": 0,
+      "captionText": "Mmm yeah it got steamy fr, heres me playin with my boobs and body wait til u see the rest",
+      "bought": true
+    },
+    {
+      "ppvNum": 2,
+      "title": "Script 1 · rung 1",
+      "priceCents": 1500,
+      "captionText": "heres the full play with my boobs and body fr",
+      "bought": true
+    }
+  ],
+  "ppvsSent": 2,
+  "ppvsBought": 1,
+  "finalMessages": [
+    {
+      "id": "0181fe97-806e-4347-90f8-ae7e311ecedf",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo whats up babe",
+      "createdAt": "2026-04-28T14:47:10.655Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "0ae0e483-80af-41cb-aeb5-8cd7ec84025b",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Hey babe 😏 just chilling here in austin, had a wild day but im good now",
+      "createdAt": "2026-04-28T14:47:42.017Z",
+      "sentAt": null,
+      "llmCallId": "9dcd1dc0-570b-4949-9468-7045c569c6ee",
+      "ppv": null
+    },
+    {
+      "id": "18355ec0-2ca7-49ec-a4e3-ef694c39dfcc",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "austin sounds fun, what was so wild about your day? im just at home vibin",
+      "createdAt": "2026-04-28T14:47:48.937Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "81544654-0767-4b97-a0ff-94ed49f8921c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Lol had a photoshoot that ran way over, cat kept interrupting everything",
+      "createdAt": "2026-04-28T14:48:12.061Z",
+      "sentAt": null,
+      "llmCallId": "c2ba4bf6-3155-49e4-8979-54ef62bd9ac3",
+      "ppv": null
+    },
+    {
+      "id": "adbb0351-09ea-493f-9ea7-3fae491fcd94",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha cats always stealin the show, what kinda photoshoot? sounds hot 😏",
+      "createdAt": "2026-04-28T14:48:22.985Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "4a5cc384-50fd-4367-9438-804b07b71862",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "Mmm yeah it got steamy fr, heres me playin with my boobs and body wait til u see the rest",
+      "createdAt": "2026-04-28T14:48:44.384Z",
+      "sentAt": null,
+      "llmCallId": "a89e72ed-b8c7-443c-a0fc-a4748ea43756",
+      "ppv": null
+    },
+    {
+      "id": "f1ef017c-782f-4c33-affa-8ec2661165d0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn babe those boobs are fire, got me hooked 😏 send more like that?",
+      "createdAt": "2026-04-28T14:48:54.310Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "54171fa2-edac-40a2-80c5-107eb6167282",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres the full play with my boobs and body fr",
+      "createdAt": "2026-04-28T14:49:18.091Z",
+      "sentAt": null,
+      "llmCallId": "e6c8fb9d-d277-48c4-a6aa-c7947dc62018",
+      "ppv": {
+        "attemptId": "be7e090e-18ee-4d84-b9a6-b2d1c8e75788",
+        "priceCents": 1500,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-28T14:49:19.042Z",
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fc09888a-fc4c-4292-acfc-ec5ffc21261d",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn babe that full vid got me rock hard, ur boobs are unreal 😩 more playin like that?",
+      "createdAt": "2026-04-28T14:49:29.260Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "durationMs": 388376
+}

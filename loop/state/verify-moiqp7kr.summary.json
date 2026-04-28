@@ -1,0 +1,20 @@
+{
+  "runLabel": "verify-moiqp7kr",
+  "durationSec": 388,
+  "sets": [
+    {
+      "workerId": 0,
+      "scenario": "buys-all",
+      "behavior": "buys-everything",
+      "ppvsSent": 2,
+      "ppvsBought": 1,
+      "orderingTrace": "S?R? → S1R1",
+      "orderingViolations": [],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": 6,
+      "rapportGateRespected": false,
+      "durationSec": 388
+    }
+  ]
+}

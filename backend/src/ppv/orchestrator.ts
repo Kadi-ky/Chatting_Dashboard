@@ -7,8 +7,10 @@ import {
   countUnboughtRecentPitches,
   listRecentAttempts,
 } from "../db/repos/ppv_attempts.js";
-import { pickNextForFan, isGenericTopic } from "./scriptPicker.js";
+import { pickNextForFan } from "./scriptPicker.js";
 import { getFunnelStep } from "./funnel.js";
+import { analyzePitchReadiness } from "./pitchReadiness.js";
+import type { IntentFlags } from "../classify/intent.js";
 import { sql, type SqlBool } from "kysely";
 import { db } from "../db/client.js";
 
@@ -120,6 +122,12 @@ export interface DecidePitchArgs {
   requestedTopic?: string | null;
   /** Fan asked for a discount this turn ("any discount?", "lower it"). When true and a pitch is otherwise approved, priceCents is reduced by DISCOUNT_RATE and discountApplied=true is set on the decision. */
   discountRequest?: boolean;
+  /**
+   * Full intent classification this turn — passed to the pitch-readiness
+   * analyzer as a cheap-signal hint (NOT used as the override gate). Optional
+   * for callers that don't have it (broadcasts, tests).
+   */
+  intent?: IntentFlags;
 }
 
 /** Fixed discount fans get when they ask. Configurable; bot frames as one-time gift. */
@@ -164,28 +172,25 @@ const SUPPORT_DRIP_INTERVAL_TURNS = 10;
  * lazy-materialises a v3.ppv_catalog mirror row so downstream FKs resolve.
  */
 export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision> {
-  // Phase gate.
+  // Hard guards (not phase-based — these always block):
+  //   - COLD / REACTIVATION never pitch
+  //   - Cooldown when not asked
   //
-  // - QUALIFYING / MONETIZING / WHALE: full pitch flow allowed (preview first,
-  //   then priced PPV next turn). Cooldown applies unless fan explicitly asks.
-  // - WARMUP / RAPPORT / SEXTING: priced PPV is NOT allowed by default —
-  //   those are heat-building phases. BUT two cases unlock the pitch path:
-  //     (1) Generic explicit ask ("send pic", "what u got") → previewOnly
-  //         mode: free preview lands, priced PPV waits for QUALIFYING.
-  //     (2) Specific topic ask ("got feet?", "show me ur ass") that the
-  //         catalog can match → specificAskOverride: skip preview, fire
-  //         priced PPV directly. Specific asks signal high commitment;
-  //         the fan named what they want, no need for a teaser turn.
-  const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
-  const isPrePitchPhase = !Number.isFinite(minTurns);
-  const specificAsk =
-    args.requestedTopic != null && !isGenericTopic(args.requestedTopic);
-  const previewOnly = isPrePitchPhase && args.explicitRequest === true && !specificAsk;
-  const specificAskOverride = isPrePitchPhase && specificAsk;
-  if (isPrePitchPhase && !previewOnly && !specificAskOverride) {
+  // The heuristic bypasses (`explicitRequest`, `specificAskOverride`,
+  // `previewOnly`) used to live here. They were retired in favor of the
+  // pitch-readiness LLM analyzer below, which reads the full conversation
+  // context and decides whether it's actually time to pitch — instead of
+  // firing on word-list matches like "what kinda photoshoot? sounds hot"
+  // that the regex/LLM classifier flagged as buying signals.
+  if (args.phase === "COLD" || args.phase === "REACTIVATION") {
     return { shouldPitch: false, reason: `phase ${args.phase} does not pitch` };
   }
-  if (!isPrePitchPhase && !args.explicitRequest && args.turnsSinceLastPitch < (minTurns as number)) {
+  const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
+  if (
+    Number.isFinite(minTurns) &&
+    !args.explicitRequest &&
+    args.turnsSinceLastPitch < (minTurns as number)
+  ) {
     return { shouldPitch: false, reason: "pitch cooldown active" };
   }
 
@@ -284,41 +289,53 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     ? Math.max(1, Math.round(picked.priceCents * (1 - DISCOUNT_RATE)))
     : picked.priceCents;
 
-  // Decide which funnel step to fire.
-  //
-  // SPECIFIC TOPIC MATCH (picker.reason === "topic_match") — fan named a
-  // specific kink/scene/body part AND the catalog had a match. High
-  // commitment ask: skip the preview, go straight to the priced PPV. Fires
-  // in any phase (specificAskOverride bypassed the pre-pitch phase gate).
-  //
-  // OTHERWISE — two-turn funnel:
-  //   - preview not yet sent + asset has preview → send preview now
-  //   - else if pre-pitch + previewOnly mode → no pitch (priced PPV waits
-  //     for QUALIFYING; either preview already sent or no preview asset)
-  //   - else → priced PPV (continuation, repeat, or no-preview asset)
+  // Pitch-readiness analyzer — LLM reads the conversation in full and
+  // decides whether this turn should pitch (and what kind), instead of the
+  // old word-list bypass rules.
   const funnelStep = await getFunnelStep(args.conversationId, picked.asset.id);
-  let kind: "preview" | "ppv";
-  if (picked.reason === "topic_match") {
-    kind = "ppv";
-    logger.info(
-      { fanUuid: args.subscriberExternalId, assetId: picked.asset.id, topic: args.requestedTopic },
-      "specific-topic ask — skipping preview, firing priced PPV directly",
-    );
-  } else if (funnelStep === "none" && picked.previewMediaRef) {
-    kind = "preview";
-  } else if (previewOnly) {
+  const readiness = await analyzePitchReadiness({
+    conversationId: args.conversationId,
+    phase: args.phase,
+    turnIndex: args.turnIndex,
+    funnelStep,
+    ...(args.intent ? { intent: args.intent } : {}),
+  });
+
+  // Map decision to outcome.
+  if (readiness.decision === "rapport" || readiness.decision === "sext_more") {
     return {
       shouldPitch: false,
-      reason: funnelStep !== "none"
-        ? `preview_only: preview already sent for asset (funnelStep=${funnelStep}); priced PPV waits for QUALIFYING`
-        : `preview_only: asset has no preview_media_id; priced PPV waits for QUALIFYING`,
+      reason: `pitch_readiness=${readiness.decision} (${readiness.reasoning})`,
     };
+  }
+  if (readiness.decision === "decline_softly") {
+    return {
+      shouldPitch: false,
+      reason: `pitch_readiness=decline_softly (${readiness.reasoning})`,
+    };
+  }
+
+  let kind: "preview" | "ppv";
+  if (readiness.decision === "preview") {
+    // Analyzer wants a preview. Honor it if asset has a preview; otherwise
+    // step back to rapport (don't silently degrade preview→ppv against the
+    // analyzer's wishes).
+    if (!picked.previewMediaRef) {
+      return {
+        shouldPitch: false,
+        reason: `pitch_readiness=preview but asset has no preview_media_id; staying in rapport`,
+      };
+    }
+    if (funnelStep === "preview_sent" || funnelStep === "ppv_sent") {
+      // Already sent something for this asset — don't double-preview.
+      return {
+        shouldPitch: false,
+        reason: `pitch_readiness=preview but funnelStep=${funnelStep}; skipping double-send`,
+      };
+    }
+    kind = "preview";
   } else {
-    // funnelStep === "preview_sent" → fan reacted, time for the priced PPV
-    // funnelStep === "ppv_sent"     → fan didn't unlock yet; this code path
-    //   shouldn't fire (drip / recovery handles it), but if it does we re-pitch
-    //   the priced PPV (idempotent; new attempt row).
-    // no preview configured                → straight to PPV
+    // readiness.decision === "ppv"
     kind = "ppv";
   }
 
