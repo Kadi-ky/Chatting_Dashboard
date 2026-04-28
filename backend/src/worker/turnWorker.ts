@@ -155,6 +155,7 @@ export function startTurnWorker(): Worker<TurnJobData> {
                 asset: pitchDecision.asset,
                 priceCents: pitchDecision.priceCents,
                 ...(pitchDecision.discountApplied ? { discountApplied: true } : {}),
+                ...(pitchDecision.supportDripMode ? { supportDripMode: true } : {}),
               },
             }
           : {}),

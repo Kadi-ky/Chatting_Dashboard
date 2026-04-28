@@ -48,6 +48,8 @@ export interface GenerateReplyInput {
     priceCents: number;
     /** True when orchestrator honoured a fan's discount request — the persona should frame as a one-time gift. */
     discountApplied?: boolean;
+    /** True when this is a "support-drip" pitch — fan has been ignoring pitches; bot is doing a periodic re-ask with explicit "support me" framing. */
+    supportDripMode?: boolean;
   };
   /** Archetype snapshot — only used for asset_performance rollups when pitching. */
   archetype?: LatestArchetypeRow | null;
@@ -137,6 +139,7 @@ async function generateLlmReply(
     : directive.forbiddens;
 
   const discountApplied = isPitch && input.pitch!.discountApplied === true;
+  const supportDripMode = isPitch && input.pitch!.supportDripMode === true;
   const task: {
     kind: GeneratorTaskKind;
     objective: string;
@@ -152,6 +155,9 @@ async function generateLlmReply(
             : "The fan is signalling they want content — close the loop now. Deliver the asset below as the last bubble. Do NOT stall with another 'what gets you going' question — the question phase is over for this turn. Keep prelude short (0–1 bubble of warm-up), then attach the asset with a caption that teases what's in it. Natural, not salesy.") +
           (discountApplied
             ? " IMPORTANT: the fan asked for a discount and you ARE giving it to them — the price below is already 10% off. Frame it warmly as a one-time gift in your prelude bubble: 'aight babe just for u i knocked a lil off' / 'ok ok i got u, gonna give u a lil deal'. Do NOT mention any dollar amount — the discounted price is shown in the PPV bubble automatically. Do NOT hesitate or counter-offer; the deal is already done."
+            : "") +
+          (supportDripMode
+            ? " SUPPORT-DRIP framing: this fan has been chatting without buying for a while — the bot is doing a periodic 'support me' ask. The PPV caption MUST include explicit support language alongside the content tease. Pick one phrasing per send (rotate, don't repeat verbatim each time): 'support a girl with this one', 'help me out babe with this', 'buy this to keep me filming', 'show me a lil love with this one', 'support means a lot fr'. Tone stays warm and a touch vulnerable — not begging, not whining, just real. Still describe what's IN the PPV (per the description), but the ASK is reframed from 'unlock this' to 'support this'."
             : "") +
           " The asset is sent as the last bubble; earlier bubbles are regular text.",
         forbiddens: [

@@ -87,6 +87,13 @@ export interface PitchDecision {
    * question, stop dangling more content. Reset by the next unlock.
    */
   pitchRecoveryMode?: boolean;
+  /**
+   * Set when shouldPitch is TRUE under the support-drip cadence: fan has
+   * been ignoring pitches but enough messages have passed since the last
+   * one that we re-pitch with explicit "support me" framing. Reply pipeline
+   * uses this to add task guidance about the support angle in the caption.
+   */
+  supportDripMode?: boolean;
 }
 
 export interface DecidePitchArgs {
@@ -131,6 +138,19 @@ const UNBOUGHT_LOOKBACK = 2;
 const UNBOUGHT_INBOUND_GATE = 2;
 
 /**
+ * SUPPORT-DRIP interval. After UNBOUGHT_LOOKBACK pitches go unopened, the bot
+ * stops the regular cadence and only re-pitches every N messages with an
+ * explicit "support me" framing. Prevents the bot from harassing a quiet
+ * fan with constant pitches, while still keeping a sales option on the table
+ * for fans who chat-only without ever buying.
+ *
+ * The "support" framing is added in the reply pipeline as turn guidance —
+ * the bot asks the fan to "support me with this one" / "buy this to help me
+ * out" rather than pitching purely as content delivery.
+ */
+const SUPPORT_DRIP_INTERVAL_TURNS = 10;
+
+/**
  * Should we attach a PPV pitch to this outbound turn? Only phases QUALIFYING
  * and up are eligible. COLD, WARMUP, RAPPORT, REACTIVATION never pitch.
  *
@@ -161,24 +181,36 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     return { shouldPitch: false, reason: "account missing creator_uuid" };
   }
 
-  // Back-off: if the fan has ignored the last N pitches (still pending +
-  // they've sent inbound messages since), force a rapport-recovery turn.
-  // The bot stops pitching, switches to a personal share / question. This
-  // resets when the fan unlocks anything (the recent attempts no longer
-  // qualify as ignored). An explicit fresh buying signal also overrides —
-  // if they say "send it" or "any discount?" right now, that's a new
-  // engagement signal worth honouring.
+  // Back-off + drip: if the fan has ignored the last N pitches (still pending
+  // + they've sent inbound messages since), the bot is in "drip mode".
+  //
+  // BEFORE: full suppression — bot pivoted to rapport, never pitched again
+  //         until fan unlocked or explicitly asked. Result: chat-only fans
+  //         who never buy got infinite free attention.
+  // NOW:    pitch ONCE every SUPPORT_DRIP_INTERVAL_TURNS messages with
+  //         explicit "support me" framing. Fan gets quiet rapport between
+  //         drips, but the bot still asks for the sale on a regular cadence
+  //         instead of giving up.
+  //
+  // Explicit ask still overrides — fan says "send me" → immediate pitch.
   const unbought = await countUnboughtRecentPitches({
     conversationId: args.conversationId,
     lookback: UNBOUGHT_LOOKBACK,
     inboundSince: UNBOUGHT_INBOUND_GATE,
   });
+  let dripPitch = false;
   if (unbought >= UNBOUGHT_LOOKBACK && !args.explicitRequest) {
-    return {
-      shouldPitch: false,
-      reason: `pitch_recovery (last ${UNBOUGHT_LOOKBACK} pitches unbought)`,
-      pitchRecoveryMode: true,
-    };
+    if (args.turnsSinceLastPitch >= SUPPORT_DRIP_INTERVAL_TURNS) {
+      // Drip cadence reached — allow this pitch, flag it for support framing.
+      dripPitch = true;
+    } else {
+      // Still inside the silent rapport window between drips.
+      return {
+        shouldPitch: false,
+        reason: `pitch_recovery (last ${UNBOUGHT_LOOKBACK} pitches unbought, ${args.turnsSinceLastPitch}/${SUPPORT_DRIP_INTERVAL_TURNS} until next drip)`,
+        pitchRecoveryMode: true,
+      };
+    }
   }
 
   const pitchedRecently = new Set(
@@ -242,12 +274,17 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
 
   return {
     shouldPitch: true,
-    reason: picked.reason === "continue" ? "continue_script" : "new_script",
+    reason: dripPitch
+      ? `support_drip (every ${SUPPORT_DRIP_INTERVAL_TURNS} msgs after ${UNBOUGHT_LOOKBACK} unbought)`
+      : picked.reason === "continue"
+        ? "continue_script"
+        : "new_script",
     asset: picked.asset,
     priceCents: finalPriceCents,
     scriptNumber: picked.scriptNumber,
     rung: picked.rung,
     ...(args.discountRequest ? { discountApplied: true } : {}),
+    ...(dripPitch ? { supportDripMode: true } : {}),
   };
 }
 
