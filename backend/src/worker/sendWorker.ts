@@ -154,6 +154,17 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
             caption: data.text,
             idempotencyKey,
           });
+        } else if (data.kind === "preview" && data.preview) {
+          // Free media post: same OFAPI endpoint as PPV, just price=0. The
+          // platform infers PPV-vs-free from `price > 0`, so a 0-priced media
+          // attachment lands as a regular DM photo/clip the fan sees inline.
+          result = await deps.adapter.sendPPV(adapterCtx, {
+            subscriberExternalId: data.subscriberExternalId,
+            assetRef: data.preview.mediaRef,
+            priceCents: 0,
+            caption: data.text,
+            idempotencyKey,
+          });
         } else {
           result = await deps.adapter.sendMessage(adapterCtx, {
             subscriberExternalId: data.subscriberExternalId,

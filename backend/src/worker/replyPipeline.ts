@@ -50,6 +50,13 @@ export interface GenerateReplyInput {
     discountApplied?: boolean;
     /** True when this is a "support-drip" pitch — fan has been ignoring pitches; bot is doing a periodic re-ask with explicit "support me" framing. */
     supportDripMode?: boolean;
+    /**
+     * Free preview media ref for the picked script. When set, the pipeline
+     * sends this as a free media-attached bubble at the start of the chain
+     * (before any text), giving the fan a tease they get for $0 before the
+     * priced PPV closes.
+     */
+    previewMediaRef?: string;
   };
   /** Archetype snapshot — only used for asset_performance rollups when pitching. */
   archetype?: LatestArchetypeRow | null;
@@ -664,6 +671,44 @@ async function enqueueHumanizedTurn(args: {
 
   const q = outboundQueue();
   let cumulativeDelay = extraLeadMs;
+
+  // FREE PREVIEW — when the picked script has a preview_media_id configured,
+  // send it as the very first bubble (before any text). Fans see a free
+  // tease photo/clip, the bot's text rapport bubble lands a beat later, then
+  // the paid PPV closes. Typing-rhythm-wise the preview gets a small fixed
+  // lead so it's the first thing on screen, then a ~3.5s gap before the
+  // text bubble — feels like "look at this … wait, here's more".
+  const previewMediaRef = pitch?.previewMediaRef;
+  if (previewMediaRef) {
+    const previewDraft = await insertOutboundDraft({
+      conversationId: input.conversationId,
+      text: "",
+      llmCallId,
+      // DB MessageKind enum has no "preview" — record the row as kind=ppv
+      // (it IS a media-attached send). The OutboundJobData.kind is what
+      // routes the adapter call to a 0-priced media post.
+      kind: "ppv",
+    });
+    const previewDelay = cumulativeDelay + 1200;
+    const previewJob: OutboundJobData = {
+      accountId: input.accountId,
+      conversationId: input.conversationId,
+      subscriberId: input.subscriberId,
+      subscriberExternalId: input.subscriberExternalId,
+      kind: "preview",
+      messageId: previewDraft.id,
+      text: "",
+      preview: { mediaRef: previewMediaRef },
+      bubbleIndex: 0,
+      bubbleCount: count + 1,
+    };
+    await q.add(`preview:${previewDraft.id}`, previewJob, {
+      delay: previewDelay,
+      jobId: `send-${previewDraft.id}`,
+    });
+    cumulativeDelay = previewDelay + 3500;
+  }
+
   for (let i = 0; i < count; i++) {
     cumulativeDelay += humanized.timings[i]?.delayMs ?? 0;
     const isPitchBubble = pitch != null && i === lastIdx;

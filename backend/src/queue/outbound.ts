@@ -3,7 +3,7 @@ import { createRedis } from "./redis.js";
 
 export const OUTBOUND_QUEUE = "peach-outbound";
 
-export type OutboundJobKind = "text" | "ppv";
+export type OutboundJobKind = "text" | "ppv" | "preview";
 
 export interface OutboundJobData {
   accountId: string;
@@ -19,6 +19,14 @@ export interface OutboundJobData {
     assetId: string;
     assetRef: string;
     priceCents: number;
+  };
+  /**
+   * Free preview payload, present only when kind=preview. Sent as a
+   * media-attached message with priceCents=0 (OFAPI treats `price > 0` as the
+   * PPV signal, so 0 + media = a free DM photo/clip).
+   */
+  preview?: {
+    mediaRef: string;
   };
   /** Sequence index within a bubble chain so logs and retries make sense. */
   bubbleIndex: number;

@@ -46,10 +46,13 @@ export interface PickResult {
   reason: "continue" | "new" | "topic_match";
   scriptNumber: number;
   rung: number;
-  // NOTE: previewMediaRef (free teaser flow) deferred to a future round —
-  // requires extending OutboundJobData + adapter for attachment delivery,
-  // which is too much to validate in the same run as the dryness/over-decline
-  // fixes. Plumbing planned in scriptPicker.ts/orchestrator.ts/replyPipeline.ts.
+  /**
+   * Free preview media for this script (one preview per script, shared across
+   * all rungs). When set, the reply pipeline will send this as a free
+   * media-attached message immediately before the priced PPV. Null when the
+   * catalog row has no preview_media_id.
+   */
+  previewMediaRef: string | null;
 }
 
 /**
@@ -352,5 +355,6 @@ async function materialise(
     reason,
     scriptNumber: script.scriptNumber,
     rung: rung.rung,
+    previewMediaRef: script.previewMediaId,
   };
 }

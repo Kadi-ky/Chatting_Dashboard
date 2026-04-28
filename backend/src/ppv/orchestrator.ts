@@ -94,6 +94,13 @@ export interface PitchDecision {
    * uses this to add task guidance about the support angle in the caption.
    */
   supportDripMode?: boolean;
+  /**
+   * Free preview media for the picked script. When set, the reply pipeline
+   * sends this as a free media-attached bubble immediately before the priced
+   * PPV — fan gets a tease for $0, then the close. Null when the picked
+   * script has no preview configured.
+   */
+  previewMediaRef?: string;
 }
 
 export interface DecidePitchArgs {
@@ -285,6 +292,7 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     rung: picked.rung,
     ...(args.discountRequest ? { discountApplied: true } : {}),
     ...(dripPitch ? { supportDripMode: true } : {}),
+    ...(picked.previewMediaRef ? { previewMediaRef: picked.previewMediaRef } : {}),
   };
 }
 
