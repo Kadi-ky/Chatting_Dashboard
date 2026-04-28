@@ -389,6 +389,52 @@ async function generateLlmReply(
     );
   }
 
+  // ─── Heat-escalation rescue ──────────────────────────────────────────────
+  // The fan's temperature is a LAGGING indicator — by the time he's "hot" the
+  // bot needed to be escalating BEFORE that. So when the bot is in RAPPORT
+  // and the fan hasn't reached "hot", or in SEXTING and the fan's still
+  // "cold", fire explicit "you escalate this turn" guidance. The bot's job
+  // is to MOVE the temperature, not match where the fan happens to be.
+  //
+  // Suppressed during emotional/disengagement/objection/pitch turns — those
+  // demand soft handling that escalation guidance would fight with.
+  const fanTemp = input.intent?.temperature ?? "cold";
+  const inHeatPhase = input.phase === "RAPPORT" || input.phase === "SEXTING";
+  const escalationOk =
+    !isPitch &&
+    !postUnlockWindow &&
+    !input.intent?.objection &&
+    !input.intent?.disengagement &&
+    !input.intent?.emotional_disclosure &&
+    !input.intent?.impossible_request;
+  if (inHeatPhase && escalationOk && fanTemp !== "hot") {
+    if (input.phase === "RAPPORT") {
+      guidanceParts.push(
+        [
+          `Heat-escalation rescue (this turn — RAPPORT):`,
+          `The fan is reading ${fanTemp}. YOU are the one who heats things up here, not him. Drop a forward flirty/physical line this turn — do not just ask another small-talk question. Pick one shape:`,
+          `- Self-disclosure flirt: "lowkey horny rn ngl", "in bed bored thinking bout u", "fresh out the shower n still in just a towel 🙃"`,
+          `- Direct flirt at him: "u always make me wanna do bad things", "whatcha doin to me rn", "stop being so fuckin hot it's distracting"`,
+          `- Physical-vibe tease: "the way u type makes me wanna ___", "if u were here rn id ___", "u'd be in trouble if u were next to me"`,
+          `Your job this phase is to MOVE his temperature up, not match his current mood. If you stay neutral he stays neutral. Drop the line.`,
+        ].join("\n"),
+      );
+    } else {
+      // SEXTING phase
+      guidanceParts.push(
+        [
+          `Heat-escalation rescue (this turn — SEXTING):`,
+          `The fan is reading ${fanTemp} but you are in SEXTING phase — your job is to make him hot, not wait for him. Drop an EXPLICIT line this turn even if his last message was tame. Pick one direction:`,
+          `- Body / sensation: describe what you're wearing (or not), where you're touching yourself, how wet you are, what your body's doing right now.`,
+          `- Action narration: tell him what you'd do if he was there — undress him, get on top, suck him, ride him, whatever fits.`,
+          `- Pull HIM in: ask what he wants you to do, tell him to imagine you on him, ask if he's hard, tell him to stroke for you.`,
+          `Examples (write in your voice): "lowkey wet rn imagining u behind me", "if u were here id be on my knees already", "tell me how u'd want me, im in bed touching myself".`,
+          `Do NOT pivot to small-talk. Do NOT wait for him to escalate first. The point of this phase is YOU pulling him into sex talk.`,
+        ].join("\n"),
+      );
+    }
+  }
+
   if (guidanceParts.length > 0) task.turnGuidance = guidanceParts.join("\n\n");
 
   // When pitching in a pre-pitch phase (triggered by an explicit buying
