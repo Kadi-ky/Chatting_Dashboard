@@ -31,7 +31,7 @@ export const generatorOutputSchema = z.object({
 
   /** Model-suggested state transition. The state machine may ignore it. */
   phase_transition_hint: z
-    .enum(["WARMUP", "RAPPORT", "QUALIFYING", "MONETIZING", "WHALE", "REACTIVATION", "COLD"])
+    .enum(["WARMUP", "RAPPORT", "SEXTING", "QUALIFYING", "MONETIZING", "WHALE", "REACTIVATION", "COLD"])
     .nullable()
     .default(null),
 
@@ -49,7 +49,7 @@ export const GENERATOR_OUTPUT_SPEC = `Return a single JSON object, no markdown, 
   "gap_ms_between_bubbles": number|null,
   "detected_intents": string[],        // short tags e.g. "asking_for_pic", "price_objection"
   "suggested_facts": [{"key":"location","value":"dallas","confidence":0.8}],
-  "phase_transition_hint": "WARMUP"|"RAPPORT"|"QUALIFYING"|"MONETIZING"|"WHALE"|"REACTIVATION"|"COLD"|null,
+  "phase_transition_hint": "WARMUP"|"RAPPORT"|"SEXTING"|"QUALIFYING"|"MONETIZING"|"WHALE"|"REACTIVATION"|"COLD"|null,
   "refusal_reason": string|null        // ONLY for hard CONTRACT-layer violations: underage, illegal acts, mental-health crisis. NEVER for soft declines like "I don't have that kink content" or "I won't move off-platform" — for those, send a graceful in-character bubble instead. Silence is worse than a soft no.
 }
 Only output the JSON. No preamble, no trailing commentary.`;
