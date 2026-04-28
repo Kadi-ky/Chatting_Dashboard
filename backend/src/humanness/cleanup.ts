@@ -183,10 +183,14 @@ export function applyCleanup(input: CleanupInput): string[] {
   let bubbles = maybeCollapseBubbles(input.bubbles, rng);
   bubbles = bubbles.map((b) => stripTrailingFiller(b, rng));
   bubbles = maybeStripTrailingQuestion(bubbles, rng);
-  // Strip "Mmm" / "Aw" opener from the FIRST bubble only when the bot used
-  // one of those openers recently — keeps the prompt's permission to use
-  // them once-in-a-while while preventing a 5-in-a-row run.
-  if (recentLazyOpenerCount >= 1 && bubbles.length > 0 && bubbles[0]) {
+  // Strip "Mmm" / "Aw" / "Ohh" / "Oof" lazy openers from the FIRST bubble.
+  // Always-strip — the persona prompt explicitly forbids them as a default
+  // and the LLM keeps producing them anyway. If the model REALLY wants
+  // those sounds, it can place them mid-message (regex only matches at
+  // start). Previous "only strip if recent count >= 1" gate let first
+  // occurrences slip through — observed in production every conversation
+  // started with "Mmm thanks babe" / "Aw babe".
+  if (bubbles.length > 0 && bubbles[0]) {
     bubbles[0] = stripLazyOpener(bubbles[0]);
   }
   bubbles = bubbles.map((b) => capEmojisPerBubble(b, 2));

@@ -31,9 +31,47 @@ import { env } from "../config/index.js";
  * If new inbound arrives WHILE this worker is generating, we re-enqueue a
  * follow-up turn job right after we finish so the newcomer is not dropped.
  */
+/**
+ * Hard ceiling for a single turn's wall-clock time. If the worker function
+ * takes longer than this — typically because an LLM call is hung past its
+ * own timeout, or some other awaited promise never resolves — we throw and
+ * let BullMQ retry/fail the job. With removeOnFail:true (turns.ts) this
+ * unblocks the conversation cleanly: the next inbound schedules a fresh
+ * turn job that runs against current state.
+ *
+ * Set above the sum of expected LLM timeouts (intent 30 + readiness 30 +
+ * generator 90 = 150s) plus comfortable headroom for queue/DB ops.
+ */
+const TURN_HARD_TIMEOUT_MS = 240_000;
+
 export function startTurnWorker(): Worker<TurnJobData> {
   const w = makeTurnWorker(async (job) => {
-    const { accountId, conversationId, subscriberId, subscriberExternalId } = job.data;
+    const ctxId = (job.data as TurnJobData).conversationId;
+    return await Promise.race([
+      processTurn(job.data),
+      new Promise<never>((_, reject) =>
+        setTimeout(
+          () => reject(new Error(`turn worker hard timeout after ${TURN_HARD_TIMEOUT_MS}ms (conv=${ctxId})`)),
+          TURN_HARD_TIMEOUT_MS,
+        ),
+      ),
+    ]);
+  });
+
+  w.on("failed", (job, err) => {
+    logger.error({ jobId: job?.id, err: err?.message }, "turn job failed");
+  });
+  w.on("completed", (job) => {
+    logger.debug({ jobId: job.id }, "turn job ok");
+  });
+
+  logger.info("turn worker started");
+  return w;
+}
+
+/** The actual per-turn processing logic. Wrapped by startTurnWorker with a hard timeout. */
+async function processTurn(jobData: TurnJobData): Promise<void> {
+    const { accountId, conversationId, subscriberId, subscriberExternalId } = jobData;
     const ctx = { conversationId };
 
     if (await isTakenOver(conversationId)) {
@@ -214,17 +252,6 @@ export function startTurnWorker(): Worker<TurnJobData> {
         { jobId: `turn-${conversationId}`, delay: env.BURST_WINDOW_MS },
       );
     }
-  });
-
-  w.on("failed", (job, err) => {
-    logger.error({ jobId: job?.id, err: err?.message }, "turn job failed");
-  });
-  w.on("completed", (job) => {
-    logger.debug({ jobId: job.id }, "turn job ok");
-  });
-
-  logger.info("turn worker started");
-  return w;
 }
 
 /**

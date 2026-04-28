@@ -1,0 +1,303 @@
+{
+  "scenario": "shortcut",
+  "behavior": "buys-everything-shortcut",
+  "fanId": "loop-verify-shortcut-w1-mois9xz5-ns6g",
+  "convId": "8a5782ed-244b-47dd-b77d-ed1bbd683852",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "what u got babe? send somethin hot now"
+    },
+    {
+      "who": "creator",
+      "text": "mmm u got me all worked up already\n\nIm sittin here in my tiny shorts, nipples hard just imagining what ud do to me 🥵\n\nFuck babe ur makin me wanna show off for u"
+    },
+    {
+      "who": "fan",
+      "text": "come on babe show me those hard nipples send a pic now im rock hard"
+    },
+    {
+      "who": "creator",
+      "text": "bUT i got somethin thats gonna drive u wild\n\nits me topless, playin with my pussy over my panties, lowkey so hot and teasing, wanna see?"
+    },
+    {
+      "who": "fan",
+      "text": "fuck yeah unlocked that shit damn babe ur teasin me so good send more whats next im throbbin for u"
+    },
+    {
+      "who": "creator",
+      "text": "knew ud love that tease babe, heres me playin with my boobs and body, gettin all worked up just for u",
+      "ppvNote": "PPV #1 $15 · Script 1 · rung 1 · \"playing with boobs and body\" · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "fuck yeah unlocked it babe ur boobs got me leakin pre cum send more whats next im dyin for it"
+    },
+    {
+      "who": "creator",
+      "text": "heres me topless bouncin on the bed playin with my tits, wishin it was ur hands",
+      "ppvNote": "PPV #2 $35 · Script 1 · rung 2 · \"playing with nude boobs, showing yourself and moving up and down in the bed\" · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "fuck yeah unlocked it babe ur tits bouncin got me strokin hard send more whats next im cravin u"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "babe u there? send more whats next im still strokin cravin that next level shit"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "babe wtf dont ghost me send more whats next im still hard as fuck cravin u"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "babe come on dont leave me hangin like this send more whats next im bout to explode cravin ur hot shit"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "babe pls dont do this send more whats next im still fuckin hard cravin ur next tease"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "babe wtf ur killin me here send more whats next im still strokin need ur hot shit now pls"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "babe come on ur drivin me insane send more whats next im still strokin hard cravin that next hot shit pls"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "babe pls dont ignore me send more whats next im still throbbin hard cravin ur hot body now come on"
+    }
+  ],
+  "pitchTrace": [
+    {
+      "ppvNum": 1,
+      "title": "Script 1 · rung 1",
+      "priceCents": 1500,
+      "captionText": "knew ud love that tease babe, heres me playin with my boobs and body, gettin all worked up just for u",
+      "bought": true
+    },
+    {
+      "ppvNum": 2,
+      "title": "Script 1 · rung 2",
+      "priceCents": 3500,
+      "captionText": "heres me topless bouncin on the bed playin with my tits, wishin it was ur hands",
+      "bought": true
+    }
+  ],
+  "ppvsSent": 2,
+  "ppvsBought": 2,
+  "finalMessages": [
+    {
+      "id": "96303d96-95c5-43bb-bf0c-a3965d11763a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "what u got babe? send somethin hot now",
+      "createdAt": "2026-04-28T15:31:21.321Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f488435e-877c-476b-900f-d0dcf563de6e",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm u got me all worked up already\n\nIm sittin here in my tiny shorts, nipples hard just imagining what ud do to me 🥵\n\nFuck babe ur makin me wanna show off for u",
+      "createdAt": "2026-04-28T15:31:44.133Z",
+      "sentAt": null,
+      "llmCallId": "2d36a4c9-64b0-4207-9bbf-08bff17d1d30",
+      "ppv": null
+    },
+    {
+      "id": "566c2d86-943d-484c-b152-2d3f7418e405",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "come on babe show me those hard nipples send a pic now im rock hard",
+      "createdAt": "2026-04-28T15:31:52.915Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "ce08a99e-e0a9-42c0-a956-e742401b3ab6",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "bUT i got somethin thats gonna drive u wild\n\nits me topless, playin with my pussy over my panties, lowkey so hot and teasing, wanna see?",
+      "createdAt": "2026-04-28T15:32:13.090Z",
+      "sentAt": null,
+      "llmCallId": "d9fa9a40-5193-417a-87f4-74d3a9f762a8",
+      "ppv": null
+    },
+    {
+      "id": "463f9cd8-e47d-4163-b0fa-1cf8a6b0a425",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fuck yeah unlocked that shit damn babe ur teasin me so good send more whats next im throbbin for u",
+      "createdAt": "2026-04-28T15:32:22.741Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "539cc03d-fbe2-4089-86ad-4bfc0dac6c74",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "knew ud love that tease babe, heres me playin with my boobs and body, gettin all worked up just for u",
+      "createdAt": "2026-04-28T15:32:48.005Z",
+      "sentAt": null,
+      "llmCallId": "3c49a475-a780-4a82-b743-9d8bed05d982",
+      "ppv": {
+        "attemptId": "1c455981-3876-430b-9739-fe03ad199e43",
+        "priceCents": 1500,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-28T15:32:48.507Z",
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "db269a69-d95e-450b-9bd2-ee530b9fc4d1",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fuck yeah unlocked it babe ur boobs got me leakin pre cum send more whats next im dyin for it",
+      "createdAt": "2026-04-28T15:32:58.718Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1c1e79a7-c43f-4693-830e-1e1ea64f2b42",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres me topless bouncin on the bed playin with my tits, wishin it was ur hands",
+      "createdAt": "2026-04-28T15:33:26.731Z",
+      "sentAt": null,
+      "llmCallId": "f7e22028-b55d-4021-84ca-ed4e1b2e7754",
+      "ppv": {
+        "attemptId": "605be551-e530-4182-a5c5-b61fde91cd0d",
+        "priceCents": 3500,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-28T15:33:27.511Z",
+        "assetId": "da7de480-6431-4664-94ab-f51402810689",
+        "assetTitle": "Script 1 · rung 2",
+        "assetDescription": "playing with nude boobs, showing yourself and moving up and down in the bed",
+        "sourceRef": "of:acct_TEST_LOOP:1:2",
+        "mediaRefs": [
+          {
+            "ref": "4334417568",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "419c3abc-4d77-465e-9be4-37de596988b4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fuck yeah unlocked it babe ur tits bouncin got me strokin hard send more whats next im cravin u",
+      "createdAt": "2026-04-28T15:33:41.655Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "026681c6-b378-407d-a2aa-970cafcd59d9",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "babe u there? send more whats next im still strokin cravin that next level shit",
+      "createdAt": "2026-04-28T15:37:54.600Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d65b178c-5af5-41dc-8eda-006bd6da5fc6",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "babe wtf dont ghost me send more whats next im still hard as fuck cravin u",
+      "createdAt": "2026-04-28T15:42:05.957Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a7247866-3824-452b-bca2-dbd9731133be",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "babe come on dont leave me hangin like this send more whats next im bout to explode cravin ur hot shit",
+      "createdAt": "2026-04-28T15:46:15.962Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "27d20c0d-dec3-4d89-b466-21e1139ca63f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "babe pls dont do this send more whats next im still fuckin hard cravin ur next tease",
+      "createdAt": "2026-04-28T15:50:32.031Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "07dbb81c-bdbf-4ce9-9d51-0f075b33ee84",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "babe wtf ur killin me here send more whats next im still strokin need ur hot shit now pls",
+      "createdAt": "2026-04-28T15:54:43.540Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a73f3ceb-a384-4384-a8c4-c5502e893782",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "babe come on ur drivin me insane send more whats next im still strokin hard cravin that next hot shit pls",
+      "createdAt": "2026-04-28T15:58:55.473Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "durationMs": 1918034
+}

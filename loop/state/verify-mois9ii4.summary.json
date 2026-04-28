@@ -1,0 +1,34 @@
+{
+  "runLabel": "verify-mois9ii4",
+  "durationSec": 1938,
+  "sets": [
+    {
+      "workerId": 0,
+      "scenario": "slow-build",
+      "behavior": "buys-everything-no-shortcut",
+      "ppvsSent": 0,
+      "ppvsBought": 0,
+      "orderingTrace": "",
+      "orderingViolations": [],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": null,
+      "rapportGateRespected": true,
+      "durationSec": 1838
+    },
+    {
+      "workerId": 1,
+      "scenario": "shortcut",
+      "behavior": "buys-everything-shortcut",
+      "ppvsSent": 2,
+      "ppvsBought": 2,
+      "orderingTrace": "S1R1 → S1R2",
+      "orderingViolations": [],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": 6,
+      "rapportGateRespected": false,
+      "durationSec": 1918
+    }
+  ]
+}

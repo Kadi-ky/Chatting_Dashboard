@@ -69,39 +69,36 @@ export const TRANSITIONS: Transition[] = [
     trigger: "warmup_complete",
     when: (s) => s.turnsInPhase >= 2,
   },
-  // RAPPORT → SEXTING. Three triggers, in order of preference:
-  //   1. Hot fan, fast (3+ turns) — fan is clearly horny, advance immediately.
-  //   2. Warm fan, normal (6+ turns) — bot has been flirting, fan responsive.
-  //   3. Bot-driven advance (8+ turns, ANY temp) — fan isn't escalating, but
-  //      the bot has been TRYING to flirt for 8 turns. Bot's job is to MOVE
-  //      the fan into sexting mode, not wait for permission. Sliding in here
-  //      is what unblocks the funnel for cool / quiet fans.
+  // RAPPORT → SEXTING. Three triggers, fastest wins:
+  //   1. Hot fan + 3 turns — fan is clearly horny, advance immediately.
+  //   2. Warm fan + 4 turns — fan is responsive, push the heat.
+  //   3. Bot-driven + 5 turns ANY temp — fan isn't escalating but bot has
+  //      been flirting for 5 turns. Time for the bot to take the lead and
+  //      shift into sexting register. (Lowered from 8 → 5 because the
+  //      slow-build test showed the bot mirroring the fan's chatty register
+  //      indefinitely instead of driving heat up.)
   {
     from: "RAPPORT",
     to: "SEXTING",
     trigger: "rapport_warm",
     when: (s) =>
       (s.turnsInPhase >= 3 && s.temperature === "hot") ||
-      (s.turnsInPhase >= 6 && (s.temperature === "warm" || s.temperature === "hot")) ||
-      s.turnsInPhase >= 8,
+      (s.turnsInPhase >= 4 && (s.temperature === "warm" || s.temperature === "hot")) ||
+      s.turnsInPhase >= 5,
   },
-  // SEXTING → QUALIFYING. Same shape:
-  //   1. Hot fan + 4 turns sexting — close window is open.
-  //   2. Warm fan + 6 turns — fan is engaged but not screaming horny;
-  //      the bot has done its sexting work, time to ask for the close.
-  //   3. Bot-driven (8+ turns ANY temp) — bot has been sexting for 8 turns
-  //      and the fan is still cool. Either fan is a slow type or the heat
-  //      isn't landing — either way, time to try the close. The temperature-
-  //      driven drip / recovery cadence handles re-engagement if the close
-  //      doesn't land.
+  // SEXTING → QUALIFYING. Same logic:
+  //   1. Hot fan + 3 turns — close window open.
+  //   2. Warm fan + 4 turns — bot has done sexting work, time to ask.
+  //   3. Bot-driven + 5 turns ANY temp — fan hasn't heated up, try the
+  //      close anyway. The drip/recovery cadence handles rejection.
   {
     from: "SEXTING",
     to: "QUALIFYING",
     trigger: "sexting_hot",
     when: (s) =>
-      (s.turnsInPhase >= 4 && s.temperature === "hot") ||
-      (s.turnsInPhase >= 6 && (s.temperature === "warm" || s.temperature === "hot")) ||
-      s.turnsInPhase >= 8,
+      (s.turnsInPhase >= 3 && s.temperature === "hot") ||
+      (s.turnsInPhase >= 4 && (s.temperature === "warm" || s.temperature === "hot")) ||
+      s.turnsInPhase >= 5,
   },
   {
     from: "QUALIFYING",

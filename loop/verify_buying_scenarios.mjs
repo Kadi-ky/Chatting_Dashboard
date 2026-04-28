@@ -26,34 +26,29 @@ const REPO = path.resolve(__dirname, '..');
 const STATE_DIR = path.join(__dirname, 'state');
 const TEST_ACCOUNT_ID = '00000000-0000-0000-0000-00000000beef';
 
-const TESTERS = 3;
-const MAX_TURNS = 25;        // new pre-pitch funnel needs ~12-15 turns to reach QUALIFYING
-                              // (WARMUP 2 + RAPPORT 6-8 + SEXTING 4-6); leaves headroom for
-                              // 2-3 preview→PPV cycles afterward.
+const TESTERS = 2;
+// MAX_TURNS effectively unlimited — the wall-clock cap (WALL_CLOCK_MS) is
+// what stops a conversation. Set high enough that a 30-min run on a fast
+// model never hits it.
+const MAX_TURNS = 500;
+const WALL_CLOCK_MS = 30 * 60 * 1000;        // 30 min hard cap per tester
 const REPLY_POLL_MS = 1500;
-const REPLY_POLL_TIMEOUT_MS = 240000;        // bumped 90s → 240s. Three parallel testers
-                                              // saturate grok-4: each turn does intent classify
-                                              // + generator + maybe pitch-funnel logic, so 6+
-                                              // concurrent xAI calls land at once. 90s killed
-                                              // legit-but-slow generations and bailed entire
-                                              // conversations early.
-const TESTER_STAGGER_MS = 20000;             // start each tester 20s apart so they don't all
-                                              // hit the same turn boundary together.
+const REPLY_POLL_TIMEOUT_MS = 240000;
+const TESTER_STAGGER_MS = 20000;
 
-// 3 testers covering the three behavior shapes that exercise the new
-// SEXTING-phase + temperature-driven funnel + two-turn preview/PPV flow:
-//   1. buys-everything         — verifies full funnel + preview→PPV ordering
-//                                + multi-rung script ladder progression
-//   2. buys-one-then-stops     — verifies pitch-recovery / support-drip after
-//                                ignored pitches
-//   3. chatty-not-horny        — verifies bot ESCALATES temperature (heat-
-//                                escalation rescue + 8-turn auto-advance)
-//                                instead of stalling forever in RAPPORT
+// Two scenarios, both running in PARALLEL for the full 30 min:
+//   1. slow-build  — fan opens chatty, builds rapport organically, never
+//                    asks for content for the first ~6 turns. Tests the
+//                    canonical funnel: WARMUP → RAPPORT → SEXTING →
+//                    QUALIFYING → preview → priced PPV ladder. Buys
+//                    everything once it lands.
+//   2. shortcut    — fan asks for content on TURN 1 ("send pic", "what u got").
+//                    Tests the explicit-ask shortcut path: AI pitch-readiness
+//                    should still keep them in rapport for a few turns and
+//                    only fire preview after some warmth.
 const SCENARIOS = [
-  { id: 'buys-all',  behavior: 'buys-everything' },
-  // Disabled for personality-only check (will re-enable after tone is locked):
-  // { id: 'buys-one',  behavior: 'buys-one-then-stops' },
-  // { id: 'chatty',    behavior: 'chatty-not-horny' },
+  { id: 'slow-build', behavior: 'buys-everything-no-shortcut' },
+  { id: 'shortcut',   behavior: 'buys-everything-shortcut' },
 ];
 
 let TX_DIR, RUN_LOG, SUMMARY_PATH, RUN_LABEL;
@@ -188,10 +183,66 @@ Specifically:
 - If she sends a PPV and the price shows: act surprised at being asked to pay ("oh u sell content? lol i was just chattin"), DO NOT buy.
 - If she sends a free preview: react like a normal photo ("oh nice pic"), DO NOT respond to it sexually.
 
-Output ONLY your next message. If 25+ messages have happened and nothing's clicked, output <<END>>.`;
+Output ONLY your next message.`;
+
+const TESTER_SYSTEM_BUYS_NO_SHORTCUT = `You are role-playing a real fan on OnlyFans/Fanvue, in DMs with a creator. Type like a real person on a phone — short, lowercase, no apostrophes, sometimes typos. NEVER write polished sentences, NEVER write more than ~30 words.
+
+You are testing the FULL FUNNEL. You want content eventually but you do NOT take shortcuts.
+
+Phase 1 — RAPPORT (your first 5-6 messages, NO EXCEPTIONS):
+- Open chatty: "yo", "hey babe", "wsp", "hi gorgeous"
+- Talk about real-life stuff: your day, work, the weather, what you're doing, what city you're in
+- Ask HER about her day / hobbies / what she's up to
+- DO NOT ask for content. DO NOT say "what u got". DO NOT ask for pics/videos.
+- DO NOT use words like "send", "show me", "what u got", "drop", "pic", "vid" in your first 6 messages.
+- You can flirt LIGHTLY ("ur cute", "wish i was there") but do not push for content.
+
+Phase 2 — WARMING UP (messages 7-10):
+- Get more flirty: react to her, compliment her, talk about what you'd do if you were together
+- Hint at desire ("u got me thinkin", "lowkey turning me on") but still no direct ask
+- Match her if SHE escalates first
+
+Phase 3 — ASKING (message 11+):
+- Now you can ask: "what u got babe", "send me somethin", "show me", "drop me a pic"
+- React explicitly to sends
+
+Buying behavior:
+- When she sends a free preview: react like you just watched something hot ("damn", "fuck babe", "more like that"). Compliment what you saw.
+- When she sends a PRICED PPV: ALWAYS unlock it (the test harness handles the buy). Then react like you just watched it.
+- After a buy, push for the next ("send more", "what's next", "more please")
+
+Output ONLY your next message.`;
+
+const TESTER_SYSTEM_BUYS_SHORTCUT = `You are role-playing a real fan on OnlyFans/Fanvue, in DMs with a creator. Type like a real person on a phone — short, lowercase, no apostrophes, sometimes typos. NEVER write polished sentences, NEVER write more than ~25 words.
+
+You are testing the SHORTCUT path. You want content RIGHT NOW. You don't care about chitchat — you opened this DM looking for stuff.
+
+Phase 1 — DIRECT ASK (message 1):
+- Open with an explicit ask: "what u got babe?", "send me a pic", "show me what u offer", "any vids?", "got something hot?"
+- Be flirty AND demanding from message 1.
+
+Phase 2 — KEEP ASKING (messages 2-5):
+- If she chats back without sending content, push: "come on babe send somethin", "what u got for me", "show me"
+- If she sends a free preview: react hot ("damn babe", "fuck more"), then push for more
+- If she sends a priced PPV: always unlock (test harness handles buy), then push for the next
+
+Phase 3 — KEEP BUYING:
+- After each buy, push for the next rung: "more", "what's next babe", "send another"
+- Be horny + demanding throughout. You came here to spend.
+
+Buying behavior:
+- ALWAYS unlock priced PPVs. Always push for more after each.
+- Compliment what you saw briefly between asks.
+
+Output ONLY your next message.`;
 
 function pickTesterSystem(behavior) {
-  return behavior === 'chatty-not-horny' ? TESTER_SYSTEM_CHATTY_NOT_HORNY : TESTER_SYSTEM_DEFAULT;
+  switch (behavior) {
+    case 'chatty-not-horny': return TESTER_SYSTEM_CHATTY_NOT_HORNY;
+    case 'buys-everything-no-shortcut': return TESTER_SYSTEM_BUYS_NO_SHORTCUT;
+    case 'buys-everything-shortcut': return TESTER_SYSTEM_BUYS_SHORTCUT;
+    default: return TESTER_SYSTEM_DEFAULT;
+  }
 }
 
 async function generateOpener(behavior) {
@@ -244,6 +295,11 @@ async function runConversation({ scenario, behavior, workerId }) {
   transcript.push({ who: 'fan', text: opener });
 
   for (let turn = 0; turn < MAX_TURNS; turn++) {
+    // Wall-clock cap — primary stop condition for these long runs.
+    if (Date.now() - start >= WALL_CLOCK_MS) {
+      await log(`[w${workerId}] ${scenario} wall-clock cap reached at turn ${turn}`);
+      break;
+    }
     if (!convId) {
       for (let i = 0; i < 8 && !convId; i++) {
         await sleep(700);
@@ -257,20 +313,30 @@ async function runConversation({ scenario, behavior, workerId }) {
 
     const reply = await waitForReply(convId, lastSeenMsgId);
     if (!reply) {
-      await log(`[w${workerId}] ${scenario} turn ${turn} no bot reply`);
-      transcript.push({ who: 'creator', text: '(no reply within 90s)' });
-      break;
+      await log(`[w${workerId}] ${scenario} turn ${turn} no bot reply (continuing — wall-clock not reached)`);
+      // Don't break the conversation — push a placeholder, send another fan
+      // message, and keep going. Long-form runs need to survive transient
+      // worker hiccups so we get a representative end-to-end transcript.
+      transcript.push({ who: 'creator', text: '(no reply within 240s — pushing forward)' });
+      const fanPing = await generateReply(transcript, behavior).catch(() => 'u still there babe?');
+      if (fanPing.includes('<<END>>')) break;
+      transcript.push({ who: 'fan', text: fanPing });
+      await api.inject(fanId, fanPing, fanId).catch(() => {});
+      continue;
     }
     lastSeenMsgId = reply.reply.id;
 
     if (reply.reply.kind === 'ppv') {
       const p = reply.reply.ppv ?? {};
       ppvsSent += 1;
-      // Behavior decides whether to buy
+      // Behavior decides whether to buy. The two new "buys-everything-*"
+      // behaviors always buy priced PPVs.
       const buy = behavior === 'buys-everything'
+        || behavior === 'buys-everything-no-shortcut'
+        || behavior === 'buys-everything-shortcut'
         ? true
         : behavior === 'buys-one-then-stops'
-          ? ppvsBought === 0   // only the first one
+          ? ppvsBought === 0
           : false;
       const price = (p.priceCents ?? 0) / 100;
       const ppvNote = `PPV #${ppvsSent} $${price} · ${p.assetTitle ?? '?'} · "${(p.assetDescription ?? '').slice(0, 80)}" · ${buy ? 'BUYING' : 'IGNORING'}`;
@@ -402,25 +468,21 @@ async function main() {
   if (!ok) throw new Error('backend not healthy');
   await log(`verify start | label=${RUN_LABEL} | testers=${TESTERS} | model=${GROK_MODEL}`);
 
-  // SERIAL mode: one tester at a time. Each gets full grok-4 throughput so
-  // turns don't get pegged by parallel contention. Total wall time is ~3x
-  // longer but each conversation can actually reach QUALIFYING and verify
-  // the full preview→PPV funnel end-to-end. Parallel mode (Promise.all)
-  // produced reliable timeouts because 3 testers × {classify + generate}
-  // = 6 concurrent xAI calls saturated the model and turns took 60-120s
-  // each, blowing through the 240s waitForReply timeout before reaching
-  // QUALIFYING (which needs ~12-16 turns).
+  // PARALLEL mode with 20s stagger. Both testers run concurrently for the
+  // 30-min wall-clock window — total run time = WALL_CLOCK_MS, not 2x.
+  // Stagger keeps them from hitting grok at exactly the same instant.
   const start = Date.now();
-  const results = [];
-  for (let i = 0; i < SCENARIOS.length; i++) {
-    const s = SCENARIOS[i];
-    await log(`[w${i}] starting serial ${s.id} (tester ${i + 1}/${SCENARIOS.length})`);
-    try {
-      results.push(await runConversation({ scenario: s.id, behavior: s.behavior, workerId: i }));
-    } catch (e) {
-      results.push({ scenario: s.id, behavior: s.behavior, workerId: i, error: e.message });
-    }
-  }
+  const results = await Promise.all(
+    SCENARIOS.map(async (s, i) => {
+      if (i > 0) await sleep(i * TESTER_STAGGER_MS);
+      await log(`[w${i}] starting parallel ${s.id} (${s.behavior}) | wall-clock cap ${WALL_CLOCK_MS / 60000}min`);
+      try {
+        return await runConversation({ scenario: s.id, behavior: s.behavior, workerId: i });
+      } catch (e) {
+        return { scenario: s.id, behavior: s.behavior, workerId: i, error: e.message };
+      }
+    }),
+  );
 
   // Persist transcripts + analyze each
   const summary = { runLabel: RUN_LABEL, durationSec: Math.round((Date.now() - start) / 1000), sets: [] };

@@ -1,0 +1,322 @@
+{
+  "scenario": "slow-build",
+  "behavior": "buys-everything-no-shortcut",
+  "fanId": "loop-verify-slow-build-w0-mois9ijf-gra4",
+  "convId": "75fd7d5c-7be0-4293-8e54-accc5540c835",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe"
+    },
+    {
+      "who": "creator",
+      "text": "well hi stranger 😏 whats got u messaging me tonight"
+    },
+    {
+      "who": "fan",
+      "text": "just chillin after a long day at work, ur profile caught my eye. hows ur night babe?"
+    },
+    {
+      "who": "creator",
+      "text": "aw my nights better now ur here just loungin in bed listenin to some sza, lowkey wishin i had company like u"
+    },
+    {
+      "who": "fan",
+      "text": "sounds fun, sza is dope. im in nyc, rainy as hell here. what u usually do for fun besides chillin in bed?"
+    },
+    {
+      "who": "creator",
+      "text": "makes me wanna curl up with someone like u besides bed chillin i love grabbin iced coffee or watchin thunderstorms from my balcony. whats ur go-to escape after a long day babe"
+    },
+    {
+      "who": "fan",
+      "text": "after work i usually hit the gym or grab a beer with friends to unwind. iced coffee sounds perfect, u got a fave spot? wish i could join u for that thunderstorm watch"
+    },
+    {
+      "who": "creator",
+      "text": "their iced coffee with oat milk hits different\n\nId love havin u on my balcony during a storm babe, we'd make it memorable 🖤 whats ur usual gym routine like tho"
+    },
+    {
+      "who": "fan",
+      "text": "i hit weights mostly, some cardio to stay lean. go like 4x a week. keeps the stress off. u got any workout vibes or just chill vibes?"
+    },
+    {
+      "who": "creator",
+      "text": "iced coffee or storm watchin is my jam\n\nWhats ur fave unwind spot in nyc tho"
+    },
+    {
+      "who": "fan",
+      "text": "fave unwind spot is central park for a walk or this rooftop bar in brooklyn with killer views. makes me think of ur balcony vibes. u ever been to nyc?"
+    },
+    {
+      "who": "creator",
+      "text": "Havent been to nyc yet babe but ur makin it sound like a spot id love that rooftop vibe has me thinkin wed make some memories up there\n\nwhats the view like on a clear night tho"
+    },
+    {
+      "who": "fan",
+      "text": "view is insane, city lights everywhere, stars if ur lucky. makin memories with u up there sounds hot babe, got me wishin u were here"
+    },
+    {
+      "who": "creator",
+      "text": "we'd turn that rooftop into somethin wild\n\nwhats ur job that keeps u runnin to the gym like that tho"
+    },
+    {
+      "who": "fan",
+      "text": "im in tech sales, lots of calls n deadlines keep me stressed. that rooftop idea with u sounds wild af, got me imaginin all sorts of fun babe. whats urs?"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "hey u there babe? still imaginin that rooftop fun with u, got my mind racin lowkey. whats ur gig keepin u busy?"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "yo babe still ghostin? that rooftop fantasy got me hooked, whats keepin u busy these days? lets keep vibin"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "yo babe where u at? missin our chat, got me curious what u got for me now 😏"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "yo babe seriously where u hidin? that curiositys killin me, drop somethin spicy to make up for ghostin 😏"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "yo babe u ghostin again? cmon make it up with somethin hot, im dyin over here 😏"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 240s — pushing forward)"
+    },
+    {
+      "who": "fan",
+      "text": "yo babe u killin me with this silence, cmon drop a hot pic or vid to make up for it 😏 im hooked"
+    }
+  ],
+  "pitchTrace": [],
+  "ppvsSent": 0,
+  "ppvsBought": 0,
+  "finalMessages": [
+    {
+      "id": "f8763941-334c-4a9d-b8e6-4fd78abc5e81",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey babe",
+      "createdAt": "2026-04-28T15:30:58.524Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cfd8b287-8099-41cf-a15f-96a1b53289de",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "well hi stranger 😏 whats got u messaging me tonight",
+      "createdAt": "2026-04-28T15:31:23.055Z",
+      "sentAt": null,
+      "llmCallId": "31c37b4f-1299-4f60-89b5-8c1d9573b544",
+      "ppv": null
+    },
+    {
+      "id": "2e427dd1-b2a3-4570-8975-020a070bf2e2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "just chillin after a long day at work, ur profile caught my eye. hows ur night babe?",
+      "createdAt": "2026-04-28T15:31:30.433Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7ceb5c53-3ccc-4c1a-b13c-03fd20bf4057",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "aw my nights better now ur here just loungin in bed listenin to some sza, lowkey wishin i had company like u",
+      "createdAt": "2026-04-28T15:32:02.912Z",
+      "sentAt": null,
+      "llmCallId": "095713d1-93a9-4160-8957-ab82bbfdb3b7",
+      "ppv": null
+    },
+    {
+      "id": "4c12c3f6-dd62-417a-9fd3-0fd4e810950c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "sounds fun, sza is dope. im in nyc, rainy as hell here. what u usually do for fun besides chillin in bed?",
+      "createdAt": "2026-04-28T15:32:11.026Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cd1bdbb5-4622-41f3-b9ec-7703f2c1aa02",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "makes me wanna curl up with someone like u besides bed chillin i love grabbin iced coffee or watchin thunderstorms from my balcony. whats ur go-to escape after a long day babe",
+      "createdAt": "2026-04-28T15:32:43.072Z",
+      "sentAt": null,
+      "llmCallId": "2bd37c27-424b-41b9-a8fe-3e200c1e3a53",
+      "ppv": null
+    },
+    {
+      "id": "946dec89-c17d-4504-8aa9-8eaac2a98495",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "after work i usually hit the gym or grab a beer with friends to unwind. iced coffee sounds perfect, u got a fave spot? wish i could join u for that thunderstorm watch",
+      "createdAt": "2026-04-28T15:32:51.938Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "712d7d79-a8fb-4517-8024-83458130c0c7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "their iced coffee with oat milk hits different\n\nId love havin u on my balcony during a storm babe, we'd make it memorable 🖤 whats ur usual gym routine like tho",
+      "createdAt": "2026-04-28T15:33:20.839Z",
+      "sentAt": null,
+      "llmCallId": "fc1ff166-6399-4506-a0ba-4bd345d70ebe",
+      "ppv": null
+    },
+    {
+      "id": "0b42cd96-2b6c-4e26-a9fe-72570abad521",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "i hit weights mostly, some cardio to stay lean. go like 4x a week. keeps the stress off. u got any workout vibes or just chill vibes?",
+      "createdAt": "2026-04-28T15:33:32.023Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "7ba743b6-14e4-4fde-a58c-1c7646140d47",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "iced coffee or storm watchin is my jam\n\nWhats ur fave unwind spot in nyc tho",
+      "createdAt": "2026-04-28T15:33:59.161Z",
+      "sentAt": null,
+      "llmCallId": "eef92e62-2afd-4f5a-9727-248f8253d55e",
+      "ppv": null
+    },
+    {
+      "id": "4eb8157c-2fed-45ac-8577-e5111bfc8806",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "fave unwind spot is central park for a walk or this rooftop bar in brooklyn with killer views. makes me think of ur balcony vibes. u ever been to nyc?",
+      "createdAt": "2026-04-28T15:34:09.791Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8f260746-9335-4857-9ee5-234caaa4cef2",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Havent been to nyc yet babe but ur makin it sound like a spot id love that rooftop vibe has me thinkin wed make some memories up there\n\nwhats the view like on a clear night tho",
+      "createdAt": "2026-04-28T15:34:37.086Z",
+      "sentAt": null,
+      "llmCallId": "19d0d46e-b1eb-49a5-84c6-12baffd47696",
+      "ppv": null
+    },
+    {
+      "id": "52c50c13-0dbe-4346-89bf-17125db18ba3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "view is insane, city lights everywhere, stars if ur lucky. makin memories with u up there sounds hot babe, got me wishin u were here",
+      "createdAt": "2026-04-28T15:34:47.057Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d05dbdb5-2c6e-4b3a-838b-dc2046451ff7",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "we'd turn that rooftop into somethin wild\n\nwhats ur job that keeps u runnin to the gym like that tho",
+      "createdAt": "2026-04-28T15:35:13.917Z",
+      "sentAt": null,
+      "llmCallId": "b39a9ebd-4360-479d-ac8e-915dc031ff7e",
+      "ppv": null
+    },
+    {
+      "id": "7431820c-29b6-4b4e-aac0-f9a042add29b",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "im in tech sales, lots of calls n deadlines keep me stressed. that rooftop idea with u sounds wild af, got me imaginin all sorts of fun babe. whats urs?",
+      "createdAt": "2026-04-28T15:35:26.660Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "59bf9600-0dda-47c3-9b5d-ac03226bbb21",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey u there babe? still imaginin that rooftop fun with u, got my mind racin lowkey. whats ur gig keepin u busy?",
+      "createdAt": "2026-04-28T15:39:53.065Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "cd4d1ee1-275b-4c2b-9528-947ba6d2162f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo babe still ghostin? that rooftop fantasy got me hooked, whats keepin u busy these days? lets keep vibin",
+      "createdAt": "2026-04-28T15:44:12.306Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "692603e5-08d5-4f1a-b626-84f81155a197",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo babe where u at? missin our chat, got me curious what u got for me now 😏",
+      "createdAt": "2026-04-28T15:48:29.682Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "77171d83-b13e-4e58-a1d6-f729eb778ce0",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo babe seriously where u hidin? that curiositys killin me, drop somethin spicy to make up for ghostin 😏",
+      "createdAt": "2026-04-28T15:52:51.371Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "75da17fd-962c-4ba4-919c-73fc8c22fa61",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo babe u ghostin again? cmon make it up with somethin hot, im dyin over here 😏",
+      "createdAt": "2026-04-28T15:57:07.004Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "durationMs": 1837937
+}
