@@ -56,7 +56,7 @@ const MIN_TURNS_BETWEEN_PITCHES: Record<Phase, number> = {
  * Override with env var PITCH_RAPPORT_GATE_TURNS for tuning. Set to 0 or 1
  * to effectively disable.
  */
-const PITCH_RAPPORT_GATE_TURNS = Number(process.env.PITCH_RAPPORT_GATE_TURNS ?? "5");
+const PITCH_RAPPORT_GATE_TURNS = Number(process.env.PITCH_RAPPORT_GATE_TURNS ?? "8");
 
 export interface PitchDecision {
   shouldPitch: boolean;
