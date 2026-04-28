@@ -1,0 +1,49 @@
+{
+  "runLabel": "verify-moic8d4w",
+  "durationSec": 474,
+  "sets": [
+    {
+      "workerId": 0,
+      "scenario": "buys-all",
+      "behavior": "buys-everything",
+      "ppvsSent": 0,
+      "ppvsBought": 0,
+      "orderingTrace": "",
+      "orderingViolations": [],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": null,
+      "rapportGateRespected": true,
+      "durationSec": 205
+    },
+    {
+      "workerId": 1,
+      "scenario": "buys-one",
+      "behavior": "buys-one-then-stops",
+      "ppvsSent": 0,
+      "ppvsBought": 0,
+      "orderingTrace": "",
+      "orderingViolations": [],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": null,
+      "rapportGateRespected": true,
+      "pitchesAfterIgnoring": 0,
+      "durationSec": 241
+    },
+    {
+      "workerId": 2,
+      "scenario": "chatty",
+      "behavior": "chatty-not-horny",
+      "ppvsSent": 0,
+      "ppvsBought": 0,
+      "orderingTrace": "",
+      "orderingViolations": [],
+      "capturesPriceInCaption": 0,
+      "offendingCaptions": [],
+      "firstPpvAtMsg": null,
+      "rapportGateRespected": true,
+      "durationSec": 474
+    }
+  ]
+}

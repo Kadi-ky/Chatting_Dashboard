@@ -1,0 +1,6 @@
+[2026-04-28T08:15:00.201Z] verify start | label=verify-moicp0se | testers=3 | model=grok-4
+[2026-04-28T08:15:00.203Z] [w0] buys-all start | fan=loop-verify-buys-all-w0-moicp0tn-wcdb | behavior=buys-everything
+[2026-04-28T08:15:20.218Z] [w1] buys-one start | fan=loop-verify-buys-one-w1-moicpg9m-gefb | behavior=buys-one-then-stops
+[2026-04-28T08:15:40.214Z] [w2] chatty start | fan=loop-verify-chatty-w2-moicpvp2-khw0 | behavior=chatty-not-horny
+[2026-04-28T08:21:40.810Z] [w1] buys-one turn 4 no bot reply
+[2026-04-28T08:21:57.461Z] [w0] buys-all turn 5 no bot reply

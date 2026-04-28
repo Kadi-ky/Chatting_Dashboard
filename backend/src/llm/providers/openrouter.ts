@@ -46,6 +46,12 @@ export class OpenRouterProvider implements LlmProvider {
       body.stop = opts.stopSequences;
     }
 
+    // Hard timeout — match the grok provider so a hung fallback can't lock
+    // the worker either.
+    const timeoutMs = opts.task === "CHAT_GENERATE" ? 90_000 : 30_000;
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), timeoutMs);
+
     let res: Response;
     try {
       res = await fetch(`${env.OPENROUTER_API_BASE}/chat/completions`, {
@@ -58,9 +64,16 @@ export class OpenRouterProvider implements LlmProvider {
           "X-Title": "PeachBot",
         },
         body: JSON.stringify(body),
+        signal: ac.signal,
       });
     } catch (err) {
-      throw new LlmError("openrouter", null, err instanceof Error ? err.message : String(err), true);
+      const aborted = err instanceof Error && err.name === "AbortError";
+      const msg = aborted
+        ? `request timed out after ${timeoutMs}ms`
+        : err instanceof Error ? err.message : String(err);
+      throw new LlmError("openrouter", null, msg, true);
+    } finally {
+      clearTimeout(timer);
     }
 
     if (!res.ok) {

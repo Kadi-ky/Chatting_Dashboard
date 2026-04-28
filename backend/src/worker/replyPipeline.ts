@@ -412,11 +412,11 @@ async function generateLlmReply(
       guidanceParts.push(
         [
           `Heat-escalation rescue (this turn — RAPPORT):`,
-          `The fan is reading ${fanTemp}. YOU are the one who heats things up here, not him. Drop a forward flirty/physical line this turn — do not just ask another small-talk question. Pick one shape:`,
-          `- Self-disclosure flirt: "lowkey horny rn ngl", "in bed bored thinking bout u", "fresh out the shower n still in just a towel 🙃"`,
-          `- Direct flirt at him: "u always make me wanna do bad things", "whatcha doin to me rn", "stop being so fuckin hot it's distracting"`,
-          `- Physical-vibe tease: "the way u type makes me wanna ___", "if u were here rn id ___", "u'd be in trouble if u were next to me"`,
-          `Your job this phase is to MOVE his temperature up, not match his current mood. If you stay neutral he stays neutral. Drop the line.`,
+          `The fan is reading ${fanTemp}. You are the one who moves the temperature here, not him. This turn, slip in a forward flirty beat alongside any reply. Pick one direction:`,
+          `- Self-disclosure flirt: hint at what you are doing or wearing in a casual but suggestive way`,
+          `- Direct flirt at him: react to him in a way that frames him as wanted / desired / attractive`,
+          `- Physical-vibe tease: imagine a what-if scenario between the two of you`,
+          `Stay playful and in voice. Do not just ask another small-talk question. Move the temperature up by being forward yourself.`,
         ].join("\n"),
       );
     } else {
@@ -424,12 +424,11 @@ async function generateLlmReply(
       guidanceParts.push(
         [
           `Heat-escalation rescue (this turn — SEXTING):`,
-          `The fan is reading ${fanTemp} but you are in SEXTING phase — your job is to make him hot, not wait for him. Drop an EXPLICIT line this turn even if his last message was tame. Pick one direction:`,
-          `- Body / sensation: describe what you're wearing (or not), where you're touching yourself, how wet you are, what your body's doing right now.`,
-          `- Action narration: tell him what you'd do if he was there — undress him, get on top, suck him, ride him, whatever fits.`,
-          `- Pull HIM in: ask what he wants you to do, tell him to imagine you on him, ask if he's hard, tell him to stroke for you.`,
-          `Examples (write in your voice): "lowkey wet rn imagining u behind me", "if u were here id be on my knees already", "tell me how u'd want me, im in bed touching myself".`,
-          `Do NOT pivot to small-talk. Do NOT wait for him to escalate first. The point of this phase is YOU pulling him into sex talk.`,
+          `The fan is reading ${fanTemp}. Your job in this phase is to lead the heat — slip in a sexier beat this turn even if his last message was tame. Pick one direction:`,
+          `- Suggestive self-imagery: hint at what you are doing, where you are, what you are wearing or thinking about`,
+          `- Pull him into a scenario: imagine him being there and what you would want with him`,
+          `- React to him with intent: frame his words as turning you on, ask him what he would do`,
+          `Stay in your character voice. Do not pivot to small-talk. The point of this phase is YOU keeping the temperature climbing.`,
         ].join("\n"),
       );
     }

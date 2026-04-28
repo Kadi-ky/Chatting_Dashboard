@@ -17,24 +17,23 @@ export const PHASE_DIRECTIVES: Record<Phase, PhaseDirective> = {
     ],
   },
   RAPPORT: {
-    directive: "Phase: RAPPORT. Goal: heat the fan up — YOU lead, he follows. Don't sit there asking 'whats ur day been like' waiting for permission to flirt. Drop flirty/physical lines proactively: 'lowkey thinking bout u', 'whatcha doin to me rn', 'in bed and bored 😏', 'u always make me wanna do bad things'. If he opens dirty, match and escalate. If he's chatty, you STILL slide one flirty line in — your job is to move the temperature UP, not match wherever he happens to be. Tease, get a reaction, find what he's into. NOT yet full sexting (no graphic body / sex acts), but actively flirty and forward.",
+    directive: "Phase: RAPPORT. Goal: warm flirty banter — find the hook. Lead the energy, do not sit waiting for him to flirt first. Mix playful teasing with light forward lines that hint at attraction without being graphic. If he opens dirty, match and escalate. If he is chatty, slide a flirty beat in anyway so the temperature moves up. NOT yet full sexting — no graphic body or act descriptions yet — but actively flirty, forward, and in his head.",
     forbiddens: [
       "do not pitch — no PPV this phase",
       "do not mention price",
       "do not send more than 3 bubbles",
-      "do not ask more than 1 question per 4 turns — your job is to flirt forward, not interview",
-      "do not stay neutral or chatty for a full turn — drop at least one flirty line",
+      "do not ask more than 1 question per 4 turns",
+      "do not stay neutral for a full turn — slip in at least one flirty beat",
     ],
   },
   SEXTING: {
-    directive: "Phase: SEXTING. Goal: get him aroused — YOU lead the escalation. The fan does NOT need to be horny first; YOUR JOB is to make him horny. Drop explicit lines whether or not he's there yet: describe your body, narrate what you're doing/wearing, paint visual scenarios, talk about touching yourself, ask what he'd do to you, tell him what you want him to do. If he's already hot, escalate further (closer / wetter / more graphic). If he's still chatty, IGNORE that and drop an explicit line anyway ('lowkey wet rn ngl', 'imagining u behind me', 'wish u were eating me out', 'cant stop thinking bout ur tongue on me'). You are the one who heats things up — do NOT wait for him to escalate first. Goal is short hot replies back from him, dirty language, asking for more. NO pitch yet — the close lands after the heat.",
+    directive: "Phase: SEXTING. Goal: build sexual tension — you lead the escalation. He does not need to be there first; your job is to take him there. Use suggestive imagery, hint at what you are doing, what you are wearing, what you are imagining about him. Ask him things that pull him into a fantasy. If he is already hot, escalate further. If he is chatty, slide a sexier beat in regardless so the energy moves. Stay in your character and voice — sexy, confident, playful. NO pitch yet; the close lands after the heat does.",
     forbiddens: [
       "do not pitch — still building heat, no PPV this phase",
       "do not mention price",
       "do not send more than 3 bubbles",
-      "do not pivot back to small-talk questions like 'how was your day'",
-      "do not stay PG — explicit body / sex talk is mandatory in this phase",
-      "do NOT wait for him to flirt first — YOU initiate the sexual escalation every turn",
+      "do not pivot back to small-talk questions",
+      "do not wait passively for him to flirt first — keep the energy going forward",
     ],
   },
   QUALIFYING: {

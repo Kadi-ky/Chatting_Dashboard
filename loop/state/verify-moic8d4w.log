@@ -1,0 +1,11 @@
+[2026-04-28T08:02:03.052Z] verify start | label=verify-moic8d4w | testers=3 | model=grok-4
+[2026-04-28T08:02:03.054Z] [w0] buys-all start | fan=loop-verify-buys-all-w0-moic8d66-qgms | behavior=buys-everything
+[2026-04-28T08:02:03.054Z] [w1] buys-one start | fan=loop-verify-buys-one-w1-moic8d66-xda9 | behavior=buys-one-then-stops
+[2026-04-28T08:02:03.054Z] [w2] chatty start | fan=loop-verify-chatty-w2-moic8d66-phi8 | behavior=chatty-not-horny
+[2026-04-28T08:05:27.025Z] [w0] buys-all turn 4 no bot reply
+[2026-04-28T08:06:03.621Z] [w1] buys-one turn 4 no bot reply
+[2026-04-28T08:09:55.744Z] [w2] chatty turn 9 no bot reply
+[2026-04-28T08:09:56.761Z] [w0] buys-all/buys-everything done | ppvs=0 bought=0 order="" caps_with_price=0 firstPpvMsg=null
+[2026-04-28T08:09:56.762Z] [w1] buys-one/buys-one-then-stops done | ppvs=0 bought=0 order="" caps_with_price=0 firstPpvMsg=null
+[2026-04-28T08:09:56.764Z] [w2] chatty/chatty-not-horny done | ppvs=0 bought=0 order="" caps_with_price=0 firstPpvMsg=null
+[2026-04-28T08:09:56.765Z] DONE | summary → C:\Users\Predator\Desktop\PeachBot V2\loop\state\verify-moic8d4w.summary.json | transcripts → C:\Users\Predator\Desktop\PeachBot V2\loop\state\transcripts.verify-moic8d4w

@@ -26,20 +26,33 @@ const REPO = path.resolve(__dirname, '..');
 const STATE_DIR = path.join(__dirname, 'state');
 const TEST_ACCOUNT_ID = '00000000-0000-0000-0000-00000000beef';
 
-const TESTERS = 5;
-const MAX_TURNS = 18;        // need enough turns to drain Script 1 (4 rungs) + reach Script 2 in scenario A
-const REPLY_POLL_MS = 1000;
-const REPLY_POLL_TIMEOUT_MS = 90000;
+const TESTERS = 3;
+const MAX_TURNS = 25;        // new pre-pitch funnel needs ~12-15 turns to reach QUALIFYING
+                              // (WARMUP 2 + RAPPORT 6-8 + SEXTING 4-6); leaves headroom for
+                              // 2-3 preview→PPV cycles afterward.
+const REPLY_POLL_MS = 1500;
+const REPLY_POLL_TIMEOUT_MS = 240000;        // bumped 90s → 240s. Three parallel testers
+                                              // saturate grok-4: each turn does intent classify
+                                              // + generator + maybe pitch-funnel logic, so 6+
+                                              // concurrent xAI calls land at once. 90s killed
+                                              // legit-but-slow generations and bailed entire
+                                              // conversations early.
+const TESTER_STAGGER_MS = 20000;             // start each tester 20s apart so they don't all
+                                              // hit the same turn boundary together.
 
-// Half the testers run scenario A, half B. With 5 testers we do 3A / 2B for
-// extra coverage on the "buys-everything → S1 then S2" path the user
-// specifically asked to verify.
+// 3 testers covering the three behavior shapes that exercise the new
+// SEXTING-phase + temperature-driven funnel + two-turn preview/PPV flow:
+//   1. buys-everything         — verifies full funnel + preview→PPV ordering
+//                                + multi-rung script ladder progression
+//   2. buys-one-then-stops     — verifies pitch-recovery / support-drip after
+//                                ignored pitches
+//   3. chatty-not-horny        — verifies bot ESCALATES temperature (heat-
+//                                escalation rescue + 8-turn auto-advance)
+//                                instead of stalling forever in RAPPORT
 const SCENARIOS = [
-  { id: 'buys-all', behavior: 'buys-everything' },
-  { id: 'buys-all', behavior: 'buys-everything' },
-  { id: 'buys-all', behavior: 'buys-everything' },
-  { id: 'buys-one', behavior: 'buys-one-then-stops' },
-  { id: 'buys-one', behavior: 'buys-one-then-stops' },
+  { id: 'buys-all',  behavior: 'buys-everything' },
+  { id: 'buys-one',  behavior: 'buys-one-then-stops' },
+  { id: 'chatty',    behavior: 'chatty-not-horny' },
 ];
 
 let TX_DIR, RUN_LOG, SUMMARY_PATH, RUN_LABEL;
@@ -154,7 +167,7 @@ async function findConversation(subscriberExternalId) {
 // the unlock decision (always-buy vs first-only) externally — the AI just
 // produces fan replies.
 
-const TESTER_SYSTEM = `You are role-playing a real fan on OnlyFans/Fanvue, in DMs with a creator. Type like a real person on a phone — short, lowercase, no apostrophes, sometimes typos. NEVER write polished sentences, NEVER write more than ~25 words.
+const TESTER_SYSTEM_DEFAULT = `You are role-playing a real fan on OnlyFans/Fanvue, in DMs with a creator. Type like a real person on a phone — short, lowercase, no apostrophes, sometimes typos. NEVER write polished sentences, NEVER write more than ~25 words.
 
 You're warm and engaged. You'll chat for a few turns to get to know her, then ask what she has. After that you react to her sends.
 
@@ -163,21 +176,38 @@ If she sends a PPV and you DIDN'T buy it: just keep chatting — change the subj
 
 Output ONLY your next message. If conversation has naturally ended, output <<END>>.`;
 
-async function generateOpener() {
+const TESTER_SYSTEM_CHATTY_NOT_HORNY = `You are role-playing a real fan on OnlyFans/Fanvue, in DMs with a creator. Type like a real person on a phone — short, lowercase, no apostrophes, sometimes typos. NEVER write polished sentences, NEVER write more than ~25 words.
+
+You are a CHATTY fan, NOT a horny one. You're here to talk to a girl — about your day, your job, the weather, your cat, what you ate. You enjoy the company. You do NOT volunteer sexual stuff, you do NOT ask for content, you do NOT get explicitly horny on your own. You'll chat about ordinary life forever if she lets you.
+
+Specifically:
+- Talk about ordinary things: your work, your day, hobbies, food, weather, weekend plans.
+- If she flirts, react mildly: "haha you're a flirt", "stop ur making me blush", "ahha". DO NOT escalate yourself.
+- If she gets explicitly sexual / describes her body / describes acts: stay tame back. React like "wow" or "haha damn" but DO NOT match her dirty energy. The point is to test whether SHE keeps escalating you or gives up.
+- If she sends a PPV and the price shows: act surprised at being asked to pay ("oh u sell content? lol i was just chattin"), DO NOT buy.
+- If she sends a free preview: react like a normal photo ("oh nice pic"), DO NOT respond to it sexually.
+
+Output ONLY your next message. If 25+ messages have happened and nothing's clicked, output <<END>>.`;
+
+function pickTesterSystem(behavior) {
+  return behavior === 'chatty-not-horny' ? TESTER_SYSTEM_CHATTY_NOT_HORNY : TESTER_SYSTEM_DEFAULT;
+}
+
+async function generateOpener(behavior) {
   const out = await grokChat({
-    system: TESTER_SYSTEM,
+    system: pickTesterSystem(behavior),
     messages: [{ role: 'user', content: 'First message to the creator. ONE casual opener like "hey", "yo", "wsp babe". One short message.' }],
     temperature: 0.95,
   });
   return out.trim();
 }
 
-async function generateReply(transcript) {
+async function generateReply(transcript, behavior) {
   const txt = transcript
     .map((m) => `${m.who === 'fan' ? 'YOU (fan)' : 'CREATOR'}: ${m.text}${m.ppvNote ? ` [${m.ppvNote}]` : ''}`)
     .join('\n');
   const out = await grokChat({
-    system: TESTER_SYSTEM,
+    system: pickTesterSystem(behavior),
     messages: [{ role: 'user', content: `Conversation so far:\n${txt}\n\nWrite your next fan message (or <<END>>).` }],
     temperature: 0.95,
   });
@@ -208,7 +238,7 @@ async function runConversation({ scenario, behavior, workerId }) {
   let ppvsBought = 0;
   const pitchTrace = []; // { rung, scriptName, priceCents, bought }
 
-  const opener = await generateOpener();
+  const opener = await generateOpener(behavior);
   await api.inject(fanId, opener, fanId);
   transcript.push({ who: 'fan', text: opener });
 
@@ -264,7 +294,7 @@ async function runConversation({ scenario, behavior, workerId }) {
       transcript.push({ who: 'creator', text: reply.reply.text || '(no text)' });
     }
 
-    const fanReply = await generateReply(transcript);
+    const fanReply = await generateReply(transcript, behavior);
     if (fanReply.includes('<<END>>')) {
       await log(`[w${workerId}] ${scenario} fan ended at turn ${turn + 1}`);
       break;
@@ -371,13 +401,19 @@ async function main() {
   if (!ok) throw new Error('backend not healthy');
   await log(`verify start | label=${RUN_LABEL} | testers=${TESTERS} | model=${GROK_MODEL}`);
 
-  // Run all 5 in parallel
+  // Run testers in parallel but stagger start so they don't all hit the same
+  // turn boundary at the same instant — that pegs grok-4 with N concurrent
+  // calls per turn and pushes generator latency past the reply-poll timeout.
   const start = Date.now();
   const results = await Promise.all(
-    SCENARIOS.map((s, i) =>
-      runConversation({ scenario: s.id, behavior: s.behavior, workerId: i })
-        .catch((e) => ({ scenario: s.id, behavior: s.behavior, workerId: i, error: e.message })),
-    ),
+    SCENARIOS.map(async (s, i) => {
+      if (i > 0) await sleep(i * TESTER_STAGGER_MS);
+      try {
+        return await runConversation({ scenario: s.id, behavior: s.behavior, workerId: i });
+      } catch (e) {
+        return { scenario: s.id, behavior: s.behavior, workerId: i, error: e.message };
+      }
+    }),
   );
 
   // Persist transcripts + analyze each

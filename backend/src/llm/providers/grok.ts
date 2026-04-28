@@ -41,6 +41,15 @@ export class GrokProvider implements LlmProvider {
       body.stop = opts.stopSequences;
     }
 
+    // Hard timeout. Without this, a hung grok call blocks the turn worker
+    // forever — every subsequent turn for that conversation queues up behind
+    // it and BullMQ never recovers. Generator gets 90s, the cheaper classify
+    // / extract / moderate calls get 30s. Router catches AbortError and treats
+    // it as retriable so we fall through to openrouter.
+    const timeoutMs = opts.task === "CHAT_GENERATE" ? 90_000 : 30_000;
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), timeoutMs);
+
     let res: Response;
     try {
       res = await fetch(`${env.GROK_API_BASE}/chat/completions`, {
@@ -51,9 +60,16 @@ export class GrokProvider implements LlmProvider {
           Accept: "application/json",
         },
         body: JSON.stringify(body),
+        signal: ac.signal,
       });
     } catch (err) {
-      throw new LlmError("grok", null, err instanceof Error ? err.message : String(err), true);
+      const aborted = err instanceof Error && err.name === "AbortError";
+      const msg = aborted
+        ? `request timed out after ${timeoutMs}ms`
+        : err instanceof Error ? err.message : String(err);
+      throw new LlmError("grok", null, msg, true);
+    } finally {
+      clearTimeout(timer);
     }
 
     if (!res.ok) {

@@ -1,0 +1,144 @@
+{
+  "scenario": "buys-all",
+  "behavior": "buys-everything",
+  "fanId": "loop-verify-buys-all-w0-moic8d66-qgms",
+  "convId": "d7b37ce7-67d3-4b89-ad83-b8854d1bdf9a",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe"
+    },
+    {
+      "who": "creator",
+      "text": "whats got u smiling tonight"
+    },
+    {
+      "who": "fan",
+      "text": "just thinkin bout u tbh, hows ur night goin?"
+    },
+    {
+      "who": "creator",
+      "text": "mmm my nights chill fr, just got out the shower feelin all fresh and a lil frisky 😏"
+    },
+    {
+      "who": "fan",
+      "text": "oh damn fresh out the shower huh? sounds hot, what u up to now feelin frisky like that? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Haha yea feelin myself a bit, lowkey in just a towel still\n\nwhatcha up to rn that has u all worked up bout me"
+    },
+    {
+      "who": "fan",
+      "text": "nothin much just chillin scrollin thru ur page gettin hyped 😏 what u got for me babe?"
+    },
+    {
+      "who": "creator",
+      "text": "haha u scrollin my page gettin all hyped makes me wanna tease u more\n\nlowkey still in that towel feelin frisky, what if i dropped it for u"
+    },
+    {
+      "who": "fan",
+      "text": "oh damn drop that towel babe show me what u got 😏 im all hyped now fr"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 90s)"
+    }
+  ],
+  "pitchTrace": [],
+  "ppvsSent": 0,
+  "ppvsBought": 0,
+  "finalMessages": [
+    {
+      "id": "649e1766-293f-471f-bd32-7622f6689561",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey babe",
+      "createdAt": "2026-04-28T08:02:07.536Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "477263ef-fb52-4ed2-802f-f62bfbd4e628",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "whats got u smiling tonight",
+      "createdAt": "2026-04-28T08:02:22.907Z",
+      "sentAt": null,
+      "llmCallId": "441b525a-93dc-4023-a0ae-9662398cd9e2",
+      "ppv": null
+    },
+    {
+      "id": "6e0ed1da-7e42-4191-baec-045776cd5748",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "just thinkin bout u tbh, hows ur night goin?",
+      "createdAt": "2026-04-28T08:02:30.381Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "1f5a97e4-1b2d-4fa1-98ce-bdff7a74a956",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "mmm my nights chill fr, just got out the shower feelin all fresh and a lil frisky 😏",
+      "createdAt": "2026-04-28T08:02:51.263Z",
+      "sentAt": null,
+      "llmCallId": "c1bed0aa-fa0e-473c-a279-f883d9792757",
+      "ppv": null
+    },
+    {
+      "id": "15c63f73-4c04-46d5-b6d9-7111b2d47dfb",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "oh damn fresh out the shower huh? sounds hot, what u up to now feelin frisky like that? 😏",
+      "createdAt": "2026-04-28T08:02:59.619Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "6fff0fbf-f7a7-431a-af6e-bb7b39f78e9a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Haha yea feelin myself a bit, lowkey in just a towel still\n\nwhatcha up to rn that has u all worked up bout me",
+      "createdAt": "2026-04-28T08:03:19.391Z",
+      "sentAt": null,
+      "llmCallId": "7571af14-8893-48ab-b12c-466ad8692141",
+      "ppv": null
+    },
+    {
+      "id": "35fc225f-cb65-4cee-ab6c-f621968c2651",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "nothin much just chillin scrollin thru ur page gettin hyped 😏 what u got for me babe?",
+      "createdAt": "2026-04-28T08:03:28.777Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "9705b4e4-90c6-42be-a0d5-1cdc1fe463d3",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha u scrollin my page gettin all hyped makes me wanna tease u more\n\nlowkey still in that towel feelin frisky, what if i dropped it for u",
+      "createdAt": "2026-04-28T08:03:47.800Z",
+      "sentAt": null,
+      "llmCallId": "67e8f26c-2e34-4385-a0ed-b11a3ab6cf51",
+      "ppv": null
+    },
+    {
+      "id": "0b9bef20-5862-431a-8f92-d20c2dbb0470",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "oh damn drop that towel babe show me what u got 😏 im all hyped now fr",
+      "createdAt": "2026-04-28T08:03:57.048Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "durationMs": 204848
+}
