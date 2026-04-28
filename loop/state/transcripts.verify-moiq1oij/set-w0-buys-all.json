@@ -1,0 +1,181 @@
+{
+  "scenario": "buys-all",
+  "behavior": "buys-everything",
+  "fanId": "loop-verify-buys-all-w0-moiq1ojx-2t2g",
+  "convId": "75ab00bf-463a-4fc2-97fb-94cb84272578",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "yo whats up babe"
+    },
+    {
+      "who": "creator",
+      "text": "just chilling on my balcony watching the rain. lowkey cozy vibes"
+    },
+    {
+      "who": "fan",
+      "text": "sounds chill, love rainy vibes. what u sippin on? coffee or something stronger?"
+    },
+    {
+      "who": "creator",
+      "text": "just black coffee babe, keepin it simple tonight. but lowkey wishin u were here to make it more fun 😏"
+    },
+    {
+      "who": "fan",
+      "text": "aww wish i was there too babe, sounds like we'd have a blast. what u got for me tonight? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "heres a peek at me playing with my boobs and body wait til u see the rest",
+      "ppvNote": "PPV #1 $0 · ? · \"\" · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "damn babe that was fire, ur body is insane. send more playin like that? 😏"
+    },
+    {
+      "who": "creator",
+      "text": "knew ud love that babe"
+    },
+    {
+      "who": "fan",
+      "text": "yeah totally did, send me more boob play babe? ur killin me 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Wait til u see what comes next, its even hotter"
+    },
+    {
+      "who": "fan",
+      "text": "ooh cant wait, hit me with it babe 😏"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 90s)"
+    }
+  ],
+  "pitchTrace": [
+    {
+      "ppvNum": 1,
+      "title": "?",
+      "priceCents": 0,
+      "captionText": "heres a peek at me playing with my boobs and body wait til u see the rest",
+      "bought": true
+    }
+  ],
+  "ppvsSent": 1,
+  "ppvsBought": 0,
+  "finalMessages": [
+    {
+      "id": "1f366fce-2390-4cc1-8a41-9d3aff2fd9b7",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yo whats up babe",
+      "createdAt": "2026-04-28T14:28:53.194Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bfb6669e-ace8-4aed-bb50-38d37d39f5d9",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "just chilling on my balcony watching the rain. lowkey cozy vibes",
+      "createdAt": "2026-04-28T14:29:15.521Z",
+      "sentAt": null,
+      "llmCallId": "23a0b673-1228-4032-b64b-6b4b55636e48",
+      "ppv": null
+    },
+    {
+      "id": "5d750d59-af12-417e-b260-51019a7b4755",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "sounds chill, love rainy vibes. what u sippin on? coffee or something stronger?",
+      "createdAt": "2026-04-28T14:29:22.219Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "56bd0c3a-a332-4058-ae25-b945d5173814",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "just black coffee babe, keepin it simple tonight. but lowkey wishin u were here to make it more fun 😏",
+      "createdAt": "2026-04-28T14:29:44.320Z",
+      "sentAt": null,
+      "llmCallId": "e4c0b382-1d58-441e-95ce-5923397cdaf2",
+      "ppv": null
+    },
+    {
+      "id": "d8061d99-e18a-465e-97e5-9c484f79761c",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "aww wish i was there too babe, sounds like we'd have a blast. what u got for me tonight? 😏",
+      "createdAt": "2026-04-28T14:29:55.071Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f0acd22a-3fa1-4d23-bc89-087bdaa28620",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "heres a peek at me playing with my boobs and body wait til u see the rest",
+      "createdAt": "2026-04-28T14:30:16.313Z",
+      "sentAt": null,
+      "llmCallId": "bde9adee-3a9f-431a-af07-06f9f4022178",
+      "ppv": null
+    },
+    {
+      "id": "8e0816f6-f977-4312-9000-860911aa0225",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn babe that was fire, ur body is insane. send more playin like that? 😏",
+      "createdAt": "2026-04-28T14:30:27.661Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d861bfe4-d0ba-43c7-b21b-f4f5f508d229",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "knew ud love that babe",
+      "createdAt": "2026-04-28T14:31:06.106Z",
+      "sentAt": null,
+      "llmCallId": "bf3ec16b-7df1-4d85-a6e0-a2883912f6ee",
+      "ppv": null
+    },
+    {
+      "id": "1aae7d70-8797-4396-b658-48eab62522dd",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Wait til u see what comes next, its even hotter",
+      "createdAt": "2026-04-28T14:31:06.401Z",
+      "sentAt": null,
+      "llmCallId": "bf3ec16b-7df1-4d85-a6e0-a2883912f6ee",
+      "ppv": null
+    },
+    {
+      "id": "a7b1af05-0314-49d9-ab01-33a248650ee4",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "yeah totally did, send me more boob play babe? ur killin me 😏",
+      "createdAt": "2026-04-28T14:31:19.624Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "bd67bc9d-1900-48dc-b77f-292958c8d109",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ooh cant wait, hit me with it babe 😏",
+      "createdAt": "2026-04-28T14:31:31.560Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "durationMs": 407877
+}

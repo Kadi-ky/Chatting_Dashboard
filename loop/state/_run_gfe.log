@@ -1,0 +1,10 @@
+[2026-04-28T14:28:45.835Z] verify start | label=verify-moiq1oij | testers=3 | model=grok-4
+[2026-04-28T14:28:45.837Z] [w0] starting serial buys-all (tester 1/1)
+[2026-04-28T14:28:45.837Z] [w0] buys-all start | fan=loop-verify-buys-all-w0-moiq1ojx-2t2g | behavior=buys-everything
+[2026-04-28T14:30:17.592Z] [w0] buys-all buy failed: admin /admin/test/ppv-unlock 404: {"error":"no ppv attempt for that message"}
+[2026-04-28T14:35:32.522Z] [w0] buys-all turn 5 no bot reply
+[2026-04-28T14:35:33.716Z] [w0] buys-all/buys-everything done | ppvs=1 bought=0 order="S?R?" caps_with_price=0 firstPpvMsg=6
+[2026-04-28T14:35:33.719Z] DONE | summary → C:\Users\Predator\Desktop\PeachBot V2\loop\state\verify-moiq1oij.summary.json | transcripts → C:\Users\Predator\Desktop\PeachBot V2\loop\state\transcripts.verify-moiq1oij
+
+=== VERDICT ===
+w0 buys-everything: order=S?R? | violations=NONE ✓ | captionsWithPrice=0 ✓ | rapportGate=FAIL (firstPPVat=6)

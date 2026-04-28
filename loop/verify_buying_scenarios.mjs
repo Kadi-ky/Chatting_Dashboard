@@ -51,8 +51,9 @@ const TESTER_STAGGER_MS = 20000;             // start each tester 20s apart so t
 //                                instead of stalling forever in RAPPORT
 const SCENARIOS = [
   { id: 'buys-all',  behavior: 'buys-everything' },
-  { id: 'buys-one',  behavior: 'buys-one-then-stops' },
-  { id: 'chatty',    behavior: 'chatty-not-horny' },
+  // Disabled for personality-only check (will re-enable after tone is locked):
+  // { id: 'buys-one',  behavior: 'buys-one-then-stops' },
+  // { id: 'chatty',    behavior: 'chatty-not-horny' },
 ];
 
 let TX_DIR, RUN_LOG, SUMMARY_PATH, RUN_LABEL;
