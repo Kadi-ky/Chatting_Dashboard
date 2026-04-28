@@ -20,6 +20,9 @@ interface CachedIdentity {
   source: string;
 }
 
+// In-memory cache — process-lifetime. Editing identity.md does NOT trigger
+// a reload by itself (tsx watch only watches src/). Restart the worker to
+// pick up persona changes. Tests can call __resetIdentityCacheForTests().
 const cache = new Map<string, CachedIdentity>();
 
 export function loadIdentityLayer(accountId: string): string {
