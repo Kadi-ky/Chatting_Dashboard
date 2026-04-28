@@ -21,6 +21,7 @@ import { insertPpvAttempt } from "../db/repos/ppv_attempts.js";
 import { incrementAttemptCounter } from "../db/repos/ppv_catalog.js";
 import { bumpAttempt } from "../db/repos/asset_performance.js";
 import { archetypeSlice } from "../ppv/ranker.js";
+import { markPreviewSent, markPpvSent } from "../ppv/funnel.js";
 import type { LatestArchetypeRow } from "../db/repos/archetypes.js";
 import type { PpvCatalogRow } from "../db/repos/ppv_catalog.js";
 import type { ContextMessage } from "../prompt/layers/context.js";
@@ -42,20 +43,22 @@ export interface GenerateReplyInput {
   facts?: string[];
   /** Additional lead-in delay applied to the first bubble (e.g. sleep wake-up). */
   extraLeadMs?: number;
-  /** Pitch this asset at this price on the final bubble. */
+  /** Pitch this asset on the final bubble. Two-turn funnel: kind picks which step. */
   pitch?: {
+    /**
+     * "preview" — this turn we send the FREE preview media + horny tease caption.
+     *             No priced PPV bubble emitted. Wait for fan to react next turn.
+     * "ppv"     — this turn we send the PRICED PPV with caption.
+     *             No preview emitted. Fan saw the preview last turn.
+     */
+    kind: "preview" | "ppv";
     asset: PpvCatalogRow;
     priceCents: number;
     /** True when orchestrator honoured a fan's discount request — the persona should frame as a one-time gift. */
     discountApplied?: boolean;
     /** True when this is a "support-drip" pitch — fan has been ignoring pitches; bot is doing a periodic re-ask with explicit "support me" framing. */
     supportDripMode?: boolean;
-    /**
-     * Free preview media ref for the picked script. When set, the pipeline
-     * sends this as a free media-attached bubble at the start of the chain
-     * (before any text), giving the fan a tease they get for $0 before the
-     * priced PPV closes.
-     */
+    /** Free preview media ref. Required when kind="preview". */
     previewMediaRef?: string;
   };
   /** Archetype snapshot — only used for asset_performance rollups when pitching. */
@@ -147,6 +150,13 @@ async function generateLlmReply(
 
   const discountApplied = isPitch && input.pitch!.discountApplied === true;
   const supportDripMode = isPitch && input.pitch!.supportDripMode === true;
+  const pitchKind = isPitch ? input.pitch!.kind : undefined;
+  // Two-turn funnel: preview-step task asks the LLM for a single tease caption
+  // (no priced bubble); ppv-step task asks for the priced PPV's caption.
+  const previewObjective =
+    "PREVIEW STEP — this turn the bot sends a FREE preview image with a horny caption. Output ONE bubble only: the caption that goes WITH the preview. NO priced PPV this turn — that lands NEXT turn after the fan reacts. Caption rules: 1) start with a horny reaction to the fan's last message (match his energy — let-him-lead if he described what he'd do, girlfriend-energy if sweet, dominant only if he asked for it). 2) Anchor the tease to what's IN the preview (paraphrase the asset description, do NOT invent acts/durations/people not in the description). 3) End with bait that pulls him into the next message ('wait til u see the rest', 'this is just a peek', 'imagine what's after this'). Keep it short, lowercase, max 35 words, max 1 emoji.";
+  const ppvObjective =
+    "PPV STEP — this turn the bot sends the PRICED PPV. The fan saw the preview last turn; this is the close. Output ONE bubble only: the caption that goes WITH the priced PPV. Reference the preview naturally ('here's the rest babe', 'told u u'd want this', 'unlocking this gets u everything'). Anchor the caption to what's IN the asset description — do NOT invent acts/durations/personalizations. Match his last-message energy. Lowercase, max 45 words, max 1-2 emojis.";
   const task: {
     kind: GeneratorTaskKind;
     objective: string;
@@ -159,16 +169,17 @@ async function generateLlmReply(
         objective:
           (isBroadcast
             ? "This is an outbound message — the fan has not written to you this turn. Open naturally and personal, then pitch the asset below as the last bubble. Keep it warm, not salesy."
-            : "The fan is signalling they want content — close the loop now. Deliver the asset below as the last bubble. Do NOT stall with another 'what gets you going' question — the question phase is over for this turn. Keep prelude short (0–1 bubble of warm-up), then attach the asset with a caption that teases what's in it. Natural, not salesy.") +
+            : pitchKind === "preview"
+              ? previewObjective
+              : ppvObjective) +
           (discountApplied
-            ? " IMPORTANT: the fan asked for a discount and you ARE giving it to them — the price below is already 10% off. Frame it warmly as a one-time gift in your prelude bubble: 'aight babe just for u i knocked a lil off' / 'ok ok i got u, gonna give u a lil deal'. Do NOT mention any dollar amount — the discounted price is shown in the PPV bubble automatically. Do NOT hesitate or counter-offer; the deal is already done."
+            ? " IMPORTANT: the fan asked for a discount and you ARE giving it to them — the price below is already 10% off. Frame it warmly as a one-time gift: 'aight babe just for u i knocked a lil off' / 'ok ok i got u, gonna give u a lil deal'. Do NOT mention any dollar amount — the discounted price is shown in the PPV bubble automatically. Do NOT hesitate or counter-offer; the deal is already done."
             : "") +
           (supportDripMode
-            ? " SUPPORT-DRIP framing: this fan has been chatting without buying for a while — the bot is doing a periodic 'support me' ask. The PPV caption MUST include explicit support language alongside the content tease. Pick one phrasing per send (rotate, don't repeat verbatim each time): 'support a girl with this one', 'help me out babe with this', 'buy this to keep me filming', 'show me a lil love with this one', 'support means a lot fr'. Tone stays warm and a touch vulnerable — not begging, not whining, just real. Still describe what's IN the PPV (per the description), but the ASK is reframed from 'unlock this' to 'support this'."
-            : "") +
-          " The asset is sent as the last bubble; earlier bubbles are regular text.",
+            ? " SUPPORT-DRIP framing: this fan has been chatting without buying for a while — the bot is doing a periodic 'support me' ask. The caption MUST include explicit support language alongside the content tease. Pick one phrasing per send (rotate, don't repeat verbatim each time): 'support a girl with this one', 'help me out babe with this', 'buy this to keep me filming', 'show me a lil love with this one', 'support means a lot fr'. Tone stays warm and a touch vulnerable — not begging, not whining, just real. Still describe what's IN the asset (per the description), but the ASK is reframed from 'unlock this' to 'support this'."
+            : ""),
         forbiddens: [
-          "do not send more than 3 bubbles",
+          "output ONE bubble only — no rapport prelude, no follow-up bubble",
           "do NOT mention any dollar amount, price, or '$' in the caption text — the price is shown automatically in the PPV bubble. Caption is pure tease, no money talk.",
           "do not ask another preference-gathering question this turn — deliver the content",
           ...phaseForbiddensForPitch,
@@ -599,44 +610,100 @@ async function enqueueHumanizedTurn(args: {
   const { input, humanized, llmCallId, extraLeadMs } = args;
   const pitch = input.pitch;
 
-  // BUBBLE COMBINE: when env.BUBBLE_COMBINE is on, fold all text bubbles into
-  // a single message joined by newlines. The pitch bubble (PPV) stays
-  // separate because its wire format includes price + mediaFiles. Reduces
-  // OnlyFans CF burst-fingerprint from 2-3 sends per turn to 1-2.
-  // Persona / intent / generator logic upstream is unchanged — we just
-  // collapse here at the queue boundary.
-  if (env.BUBBLE_COMBINE && humanized.bubbles.length > 1) {
-    const lastIdx0 = humanized.bubbles.length - 1;
-    if (pitch) {
-      // Combine all non-pitch bubbles, keep pitch as separate last bubble.
-      const textBubbles = humanized.bubbles.slice(0, lastIdx0);
-      const pitchBubble = humanized.bubbles[lastIdx0]!;
-      const combined = textBubbles.join("\n\n").trim();
-      humanized.bubbles = combined ? [combined, pitchBubble] : [pitchBubble];
-      // Sum text-bubble timings, keep last timing for the pitch
-      const textTotal = humanized.timings
-        .slice(0, lastIdx0)
-        .reduce((a, t) => a + (t?.delayMs ?? 0), 0);
-      humanized.timings = combined
-        ? [
-            { ...humanized.timings[0]!, delayMs: textTotal },
-            humanized.timings[lastIdx0]!,
-          ]
-        : [humanized.timings[lastIdx0]!];
-    } else {
-      // No pitch — collapse all bubbles into one.
-      const combined = humanized.bubbles.join("\n\n").trim();
-      const totalDelay = humanized.timings.reduce(
-        (a, t) => a + (t?.delayMs ?? 0),
-        0,
-      );
-      humanized.bubbles = [combined];
-      humanized.timings = [{ ...humanized.timings[0]!, delayMs: totalDelay }];
+  // PITCH TURN — single media bubble only.
+  // Two-turn funnel: the LLM was instructed to output ONE caption (preview
+  // tease OR ppv close). Force-collapse anything it sent into a single bubble
+  // and emit it as a media-attached message (free preview or priced PPV).
+  // No prelude bubble, no rapport text — just the media + caption.
+  if (pitch) {
+    const caption = humanized.bubbles.join(" ").replace(/\s+/g, " ").trim();
+    const draft = await insertOutboundDraft({
+      conversationId: input.conversationId,
+      text: caption,
+      llmCallId,
+      kind: "ppv", // DB enum doesn't have "preview"; both steps are media-attached
+    });
+
+    let ppvAttemptId: string | undefined;
+    if (pitch.kind === "ppv") {
+      // Only the priced step creates a ppv_attempt row (preview is free).
+      const attempt = await insertPpvAttempt({
+        conversationId: input.conversationId,
+        assetId: pitch.asset.id,
+        priceCents: pitch.priceCents,
+        messageId: draft.id,
+      });
+      ppvAttemptId = attempt.id;
+      await Promise.all([
+        incrementAttemptCounter(pitch.asset.id),
+        bumpAttempt(pitch.asset.id, archetypeSlice(input.archetype ?? null)),
+      ]);
     }
+
+    const q = outboundQueue();
+    const delay = extraLeadMs + (humanized.timings[0]?.delayMs ?? 1200);
+
+    if (pitch.kind === "preview" && pitch.previewMediaRef) {
+      const job: OutboundJobData = {
+        accountId: input.accountId,
+        conversationId: input.conversationId,
+        subscriberId: input.subscriberId,
+        subscriberExternalId: input.subscriberExternalId,
+        kind: "preview",
+        messageId: draft.id,
+        text: caption,
+        preview: { mediaRef: pitch.previewMediaRef },
+        bubbleIndex: 0,
+        bubbleCount: 1,
+      };
+      await q.add(`preview:${draft.id}`, job, {
+        delay,
+        jobId: `send-${draft.id}`,
+      });
+      await markPreviewSent(input.conversationId, pitch.asset.id);
+    } else {
+      const job: OutboundJobData = {
+        accountId: input.accountId,
+        conversationId: input.conversationId,
+        subscriberId: input.subscriberId,
+        subscriberExternalId: input.subscriberExternalId,
+        kind: "ppv",
+        messageId: draft.id,
+        text: caption,
+        ppv: {
+          assetId: pitch.asset.id,
+          assetRef: resolveAssetRef(pitch.asset),
+          priceCents: pitch.priceCents,
+        },
+        bubbleIndex: 0,
+        bubbleCount: 1,
+      };
+      await q.add(`ppv:${draft.id}`, job, {
+        delay,
+        jobId: `send-${draft.id}`,
+      });
+      await markPpvSent(input.conversationId, pitch.asset.id);
+    }
+
+    return {
+      bubbles: [caption],
+      draftMessageIds: [draft.id],
+      ...(ppvAttemptId ? { ppvAttemptId } : {}),
+    };
+  }
+
+  // NON-PITCH TURN — original BUBBLE_COMBINE + multi-bubble enqueue path.
+  if (env.BUBBLE_COMBINE && humanized.bubbles.length > 1) {
+    const combined = humanized.bubbles.join("\n\n").trim();
+    const totalDelay = humanized.timings.reduce(
+      (a, t) => a + (t?.delayMs ?? 0),
+      0,
+    );
+    humanized.bubbles = [combined];
+    humanized.timings = [{ ...humanized.timings[0]!, delayMs: totalDelay }];
   }
 
   const count = humanized.bubbles.length;
-  const lastIdx = count - 1;
 
   // Sequential (not Promise.all) so created_at is strictly monotonic across
   // bubbles. UI orders messages by created_at and identical timestamps from
@@ -647,90 +714,25 @@ async function enqueueHumanizedTurn(args: {
       conversationId: input.conversationId,
       text: humanized.bubbles[i]!,
       llmCallId,
-      kind: pitch && i === lastIdx ? "ppv" : "text",
+      kind: "text",
     });
     drafts.push(draft);
   }
 
-  // Record the attempt up-front so the send and the rollup are tied even if
-  // the outbound send fails later. Unlock tracker resolves it.
-  let ppvAttemptId: string | undefined;
-  if (pitch) {
-    const attempt = await insertPpvAttempt({
-      conversationId: input.conversationId,
-      assetId: pitch.asset.id,
-      priceCents: pitch.priceCents,
-      messageId: drafts[lastIdx]!.id,
-    });
-    ppvAttemptId = attempt.id;
-    await Promise.all([
-      incrementAttemptCounter(pitch.asset.id),
-      bumpAttempt(pitch.asset.id, archetypeSlice(input.archetype ?? null)),
-    ]);
-  }
-
   const q = outboundQueue();
   let cumulativeDelay = extraLeadMs;
-
-  // FREE PREVIEW — when the picked script has a preview_media_id configured,
-  // send it as the very first bubble (before any text). Fans see a free
-  // tease photo/clip, the bot's text rapport bubble lands a beat later, then
-  // the paid PPV closes. Typing-rhythm-wise the preview gets a small fixed
-  // lead so it's the first thing on screen, then a ~3.5s gap before the
-  // text bubble — feels like "look at this … wait, here's more".
-  const previewMediaRef = pitch?.previewMediaRef;
-  if (previewMediaRef) {
-    const previewDraft = await insertOutboundDraft({
-      conversationId: input.conversationId,
-      text: "",
-      llmCallId,
-      // DB MessageKind enum has no "preview" — record the row as kind=ppv
-      // (it IS a media-attached send). The OutboundJobData.kind is what
-      // routes the adapter call to a 0-priced media post.
-      kind: "ppv",
-    });
-    const previewDelay = cumulativeDelay + 1200;
-    const previewJob: OutboundJobData = {
-      accountId: input.accountId,
-      conversationId: input.conversationId,
-      subscriberId: input.subscriberId,
-      subscriberExternalId: input.subscriberExternalId,
-      kind: "preview",
-      messageId: previewDraft.id,
-      text: "",
-      preview: { mediaRef: previewMediaRef },
-      bubbleIndex: 0,
-      bubbleCount: count + 1,
-    };
-    await q.add(`preview:${previewDraft.id}`, previewJob, {
-      delay: previewDelay,
-      jobId: `send-${previewDraft.id}`,
-    });
-    cumulativeDelay = previewDelay + 3500;
-  }
-
   for (let i = 0; i < count; i++) {
     cumulativeDelay += humanized.timings[i]?.delayMs ?? 0;
-    const isPitchBubble = pitch != null && i === lastIdx;
     const jobData: OutboundJobData = {
       accountId: input.accountId,
       conversationId: input.conversationId,
       subscriberId: input.subscriberId,
       subscriberExternalId: input.subscriberExternalId,
-      kind: isPitchBubble ? "ppv" : "text",
+      kind: "text",
       messageId: drafts[i]!.id,
       text: humanized.bubbles[i]!,
       bubbleIndex: i,
       bubbleCount: count,
-      ...(isPitchBubble && pitch
-        ? {
-            ppv: {
-              assetId: pitch.asset.id,
-              assetRef: resolveAssetRef(pitch.asset),
-              priceCents: pitch.priceCents,
-            },
-          }
-        : {}),
     };
     await q.add(`bubble:${drafts[i]!.id}`, jobData, {
       delay: cumulativeDelay,
@@ -741,7 +743,6 @@ async function enqueueHumanizedTurn(args: {
   return {
     bubbles: humanized.bubbles,
     draftMessageIds: drafts.map((d) => d.id),
-    ...(ppvAttemptId ? { ppvAttemptId } : {}),
   };
 }
 

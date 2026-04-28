@@ -8,6 +8,7 @@ import {
   listRecentAttempts,
 } from "../db/repos/ppv_attempts.js";
 import { pickNextForFan } from "./scriptPicker.js";
+import { getFunnelStep } from "./funnel.js";
 import { sql, type SqlBool } from "kysely";
 import { db } from "../db/client.js";
 
@@ -24,43 +25,40 @@ const COOLDOWN_DAYS = 14;
  * behaviour anymore.
  */
 const MIN_TURNS_BETWEEN_PITCHES: Record<Phase, number> = {
-  WARMUP: Infinity, // still never — phase fix moved out of WARMUP fast anyway
-  RAPPORT: 4, // was Infinity — RAPPORT now allows pitches to start early
-  QUALIFYING: 3, // was 5 — pitch every 3 messages (was every 5)
-  MONETIZING: 2, // was 3 — pitch every 2 messages once they've bought
-  WHALE: 2, // was 3 — most aggressive pitch cadence
+  WARMUP: Infinity,
+  RAPPORT: Infinity,    // No pitching in rapport — bot is gathering signal.
+  SEXTING: Infinity,    // No pitching in sexting either — bot is heating fan up.
+  QUALIFYING: 1,        // First pitch lands here. After that, 1 msg between pitches
+                        //   (preview turn → wait → ppv turn = naturally spaced).
+  MONETIZING: 2,        // Repeat-buy cycle.
+  WHALE: 2,
   REACTIVATION: Infinity,
   COLD: Infinity,
 };
 
 /**
- * Hard rapport gate: even when the fan EXPLICITLY asks for content on turn 1
- * ("send tit pic", "got feet?", "give me a teaser"), the bot must not pitch
- * until at least this many messages exist in the conversation. This is the
- * countConversationTurns() value (total inbound+outbound messages in the
- * conv, including the just-arrived inbound that triggered this turn).
+ * REMOVED: PITCH_RAPPORT_GATE_TURNS turn-counter floor (was 8).
  *
- * Default 5 = bot's third outbound can pitch:
- *   msg 1 fan: "send pic"
- *   msg 2 bot: warm reply, no pitch
- *   msg 3 fan: "come on send"
- *   msg 4 bot: still no pitch — tease, ask a question
- *   msg 5 fan: persists / engages
- *   msg 6 bot: NOW can pitch (turnIndex when decidePitch runs = 5)
- *
- * Repeated runs of the auto-improve loop (runs 3-6) all flagged "pitched in
- * the very first reply" as the dominant top_issue across whale/casual/freebie/
- * kink_specific archetypes despite progressively stricter prompt rules. The
- * model kept ignoring the prompt; enforcing in code closes the loop.
- *
- * Override with env var PITCH_RAPPORT_GATE_TURNS for tuning. Set to 0 or 1
- * to effectively disable.
+ * Replaced with phase-based gating: pitches only fire in QUALIFYING+. The
+ * state machine advances WARMUP → RAPPORT → SEXTING → QUALIFYING based on
+ * temperature (intent classifier), so by the time a fan reaches QUALIFYING
+ * they're demonstrably hot AND have spent meaningful turns warming up. This
+ * makes the floor signal-driven instead of an arbitrary message count —
+ * a fan who heats up fast can land a pitch by msg ~12, a slow fan never
+ * gets force-pitched at all.
  */
-const PITCH_RAPPORT_GATE_TURNS = Number(process.env.PITCH_RAPPORT_GATE_TURNS ?? "8");
 
 export interface PitchDecision {
   shouldPitch: boolean;
   reason: string;
+  /**
+   * Which step of the two-turn funnel to send this turn:
+   *   "preview" — free preview media + horny tease caption (no price)
+   *   "ppv"     — priced PPV with caption
+   * The funnel marks state in Redis: first time we pitch a rung we send
+   * "preview", next turn (after fan replies) we send "ppv".
+   */
+  kind?: "preview" | "ppv";
   asset?: PpvCatalogRow;
   priceCents?: number;
   scriptNumber?: number;
@@ -166,18 +164,13 @@ const SUPPORT_DRIP_INTERVAL_TURNS = 10;
  * lazy-materialises a v3.ppv_catalog mirror row so downstream FKs resolve.
  */
 export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision> {
-  // Hard rapport gate — applies even when fan explicitly asked. This is the
-  // ONE check explicit requests cannot bypass; the prompt repeatedly failed
-  // to honour "build rapport first" and pitched on turn 1 to whoever asked.
-  if (args.turnIndex < PITCH_RAPPORT_GATE_TURNS) {
-    return {
-      shouldPitch: false,
-      reason: `rapport_gate (turnIndex=${args.turnIndex} < ${PITCH_RAPPORT_GATE_TURNS})`,
-    };
-  }
-
+  // Phase gate. Pitching only happens in QUALIFYING / MONETIZING / WHALE.
+  // WARMUP / RAPPORT / SEXTING are heat-building phases — even an explicit
+  // "send pic" buys nothing in those phases. The state machine advances on
+  // temperature signal so a fan who's actually hot lands in QUALIFYING fast;
+  // a chatty fan stays in RAPPORT and never gets force-pitched.
   const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
-  if (!args.explicitRequest && !Number.isFinite(minTurns)) {
+  if (!Number.isFinite(minTurns)) {
     return { shouldPitch: false, reason: `phase ${args.phase} does not pitch` };
   }
   if (!args.explicitRequest && args.turnsSinceLastPitch < (minTurns as number)) {
@@ -279,13 +272,31 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     ? Math.max(1, Math.round(picked.priceCents * (1 - DISCOUNT_RATE)))
     : picked.priceCents;
 
+  // Two-turn funnel: first time we pitch a rung, send the FREE PREVIEW with
+  // a tease caption. Next turn (after fan replies), send the priced PPV. If
+  // the rung has no preview_media_id configured, skip straight to the PPV
+  // step — preserves behavior for catalogs that haven't filled in previews.
+  const funnelStep = await getFunnelStep(args.conversationId, picked.asset.id);
+  let kind: "preview" | "ppv";
+  if (funnelStep === "none" && picked.previewMediaRef) {
+    kind = "preview";
+  } else {
+    // funnelStep === "preview_sent" → fan reacted, time for the priced PPV
+    // funnelStep === "ppv_sent"     → fan didn't unlock yet; this code path
+    //   shouldn't fire (drip / recovery handles it), but if it does we re-pitch
+    //   the priced PPV (idempotent; new attempt row).
+    // no preview configured                → straight to PPV
+    kind = "ppv";
+  }
+
   return {
     shouldPitch: true,
     reason: dripPitch
-      ? `support_drip (every ${SUPPORT_DRIP_INTERVAL_TURNS} msgs after ${UNBOUGHT_LOOKBACK} unbought)`
+      ? `support_drip (every ${SUPPORT_DRIP_INTERVAL_TURNS} msgs after ${UNBOUGHT_LOOKBACK} unbought) [${kind}]`
       : picked.reason === "continue"
-        ? "continue_script"
-        : "new_script",
+        ? `continue_script [${kind}]`
+        : `new_script [${kind}]`,
+    kind,
     asset: picked.asset,
     priceCents: finalPriceCents,
     scriptNumber: picked.scriptNumber,

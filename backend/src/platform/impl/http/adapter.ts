@@ -9,6 +9,7 @@ import type {
   IncomingWebhook,
   PlatformAdapter,
   PlatformEvent,
+  SendFreeMediaRequest,
   SendMessageRequest,
   SendPPVRequest,
   SendResult,
@@ -181,6 +182,27 @@ export class HttpPlatformAdapter implements PlatformAdapter {
     return { externalId: String(resp.data.id), sentAt: new Date(resp.data.createdAt) };
   }
 
+  async sendFreeMedia(ctx: AccountContext, req: SendFreeMediaRequest): Promise<SendResult> {
+    if (env.SHADOW_MODE) return shadowSend("free_media", ctx, req);
+    // Free preview send. CRITICAL: omit the `price` field entirely — sending
+    // `price: 0` makes OFAPI treat the message as a malformed PPV and reject
+    // it (or render it as a $0 paywalled bubble, which looks broken). The
+    // n8n flow proves omitting price + including text + mediaFiles posts as
+    // a normal in-DM photo/clip the fan sees inline.
+    const resp = await this.http.request<OFAPIResponse<OFAPISentMessage>>(
+      `/api/${ctx.platformAccountId}/chats/${req.subscriberExternalId}/messages`,
+      {
+        method: "POST",
+        idempotencyKey: req.idempotencyKey,
+        body: {
+          text: req.caption,
+          mediaFiles: [req.mediaRef],
+        },
+      },
+    );
+    return { externalId: String(resp.data.id), sentAt: new Date(resp.data.createdAt) };
+  }
+
   async markRead(ctx: AccountContext, conversationExternalId: string): Promise<void> {
     await this.http.request(`/api/${ctx.platformAccountId}/chats/${conversationExternalId}/read`, {
       method: "POST",
@@ -246,9 +268,9 @@ export class HttpPlatformAdapter implements PlatformAdapter {
  * the difference between a real platform delivery and a shadow ghost.
  */
 function shadowSend(
-  kind: "message" | "ppv",
+  kind: "message" | "ppv" | "free_media",
   ctx: AccountContext,
-  req: SendMessageRequest | SendPPVRequest,
+  req: SendMessageRequest | SendPPVRequest | SendFreeMediaRequest,
 ): SendResult {
   logger.info(
     {
@@ -260,11 +282,16 @@ function shadowSend(
       idempotencyKey: req.idempotencyKey,
       ...(kind === "message"
         ? { text: (req as SendMessageRequest).text }
-        : {
-            caption: (req as SendPPVRequest).caption,
-            assetRef: (req as SendPPVRequest).assetRef,
-            priceCents: (req as SendPPVRequest).priceCents,
-          }),
+        : kind === "ppv"
+          ? {
+              caption: (req as SendPPVRequest).caption,
+              assetRef: (req as SendPPVRequest).assetRef,
+              priceCents: (req as SendPPVRequest).priceCents,
+            }
+          : {
+              caption: (req as SendFreeMediaRequest).caption,
+              mediaRef: (req as SendFreeMediaRequest).mediaRef,
+            }),
     },
     "SHADOW_MODE: would-send (no platform call)",
   );

@@ -25,6 +25,7 @@ export type GeneratedJson<T = Record<string, unknown>> = ColumnType<T, string | 
 export type Phase =
   | "WARMUP"
   | "RAPPORT"
+  | "SEXTING"
   | "QUALIFYING"
   | "MONETIZING"
   | "WHALE"

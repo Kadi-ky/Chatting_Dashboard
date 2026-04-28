@@ -35,6 +35,16 @@ export interface Signals {
 
   /** Optional LLM-suggested hint from the previous turn's output. */
   phaseTransitionHint: Phase | null;
+
+  /**
+   * Sexual-readiness signal classified from the fan's most recent inbound.
+   *   "cold" → chatty / neutral / asking factual questions, no flirt
+   *   "warm" → flirting back, complimenting body, light innuendo
+   *   "hot"  → openly sexual / aroused / asking for content / "fuck", "horny", graphic language
+   * Drives RAPPORT → SEXTING and SEXTING → QUALIFYING transitions so the
+   * funnel advances on the FAN'S energy, not a turn counter.
+   */
+  temperature: "cold" | "warm" | "hot";
 }
 
 export interface Transition {

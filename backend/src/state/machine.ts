@@ -23,6 +23,8 @@ export async function tickStateMachine(args: {
   conversationId: string;
   subscriberId: string;
   phaseTransitionHint?: Phase | null;
+  /** Sexual-readiness signal from THIS inbound — drives RAPPORT → SEXTING → QUALIFYING. */
+  temperature?: "cold" | "warm" | "hot";
 }): Promise<TickResult | null> {
   // Bump first so turnsInPhase reflects "this turn" in predicates below.
   await bumpTurnsInPhase(args.conversationId);

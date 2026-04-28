@@ -155,13 +155,13 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
             idempotencyKey,
           });
         } else if (data.kind === "preview" && data.preview) {
-          // Free media post: same OFAPI endpoint as PPV, just price=0. The
-          // platform infers PPV-vs-free from `price > 0`, so a 0-priced media
-          // attachment lands as a regular DM photo/clip the fan sees inline.
-          result = await deps.adapter.sendPPV(adapterCtx, {
+          // Free media post — sendFreeMedia OMITS the price field entirely
+          // (sending price=0 caused OFAPI to reject as malformed PPV / render
+          // a $0 paywalled bubble). The n8n flow proves text + mediaFiles
+          // (no price) lands as an in-DM photo/clip the fan sees inline.
+          result = await deps.adapter.sendFreeMedia(adapterCtx, {
             subscriberExternalId: data.subscriberExternalId,
-            assetRef: data.preview.mediaRef,
-            priceCents: 0,
+            mediaRef: data.preview.mediaRef,
             caption: data.text,
             idempotencyKey,
           });

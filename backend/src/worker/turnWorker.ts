@@ -65,7 +65,17 @@ export function startTurnWorker(): Worker<TurnJobData> {
 
     const turnStart = Date.now();
     await withConversationLock(conversationId, async () => {
-      const tick = await tickStateMachine({ conversationId, subscriberId });
+      // Classify intent BEFORE the state tick so the temperature signal can
+      // gate phase transitions in this turn (RAPPORT → SEXTING → QUALIFYING).
+      // Without this, transitions would lag a turn behind the fan's actual
+      // energy — they'd still see last turn's temperature.
+      const intent = await classifyIntent(incomingText);
+
+      const tick = await tickStateMachine({
+        conversationId,
+        subscriberId,
+        temperature: intent.temperature,
+      });
       if (!tick) {
         logger.warn(ctx, "state tick returned null — skipping reply");
         return;
@@ -79,13 +89,12 @@ export function startTurnWorker(): Worker<TurnJobData> {
         );
       }
 
-      const [archetype, facts, turnIndex, sinceLastPitch, account, intent] = await Promise.all([
+      const [archetype, facts, turnIndex, sinceLastPitch, account] = await Promise.all([
         loadLatestArchetype(subscriberId),
         loadCurrentFacts(subscriberId, 30),
         countConversationTurns(conversationId),
         turnsSinceLastPitch(conversationId),
         loadAccountById(accountId),
-        classifyIntent(incomingText),
       ]);
 
       logger.debug(
@@ -149,9 +158,10 @@ export function startTurnWorker(): Worker<TurnJobData> {
         intent,
         ...(archetypeDirective !== undefined ? { archetypeDirective } : {}),
         ...(factStrings.length > 0 ? { facts: factStrings } : {}),
-        ...(pitchDecision.shouldPitch && pitchDecision.asset && pitchDecision.priceCents != null
+        ...(pitchDecision.shouldPitch && pitchDecision.asset && pitchDecision.priceCents != null && pitchDecision.kind
           ? {
               pitch: {
+                kind: pitchDecision.kind,
                 asset: pitchDecision.asset,
                 priceCents: pitchDecision.priceCents,
                 ...(pitchDecision.discountApplied ? { discountApplied: true } : {}),

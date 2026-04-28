@@ -52,6 +52,21 @@ export interface SendPPVRequest {
   idempotencyKey: string;
 }
 
+/**
+ * Free preview send. Posts a media-attached DM with NO price field — distinct
+ * from sendPPV which always includes price. OnlyFans treats `price > 0` as
+ * the PPV signal, so we MUST omit price entirely for previews to land as a
+ * normal in-DM photo/clip rather than a $0 paywalled bubble.
+ */
+export interface SendFreeMediaRequest {
+  subscriberExternalId: string;
+  /** Opaque media reference on the platform (preview_media_id from catalog). */
+  mediaRef: string;
+  /** Caption sent alongside the media — required, the n8n flow proves OFAPI accepts media + text. */
+  caption: string;
+  idempotencyKey: string;
+}
+
 export interface SendResult {
   externalId: string;
   sentAt: Date;
@@ -133,6 +148,7 @@ export interface PlatformAdapter {
   // outbound
   sendMessage(ctx: AccountContext, req: SendMessageRequest): Promise<SendResult>;
   sendPPV(ctx: AccountContext, req: SendPPVRequest): Promise<SendResult>;
+  sendFreeMedia(ctx: AccountContext, req: SendFreeMediaRequest): Promise<SendResult>;
   markRead(ctx: AccountContext, conversationExternalId: string): Promise<void>;
 
   // lifecycle

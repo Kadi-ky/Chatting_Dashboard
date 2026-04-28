@@ -171,6 +171,9 @@ async function runBroadcastSend(
     const pitch =
       asset != null
         ? {
+            // Broadcasts always send the priced PPV directly — preview/wait flow
+            // is for inbound-driven 1:1 chats. A broadcast PPV is the whole point.
+            kind: "ppv" as const,
             asset,
             priceCents:
               campaign.template.priceOverrideCents ??

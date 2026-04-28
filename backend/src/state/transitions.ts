@@ -44,25 +44,44 @@ export const TRANSITIONS: Transition[] = [
   },
 
   // ─── Forward progression through the funnel ───────────────────────────
-  // SIMPLIFIED 2026-04-27: dropped preferenceCount / factCount requirements.
-  // In production we observed conversations stuck in WARMUP for 80+ messages
-  // because the fact / preference extractors don't always fire on real fan
-  // chats. Result: bot literally never pitched. The rapport gate
-  // (PITCH_RAPPORT_GATE_TURNS=8 default) still prevents pitching before
-  // message 8, so dropping these signal requirements doesn't cause early
-  // pitches — it just unblocks the funnel for fans who aren't volunteering
-  // facts about themselves.
+  // FUNNEL DESIGN (rewritten 2026-04-28):
+  //   WARMUP   →  RAPPORT  →  SEXTING  →  QUALIFYING  →  MONETIZING  →  WHALE
+  //
+  // Transitions are temperature-gated, not turn-counter-gated:
+  //   - WARMUP → RAPPORT: 2+ turns OR fan got flirty fast (temperature warm/hot)
+  //   - RAPPORT → SEXTING: 6+ turns in rapport AND fan is at least warm.
+  //                        Hot-fan shortcut: 3+ turns in rapport AND temp=hot.
+  //   - SEXTING → QUALIFYING: 4+ turns in sexting AND temp=hot. (First pitch
+  //                           lands in QUALIFYING — this is the floor.)
+  //
+  // SEXTING is a NEW phase: bot actively initiates sexual content (narrates,
+  // describes body, escalates) but does NOT pitch yet. Goal is to get the
+  // fan visibly aroused before any priced PPV. The orchestrator's
+  // MIN_TURNS_BETWEEN_PITCHES enforces "no pitch in SEXTING" at the pitch-
+  // decision layer, but the directive in directives.ts is the primary signal
+  // to the LLM.
+  //
+  // Slow / cold fans naturally stall in RAPPORT — they never trip the
+  // temperature gate, so they never get force-pitched. That's the whole point.
   {
     from: "WARMUP",
     to: "RAPPORT",
     trigger: "warmup_complete",
-    when: (s) => s.turnsInPhase >= 3,
+    when: (s) => s.turnsInPhase >= 2,
   },
   {
     from: "RAPPORT",
+    to: "SEXTING",
+    trigger: "rapport_warm",
+    when: (s) =>
+      (s.turnsInPhase >= 6 && (s.temperature === "warm" || s.temperature === "hot")) ||
+      (s.turnsInPhase >= 3 && s.temperature === "hot"),
+  },
+  {
+    from: "SEXTING",
     to: "QUALIFYING",
-    trigger: "rapport_established",
-    when: (s) => s.turnsInPhase >= 5,
+    trigger: "sexting_hot",
+    when: (s) => s.turnsInPhase >= 4 && s.temperature === "hot",
   },
   {
     from: "QUALIFYING",
@@ -92,6 +111,12 @@ export const TRANSITIONS: Transition[] = [
     to: "RAPPORT",
     trigger: "llm_hint",
     when: (s) => s.phaseTransitionHint === "RAPPORT" && s.phase !== "RAPPORT",
+  },
+  {
+    from: "*",
+    to: "SEXTING",
+    trigger: "llm_hint",
+    when: (s) => s.phaseTransitionHint === "SEXTING" && s.phase !== "SEXTING",
   },
   {
     from: "*",

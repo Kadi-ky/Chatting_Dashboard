@@ -8,6 +8,7 @@ import type {
   IncomingWebhook,
   PlatformAdapter,
   PlatformEvent,
+  SendFreeMediaRequest,
   SendMessageRequest,
   SendPPVRequest,
   SendResult,
@@ -25,7 +26,7 @@ export class MockPlatformAdapter implements PlatformAdapter {
   private queue: PlatformEvent[] = [];
   public readonly sent: Array<{
     accountId: string;
-    kind: "message" | "ppv";
+    kind: "message" | "ppv" | "free_media";
     req: unknown;
     result: SendResult;
   }> = [];
@@ -70,6 +71,15 @@ export class MockPlatformAdapter implements PlatformAdapter {
       sentAt: new Date(),
     };
     this.sent.push({ accountId: ctx.accountId, kind: "ppv", req, result });
+    return result;
+  }
+
+  async sendFreeMedia(ctx: AccountContext, req: SendFreeMediaRequest): Promise<SendResult> {
+    const result: SendResult = {
+      externalId: `mock-preview-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      sentAt: new Date(),
+    };
+    this.sent.push({ accountId: ctx.accountId, kind: "free_media", req, result });
     return result;
   }
 

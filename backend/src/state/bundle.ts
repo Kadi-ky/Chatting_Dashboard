@@ -16,6 +16,8 @@ export async function loadBundle(args: {
   conversationId: string;
   subscriberId: string;
   phaseTransitionHint?: Phase | null;
+  /** Temperature classification of this turn's inbound. Drives RAPPORT → SEXTING → QUALIFYING transitions. */
+  temperature?: "cold" | "warm" | "hot";
 }): Promise<LoadedBundle | null> {
   const [conv, sub, recent] = await Promise.all([
     loadConversationState(args.conversationId),
@@ -50,6 +52,7 @@ export async function loadBundle(args: {
     factCount: sub.factCount,
     preferenceCount: sub.preferenceCount,
     phaseTransitionHint: args.phaseTransitionHint ?? null,
+    temperature: args.temperature ?? "cold",
   };
 
   return { signals, phase: conv.phase };

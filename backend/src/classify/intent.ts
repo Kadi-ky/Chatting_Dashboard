@@ -32,6 +32,15 @@ const IntentSchema = z.object({
   tipping_intent: z.boolean().default(false),
   /** Fan is asking for a discount or price reduction on a pitch ("any discount?", "lower the price", "can u do it for less", "deal?", "how about $X"). When true the orchestrator knocks 10% off the pitched price and the persona frames it as a one-time gift. */
   discount_request: z.boolean().default(false),
+  /**
+   * Sexual-readiness of THIS inbound. Drives RAPPORT → SEXTING → QUALIFYING
+   * phase transitions:
+   *   "cold" — chatty, factual, asking about your day, neutral compliments
+   *   "warm" — flirting, "ur cute/sexy", innuendo, light sexual hints
+   *   "hot"  — explicitly horny: "fuck", "hard for u", "make me cum", "show me ur ___",
+   *            graphic body talk, asking for content, narrating what they'd do
+   */
+  temperature: z.enum(["cold", "warm", "hot"]).default("cold"),
   confidence: z.number().min(0).max(1),
   reason: z.string().max(200).optional(),
 });
@@ -48,6 +57,7 @@ export const EMPTY_INTENT: IntentFlags = {
   requested_topic: null,
   tipping_intent: false,
   discount_request: false,
+  temperature: "cold",
   confidence: 0,
 };
 
@@ -64,6 +74,7 @@ const SYSTEM = [
   `  "requested_topic": string|null,   // SPECIFIC kink/scene/body-part the fan named, normalized to one short lowercase word. ONLY for things that map to specific catalog content. Examples: "feet", "ass", "boobs", "tits", "pussy", "bj", "anal", "lingerie", "shower", "cosplay", "soles", "panties", "ass-clap". DO NOT set this for GENERIC asks like "pic", "video", "teaser", "custom", "exclusive", "something", "more", "content" — those should stay null so the system uses its normal pitch ladder. The point of this field is to override the catalog when the fan named something specific the catalog might not have.`,
   `  "tipping_intent": boolean,       // TRUE when the fan explicitly named a dollar amount tied to a payment verb: "ill tip 50", "drop $100", "tipped 20", "pay you 200", "bump it to 150". Also TRUE on strong promises without exact amount ("ill pay big", "ill tip heavy"). FALSE for generic "ill buy that" without amount, FALSE for casual "tip" mentions without commitment. This flag gates whether the bot offers a $99 custom shoot — only fire when the fan has put real money language on the table.`,
   `  "discount_request": boolean,    // TRUE when the fan asks for a price reduction or discount on a pitch: "can u do a discount?", "any discount babe?", "lower the price", "do it for less", "make it cheaper", "deal?", "discount for me?", "knock it down a bit". Also TRUE for haggling counter-offers like "ill do $0.50 instead" / "how about half off". FALSE for generic price complaints with no ask ("kinda steep", "thats expensive") — those are objections, not discount requests. The orchestrator will knock 10% off the pitched price when this fires.`,
+  `  "temperature": "cold"|"warm"|"hot", // Sexual-readiness of THIS inbound. "cold" = chatty / factual / asking about your day / neutral compliments / "hey how r u". "warm" = flirty / innuendo / light sexual hints / "ur cute babe" / "u look sexy". "hot" = explicit / graphic / "fuck im hard", "horny rn", "show me ur tits", asking for content, narrating what they'd do, naming body parts in a sexual frame. When unsure between cold/warm, pick cold. When unsure between warm/hot, pick warm. This drives the funnel — wrong calls cause premature pitching.`,
   `  "confidence": number,             // 0..1 how confident the labels are overall`,
   `  "reason": string                  // optional short rationale (<=100 chars)`,
   `}`,
