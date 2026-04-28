@@ -5,3 +5,11 @@
 [2026-04-28T09:19:08.906Z] [w1] starting serial buys-one (tester 2/3)
 [2026-04-28T09:19:08.907Z] [w1] buys-one start | fan=loop-verify-buys-one-w1-moiezii3-5ema | behavior=buys-one-then-stops
 [2026-04-28T09:20:44.260Z] [w1] buys-one buy failed: admin /admin/test/ppv-unlock 404: {"error":"no ppv attempt for that message"}
+[2026-04-28T09:26:51.374Z] [w1] buys-one turn 6 no bot reply
+[2026-04-28T09:26:52.528Z] [w2] starting serial chatty (tester 3/3)
+[2026-04-28T09:26:52.529Z] [w2] chatty start | fan=loop-verify-chatty-w2-moif9g8h-6p5o | behavior=chatty-not-horny
+[2026-04-28T09:37:03.253Z] [w2] chatty turn 9 no bot reply
+[2026-04-28T09:37:04.414Z] [w0] buys-all/buys-everything done | ppvs=0 bought=0 order="" caps_with_price=0 firstPpvMsg=null
+[2026-04-28T09:37:04.418Z] [w1] buys-one/buys-one-then-stops done | ppvs=1 bought=0 order="S?R?" caps_with_price=0 firstPpvMsg=6
+[2026-04-28T09:37:04.422Z] [w2] chatty/chatty-not-horny done | ppvs=1 bought=0 order="S?R?" caps_with_price=0 firstPpvMsg=10
+[2026-04-28T09:37:04.423Z] DONE | summary → C:\Users\Predator\Desktop\PeachBot V2\loop\state\verify-moierms8.summary.json | transcripts → C:\Users\Predator\Desktop\PeachBot V2\loop\state\transcripts.verify-moierms8

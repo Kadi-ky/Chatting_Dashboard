@@ -139,6 +139,34 @@ export interface CleanupInput {
   recentEmojis?: string[];
   /** Whether this turn should have any emoji at all. Supplied by style/rhythm. */
   allowEmoji?: boolean;
+  /**
+   * How many of the most-recent outbound bubbles started with a lazy "mmm" /
+   * "aw" opener. When >= 1 we strip that opener from this turn's bubble(s)
+   * to prevent the bot from defaulting to the same sound every reply. The
+   * actual cap is enforced via prompt-level guidance; this is the safety net.
+   */
+  recentLazyOpenerCount?: number;
+}
+
+/**
+ * Strip a lazy "mmm" / "aw" opener from the start of a bubble if the bot has
+ * used one of those openers recently. Preserves the rest of the message — we
+ * just remove the empty-calorie lead-in.
+ *
+ * "mmm thanks for noticin babe" → "thanks for noticin babe"
+ * "Aw babe i havent shot that"  → "babe i havent shot that"
+ */
+const LAZY_OPENER_STRIP_RE =
+  /^[ \t]*(?:m+m+|mmm+m*|a+w+|aww+w*|ohh*|oof+)[\s,!.\-—–]+(?=\S)/i;
+export function stripLazyOpener(text: string): string {
+  if (!LAZY_OPENER_STRIP_RE.test(text)) return text;
+  let out = text.replace(LAZY_OPENER_STRIP_RE, "");
+  // Preserve sentence-start: capitalize the first alpha if the rest of the
+  // bubble is sentence-cased (rare for this persona, but safe).
+  if (out.length > 0 && /^[a-z]/.test(out) && /[A-Z]/.test(text)) {
+    out = out[0]!.toUpperCase() + out.slice(1);
+  }
+  return out;
 }
 
 /**
@@ -150,12 +178,18 @@ export interface CleanupInput {
  *   5. if !allowEmoji → strip all emoji
  */
 export function applyCleanup(input: CleanupInput): string[] {
-  const { rng, recentEmojis = [], allowEmoji = true } = input;
+  const { rng, recentEmojis = [], allowEmoji = true, recentLazyOpenerCount = 0 } = input;
 
   let bubbles = maybeCollapseBubbles(input.bubbles, rng);
   bubbles = bubbles.map((b) => stripTrailingFiller(b, rng));
   bubbles = maybeStripTrailingQuestion(bubbles, rng);
-  bubbles = bubbles.map((b) => capEmojisPerBubble(b, 1));
+  // Strip "Mmm" / "Aw" opener from the FIRST bubble only when the bot used
+  // one of those openers recently — keeps the prompt's permission to use
+  // them once-in-a-while while preventing a 5-in-a-row run.
+  if (recentLazyOpenerCount >= 1 && bubbles.length > 0 && bubbles[0]) {
+    bubbles[0] = stripLazyOpener(bubbles[0]);
+  }
+  bubbles = bubbles.map((b) => capEmojisPerBubble(b, 2));
   bubbles = dedupeEmojiAcrossBubbles(bubbles, recentEmojis);
 
   if (!allowEmoji) {

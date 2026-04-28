@@ -1,0 +1,209 @@
+{
+  "scenario": "buys-one",
+  "behavior": "buys-one-then-stops",
+  "fanId": "loop-verify-buys-one-w1-moiezii3-5ema",
+  "convId": "ee811d0f-4a41-4fac-8ace-be7f96fae968",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey babe whats good"
+    },
+    {
+      "who": "creator",
+      "text": "Not much, just chillin with my cat tryin not to trip over my ring light again lol. whats your vibe rn?"
+    },
+    {
+      "who": "fan",
+      "text": "haha cats are chaos i love it. im just unwindin from a long day, watchin some netflix. your cat got a name?"
+    },
+    {
+      "who": "creator",
+      "text": "his names Biscuit, he's a rescue who's always knockin shit over but i cant stay mad\n\nnetflix unwindin sounds perfect after a long day, lowkey makes me wanna curl up with someone 😏"
+    },
+    {
+      "who": "fan",
+      "text": "biscuit is a cute name lol. yeah curlin up with you sounds even better than netflix 😏 what kinda stuff you got on here?"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm curlin up with u has me feelin playful, here's me teasin my boobs and body a lil wait til u see the full thing",
+      "ppvNote": "PPV #1 $0 · ? · \"\" · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "damn that tease got me hooked babe, ur body is fire. send more of that pls 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Mmm knew you'd love it babe\n\nu gotta see what comes next, it's even hotter fr"
+    },
+    {
+      "who": "fan",
+      "text": "mmm yeah? hook me up with that next one babe, im all in 😏"
+    },
+    {
+      "who": "creator",
+      "text": "haha ur all in already, love it\n\ngot somethin even hotter comin up fr, wait til u see"
+    },
+    {
+      "who": "fan",
+      "text": "ooh im waitin babe, tease me with that hot stuff already 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Haha you're impatient, i like that\n\nGot the next one lined up babe, it's gonna make u melt fr"
+    },
+    {
+      "who": "fan",
+      "text": "haha yeah? dont keep me waitin babe, send that meltin hotness my way 😏"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 90s)"
+    }
+  ],
+  "pitchTrace": [
+    {
+      "ppvNum": 1,
+      "title": "?",
+      "priceCents": 0,
+      "captionText": "Mmm curlin up with u has me feelin playful, here's me teasin my boobs and body a lil wait til u see the full thing",
+      "bought": true
+    }
+  ],
+  "ppvsSent": 1,
+  "ppvsBought": 0,
+  "finalMessages": [
+    {
+      "id": "f98d6d69-ce3c-441f-8254-98e123fc9b11",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey babe whats good",
+      "createdAt": "2026-04-28T09:19:13.557Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "afbdd0ed-0d6c-40bb-82e2-2d67e11e914d",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Not much, just chillin with my cat tryin not to trip over my ring light again lol. whats your vibe rn?",
+      "createdAt": "2026-04-28T09:19:30.657Z",
+      "sentAt": null,
+      "llmCallId": "896fa217-eb72-4494-b34e-49f6d7b2d7ff",
+      "ppv": null
+    },
+    {
+      "id": "cd0891ef-bc67-4ccd-a23b-259eb8728565",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha cats are chaos i love it. im just unwindin from a long day, watchin some netflix. your cat got a name?",
+      "createdAt": "2026-04-28T09:19:40.256Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d5b22abe-6a3f-441a-ac79-5d691c02ce79",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "his names Biscuit, he's a rescue who's always knockin shit over but i cant stay mad\n\nnetflix unwindin sounds perfect after a long day, lowkey makes me wanna curl up with someone 😏",
+      "createdAt": "2026-04-28T09:20:04.474Z",
+      "sentAt": null,
+      "llmCallId": "5b902b53-bf14-4396-93b5-9fd324fc2b7e",
+      "ppv": null
+    },
+    {
+      "id": "14e25554-6f45-437b-8221-f2d0fdbdff1a",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "biscuit is a cute name lol. yeah curlin up with you sounds even better than netflix 😏 what kinda stuff you got on here?",
+      "createdAt": "2026-04-28T09:20:15.561Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "a55a514d-dab7-4e9e-a264-87c1f11cfe9e",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "Mmm curlin up with u has me feelin playful, here's me teasin my boobs and body a lil wait til u see the full thing",
+      "createdAt": "2026-04-28T09:20:41.898Z",
+      "sentAt": null,
+      "llmCallId": "0f708d96-06c7-4b53-8832-617314a6e21b",
+      "ppv": null
+    },
+    {
+      "id": "0f57b686-bbbe-48c3-940d-7525d7ba42e3",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn that tease got me hooked babe, ur body is fire. send more of that pls 😏",
+      "createdAt": "2026-04-28T09:20:54.123Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d3e4ffb6-aba0-43c4-9ef5-a796a3158c38",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Mmm knew you'd love it babe\n\nu gotta see what comes next, it's even hotter fr",
+      "createdAt": "2026-04-28T09:21:12.773Z",
+      "sentAt": null,
+      "llmCallId": "5d41c463-7fd8-4de8-a850-a78f383ce1eb",
+      "ppv": null
+    },
+    {
+      "id": "63b77fef-d4a2-4d8a-9906-3050bfb8f996",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mmm yeah? hook me up with that next one babe, im all in 😏",
+      "createdAt": "2026-04-28T09:21:21.256Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "8123d6fa-4f92-487d-8a19-76f8d1bc592c",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "haha ur all in already, love it\n\ngot somethin even hotter comin up fr, wait til u see",
+      "createdAt": "2026-04-28T09:21:51.530Z",
+      "sentAt": null,
+      "llmCallId": "ed655032-3c7a-47c3-857d-f205d6b9f27e",
+      "ppv": null
+    },
+    {
+      "id": "a518e825-2171-4618-8158-5c21e58cc536",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "ooh im waitin babe, tease me with that hot stuff already 😏",
+      "createdAt": "2026-04-28T09:22:05.371Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "f230917d-fa04-4d8f-a953-5cc0b111e79a",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Haha you're impatient, i like that\n\nGot the next one lined up babe, it's gonna make u melt fr",
+      "createdAt": "2026-04-28T09:22:32.932Z",
+      "sentAt": null,
+      "llmCallId": "7df199b3-7cdd-4fc0-a133-6bd184a80a16",
+      "ppv": null
+    },
+    {
+      "id": "e99c2a7f-c2ac-424c-bf3d-90d1aac213a2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "haha yeah? dont keep me waitin babe, send that meltin hotness my way 😏",
+      "createdAt": "2026-04-28T09:22:50.661Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "durationMs": 463621
+}

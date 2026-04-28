@@ -99,6 +99,26 @@ export async function recordRecentBubbles(
 }
 
 /**
+ * Count how many of the most-recent N normalized bubbles START with one of
+ * the lazy-opener tokens ("mmm", "aw"). The post-process uses this to decide
+ * whether to strip a fresh "Mmm" / "Aw" opener from the current turn —
+ * if the bot's said it recently, drop it from this one too.
+ *
+ * Looks at up to LAZY_OPENER_LOOKBACK most-recent bubbles, configurable below.
+ */
+const LAZY_OPENER_LOOKBACK = 4;
+const LAZY_OPENER_RE = /^(?:m+m+|a+w+)\b/i;
+export async function countRecentLazyOpeners(conversationId: string): Promise<number> {
+  const r = sharedRedis();
+  const recent = await r.lrange(keyFor(conversationId), 0, LAZY_OPENER_LOOKBACK - 1);
+  let n = 0;
+  for (const entry of recent) {
+    if (LAZY_OPENER_RE.test(entry)) n++;
+  }
+  return n;
+}
+
+/**
  * Return the subset of `candidates` that are *not* duplicates of any recent
  * outbound bubble for this conversation. A candidate is considered a repeat
  * if it shares ≥ MIN_SHINGLE_HIT n-gram with any recent entry, OR if it is

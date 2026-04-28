@@ -7,7 +7,7 @@ import { humanizeTurn, type HumanizedTurn } from "../humanness/pipeline.js";
 import { seededRng } from "../humanness/rng.js";
 import { listLiveCatalog } from "../db/repos/ppv_catalog.js";
 import { listRecentAttempts } from "../db/repos/ppv_attempts.js";
-import { filterNonRepeating, recordRecentBubbles, loadRecentEmojis, recordRecentEmojis } from "../humanness/dedup.js";
+import { filterNonRepeating, recordRecentBubbles, loadRecentEmojis, recordRecentEmojis, countRecentLazyOpeners } from "../humanness/dedup.js";
 import { emojisOf } from "../humanness/cleanup.js";
 import { deriveAntiMirrorDirective, scrubMirrorOpeners } from "../humanness/antimirror.js";
 import type { IntentFlags } from "../classify/intent.js";
@@ -527,9 +527,13 @@ async function generateLlmReply(
     return sendFallbackBridge(input, llmResult.llmCallId ?? null);
   }
 
-  const recentEmojis = await loadRecentEmojis(input.conversationId);
-  // If the last 3 replies each included an emoji, this turn gets none.
-  const allowEmoji = recentEmojis.slice(0, 3).length < 3;
+  const [recentEmojis, recentLazyOpenerCount] = await Promise.all([
+    loadRecentEmojis(input.conversationId),
+    countRecentLazyOpeners(input.conversationId),
+  ]);
+  // Emoji-friendly mode: only suppress emoji when the last 5 bubbles ALL
+  // had one. (Was 3 — too restrictive for the new flirty/uplifting voice.)
+  const allowEmoji = recentEmojis.slice(0, 5).length < 5;
 
   const humanized = humanizeTurn({
     bubbles: output.bubbles,
@@ -539,6 +543,7 @@ async function generateLlmReply(
     modelGapHintMs: output.gap_ms_between_bubbles ?? null,
     recentEmojis,
     allowEmoji,
+    recentLazyOpenerCount,
   });
   if (humanized.bubbles.length === 0) {
     logger.warn(ctx, "humanizer produced zero bubbles; sending fallback bridge reply");

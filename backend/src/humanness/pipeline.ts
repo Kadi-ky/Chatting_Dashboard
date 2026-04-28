@@ -33,6 +33,12 @@ export interface HumanizeInput {
    * the "if you've emoji'd the last 3 replies, skip this one" rule.
    */
   allowEmoji?: boolean;
+  /**
+   * Count of recent outbound bubbles that started with a lazy "mmm"/"aw"
+   * opener. When >= 1, this turn's first bubble has any such opener stripped
+   * to break the bot's habit of leading every reply with the same sound.
+   */
+  recentLazyOpenerCount?: number;
 }
 
 export interface HumanizedTurn {
@@ -71,6 +77,7 @@ export function humanizeTurn(input: HumanizeInput): HumanizedTurn {
     rng,
     recentEmojis: input.recentEmojis ?? [],
     allowEmoji: input.allowEmoji ?? true,
+    recentLazyOpenerCount: input.recentLazyOpenerCount ?? 0,
   });
 
   const styled = cleaned.map((b) => {

@@ -65,7 +65,7 @@ const SYSTEM = [
   `You classify the intent of a single inbound message from a fan to an OnlyFans-style chatbot.`,
   `Return JSON only, no prose. Schema:`,
   `{`,
-  `  "buying_signal": boolean,         // fan wants content (send it, show me, let me see, i wanna see, what u got, unlock, buy, gimme, drop that, send me something)`,
+  `  "buying_signal": boolean,         // TRUE only when fan ACTUALLY ASKS for content. The ask must be either an imperative verb directed at us ("send", "show", "drop", "unlock", "gimme") OR a clear question naming a piece of content ("what u got", "any vids", "do u have feet pics"). FALSE for flirty admiration / desire phrasing that doesn't ask for anything: "ur hot", "i want u", "i need u", "all of u", "fuck ur sexy", "ur body is unreal", "id smash", "ur perfect", "wanna eat u up", "i want all of you" — these express attraction, not a content request. They keep the conversation flirty but should NOT trigger a pitch. Be strict: when in doubt between flirty admiration and a real ask, mark FALSE.`,
   `  "objection": boolean,             // too expensive, not my vibe, maybe later, i don't do this, idk, not sure`,
   `  "impossible_request": boolean,    // asks persona to do something a chat-only AI cannot do (lift hands/fingers to prove real, video call right now, take a new pic right now, meet up in person, say their name out loud, proof of humanness)`,
   `  "disengagement": boolean,         // going to bed, gotta go, ttyl, signing off, busy`,
@@ -93,6 +93,7 @@ const SYSTEM = [
   `- "bj content" / "you sucking dick" → buying_signal=true, requested_topic="bj".`,
   `- Rule of thumb: when a fan combines a generic wrapper ("custom", "video", "pic") with a SPECIFIC feature word (a body part, a prop, a scene, a kink, a personalization), set requested_topic to the specific feature. Only null when the ask is purely generic.`,
   `- "you're pretty / you're hot / i love your body" alone is NOT buying_signal.`,
+  `- "i want u" / "i need u" / "all of u" / "i want all of u" / "wanna taste u" / "id smash" / "ur unreal" / "fuck ur perfect" — flirty admiration, NOT buying_signal. These often appear as REPLIES to a creator pic the fan just saw — a pat reaction, not a request for more.`,
   `- Be strict: only flag true on clear intent. When unsure, flag false and lower confidence.`,
 ].join("\n");
 
