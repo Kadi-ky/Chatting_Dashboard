@@ -1,0 +1,176 @@
+{
+  "scenario": "buys-all",
+  "behavior": "buys-everything",
+  "fanId": "loop-verify-buys-all-w0-moira0ob-w6gu",
+  "convId": "e4578eec-a28f-4be1-9b18-0629ba340795",
+  "transcript": [
+    {
+      "who": "fan",
+      "text": "hey gorgeous"
+    },
+    {
+      "who": "creator",
+      "text": "Hey stranger 😏 you caught me just lounging around, whats up with u"
+    },
+    {
+      "who": "fan",
+      "text": "just chillin after a long day at work, u lookin amazing as always. what u up to loungin? 😍"
+    },
+    {
+      "who": "creator",
+      "text": "Aw thanks babe, lounging means me in bed with my favorite tiny shorts on, tryna relax\n\nsounds like u could use some unwinding too, tell me how i'd make that better for u 🖤"
+    },
+    {
+      "who": "fan",
+      "text": "mm id love seein u in those shorts, maybe send somethin to help me unwind? what u got babe 😏"
+    },
+    {
+      "who": "creator",
+      "text": "Babe unwinding with u in mind, playin with my boobs like this... wait til u see the full thing",
+      "ppvNote": "PPV #1 $0 · ? · \"\" · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "damn babe ur boobs look insane in that, got me hard af 😏 more pls?"
+    },
+    {
+      "who": "creator",
+      "text": "Knew that preview would get u hard heres the full thing, me playin with my boobs and body all for u babe",
+      "ppvNote": "PPV #2 $15 · Script 1 · rung 1 · \"playing with boobs and body\" · BUYING"
+    },
+    {
+      "who": "fan",
+      "text": "damn that vid was so hot babe, u playin with ur boobs got me strokin 😏 send more of that pls?"
+    },
+    {
+      "who": "creator",
+      "text": "(no reply within 90s)"
+    }
+  ],
+  "pitchTrace": [
+    {
+      "ppvNum": 1,
+      "title": "?",
+      "priceCents": 0,
+      "captionText": "Babe unwinding with u in mind, playin with my boobs like this... wait til u see the full thing",
+      "bought": true
+    },
+    {
+      "ppvNum": 2,
+      "title": "Script 1 · rung 1",
+      "priceCents": 1500,
+      "captionText": "Knew that preview would get u hard heres the full thing, me playin with my boobs and body all for u babe",
+      "bought": true
+    }
+  ],
+  "ppvsSent": 2,
+  "ppvsBought": 1,
+  "finalMessages": [
+    {
+      "id": "4d524dad-836d-497d-8311-263d6806169f",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "hey gorgeous",
+      "createdAt": "2026-04-28T15:03:20.821Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "63534fbe-c10d-4ecd-a5a6-d596cf7d8e43",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Hey stranger 😏 you caught me just lounging around, whats up with u",
+      "createdAt": "2026-04-28T15:03:53.730Z",
+      "sentAt": null,
+      "llmCallId": "192e5cba-c005-46d1-8949-71ff847ff7ae",
+      "ppv": null
+    },
+    {
+      "id": "12b82e27-9111-4c4f-807f-e028eea378de",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "just chillin after a long day at work, u lookin amazing as always. what u up to loungin? 😍",
+      "createdAt": "2026-04-28T15:04:01.447Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "74516522-affd-4970-a2f1-acfa83bee961",
+      "direction": "outbound",
+      "kind": "text",
+      "text": "Aw thanks babe, lounging means me in bed with my favorite tiny shorts on, tryna relax\n\nsounds like u could use some unwinding too, tell me how i'd make that better for u 🖤",
+      "createdAt": "2026-04-28T15:04:27.416Z",
+      "sentAt": null,
+      "llmCallId": "45985117-580f-4f32-b8f5-731859ae52ea",
+      "ppv": null
+    },
+    {
+      "id": "10097372-deef-4a59-9d2a-cf6ac2a226d9",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "mm id love seein u in those shorts, maybe send somethin to help me unwind? what u got babe 😏",
+      "createdAt": "2026-04-28T15:04:37.587Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "25ff5091-e533-493a-8eff-ed50645a3cef",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "Babe unwinding with u in mind, playin with my boobs like this... wait til u see the full thing",
+      "createdAt": "2026-04-28T15:04:55.408Z",
+      "sentAt": null,
+      "llmCallId": "6abdd940-7606-4a04-a328-11189460d03a",
+      "ppv": null
+    },
+    {
+      "id": "d9238ea2-531d-4f9b-ad15-ec40dc7848df",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn babe ur boobs look insane in that, got me hard af 😏 more pls?",
+      "createdAt": "2026-04-28T15:05:05.879Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    },
+    {
+      "id": "d6385114-9365-4771-b568-770c4b66a5b1",
+      "direction": "outbound",
+      "kind": "ppv",
+      "text": "Knew that preview would get u hard heres the full thing, me playin with my boobs and body all for u babe",
+      "createdAt": "2026-04-28T15:05:38.056Z",
+      "sentAt": null,
+      "llmCallId": "f6b25de1-97a2-47c9-8f9e-ad935565766f",
+      "ppv": {
+        "attemptId": "cf8e367b-ee80-4785-a5af-106dc57fcc1f",
+        "priceCents": 1500,
+        "outcome": "unlocked",
+        "unlockedAt": "2026-04-28T15:05:40.239Z",
+        "assetId": "0f8f4313-e429-4b81-8f74-1073f983103e",
+        "assetTitle": "Script 1 · rung 1",
+        "assetDescription": "playing with boobs and body",
+        "sourceRef": "of:acct_TEST_LOOP:1:1",
+        "mediaRefs": [
+          {
+            "ref": "4334417565",
+            "kind": "legacy_media_id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b6a3af9d-5901-47e3-b430-c99ac8340ff2",
+      "direction": "inbound",
+      "kind": "text",
+      "text": "damn that vid was so hot babe, u playin with ur boobs got me strokin 😏 send more of that pls?",
+      "createdAt": "2026-04-28T15:05:50.000Z",
+      "sentAt": null,
+      "llmCallId": null,
+      "ppv": null
+    }
+  ],
+  "durationMs": 396127
+}

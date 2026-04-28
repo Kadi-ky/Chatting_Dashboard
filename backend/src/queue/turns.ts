@@ -30,8 +30,16 @@ export function turnQueue(): Queue<TurnJobData> {
         attempts: 3,
         backoff: { type: "exponential", delay: 2_000 },
         // Free the jobId immediately so a new inbound can schedule the next turn.
+        // CRITICAL: also remove on FAILURE — observed in production that a
+        // failed turn job (e.g. LLM call timed out across 3 attempts) was
+        // sitting in the failed pool with jobId `turn-${convId}`, and BullMQ
+        // returned that existing failed job for every subsequent inbound on
+        // the same conversation, permanently blocking new turns from being
+        // scheduled. Removing failures unblocks the conv at the cost of
+        // losing failed-job visibility (worker still emits a `failed` event
+        // we log on, so we don't lose the error trail entirely).
         removeOnComplete: true,
-        removeOnFail: { count: 1000, age: 24 * 3600 },
+        removeOnFail: true,
       },
     });
   }
