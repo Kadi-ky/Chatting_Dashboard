@@ -141,18 +141,18 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
     { role: "system", content: taskParts.join("\n") },
   ];
 
+  // Switched 2026-04-29 from NUDGE_GENERATE (grok-4-1-fast-reasoning) to
+  // CHAT_GENERATE (grok-4). Reasoning model kept echoing the JSON schema
+  // placeholder ("text here", "<YOUR ACTUAL FLIRTY CAPTION HERE>",
+  // "[caption]") instead of generating real prose — reasoning models are
+  // optimized for analytical tasks, not short flirty broadcast content.
+  // grok-4 is the same generator the chat pipeline uses; it produces
+  // real captions reliably with json_object response format.
   const result = await routeLlmCall({
-    task: "NUDGE_GENERATE",
+    task: "CHAT_GENERATE",
     messages,
-    // Reasoning models (grok-4.1-fast-reasoning) emit a chain-of-thought
-    // before the final answer; 250 tokens (the NUDGE_GENERATE default) is
-    // too tight. Bump generously — the parser extracts only the "caption"
-    // field from the JSON so token count doesn't bloat the actual message.
-    maxTokens: 1500,
-    // JSON mode is the reliable path. <caption> tag wrapping kept failing
-    // because reasoning models freely formatted around it. Forcing
-    // {"caption": "..."} via response_format gives us a deterministic
-    // extract path.
+    maxTokens: 400,
+    temperature: 0.95,
     responseFormat: "json_object",
     meta: {
       accountId: args.accountId,
