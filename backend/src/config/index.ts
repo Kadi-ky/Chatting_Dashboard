@@ -46,6 +46,13 @@ const envSchema = z.object({
   GROK_API_BASE: z.string().url().default("https://api.x.ai/v1"),
   GROK_MODEL_GENERATOR: z.string().default("grok-4"),
   GROK_MODEL_CLASSIFIER: z.string().default("grok-4-1-fast-reasoning"),
+  // Humanness voice mode. "model" = professional OF chatter (always-on
+  // sexual undertone, body-talk in foreground, what real top-tier creators
+  // write). "gfe" = original girlfriend-experience voice (v1.8 — pick-me /
+  // flirty / mixes life detail with heat). Default 2026-04-29: "model"
+  // per operator request to "talk like an onlyfans model not a normal
+  // chatter." Flip to "gfe" via Railway env to fall back without redeploy.
+  HUMANNESS_VOICE: z.enum(["model", "gfe"]).default("model"),
   // Nudge generator — operator chose grok-4.1 reasoning so the re-engagement
   // line has access to the conversation context and reasons about the right
   // tone (sweet vs flirty vs apologetic) for each step. Independent of the
