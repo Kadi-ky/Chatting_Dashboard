@@ -14,10 +14,40 @@ export class PlatformHttpError extends Error {
     public readonly status: number,
     public readonly path: string,
     public readonly body: string,
+    /**
+     * Parsed Retry-After header value in milliseconds (when present and
+     * parseable). OnlyFansAPI sends this on 429 — per their guidance
+     * (2026-04-28), waiting at least this long before retry is required;
+     * retrying sooner triggers stricter back-off. Null when no header was
+     * present or the value couldn't be parsed.
+     */
+    public readonly retryAfterMs: number | null = null,
   ) {
     super(`platform ${status} ${path}: ${body.slice(0, 500)}`);
     this.name = "PlatformHttpError";
   }
+}
+
+/**
+ * Parse a Retry-After header. RFC 7231 allows two forms:
+ *   - delta-seconds (integer): "Retry-After: 120"
+ *   - HTTP-date: "Retry-After: Wed, 21 Oct 2026 07:28:00 GMT"
+ * Returns milliseconds to wait, or null if unparseable / negative / absent.
+ */
+export function parseRetryAfter(headerValue: string | null): number | null {
+  if (!headerValue) return null;
+  const trimmed = headerValue.trim();
+  if (!trimmed) return null;
+  // delta-seconds form
+  if (/^\d+$/.test(trimmed)) {
+    const secs = Number(trimmed);
+    return secs > 0 ? secs * 1000 : null;
+  }
+  // HTTP-date form
+  const ts = Date.parse(trimmed);
+  if (Number.isNaN(ts)) return null;
+  const ms = ts - Date.now();
+  return ms > 0 ? ms : null;
 }
 
 /**
@@ -102,7 +132,8 @@ export class PlatformHttpClient {
       RECENT_ERRORS.unshift(errEntry);
       if (RECENT_ERRORS.length > RECENT_ERRORS_MAX) RECENT_ERRORS.length = RECENT_ERRORS_MAX;
       logger.warn(errEntry, "platform http error");
-      throw new PlatformHttpError(res.status, path, text);
+      const retryAfterMs = parseRetryAfter(res.headers.get("retry-after"));
+      throw new PlatformHttpError(res.status, path, text, retryAfterMs);
     }
 
     logger.debug({ path, status: res.status, elapsed }, "platform http ok");

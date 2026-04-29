@@ -15,17 +15,44 @@ import { sharedRedis } from "../queue/redis.js";
  * account get delayed until the key expires. Stops the "every queued
  * message individually hits 429" cascade where a single rate-limit window
  * burns through dozens of retries.
+ *
+ * Duration is dynamic now (per OFAPI guidance 2026-04-28): use the
+ * Retry-After header from the 429 response. Falls back to exponential
+ * backoff when no header is present (1s → 2s → 4s → 8s, capped at 60s).
  */
 const ACCOUNT_COOLDOWN_KEY = (accountId: string): string => `acct_cooldown:${accountId}`;
-const ACCOUNT_COOLDOWN_MS = 5 * 60_000; // pause an account for 5 min after a 429
+/** Cap for exponential-backoff fallback when Retry-After is absent. */
+const COOLDOWN_FALLBACK_CAP_MS = 60_000;
+/** Hard ceiling we never exceed even if the server says wait longer (5 min). */
+const COOLDOWN_HARD_CAP_MS = 5 * 60_000;
 
 async function getAccountCooldownMs(accountId: string): Promise<number> {
   const ttl = await sharedRedis().pttl(ACCOUNT_COOLDOWN_KEY(accountId));
   return ttl > 0 ? ttl : 0;
 }
 
-async function setAccountCooldown(accountId: string): Promise<void> {
-  await sharedRedis().set(ACCOUNT_COOLDOWN_KEY(accountId), "1", "PX", ACCOUNT_COOLDOWN_MS);
+async function setAccountCooldown(accountId: string, durationMs: number): Promise<void> {
+  const clamped = Math.min(Math.max(durationMs, 1000), COOLDOWN_HARD_CAP_MS);
+  await sharedRedis().set(ACCOUNT_COOLDOWN_KEY(accountId), "1", "PX", clamped);
+}
+
+/**
+ * Compute the cooldown duration for a 429.
+ *   - If Retry-After header was returned, honor it (clamped to hard cap).
+ *   - Otherwise exponential backoff per BullMQ attempt: 1s, 2s, 4s, 8s,
+ *     capped at COOLDOWN_FALLBACK_CAP_MS.
+ *
+ * OFAPI explicitly warned: retrying SOONER than Retry-After triggers
+ * stricter back-off — never go below the header value.
+ */
+function compute429CooldownMs(err: PlatformHttpError, attempt: number): { ms: number; source: "retry-after" | "expo" } {
+  if (err.retryAfterMs && err.retryAfterMs > 0) {
+    return { ms: err.retryAfterMs, source: "retry-after" };
+  }
+  // BullMQ's `attempt` is 1-indexed for the next retry. Map to 0-indexed
+  // exponent: 1s, 2s, 4s, 8s, 16s, 32s, 60s (cap).
+  const expo = 1000 * Math.pow(2, Math.max(0, attempt - 1));
+  return { ms: Math.min(expo, COOLDOWN_FALLBACK_CAP_MS), source: "expo" };
 }
 
 /** True when SEND_RAMP_UP_UNTIL is set + still in the future. */
@@ -179,9 +206,13 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
         if (err instanceof PlatformHttpError && (err.status === 401 || err.status === 403)) {
           throw new UnrecoverableError(err.message);
         }
-        // 429: trigger an account-wide cooldown so OTHER queued jobs stop
-        // hammering OF too. Then delay THIS job until the cooldown clears
-        // and try once more. Stale messages (>15 min) get dropped.
+        // 429: honor OFAPI's Retry-After guidance.
+        //   - Use Retry-After header value if present (server tells us exactly
+        //     when to retry; retrying sooner triggers stricter back-off).
+        //   - Otherwise exponential backoff (1s → 2s → 4s → 8s, cap 60s).
+        // Trigger an account-wide cooldown so OTHER queued jobs for the same
+        // account stop hammering OF in the meantime. Stale messages (>15 min
+        // old) get dropped.
         if (err instanceof PlatformHttpError && err.status === 429) {
           const ageMs = Date.now() - job.timestamp;
           const STALE_AFTER_MS = 15 * 60_000;
@@ -191,12 +222,13 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
               `message too stale after repeated 429s (age=${Math.round(ageMs / 1000)}s)`,
             );
           }
-          await setAccountCooldown(data.accountId);
+          const { ms: cooldownMs, source } = compute429CooldownMs(err, job.attemptsMade);
+          await setAccountCooldown(data.accountId, cooldownMs);
           logger.warn(
-            { ...ctx, ageMs, cooldownMs: ACCOUNT_COOLDOWN_MS },
-            "send 429 — account-wide cooldown triggered; delaying this job",
+            { ...ctx, ageMs, cooldownMs, source, retryAfterMs: err.retryAfterMs ?? null, attempt: job.attemptsMade },
+            "send 429 — delaying job per Retry-After / expo backoff",
           );
-          await job.moveToDelayed(Date.now() + ACCOUNT_COOLDOWN_MS, token);
+          await job.moveToDelayed(Date.now() + cooldownMs, token);
           throw new DelayedError();
         }
         throw err;
