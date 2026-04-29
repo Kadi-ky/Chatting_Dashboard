@@ -119,7 +119,11 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
   }
 
   taskParts.push(
-    `OUTPUT: just the caption text. No JSON, no quotes, no preamble like "Here's a caption:" or "Sure!".`,
+    `OUTPUT FORMAT (STRICT — required because the parser only extracts what's between the tags):`,
+    `Wrap your final caption in <caption> tags, exactly like this example shape:`,
+    `  <caption>in bed bored as hell, who's keepin me company tonight 😈</caption>`,
+    ``,
+    `You MAY think out loud or weigh angles before the opening tag — ONLY the text inside <caption>...</caption> is used. Do NOT include the example sentence verbatim. Generate a fresh one.`,
   );
 
   const messages: LlmMessage[] = [
@@ -130,6 +134,12 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
   const result = await routeLlmCall({
     task: "NUDGE_GENERATE",
     messages,
+    // Reasoning models (grok-4.1-fast-reasoning) emit a chain-of-thought
+    // before the final answer; 250 tokens (the NUDGE_GENERATE default) is
+    // too tight and the answer never lands. Bump generously — the parser
+    // extracts only the <caption> portion so token count doesn't bloat
+    // the actual sent message.
+    maxTokens: 1500,
     meta: {
       accountId: args.accountId,
       kind: "mass_caption",
@@ -137,13 +147,21 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
     },
   });
 
-  const caption = result.content
-    .trim()
-    .replace(/^["'`]+|["'`]+$/g, "")
-    .replace(/\s+/g, " ");
+  const caption = extractCaption(result.content);
 
   if (!caption || caption.length < 5 || caption.length > 280) {
-    throw new Error(`mass caption rejected: length=${caption.length}`);
+    logger.warn(
+      {
+        accountId: args.accountId,
+        rawLength: result.content.length,
+        extractedLength: caption.length,
+        rawPreview: result.content.slice(0, 200),
+      },
+      "mass caption extraction yielded unusable output",
+    );
+    throw new Error(
+      `mass caption rejected: extracted=${caption.length} chars from raw=${result.content.length} chars`,
+    );
   }
 
   await recordRecentCaption(args.accountId, caption);
@@ -154,6 +172,48 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
     model: result.model,
     generatedAt: new Date().toISOString(),
   };
+}
+
+/**
+ * Pull the final caption out of the LLM response. Reasoning models emit
+ * chain-of-thought BEFORE the answer; we asked for a <caption>...</caption>
+ * wrapper, so prefer that. Falls back through a few heuristics for chat
+ * models that ignore the tag instruction:
+ *   1. <caption>...</caption>      — preferred, what we ask for
+ *   2. text after "Caption:" line   — common reasoning model output
+ *   3. last quoted string in body   — if model wrapped its answer in quotes
+ *   4. last non-empty line          — final answer is usually the last line
+ *   5. whole body trimmed           — chat models without prelude
+ */
+function extractCaption(raw: string): string {
+  const trimmed = raw.trim();
+
+  const tagMatch = trimmed.match(/<caption>([\s\S]*?)<\/caption>/i);
+  if (tagMatch) return clean(tagMatch[1]!);
+
+  const labelMatch = trimmed.match(/(?:^|\n)\s*(?:final\s+)?caption\s*[:\-]\s*(.+?)(?:\n\n|$)/i);
+  if (labelMatch) return clean(labelMatch[1]!);
+
+  const quotedMatches = [...trimmed.matchAll(/[""''"']([^""''"']{10,200})[""''"']/g)];
+  if (quotedMatches.length > 0) {
+    return clean(quotedMatches[quotedMatches.length - 1]![1]!);
+  }
+
+  const lines = trimmed.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 0);
+  if (lines.length > 0) {
+    const last = lines[lines.length - 1]!;
+    if (last.length >= 5 && last.length <= 280) return clean(last);
+  }
+
+  return clean(trimmed);
+}
+
+function clean(s: string): string {
+  return s
+    .trim()
+    .replace(/^["'`]+|["'`]+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 async function loadRecentCaptions(accountId: string): Promise<string[]> {
