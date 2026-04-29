@@ -3,6 +3,7 @@ import { logger } from "../observability/logger.js";
 import { env } from "../config/index.js";
 import { db } from "../db/client.js";
 import { outboundQueue } from "../queue/outbound.js";
+import { sharedRedis } from "../queue/redis.js";
 import { insertOutboundDraft, loadRecentMessages } from "../db/repos/messages.js";
 import { loadLatestArchetype } from "../db/repos/archetypes.js";
 import { loadIdentityLayer } from "../prompt/layers/identity.js";
@@ -98,6 +99,41 @@ interface NudgeState {
   idleCount?: number;
   lastIdleAt?: string;
   ppvNudges?: Record<string, number>;
+}
+
+/**
+ * Redis-backed per-conversation nudge lock. Defense-in-depth against
+ * state_ctx write races and send-failure loops where last_activity_at
+ * doesn't update on failed sends, causing the same fan to be re-picked
+ * tick after tick. Operator observed 10+ identical nudges to one fan in
+ * 10 minutes 2026-04-29 — this lock guarantees that can't happen.
+ *
+ * TTL is 25 min — slightly less than the smallest ladder threshold (30 min)
+ * so legitimate ladder progression isn't blocked. Fail-CLOSED on Redis
+ * errors: if we can't acquire the lock, we don't fire (better silent than
+ * spamming).
+ */
+const NUDGE_LOCK_TTL_SEC = 25 * 60;
+const nudgeLockKey = (kind: "idle" | "ppv", convId: string): string =>
+  `peach:nudge:lock:${kind}:${convId}`;
+
+async function tryAcquireNudgeLock(kind: "idle" | "ppv", convId: string): Promise<boolean> {
+  try {
+    const result = await sharedRedis().set(
+      nudgeLockKey(kind, convId),
+      "1",
+      "EX",
+      NUDGE_LOCK_TTL_SEC,
+      "NX",
+    );
+    return result === "OK";
+  } catch (err) {
+    logger.error(
+      { err: err instanceof Error ? err.message : err, convId, kind },
+      "nudge lock acquire failed — failing closed (no fire this tick)",
+    );
+    return false;
+  }
 }
 
 interface RecentNudge {
@@ -227,6 +263,14 @@ async function runIdlePass(): Promise<{ candidates: number; sent: number }> {
       // Skip if the most recent inbound text contains disengagement signals.
       if (await fanIsDisengaging(row.conv_id)) continue;
 
+      // Hard rate limit floor — Redis lock independent of state_ctx tracking
+      // (which has been observed failing under send-failure / retry storms).
+      // If lock is held, another tick already fired for this conv recently.
+      if (!(await tryAcquireNudgeLock("idle", row.conv_id))) {
+        logger.debug({ convId: row.conv_id }, "idle nudge lock held — skipping");
+        continue;
+      }
+
       // Generate the nudge with the LLM, conversation-context-aware. Falls
       // back to a random pick from the static template pool only if the LLM
       // call fails (network blip, model overloaded, etc.) so we never go
@@ -307,6 +351,12 @@ async function runPpvPass(): Promise<{ candidates: number; sent: number }> {
 
       // Skip if disengaged
       if (await fanIsDisengaging(row.conv_id)) continue;
+
+      // Hard rate limit floor (same as idle pass).
+      if (!(await tryAcquireNudgeLock("ppv", row.conv_id))) {
+        logger.debug({ convId: row.conv_id }, "ppv nudge lock held — skipping");
+        continue;
+      }
 
       // LLM-generate a context-aware nudge; templates are the safety net.
       const llmText = await generateNudgeText({

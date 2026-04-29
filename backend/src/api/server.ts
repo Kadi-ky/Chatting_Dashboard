@@ -49,6 +49,8 @@ export interface AdminServerHandle {
  *                                                  one-shot find-and-takeover by name / external id
  *   GET  /admin/conversations/:id/pitch-state       phase, drip cadence, next-pick, funnel, purchase history
  *   POST /admin/mass-caption?account=X[&vibe=Y]     grok-4.1 mass-message caption (replaces static n8n pool)
+ *   POST /admin/bulk-unsend?sinceMinutes=N[...&dryRun=false]
+ *                                                  bulk-unsend recent outbound (panic button)
  *   POST /admin/test/inject                         inject a fake inbound message (testing)
  *
  * Auth: ADMIN_TOKEN env required on /admin paths; if unset, /admin returns 503
@@ -403,6 +405,185 @@ async function handle(
     if (method === "GET" && whyMatch) {
       const [, convId] = whyMatch;
       return json(res, 200, await loadLastTurnAudit(convId as string));
+    }
+
+    // POST /admin/drain-nudges
+    //   - Pauses the outbound queue
+    //   - Removes ALL waiting + delayed jobs whose name === "nudge" or
+    //     whose jobId begins with "nudge-"
+    //   - Resumes the queue
+    // Panic button: user disabled NUDGE_ENABLED but pre-existing queued
+    // jobs are still draining and hitting fans. This stops them in flight.
+    if (method === "POST" && path === "/admin/drain-nudges") {
+      try {
+        const q = outboundQueue();
+        await q.pause();
+        const [waiting, delayed] = await Promise.all([
+          q.getWaiting(0, 1000),
+          q.getDelayed(0, 1000),
+        ]);
+        const all = [...waiting, ...delayed];
+        let removed = 0;
+        const keptNonNudge: number[] = [];
+        for (const job of all) {
+          const isNudge = job.name === "nudge" || (typeof job.id === "string" && job.id.startsWith("nudge-"));
+          if (!isNudge) continue;
+          try {
+            await job.remove();
+            removed++;
+          } catch (err) {
+            keptNonNudge.push(Number(job.id));
+            logger.warn(
+              { jobId: job.id, err: err instanceof Error ? err.message : err },
+              "drain-nudges: failed to remove job",
+            );
+          }
+        }
+        await q.resume();
+        return json(res, 200, {
+          inspected: all.length,
+          removed,
+          failures: keptNonNudge.length,
+          note: "outbound queue paused, nudge-tagged jobs removed, queue resumed.",
+        });
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+    }
+
+    // POST /admin/bulk-unsend?sinceMinutes=N[&accountId=X][&kind=text|ppv|any][&dryRun=false]
+    //
+    // Bulk-deletes outbound messages on the platform side (OFAPI DELETE).
+    // Built for the operator panic case: nudge worker (or any other path)
+    // floods fans with messages that need to be unsent at scale. Calls
+    // adapter.deleteMessage for each match.
+    //
+    // Defaults:
+    //   - sinceMinutes capped at 1440 (OFAPI restriction: only messages
+    //     <24h old can be deleted)
+    //   - dryRun=true by default; pass dryRun=false to actually fire
+    //   - kind=text by default (catches nudges + plain chat replies);
+    //     pass kind=any to include PPVs, or kind=ppv for only PPVs
+    //   - max 500 rows per call; rerun for bigger backlogs
+    //
+    // Returns the list of matched messages with text preview so you can
+    // sanity-check before running with dryRun=false.
+    if (method === "POST" && path === "/admin/bulk-unsend") {
+      const url = new URL(req.url ?? "", `http://${req.headers.host ?? "localhost"}`);
+      const sinceMinutes = Math.min(
+        1440,
+        Math.max(1, Number(url.searchParams.get("sinceMinutes") ?? 30)),
+      );
+      const accountIdFilter = url.searchParams.get("accountId");
+      const kindParam = (url.searchParams.get("kind") ?? "text").toLowerCase();
+      const dryRun = url.searchParams.get("dryRun") !== "false";
+
+      const cutoff = new Date(Date.now() - sinceMinutes * 60_000);
+
+      let q = db
+        .selectFrom("v3.messages as m")
+        .innerJoin("v3.conversations as c", "c.id", "m.conversation_id")
+        .innerJoin("v3.subscribers as s", "s.id", "c.subscriber_id")
+        .select([
+          "m.id as message_id",
+          "m.external_id as external_id",
+          "m.kind as kind",
+          "m.created_at as created_at",
+          "m.sent_at as sent_at",
+          "m.text as text",
+          "c.id as conversation_id",
+          "c.account_id as account_id",
+          "s.external_id as fan_external_id",
+          "s.display_name as display_name",
+        ])
+        .where("m.direction", "=", "outbound")
+        .where("m.external_id", "is not", null)
+        .where(sql<SqlBool>`m.sent_at >= ${cutoff}`)
+        .where(sql<SqlBool>`m.external_id NOT LIKE 'shadow:%'`)
+        .orderBy("m.sent_at", "desc")
+        .limit(500);
+
+      if (accountIdFilter) {
+        q = q.where("c.account_id", "=", accountIdFilter);
+      }
+      if (kindParam !== "any") {
+        // kindParam is one of "text" | "ppv" | "unlock" | "tip" | "subscription" | "system_event"
+        // Validate to satisfy the kysely enum type — fall back to "text" silently.
+        const validKinds = ["text", "ppv", "unlock", "tip", "subscription", "system_event"] as const;
+        type ValidKind = (typeof validKinds)[number];
+        const safeKind: ValidKind = (validKinds as readonly string[]).includes(kindParam)
+          ? (kindParam as ValidKind)
+          : "text";
+        q = q.where("m.kind", "=", safeKind);
+      }
+
+      const rows = await q.execute();
+
+      if (dryRun) {
+        return json(res, 200, {
+          dryRun: true,
+          sinceMinutes,
+          kind: kindParam,
+          accountId: accountIdFilter,
+          found: rows.length,
+          messages: rows.map((r) => ({
+            messageId: r.message_id,
+            externalId: r.external_id,
+            kind: r.kind,
+            sentAt: r.sent_at,
+            displayName: r.display_name,
+            fanExternalId: r.fan_external_id,
+            textPreview: ((r.text ?? "") as string).slice(0, 120),
+          })),
+          note:
+            "dry-run only — no platform deletes fired. Re-run with &dryRun=false to actually unsend.",
+        });
+      }
+
+      // Execute deletes. adapter.deleteMessage swallows OFAPI failures
+      // (24h limit, 404, etc.) by design — we still count attempts so
+      // the operator knows what we tried.
+      const adapter = getPlatformAdapter();
+      let attempted = 0;
+      const skipped: Array<{ messageId: string; reason: string }> = [];
+
+      for (const row of rows) {
+        try {
+          const account = await loadAccountById(row.account_id);
+          if (!account?.platformAccountId) {
+            skipped.push({ messageId: row.message_id, reason: "account missing platform_account_id" });
+            continue;
+          }
+          if (!row.external_id) {
+            skipped.push({ messageId: row.message_id, reason: "no external_id" });
+            continue;
+          }
+          await adapter.deleteMessage(
+            { accountId: row.account_id, platformAccountId: account.platformAccountId },
+            { chatId: row.fan_external_id, messageExternalId: row.external_id },
+          );
+          attempted++;
+        } catch (err) {
+          skipped.push({
+            messageId: row.message_id,
+            reason: err instanceof Error ? err.message : String(err),
+          });
+        }
+      }
+
+      return json(res, 200, {
+        dryRun: false,
+        sinceMinutes,
+        kind: kindParam,
+        accountId: accountIdFilter,
+        found: rows.length,
+        attempted,
+        skipped,
+        note:
+          "adapter.deleteMessage is best-effort; OFAPI returns errors for messages >24h old which the adapter swallows. Successful sends are not separately confirmed — re-run as dryRun=true to see what's still listed.",
+      });
     }
 
     // POST /admin/mass-caption?account=<creator_uuid_or_platform_id>[&vibe=tease|sweet|chaotic|...]
