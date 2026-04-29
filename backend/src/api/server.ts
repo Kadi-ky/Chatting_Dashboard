@@ -24,6 +24,7 @@ import {
 import { turnQueue } from "../queue/turns.js";
 import { outboundQueue } from "../queue/outbound.js";
 import { getRecentNudges } from "../worker/nudgeWorker.js";
+import { getRecentOutreach } from "../worker/outreachWorker.js";
 import { getRecentPitchDecisions, turnsSinceLastPitch as ppvTurnsSinceLastPitch } from "../ppv/orchestrator.js";
 import { listRecentAttempts, countUnboughtRecentPitches } from "../db/repos/ppv_attempts.js";
 import { listPurchasesByFan, parseLegacySourceRef } from "../db/repos/purchases.js";
@@ -119,6 +120,131 @@ async function handle(
   // ring buffer; clears on restart.
   if (method === "GET" && path === "/diag/recent-nudges") {
     return json(res, 200, { nudges: getRecentNudges() });
+  }
+
+  // Recent outreach fires (cold + reactivation). Same shape as nudges; gives
+  // the operator visibility into proactive DMs to silent subs / lapsed fans.
+  if (method === "GET" && path === "/diag/recent-outreach") {
+    return json(res, 200, { outreach: getRecentOutreach() });
+  }
+
+  // Engagement dashboard — aggregate funnel metrics for the last N hours.
+  // GET /diag/engagement?hours=8 (default 8, max 168=7d).
+  // Lets the operator see "subs total / chatted ever / chatted recent /
+  // unlocked / revenue / phase distribution / top spenders" without running
+  // SQL. The numbers that drive every "what should we ship next" question.
+  if (method === "GET" && path === "/diag/engagement") {
+    try {
+      const url = new URL(req.url ?? "", `http://${req.headers.host ?? "localhost"}`);
+      const hours = Math.min(168, Math.max(1, Number(url.searchParams.get("hours") ?? 8)));
+      const cutoff = new Date(Date.now() - hours * 3600_000);
+      const reactCutoff = new Date(Date.now() - 14 * 24 * 3600_000);
+
+      // Three queries in parallel — kept simple; can be optimized later.
+      const [funnel, phases, topFans, lurkers] = await Promise.all([
+        // Funnel snapshot
+        db
+          .selectFrom("v3.subscribers")
+          .select([
+            sql<string>`count(*)`.as("total_subs"),
+            sql<string>`count(*) filter (where last_inbound_at is not null)`.as("ever_chatted"),
+            sql<string>`count(*) filter (where last_inbound_at >= ${cutoff})`.as("chatted_in_window"),
+            sql<string>`count(*) filter (where last_inbound_at is null)`.as("never_chatted"),
+            sql<string>`count(*) filter (where last_inbound_at < ${reactCutoff} and last_inbound_at is not null)`.as("lapsed_14d_plus"),
+            sql<string>`coalesce(sum(total_spend_cents), 0)`.as("lifetime_revenue_cents"),
+            sql<string>`coalesce(sum(spend_30d_cents), 0)`.as("revenue_30d_cents"),
+          ])
+          .executeTakeFirst(),
+        // Phase distribution
+        db
+          .selectFrom("v3.conversations")
+          .select(["phase", sql<string>`count(*)`.as("count")])
+          .groupBy("phase")
+          .execute(),
+        // Top fans by total spend (lifetime, all-time)
+        db
+          .selectFrom("v3.subscribers")
+          .select(["external_id", "display_name", "total_spend_cents", "spend_30d_cents", "last_inbound_at"])
+          .where(sql<SqlBool>`total_spend_cents > 0`)
+          .orderBy("total_spend_cents", "desc")
+          .limit(10)
+          .execute(),
+        // Cold-outreach candidates count (gives a sense of unreached pool)
+        db
+          .selectFrom("v3.subscribers")
+          .select([sql<string>`count(*)`.as("count")])
+          .where("last_inbound_at", "is", null)
+          .where(sql<SqlBool>`created_at < ${new Date(Date.now() - 24 * 3600_000)}`)
+          .where(sql<SqlBool>`external_id NOT LIKE 'loop-%'`)
+          .executeTakeFirst(),
+      ]);
+
+      // Window-scoped pitch + message counts
+      const [windowMessages, windowPitches] = await Promise.all([
+        db
+          .selectFrom("v3.messages")
+          .select([
+            sql<string>`count(*) filter (where direction='inbound')`.as("inbound"),
+            sql<string>`count(*) filter (where direction='outbound')`.as("outbound"),
+            sql<string>`count(*) filter (where direction='outbound' and sent_at is null)`.as("outbound_unsent"),
+          ])
+          .where(sql<SqlBool>`created_at >= ${cutoff}`)
+          .executeTakeFirst(),
+        db
+          .selectFrom("v3.ppv_attempts")
+          .select([
+            sql<string>`count(*)`.as("total"),
+            sql<string>`count(*) filter (where outcome='unlocked')`.as("unlocked"),
+            sql<string>`count(*) filter (where outcome='pending')`.as("pending"),
+            sql<string>`count(*) filter (where outcome='expired')`.as("expired"),
+            sql<string>`coalesce(sum(price_cents) filter (where outcome='unlocked'), 0)`.as("revenue_window_cents"),
+          ])
+          .where(sql<SqlBool>`pitched_at >= ${cutoff}`)
+          .executeTakeFirst(),
+      ]);
+
+      return json(res, 200, {
+        windowHours: hours,
+        funnel: {
+          totalSubs: Number(funnel?.total_subs ?? 0),
+          everChatted: Number(funnel?.ever_chatted ?? 0),
+          chattedInWindow: Number(funnel?.chatted_in_window ?? 0),
+          neverChatted: Number(funnel?.never_chatted ?? 0),
+          lapsed14dPlus: Number(funnel?.lapsed_14d_plus ?? 0),
+          lifetimeRevenueCents: Number(funnel?.lifetime_revenue_cents ?? 0),
+          revenue30dCents: Number(funnel?.revenue_30d_cents ?? 0),
+        },
+        windowMessages: {
+          inbound: Number(windowMessages?.inbound ?? 0),
+          outbound: Number(windowMessages?.outbound ?? 0),
+          outboundUnsent: Number(windowMessages?.outbound_unsent ?? 0),
+        },
+        windowPitches: {
+          total: Number(windowPitches?.total ?? 0),
+          unlocked: Number(windowPitches?.unlocked ?? 0),
+          pending: Number(windowPitches?.pending ?? 0),
+          expired: Number(windowPitches?.expired ?? 0),
+          revenueCents: Number(windowPitches?.revenue_window_cents ?? 0),
+          conversionRate: windowPitches && Number(windowPitches.total) > 0
+            ? Number(((Number(windowPitches.unlocked) / Number(windowPitches.total)) * 100).toFixed(1))
+            : 0,
+        },
+        phaseDistribution: phases.map((p) => ({
+          phase: p.phase,
+          count: Number(p.count),
+        })),
+        topFans: topFans.map((f) => ({
+          externalId: f.external_id,
+          displayName: f.display_name,
+          totalSpendCents: Number(f.total_spend_cents ?? 0),
+          spend30dCents: Number(f.spend_30d_cents ?? 0),
+          lastInboundAt: f.last_inbound_at,
+        })),
+        coldOutreachCandidates: Number(lurkers?.count ?? 0),
+      });
+    } catch (err) {
+      return json(res, 500, { error: err instanceof Error ? err.message : String(err) });
+    }
   }
 
   // Recent pitch decisions: WHY the picker decided to pitch (or not).

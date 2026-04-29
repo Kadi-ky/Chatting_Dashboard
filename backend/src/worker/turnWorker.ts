@@ -7,6 +7,7 @@ import { tickStateMachine } from "../state/machine.js";
 import { sleepDecision } from "../state/sleep.js";
 import { loadLatestArchetype } from "../db/repos/archetypes.js";
 import { loadAccountById } from "../db/repos/accounts.js";
+import { db } from "../db/client.js";
 import { classifyIntent } from "../classify/intent.js";
 import { loadCurrentFacts } from "../db/repos/subscriber_facts.js";
 import { renderArchetypeDirective } from "../prompt/layers/archetype.js";
@@ -153,6 +154,25 @@ async function processTurn(jobData: TurnJobData): Promise<void> {
 
       const archetypeDirective = archetype ? renderArchetypeDirective(archetype) : undefined;
       const factStrings = pickRelevantFacts({ facts, inboundText: incomingText, k: 5 });
+
+      // Fan's display name — surfaced as a fact past turn 5 so the bot can
+      // address them by name occasionally (real OF chatters do this; ours
+      // historically didn't). Filtered to plausible first names — no
+      // usernames with digits/underscores. Only added past turn 5 to give
+      // rapport time to build (humanness has a 3-turn-no-name floor).
+      if (turnIndex > 5) {
+        const subRow = await db
+          .selectFrom("v3.subscribers")
+          .select(["display_name"])
+          .where("id", "=", subscriberId)
+          .executeTakeFirst();
+        const name = subRow?.display_name?.trim() ?? null;
+        if (name && /^[a-zA-Z][a-zA-Z'-]{1,19}$/.test(name)) {
+          factStrings.push(
+            `fan's first name: ${name} (you can address him by name occasionally — once every ~4-5 turns max — for personal feel; never twice in a row)`,
+          );
+        }
+      }
 
       // Hybrid buying-signal: regex fast-path OR LLM classifier. Objection,
       // disengagement, and emotional disclosure suppress pitching even if the

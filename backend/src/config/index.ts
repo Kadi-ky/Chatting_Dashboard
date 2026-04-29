@@ -105,6 +105,11 @@ const envSchema = z.object({
   // send without calling OFAPI.
   NUDGE_ENABLED: stringBool(false),
   NUDGE_DRY_RUN: stringBool(false),
+  // OUTREACH worker — proactive DMs to silent subs (cold) + lapsed fans
+  // (reactivation). Default OFF — flip to true on Railway when ready.
+  // OUTREACH_DRY_RUN logs would-send without actually sending.
+  OUTREACH_ENABLED: stringBool(false),
+  OUTREACH_DRY_RUN: stringBool(false),
   // Soft-resume ramp-up. When set to an ISO timestamp in the future, the
   // per-account token bucket runs at HALF its normal refill rate until that
   // time passes. Use this when un-pausing after a long 429 cooldown to

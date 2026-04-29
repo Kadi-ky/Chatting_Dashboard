@@ -18,6 +18,7 @@ import { metrics } from "../observability/metrics.js";
 import { turnQueue } from "../queue/turns.js";
 import { env } from "../config/index.js";
 import { clearIdleNudgeState } from "./nudgeWorker.js";
+import { clearOutreachState } from "./outreachWorker.js";
 import type { PlatformEvent } from "../platform/PlatformAdapter.js";
 
 /**
@@ -102,6 +103,9 @@ async function handleMessageReceived(
     // monotonically tick up forever, exhausting fans permanently after one
     // 3-nudge run even if they later re-engaged.
     clearIdleNudgeState(conversationId),
+    // Reset outreach ladder too — fan finally replying means cold/react
+    // attempts worked. Next silence eligible for the full ladder again.
+    clearOutreachState(conversationId),
   ]);
 
   logger.info(
