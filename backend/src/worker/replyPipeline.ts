@@ -587,6 +587,26 @@ async function generateLlmReply(
     return sendFallbackBridge(input, llmResult.llmCallId ?? null);
   }
 
+  // HARD CAP — non-pitch turns get exactly 1 outbound bubble.
+  // Operator data 2026-04-30: bot was sending 1.5x more outbound than
+  // fans were sending inbound (272 outbound vs 180 inbound across 8h),
+  // with one fan getting 984 bot messages. That spam pattern is what
+  // killed conversion ($15 revenue from 30 pitches in 8h). Real OF
+  // chatters reply ~1:1 with the fan, not 1.5:1 — and definitely don't
+  // burst-reply. We also kept tripping per-chat 429 rate limits because
+  // of the volume. Single bubble per turn fixes both at once.
+  // Pitch turns already emit exactly 1 bubble (caption attached to media).
+  if (!isPitch && humanized.bubbles.length > 1) {
+    const combined = humanized.bubbles
+      .slice(0, 2)             // take at most first 2 lines of intent
+      .join(" ")               // merge into one bubble with a space
+      .replace(/\s+/g, " ")
+      .trim();
+    humanized.bubbles = [combined];
+    humanized.timings = humanized.timings.slice(0, 1);
+    humanized.totalDurationMs = humanized.timings[0]?.delayMs ?? 0;
+  }
+
   // Deterministic fallback for when the model ignores the anti-mirror rule.
   // Strips an echo-opener from the first bubble when it parrots the fan.
   // Pitch turns are exempt — captions are SUPPOSED to echo the fan's words
