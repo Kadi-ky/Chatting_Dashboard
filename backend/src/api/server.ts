@@ -10,6 +10,13 @@ import { db } from "../db/client.js";
 import { getPlatformAdapter } from "../platform/index.js";
 import { loadAccountByPlatformId, upsertShadowAccount } from "../db/repos/accounts.js";
 import { getRecentPlatformErrors, parseRetryAfter, getLastRateLimitInfo } from "../platform/impl/http/client.js";
+import {
+  recordWebhookEvent,
+  getRecentWebhookEvents,
+  getRecentSkipReasons,
+} from "../observability/diag_rings.js";
+import { turnQueue } from "../queue/turns.js";
+import { outboundQueue } from "../queue/outbound.js";
 import { getRecentNudges } from "../worker/nudgeWorker.js";
 import { getRecentPitchDecisions } from "../ppv/orchestrator.js";
 
@@ -107,6 +114,34 @@ async function handle(
     return json(res, 200, { lastSeen: getLastRateLimitInfo() });
   }
 
+  // BullMQ queue depths — surfaces inbound / turn / outbound counts so we can
+  // see if events are stacking up unprocessed. Public read; no sensitive data.
+  if (method === "GET" && path === "/diag/queue-depth") {
+    try {
+      const [inb, trn, out] = await Promise.all([
+        inboundQueue().getJobCounts("waiting", "active", "delayed", "failed"),
+        turnQueue().getJobCounts("waiting", "active", "delayed", "failed"),
+        outboundQueue().getJobCounts("waiting", "active", "delayed", "failed"),
+      ]);
+      return json(res, 200, { inbound: inb, turn: trn, outbound: out });
+    } catch (err) {
+      return json(res, 500, { error: err instanceof Error ? err.message : String(err) });
+    }
+  }
+
+  // Last 100 webhook receives — kind, source IP trust, parsed/enqueued counts.
+  // Lets the operator confirm OFAPI is delivering events to V3 at all.
+  if (method === "GET" && path === "/diag/webhook-events") {
+    return json(res, 200, { events: getRecentWebhookEvents() });
+  }
+
+  // Last 100 turn-worker skip reasons. Captures the SILENT skip paths
+  // (lock contention, generator parse fail, humanizer empty, hard timeout)
+  // that don't show up anywhere else. Critical for "why didn't bot reply".
+  if (method === "GET" && path === "/diag/skip-reasons") {
+    return json(res, 200, { skips: getRecentSkipReasons() });
+  }
+
   if (method === "GET" && path === "/diag/runtime-flags") {
     return json(res, 200, {
       shadow_mode: env.SHADOW_MODE,
@@ -154,6 +189,16 @@ async function handle(
     const trustOk = trustedSource(sourceIp);
     if (!trustOk) {
       logger.warn({ sourceIp, path }, "webhook rejected: source ip not in trusted list");
+      recordWebhookEvent({
+        at: new Date().toISOString(),
+        path,
+        sourceIp,
+        trusted: false,
+        parsed: 0,
+        enqueued: 0,
+        blockedByAllowlist: 0,
+        unknownAccounts: 0,
+      });
       return text(res, 403, "untrusted source");
     }
 
@@ -179,10 +224,33 @@ async function handle(
     try {
       events = adapter.parseWebhook({ rawBody, headers: req.headers });
     } catch (err) {
-      logger.error({ err: err instanceof Error ? err.message : err }, "webhook parseWebhook threw");
+      const msg = err instanceof Error ? err.message : String(err);
+      logger.error({ err: msg }, "webhook parseWebhook threw");
+      recordWebhookEvent({
+        at: new Date().toISOString(),
+        path,
+        sourceIp,
+        trusted: true,
+        parsed: 0,
+        enqueued: 0,
+        blockedByAllowlist: 0,
+        unknownAccounts: 0,
+        parseError: msg,
+      });
       return json(res, 200, { received: 0, error: "parse_failed" });
     }
     if (events === null) {
+      recordWebhookEvent({
+        at: new Date().toISOString(),
+        path,
+        sourceIp,
+        trusted: true,
+        parsed: 0,
+        enqueued: 0,
+        blockedByAllowlist: 0,
+        unknownAccounts: 0,
+        signatureInvalid: true,
+      });
       return text(res, 401, "invalid signature");
     }
 
@@ -239,6 +307,16 @@ async function handle(
         );
       }
     }
+    recordWebhookEvent({
+      at: new Date().toISOString(),
+      path,
+      sourceIp,
+      trusted: true,
+      parsed: events.length,
+      enqueued,
+      blockedByAllowlist,
+      unknownAccounts,
+    });
     return json(res, 200, {
       received: events.length,
       enqueued,
