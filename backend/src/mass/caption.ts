@@ -120,14 +120,21 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
 
   taskParts.push(
     `OUTPUT FORMAT (STRICT JSON — the parser reads ONLY the "caption" field):`,
-    `Return a single JSON object, nothing else, exactly this shape:`,
-    `  {"caption": "in bed bored as hell, whos keepin me company tonight 😈"}`,
+    `Return a single JSON object, nothing else, in this shape:`,
+    `  { "caption": <YOUR ACTUAL FLIRTY CAPTION HERE> }`,
     ``,
-    `Rules:`,
+    `Examples of GOOD outputs (do NOT copy verbatim, generate something new):`,
+    `  { "caption": "in bed bored as hell, whos keepin me company tonight 😈" }`,
+    `  { "caption": "rough day, my dms r my happy place tbh 🥺" }`,
+    `  { "caption": "stop me from doin somethin reckless tonight" }`,
+    ``,
+    `RULES:`,
     `- Do NOT wrap the JSON in markdown code fences.`,
     `- Do NOT include any prose before or after the JSON.`,
-    `- The "caption" value must be a single string between 12 and 25 words.`,
-    `- Do NOT use the example sentence verbatim — generate a fresh one.`,
+    `- The "caption" must be a REAL flirty broadcast caption — actual content, not a placeholder.`,
+    `- ABSOLUTELY FORBIDDEN values for "caption": "text here", "caption text", "your caption here", "<caption>", "sample caption", "fill in", or any other schema placeholder. Outputs like these will be rejected and you will be re-prompted.`,
+    `- The caption must be between 5 and 30 words and feel like something a real flirty creator would actually post.`,
+    `- Do NOT reuse the exact phrasing from any example above or any item in the RECENT SENDS list.`,
   );
 
   const messages: LlmMessage[] = [
@@ -157,18 +164,20 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
 
   const caption = extractCaption(result.content);
 
-  if (!caption || caption.length < 5 || caption.length > 280) {
+  if (!caption || caption.length < 5 || caption.length > 280 || isPlaceholderCaption(caption)) {
     logger.warn(
       {
         accountId: args.accountId,
         rawLength: result.content.length,
         extractedLength: caption.length,
+        extracted: caption,
         rawPreview: result.content.slice(0, 200),
+        placeholder: isPlaceholderCaption(caption),
       },
       "mass caption extraction yielded unusable output",
     );
     throw new Error(
-      `mass caption rejected: extracted=${caption.length} chars from raw=${result.content.length} chars`,
+      `mass caption rejected: extracted=${caption.length} chars (placeholder=${isPlaceholderCaption(caption)})`,
     );
   }
 
@@ -180,6 +189,32 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
     model: result.model,
     generatedAt: new Date().toISOString(),
   };
+}
+
+/**
+ * Reject obvious schema-placeholder strings the model sometimes echoes back
+ * instead of generating real content. Reasoning models in JSON mode are
+ * particularly prone to this — they fill the template literally.
+ */
+const PLACEHOLDER_PATTERNS = [
+  /^text\s+here$/i,
+  /^caption\s+text$/i,
+  /^your\s+caption(\s+here)?$/i,
+  /^sample\s+caption$/i,
+  /^placeholder$/i,
+  /^fill\s+in(\s+here)?$/i,
+  /^<\s*caption\s*>$/i,
+  /^example$/i,
+  /^the\s+caption$/i,
+  /^caption$/i,
+  /^\[.*\]$/,           // bracketed placeholder like [your caption]
+  /^<.*>$/,             // angle-bracketed placeholder
+];
+function isPlaceholderCaption(s: string): boolean {
+  if (!s) return false;
+  const t = s.trim();
+  if (t.length < 12) return PLACEHOLDER_PATTERNS.some((p) => p.test(t));
+  return false;
 }
 
 /**
@@ -265,7 +300,12 @@ function clean(s: string): string {
 
 async function loadRecentCaptions(accountId: string): Promise<string[]> {
   try {
-    return await sharedRedis().lrange(REDIS_KEY(accountId), 0, MAX_RECENT - 1);
+    const all = await sharedRedis().lrange(REDIS_KEY(accountId), 0, MAX_RECENT - 1);
+    // Filter out any placeholders that may have leaked into the ring
+    // before isPlaceholderCaption was added. Otherwise the prompt's
+    // "DO NOT repeat" list would feed those back as a "recent send",
+    // making them feel like real captions to the model.
+    return all.filter((c) => !isPlaceholderCaption(c));
   } catch (err) {
     logger.warn(
       { err: err instanceof Error ? err.message : err, accountId },

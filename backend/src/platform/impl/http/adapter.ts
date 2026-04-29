@@ -214,6 +214,13 @@ export class HttpPlatformAdapter implements PlatformAdapter {
       );
       return;
     }
+    if (!isRealOfapiAccount(ctx.platformAccountId)) {
+      logger.debug(
+        { platformAccountId: ctx.platformAccountId },
+        "deleteMessage skipped — non-OFAPI account (mock / unprovisioned)",
+      );
+      return;
+    }
     // OFAPI: DELETE /api/{account}/chats/{chat_id}/messages/{message_id}
     // Costs 1 credit, only works on messages <24h old. Older deletes return
     // an error — we swallow because the DB row is already marked expired
@@ -240,6 +247,13 @@ export class HttpPlatformAdapter implements PlatformAdapter {
   async sendTypingIndicator(ctx: AccountContext, subscriberExternalId: string): Promise<void> {
     if (env.SHADOW_MODE) {
       logger.debug({ shadow: true, subscriberExternalId }, "SHADOW_MODE: would-fire typing indicator");
+      return;
+    }
+    if (!isRealOfapiAccount(ctx.platformAccountId)) {
+      logger.debug(
+        { platformAccountId: ctx.platformAccountId },
+        "typing indicator skipped — non-OFAPI account (mock / unprovisioned)",
+      );
       return;
     }
     // OFAPI: POST /api/{account}/chats/{chat_id}/typing — shows "Model is
@@ -313,6 +327,25 @@ export class HttpPlatformAdapter implements PlatformAdapter {
       ...(resp.scheduled_for ? { scheduledFor: new Date(resp.scheduled_for) } : {}),
     };
   }
+}
+
+// ─── account-id guard ─────────────────────────────────────────────────────
+
+/**
+ * Returns true if the platform account id looks like a real OFAPI id
+ * (acct_xxxxx). Synthetic test conversations sometimes have "mock" or other
+ * placeholders here; firing real OFAPI calls against those returns 404 with
+ * "You must use the OFAPI ID (starting with acct_)" — pure log noise. Adapter
+ * methods that aren't on the critical send path (typing indicator, delete)
+ * skip outright when this returns false.
+ *
+ * The actual sendMessage / sendPPV / sendFreeMedia paths still attempt the
+ * call so genuine misconfigurations get flagged loudly via the existing
+ * outbound failure handling — better to see "send failed" than to silently
+ * drop messages.
+ */
+function isRealOfapiAccount(platformAccountId: string): boolean {
+  return typeof platformAccountId === "string" && platformAccountId.startsWith("acct_");
 }
 
 // ─── shadow mode + send-response helpers ─────────────────────────────────
