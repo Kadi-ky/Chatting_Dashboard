@@ -119,11 +119,15 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
   }
 
   taskParts.push(
-    `OUTPUT FORMAT (STRICT — required because the parser only extracts what's between the tags):`,
-    `Wrap your final caption in <caption> tags, exactly like this example shape:`,
-    `  <caption>in bed bored as hell, who's keepin me company tonight 😈</caption>`,
+    `OUTPUT FORMAT (STRICT JSON — the parser reads ONLY the "caption" field):`,
+    `Return a single JSON object, nothing else, exactly this shape:`,
+    `  {"caption": "in bed bored as hell, whos keepin me company tonight 😈"}`,
     ``,
-    `You MAY think out loud or weigh angles before the opening tag — ONLY the text inside <caption>...</caption> is used. Do NOT include the example sentence verbatim. Generate a fresh one.`,
+    `Rules:`,
+    `- Do NOT wrap the JSON in markdown code fences.`,
+    `- Do NOT include any prose before or after the JSON.`,
+    `- The "caption" value must be a single string between 12 and 25 words.`,
+    `- Do NOT use the example sentence verbatim — generate a fresh one.`,
   );
 
   const messages: LlmMessage[] = [
@@ -136,10 +140,14 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
     messages,
     // Reasoning models (grok-4.1-fast-reasoning) emit a chain-of-thought
     // before the final answer; 250 tokens (the NUDGE_GENERATE default) is
-    // too tight and the answer never lands. Bump generously — the parser
-    // extracts only the <caption> portion so token count doesn't bloat
-    // the actual sent message.
+    // too tight. Bump generously — the parser extracts only the "caption"
+    // field from the JSON so token count doesn't bloat the actual message.
     maxTokens: 1500,
+    // JSON mode is the reliable path. <caption> tag wrapping kept failing
+    // because reasoning models freely formatted around it. Forcing
+    // {"caption": "..."} via response_format gives us a deterministic
+    // extract path.
+    responseFormat: "json_object",
     meta: {
       accountId: args.accountId,
       kind: "mass_caption",
@@ -175,30 +183,55 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
 }
 
 /**
- * Pull the final caption out of the LLM response. Reasoning models emit
- * chain-of-thought BEFORE the answer; we asked for a <caption>...</caption>
- * wrapper, so prefer that. Falls back through a few heuristics for chat
- * models that ignore the tag instruction:
- *   1. <caption>...</caption>      — preferred, what we ask for
- *   2. text after "Caption:" line   — common reasoning model output
- *   3. last quoted string in body   — if model wrapped its answer in quotes
- *   4. last non-empty line          — final answer is usually the last line
- *   5. whole body trimmed           — chat models without prelude
+ * Pull the final caption out of the LLM response. Primary path is JSON mode
+ * (the prompt requires {"caption": "..."}); we just parse it. Fallbacks
+ * cover models that ignore the format instruction:
+ *   1. JSON.parse → "caption" field        ← the reliable path
+ *   2. JSON anywhere in the body           ← model wrapped JSON in prose
+ *   3. <caption>...</caption> tag           ← prior tag-based instruction leftover
+ *   4. text after "Caption:" line          ← common reasoning model output
+ *   5. last quoted string in body          ← if model wrapped answer in quotes
+ *   6. last non-empty line                 ← final answer often last line
+ *   7. whole trimmed body                  ← last resort
  */
 function extractCaption(raw: string): string {
   const trimmed = raw.trim();
 
+  // 1. Pure JSON response (preferred path, what response_format asks for).
+  try {
+    const parsed = JSON.parse(trimmed) as unknown;
+    const fromJson = pluckCaption(parsed);
+    if (fromJson) return clean(fromJson);
+  } catch {
+    /* fall through to heuristics */
+  }
+
+  // 2. JSON object embedded somewhere in the body (model added prose around it).
+  const jsonMatch = trimmed.match(/\{[\s\S]*?"caption"\s*:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?\}/);
+  if (jsonMatch) {
+    try {
+      const unescaped = JSON.parse(`"${jsonMatch[1]!}"`) as string;
+      if (unescaped.length >= 5) return clean(unescaped);
+    } catch {
+      /* fall through */
+    }
+  }
+
+  // 3. <caption> tag (legacy instruction format).
   const tagMatch = trimmed.match(/<caption>([\s\S]*?)<\/caption>/i);
   if (tagMatch) return clean(tagMatch[1]!);
 
+  // 4. "Caption: ..." label.
   const labelMatch = trimmed.match(/(?:^|\n)\s*(?:final\s+)?caption\s*[:\-]\s*(.+?)(?:\n\n|$)/i);
   if (labelMatch) return clean(labelMatch[1]!);
 
+  // 5. Quoted string of reasonable length, last one wins (final answer convention).
   const quotedMatches = [...trimmed.matchAll(/[""''"']([^""''"']{10,200})[""''"']/g)];
   if (quotedMatches.length > 0) {
     return clean(quotedMatches[quotedMatches.length - 1]![1]!);
   }
 
+  // 6. Last non-empty line if it's a plausible caption length.
   const lines = trimmed.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 0);
   if (lines.length > 0) {
     const last = lines[lines.length - 1]!;
@@ -206,6 +239,20 @@ function extractCaption(raw: string): string {
   }
 
   return clean(trimmed);
+}
+
+/** Extract a string named "caption" from any JSON-shaped object. */
+function pluckCaption(parsed: unknown): string | null {
+  if (typeof parsed !== "object" || parsed === null) return null;
+  const obj = parsed as Record<string, unknown>;
+  if (typeof obj.caption === "string") return obj.caption;
+  // Handle nested response shapes some reasoning models produce, e.g.
+  // {"output": {"caption": "..."}} or {"final": {"caption": "..."}}.
+  for (const v of Object.values(obj)) {
+    const nested = pluckCaption(v);
+    if (nested) return nested;
+  }
+  return null;
 }
 
 function clean(s: string): string {
