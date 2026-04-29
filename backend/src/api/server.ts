@@ -1065,9 +1065,13 @@ async function loadPitchState(conversationId: string): Promise<unknown> {
 
   // Drip + cooldown signals.
   const turnsSinceLast = await ppvTurnsSinceLastPitch(conversationId);
+  // Threshold + lookback MUST mirror orchestrator's UNBOUGHT_LOOKBACK
+  // (currently 1). When you change it there, change it here too — the panel
+  // reads as a lie otherwise.
+  const unboughtThreshold = 1;
   const unbought = await countUnboughtRecentPitches({
     conversationId,
-    lookback: 2,
+    lookback: unboughtThreshold,
     inboundSince: 2,
   });
 
@@ -1134,7 +1138,6 @@ async function loadPitchState(conversationId: string): Promise<unknown> {
   // Decide a single human-readable label answering "what is the bot about
   // to do, ppv-wise?" — the most useful one-line summary.
   const dripIntervalTurns = 10;
-  const unboughtThreshold = 2;
   let label: string;
   let willPitchSoon: boolean;
   let turnsUntilNextPitch: number | null = null;
