@@ -34,6 +34,8 @@ export interface AdminServerHandle {
  *   GET  /admin/threads/:id                         one conversation with all messages + archetype
  *   GET  /admin/conversations/:id/why               assembled prompt + output for last turn
  *   POST /admin/conversations/:id/takeover/on|off   toggle operator takeover
+ *   POST /admin/halt-fan?name=X|external_id=Y[&action=on|off]
+ *                                                  one-shot find-and-takeover by name / external id
  *   POST /admin/test/inject                         inject a fake inbound message (testing)
  *
  * Auth: ADMIN_TOKEN env required on /admin paths; if unset, /admin returns 503
@@ -388,6 +390,62 @@ async function handle(
     if (method === "GET" && whyMatch) {
       const [, convId] = whyMatch;
       return json(res, 200, await loadLastTurnAudit(convId as string));
+    }
+
+    // POST /admin/halt-fan?name=ari        — find by display_name (ILIKE)
+    // POST /admin/halt-fan?external_id=X   — find by platform external id
+    // POST /admin/halt-fan?name=ari&action=off — re-enable bot replies
+    // Looks up the subscriber's conversation(s) and flips operator takeover.
+    // Saves you from needing to find UUIDs first when a fan is misbehaving
+    // (e.g. another bot, two bots looping, abuse, manual handover).
+    if (method === "POST" && path === "/admin/halt-fan") {
+      const url = new URL(req.url ?? "", `http://${req.headers.host ?? "localhost"}`);
+      const name = url.searchParams.get("name")?.trim() || null;
+      const externalId = url.searchParams.get("external_id")?.trim() || null;
+      const action = (url.searchParams.get("action") ?? "on").toLowerCase();
+      if (!name && !externalId) {
+        return json(res, 400, { error: "must provide ?name= or ?external_id=" });
+      }
+      // Match by either display_name (case-insensitive substring) or external_id.
+      const subs = await db
+        .selectFrom("v3.subscribers")
+        .select(["id", "external_id", "display_name", "account_id"])
+        .where((eb) => {
+          if (externalId) return eb("external_id", "=", externalId);
+          return sql<SqlBool>`lower(display_name) like ${"%" + (name ?? "").toLowerCase() + "%"}`;
+        })
+        .limit(20)
+        .execute();
+      if (subs.length === 0) {
+        return json(res, 404, { error: "no subscriber matched" });
+      }
+      const flipped: Array<{
+        subscriberId: string;
+        externalId: string | null;
+        displayName: string | null;
+        conversationId: string;
+        action: "on" | "off";
+      }> = [];
+      for (const s of subs) {
+        const conv = await db
+          .selectFrom("v3.conversations")
+          .select(["id"])
+          .where("subscriber_id", "=", s.id)
+          .orderBy("last_activity_at", "desc")
+          .limit(1)
+          .executeTakeFirst();
+        if (!conv) continue;
+        if (action === "off") await disableTakeover(conv.id);
+        else await enableTakeover(conv.id);
+        flipped.push({
+          subscriberId: s.id,
+          externalId: s.external_id,
+          displayName: s.display_name,
+          conversationId: conv.id,
+          action: action === "off" ? "off" : "on",
+        });
+      }
+      return json(res, 200, { matched: subs.length, flipped });
     }
 
     if (method === "GET" && path === "/admin/threads") {
