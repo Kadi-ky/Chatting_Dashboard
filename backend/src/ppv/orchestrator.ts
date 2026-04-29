@@ -151,7 +151,13 @@ const DISCOUNT_RATE = 0.10;
  * fan is silently ignoring everything she sends — burning through the script
  * ladder while the fan goes cold.
  */
-const UNBOUGHT_LOOKBACK = 2;
+// Operator decision (2026-04-29): drip should fire after a SINGLE ignored
+// pitch, not 2. The previous 2-pitch threshold was leaving fans with one
+// pending PPV in indefinite limbo because the funnel `ppv_sent` block
+// applied but drip never engaged to clear it. With 1, any fan whose last
+// pitch went unbought + has chatted past it qualifies for the 10-turn
+// drip re-pitch.
+const UNBOUGHT_LOOKBACK = 1;
 /**
  * A pitch only counts as "unbought" if the fan has sent at least this many
  * inbound messages AFTER it without unlocking. Avoids false-positives in the
@@ -288,17 +294,30 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   });
 
   // Map decision to outcome.
-  if (readiness.decision === "rapport" || readiness.decision === "sext_more") {
+  // EXCEPTION: drip mode forces a re-pitch every SUPPORT_DRIP_INTERVAL_TURNS
+  // regardless of what the AI analyzer thinks. Operator directive
+  // (2026-04-29): "AS LONG AS THE CONVERSATION REACHES THE 10th TURN AFTER
+  // THE LAST ONE BEING IGNORED, IT SHOULD SEND IT AGAIN." If drip says fire,
+  // we fire — the analyzer's rapport/sext_more/decline_softly veto is
+  // bypassed. Below the drip path the analyzer still gates first-time
+  // pitches and other normal-flow turns.
+  if (!dripPitch && (readiness.decision === "rapport" || readiness.decision === "sext_more")) {
     return {
       shouldPitch: false,
       reason: `pitch_readiness=${readiness.decision} (${readiness.reasoning})`,
     };
   }
-  if (readiness.decision === "decline_softly") {
+  if (!dripPitch && readiness.decision === "decline_softly") {
     return {
       shouldPitch: false,
       reason: `pitch_readiness=decline_softly (${readiness.reasoning})`,
     };
+  }
+  if (dripPitch && (readiness.decision === "rapport" || readiness.decision === "sext_more" || readiness.decision === "decline_softly")) {
+    logger.info(
+      { conversationId: args.conversationId, aiDecision: readiness.decision, turnsSinceLastPitch: args.turnsSinceLastPitch },
+      "drip pitch overriding AI readiness analyzer — 10+ turns since last ignored pitch",
+    );
   }
 
   // 2-turn funnel guards — the FUNNEL STATE is structural truth, the AI
