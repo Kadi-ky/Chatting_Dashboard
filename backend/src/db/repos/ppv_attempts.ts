@@ -155,6 +155,42 @@ export async function assetsUnlockedBy(subscriberId: string): Promise<string[]> 
   return Array.from(new Set(rows.map((r) => r.asset_id)));
 }
 
+/**
+ * When a new PPV fires for an asset that already has prior pending attempts
+ * in the same conversation, mark those prior attempts as expired. Used by
+ * drip re-pitches so the previous bubble doesn't sit alongside the new one
+ * counting as "still pending" in countUnboughtRecentPitches and showing as
+ * a separate buy-able card in the operator panel.
+ *
+ * Returns how many were expired + the message_ids of the now-expired rows
+ * so callers can optionally call adapter.deleteMessage to unsend on the
+ * platform side too (not wired yet — shadow-mode-only at the moment).
+ */
+export async function expirePriorPendingForAsset(args: {
+  conversationId: string;
+  assetId: string;
+  exceptAttemptId: string;
+}): Promise<{ count: number; messageIds: string[] }> {
+  const found = await db
+    .selectFrom("v3.ppv_attempts")
+    .select(["id", "message_id"])
+    .where("conversation_id", "=", args.conversationId)
+    .where("asset_id", "=", args.assetId)
+    .where("id", "!=", args.exceptAttemptId)
+    .where("outcome", "=", "pending")
+    .execute();
+  if (found.length === 0) return { count: 0, messageIds: [] };
+  await db
+    .updateTable("v3.ppv_attempts")
+    .set({ outcome: "expired", expired_at: sql`now()` })
+    .where("id", "in", found.map((f) => f.id))
+    .execute();
+  return {
+    count: found.length,
+    messageIds: found.map((f) => f.message_id).filter((m): m is string => m != null),
+  };
+}
+
 /** Mark attempts older than `hours` and still pending as expired. */
 export async function expireStaleAttempts(hours = 72): Promise<number> {
   const cutoff = new Date(Date.now() - hours * 3_600_000);

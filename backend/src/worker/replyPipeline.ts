@@ -17,7 +17,7 @@ import { insertOutboundDraft } from "../db/repos/messages.js";
 import { outboundQueue, type OutboundJobData } from "../queue/outbound.js";
 import { PHASE_DIRECTIVES, COLD_REPLIES } from "../state/directives.js";
 import { computeTimings } from "../humanness/timing.js";
-import { insertPpvAttempt } from "../db/repos/ppv_attempts.js";
+import { insertPpvAttempt, expirePriorPendingForAsset } from "../db/repos/ppv_attempts.js";
 import { incrementAttemptCounter } from "../db/repos/ppv_catalog.js";
 import { bumpAttempt } from "../db/repos/asset_performance.js";
 import { archetypeSlice } from "../ppv/ranker.js";
@@ -715,6 +715,28 @@ async function enqueueHumanizedTurn(args: {
         messageId: draft.id,
       });
       ppvAttemptId = attempt.id;
+
+      // Operator directive (2026-04-29): when a drip re-pitch fires for the
+      // same asset, mark prior pending attempts as expired so the fan can't
+      // accidentally pay twice for the same content via the old bubble. The
+      // PLATFORM-side message is left in place — only the DB row is moved
+      // out of "pending." If the fan still unlocks the old bubble visually,
+      // the unlock handler picks the most recent pending attempt for that
+      // asset (now this new one), so revenue still gets recorded against
+      // the freshest pitch. Future work: wire OFAPI deleteMessage to
+      // unsend the old bubble too — schema is in openapi.yaml.
+      const expired = await expirePriorPendingForAsset({
+        conversationId: input.conversationId,
+        assetId: pitch.asset.id,
+        exceptAttemptId: attempt.id,
+      });
+      if (expired.count > 0) {
+        logger.info(
+          { conversationId: input.conversationId, assetId: pitch.asset.id, expired: expired.count },
+          "expired prior pending PPV attempts for same asset (re-pitch)",
+        );
+      }
+
       await Promise.all([
         incrementAttemptCounter(pitch.asset.id),
         bumpAttempt(pitch.asset.id, archetypeSlice(input.archetype ?? null)),
