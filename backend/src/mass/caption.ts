@@ -119,22 +119,21 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
   }
 
   taskParts.push(
-    `OUTPUT FORMAT (STRICT JSON — the parser reads ONLY the "caption" field):`,
-    `Return a single JSON object, nothing else, in this shape:`,
-    `  { "caption": <YOUR ACTUAL FLIRTY CAPTION HERE> }`,
+    `OUTPUT FORMAT — STRICT JSON. Return a single JSON object, nothing else.`,
     ``,
-    `Examples of GOOD outputs (do NOT copy verbatim, generate something new):`,
-    `  { "caption": "in bed bored as hell, whos keepin me company tonight 😈" }`,
-    `  { "caption": "rough day, my dms r my happy place tbh 🥺" }`,
-    `  { "caption": "stop me from doin somethin reckless tonight" }`,
+    `Three examples of well-formed responses (DO NOT copy these — invent your own):`,
+    `  {"caption": "iced coffee n a long day ahead, who wants to keep me company in dms 🖤"}`,
+    `  {"caption": "im in bed n cant sleep, somebody save me tonight 🥺"}`,
+    `  {"caption": "fresh out the shower n in trouble already 😈"}`,
     ``,
     `RULES:`,
-    `- Do NOT wrap the JSON in markdown code fences.`,
-    `- Do NOT include any prose before or after the JSON.`,
-    `- The "caption" must be a REAL flirty broadcast caption — actual content, not a placeholder.`,
-    `- ABSOLUTELY FORBIDDEN values for "caption": "text here", "caption text", "your caption here", "<caption>", "sample caption", "fill in", or any other schema placeholder. Outputs like these will be rejected and you will be re-prompted.`,
-    `- The caption must be between 5 and 30 words and feel like something a real flirty creator would actually post.`,
-    `- Do NOT reuse the exact phrasing from any example above or any item in the RECENT SENDS list.`,
+    `- Do NOT wrap the JSON in markdown code fences (no triple backticks).`,
+    `- Do NOT include any prose, preamble, or trailing text outside the JSON.`,
+    `- The "caption" value must be a REAL flirty broadcast caption — actual prose only.`,
+    `- The caption MUST begin with a lowercase letter or an emoji. It must NOT start with "<", "[", "(", or any bracket-style placeholder marker.`,
+    `- FORBIDDEN literal values (will be auto-rejected): "text here", "your caption", "your caption here", "caption text", "sample caption", "placeholder", "<...>", "[...]", or any string that looks like a fill-in-the-blank template.`,
+    `- The caption must be 5-30 words and read like something a real flirty creator would actually post to a fan list.`,
+    `- Do NOT reuse phrasing from the example sentences above or from any item in the RECENT SENDS list.`,
   );
 
   const messages: LlmMessage[] = [
@@ -195,25 +194,34 @@ export async function generateMassCaption(args: GenerateMassCaptionArgs): Promis
  * Reject obvious schema-placeholder strings the model sometimes echoes back
  * instead of generating real content. Reasoning models in JSON mode are
  * particularly prone to this — they fill the template literally.
+ *
+ * SHORT_PLACEHOLDERS only fire when the output is implausibly short for a
+ * real caption (<12 chars). LONG_PLACEHOLDERS (bracketed / angle-bracketed /
+ * "your" patterns) fire at any length because no real caption ever starts
+ * with `<` or `[` or matches those phrasings.
  */
-const PLACEHOLDER_PATTERNS = [
+const SHORT_PLACEHOLDERS = [
   /^text\s+here$/i,
   /^caption\s+text$/i,
-  /^your\s+caption(\s+here)?$/i,
   /^sample\s+caption$/i,
   /^placeholder$/i,
   /^fill\s+in(\s+here)?$/i,
-  /^<\s*caption\s*>$/i,
   /^example$/i,
   /^the\s+caption$/i,
   /^caption$/i,
-  /^\[.*\]$/,           // bracketed placeholder like [your caption]
-  /^<.*>$/,             // angle-bracketed placeholder
+];
+const LONG_PLACEHOLDERS = [
+  /^<.*>$/,                                // any angle-bracketed string
+  /^\[.*\]$/,                              // any bracketed string
+  /your\s+(actual\s+)?(flirty\s+)?caption/i, // "your caption" / "your actual flirty caption"
+  /^\(.+\)$/,                              // wrapped in parens
 ];
 function isPlaceholderCaption(s: string): boolean {
   if (!s) return false;
   const t = s.trim();
-  if (t.length < 12) return PLACEHOLDER_PATTERNS.some((p) => p.test(t));
+  if (LONG_PLACEHOLDERS.some((p) => p.test(t))) return true;
+  if (t.startsWith("<") || t.startsWith("[")) return true; // hard reject any opener
+  if (t.length < 12) return SHORT_PLACEHOLDERS.some((p) => p.test(t));
   return false;
 }
 
