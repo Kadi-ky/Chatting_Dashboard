@@ -382,25 +382,42 @@ async function handle(
         }
         const data = (await r.json()) as { data?: Array<Record<string, unknown>> };
         // Distill to just what the dashboard needs to render + decide.
-        const out = (data.data ?? []).map((chat) => {
-          const lastMessage = (chat.lastMessage ?? {}) as Record<string, unknown>;
-          const fan = (chat.fan ?? {}) as Record<string, unknown>;
-          const fromUser = (lastMessage.fromUser ?? {}) as Record<string, unknown>;
-          return {
-            fanExternalId: String(fan.id ?? fromUser.id ?? ""),
-            fanName: String(fan.name ?? fan.username ?? ""),
-            fanUsername: String(fan.username ?? ""),
-            fanAvatar: (fan.avatar as string | null) ?? null,
-            unreadCount: Number(chat.unreadMessagesCount ?? 0),
-            lastMessageId: String(lastMessage.id ?? ""),
-            lastMessageText: String(lastMessage.text ?? ""),
-            lastMessageAt: String(lastMessage.createdAt ?? ""),
-            // True if the message was sent BY the fan (not by the creator).
-            // unreadMessagesCount > 0 already implies fan-side, but include
-            // for clarity.
-            isFromFan: Number(fromUser.id ?? 0) === Number(fan.id ?? 0),
-          };
-        });
+        // FILTER OUT mass-message chats: when a creator sends a mass DM, every
+        // recipient's chat shows as "unread" from OFAPI's perspective even
+        // though the creator was the LAST sender. Those don't represent
+        // missed fan messages — the dashboard's "Send V3 reply" button is
+        // for fans who messaged US that we haven't replied to. Filter to
+        // chats whose last message was from the FAN (fromUser.id === fan.id).
+        const out = (data.data ?? [])
+          .map((chat) => {
+            const lastMessage = (chat.lastMessage ?? {}) as Record<string, unknown>;
+            const fan = (chat.fan ?? {}) as Record<string, unknown>;
+            const fromUser = (lastMessage.fromUser ?? {}) as Record<string, unknown>;
+            const lastFromUserId = Number(fromUser.id ?? 0);
+            const fanId = Number(fan.id ?? 0);
+            // Detect mass-message chats two ways:
+            //   1. lastMessage.fromUser is the creator (fromUser.id !== fan.id)
+            //   2. lastMessage.isFromQueue / .isFree / .price flags often set on broadcasts
+            const isFromFan = lastFromUserId !== 0 && fanId !== 0 && lastFromUserId === fanId;
+            const isMassBroadcast =
+              lastMessage.isFromQueue === true ||
+              (typeof (lastMessage.queueId as unknown) === "string" && (lastMessage.queueId as string).length > 0);
+            return {
+              fanExternalId: String(fan.id ?? fromUser.id ?? ""),
+              fanName: String(fan.name ?? fan.username ?? ""),
+              fanUsername: String(fan.username ?? ""),
+              fanAvatar: (fan.avatar as string | null) ?? null,
+              unreadCount: Number(chat.unreadMessagesCount ?? 0),
+              lastMessageId: String(lastMessage.id ?? ""),
+              lastMessageText: String(lastMessage.text ?? ""),
+              lastMessageAt: String(lastMessage.createdAt ?? ""),
+              isFromFan,
+              isMassBroadcast,
+            };
+          })
+          // Only fans whose LAST message was from the fan AND not a mass-message
+          // tail. The dashboard's catch-up button only makes sense for these.
+          .filter((c) => c.isFromFan && !c.isMassBroadcast);
         return json(res, 200, { unread: out });
       } catch (err) {
         return json(res, 500, { error: err instanceof Error ? err.message : String(err) });
