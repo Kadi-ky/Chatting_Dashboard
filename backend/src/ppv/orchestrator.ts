@@ -315,27 +315,45 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     };
   }
 
+  // 2-turn funnel guards — the FUNNEL STATE is structural truth, the AI
+  // decision is only consulted to choose between preview-now vs hold-back.
+  // The AI cannot skip the teaser step for a new asset, and it cannot
+  // re-fire a priced PPV that's already been sent for the same asset.
+  //
+  // Rationale: observed in production — fan asked for content while in
+  // RAPPORT, AI decided "ppv" directly, bot fired the priced rung 1 PPV
+  // without a free teaser first. Lost the teaser-build value AND surprised
+  // the fan with a $-bubble before any free taste.
+  if (funnelStep === "ppv_sent") {
+    // The priced PPV already went out for this exact asset. Picker should
+    // be advancing to the next rung; if it's not, we still don't re-fire
+    // the same paid bubble. Refusing here lets the next picker call (after
+    // the unlock event commits) advance properly.
+    return {
+      shouldPitch: false,
+      reason: `funnelStep=ppv_sent for asset ${picked.asset.id} — refusing duplicate priced PPV`,
+    };
+  }
+
   let kind: "preview" | "ppv";
-  if (readiness.decision === "preview") {
-    // Analyzer wants a preview. Honor it if asset has a preview; otherwise
-    // step back to rapport (don't silently degrade preview→ppv against the
-    // analyzer's wishes).
-    if (!picked.previewMediaRef) {
-      return {
-        shouldPitch: false,
-        reason: `pitch_readiness=preview but asset has no preview_media_id; staying in rapport`,
-      };
-    }
-    if (funnelStep === "preview_sent" || funnelStep === "ppv_sent") {
-      // Already sent something for this asset — don't double-preview.
-      return {
-        shouldPitch: false,
-        reason: `pitch_readiness=preview but funnelStep=${funnelStep}; skipping double-send`,
-      };
-    }
+  if (picked.previewMediaRef && funnelStep === "none") {
+    // New asset + preview is configured → ALWAYS start with the teaser,
+    // regardless of what AI decided. The AI can still gate "rapport" /
+    // "sext_more" above to defer pitching at all. But once we're pitching
+    // a new asset, the structural rule is teaser → wait → priced PPV.
     kind = "preview";
+  } else if (readiness.decision === "preview") {
+    // AI wanted preview but either preview already sent (funnelStep) or
+    // no preview asset configured. Step back to rapport.
+    return {
+      shouldPitch: false,
+      reason: !picked.previewMediaRef
+        ? `pitch_readiness=preview but asset has no preview_media_id; staying in rapport`
+        : `pitch_readiness=preview but funnelStep=${funnelStep}; skipping double-preview`,
+    };
   } else {
-    // readiness.decision === "ppv"
+    // funnelStep === "preview_sent" → fan saw the teaser, now the priced PPV.
+    // OR: asset has no preview configured → straight to priced.
     kind = "ppv";
   }
 

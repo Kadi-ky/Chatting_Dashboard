@@ -9,6 +9,7 @@ import { markMostRecentAttemptUnlocked } from "../db/repos/ppv_attempts.js";
 import { incrementUnlockCounter, loadCatalogItem } from "../db/repos/ppv_catalog.js";
 import { bumpUnlock } from "../db/repos/asset_performance.js";
 import { recordPurchase, parseLegacySourceRef } from "../db/repos/purchases.js";
+import { clearFunnel } from "../ppv/funnel.js";
 import { recordTransaction } from "../db/repos/transactions.js";
 import { loadLatestArchetype } from "../db/repos/archetypes.js";
 import { archetypeSlice } from "../ppv/ranker.js";
@@ -169,6 +170,11 @@ async function handlePpvUnlocked(accountId: string, event: PlatformEvent): Promi
         purchasedAt: event.occurredAt,
       });
     }
+    // Defense-in-depth: clear funnel state for this asset so a stale
+    // ppv_sent flag doesn't trick decidePitch into refusing future activity
+    // on the same asset (the picker normally advances to next rung after an
+    // unlock, but this catches edge cases where it doesn't).
+    await clearFunnel(conversationId, attempt.assetId);
   }
 
   if (isTest) {
