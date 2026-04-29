@@ -23,16 +23,25 @@ export class GrokProvider implements LlmProvider {
       case "EXTRACT":
       case "MODERATE":
         return env.GROK_MODEL_CLASSIFIER;
+      case "NUDGE_GENERATE":
+        return env.GROK_MODEL_NUDGE;
     }
   }
 
   async call(opts: LlmCallOptions, model: string): Promise<LlmCallResult> {
     const started = Date.now();
+    // Per-task temperature + max-tokens defaults. Nudges want generator-style
+    // creativity (warmth + variety) but with a tighter token budget since the
+    // output is one short bubble.
+    const isCreative = opts.task === "CHAT_GENERATE" || opts.task === "NUDGE_GENERATE";
+    const defaultTemp = isCreative ? 0.9 : 0.2;
+    const defaultMaxTokens =
+      opts.task === "CHAT_GENERATE" ? 500 : opts.task === "NUDGE_GENERATE" ? 250 : 1000;
     const body: Record<string, unknown> = {
       model,
       messages: opts.messages,
-      temperature: opts.temperature ?? (opts.task === "CHAT_GENERATE" ? 0.9 : 0.2),
-      max_tokens: opts.maxTokens ?? (opts.task === "CHAT_GENERATE" ? 500 : 1000),
+      temperature: opts.temperature ?? defaultTemp,
+      max_tokens: opts.maxTokens ?? defaultMaxTokens,
     };
     if (opts.responseFormat === "json_object") {
       body.response_format = { type: "json_object" };
@@ -46,7 +55,7 @@ export class GrokProvider implements LlmProvider {
     // it and BullMQ never recovers. Generator gets 90s, the cheaper classify
     // / extract / moderate calls get 30s. Router catches AbortError and treats
     // it as retriable so we fall through to openrouter.
-    const timeoutMs = opts.task === "CHAT_GENERATE" ? 90_000 : 30_000;
+    const timeoutMs = isCreative ? 90_000 : 30_000;
     const ac = new AbortController();
     const timer = setTimeout(() => ac.abort(), timeoutMs);
 

@@ -24,6 +24,10 @@ export class OpenRouterProvider implements LlmProvider {
       case "EXTRACT":
       case "MODERATE":
         return env.OPENROUTER_CLASSIFIER_FALLBACK_MODEL;
+      case "NUDGE_GENERATE":
+        // Use the classifier-tier fallback (smaller / cheaper / reasoning-capable)
+        // since nudges are short and don't need the full chat-generator model.
+        return env.OPENROUTER_CLASSIFIER_FALLBACK_MODEL;
     }
   }
 
@@ -33,11 +37,15 @@ export class OpenRouterProvider implements LlmProvider {
     }
 
     const started = Date.now();
+    const isCreative = opts.task === "CHAT_GENERATE" || opts.task === "NUDGE_GENERATE";
+    const defaultTemp = isCreative ? 0.9 : 0.2;
+    const defaultMaxTokens =
+      opts.task === "CHAT_GENERATE" ? 500 : opts.task === "NUDGE_GENERATE" ? 250 : 1000;
     const body: Record<string, unknown> = {
       model,
       messages: opts.messages,
-      temperature: opts.temperature ?? (opts.task === "CHAT_GENERATE" ? 0.9 : 0.2),
-      max_tokens: opts.maxTokens ?? (opts.task === "CHAT_GENERATE" ? 500 : 1000),
+      temperature: opts.temperature ?? defaultTemp,
+      max_tokens: opts.maxTokens ?? defaultMaxTokens,
     };
     if (opts.responseFormat === "json_object") {
       body.response_format = { type: "json_object" };

@@ -1,4 +1,4 @@
-export type LlmTask = "CHAT_GENERATE" | "CLASSIFY" | "EXTRACT" | "MODERATE";
+export type LlmTask = "CHAT_GENERATE" | "CLASSIFY" | "EXTRACT" | "MODERATE" | "NUDGE_GENERATE";
 
 export type LlmRole = "system" | "user" | "assistant";
 

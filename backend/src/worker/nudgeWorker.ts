@@ -3,7 +3,13 @@ import { logger } from "../observability/logger.js";
 import { env } from "../config/index.js";
 import { db } from "../db/client.js";
 import { outboundQueue } from "../queue/outbound.js";
-import { insertOutboundDraft } from "../db/repos/messages.js";
+import { insertOutboundDraft, loadRecentMessages } from "../db/repos/messages.js";
+import { loadLatestArchetype } from "../db/repos/archetypes.js";
+import { loadIdentityLayer } from "../prompt/layers/identity.js";
+import { HUMANNESS_LAYER, HUMANNESS_VERSION } from "../prompt/layers/humanness.js";
+import { CONTRACT_LAYER, CONTRACT_VERSION } from "../prompt/layers/contract.js";
+import { routeLlmCall } from "../llm/router.js";
+import type { LlmMessage } from "../llm/types.js";
 
 /**
  * Auto-nudge worker.
@@ -221,10 +227,20 @@ async function runIdlePass(): Promise<{ candidates: number; sent: number }> {
       // Skip if the most recent inbound text contains disengagement signals.
       if (await fanIsDisengaging(row.conv_id)) continue;
 
-      // Pick a template for this step + a random variant for variety.
+      // Generate the nudge with the LLM, conversation-context-aware. Falls
+      // back to a random pick from the static template pool only if the LLM
+      // call fails (network blip, model overloaded, etc.) so we never go
+      // silent on a fan who's due for a nudge.
       const step = idleCount;
+      const llmText = await generateNudgeText({
+        conversationId: row.conv_id,
+        accountId: row.account_id,
+        subscriberId: row.subscriber_id,
+        kind: "idle",
+        step,
+      });
       const variants = IDLE_TEMPLATES[step]!;
-      const text = variants[Math.floor(Math.random() * variants.length)]!;
+      const text = llmText ?? variants[Math.floor(Math.random() * variants.length)]!;
 
       await sendNudge({
         conversationId: row.conv_id,
@@ -292,8 +308,16 @@ async function runPpvPass(): Promise<{ candidates: number; sent: number }> {
       // Skip if disengaged
       if (await fanIsDisengaging(row.conv_id)) continue;
 
+      // LLM-generate a context-aware nudge; templates are the safety net.
+      const llmText = await generateNudgeText({
+        conversationId: row.conv_id,
+        accountId: row.account_id,
+        subscriberId: row.subscriber_id,
+        kind: "ppv",
+        step: attemptCount,
+      });
       const variants = PPV_TEMPLATES[attemptCount]!;
-      const text = variants[Math.floor(Math.random() * variants.length)]!;
+      const text = llmText ?? variants[Math.floor(Math.random() * variants.length)]!;
 
       await sendNudge({
         conversationId: row.conv_id,
@@ -403,6 +427,143 @@ interface SendNudgeArgs {
   text: string;
   kind: "idle" | "ppv";
   step: number;
+}
+
+/**
+ * Step-specific tone guidance for the nudge generator. The reasoning model
+ * uses these to pick the right register for the moment in the silence
+ * ladder — early nudges should feel light and curious, later ones a touch
+ * more vulnerable, the final one warm-and-letting-go (door left open).
+ */
+const NUDGE_STEP_OBJECTIVES = {
+  idle: [
+    "STEP 1 (30 min after he went silent) — light, casual check-in. He hasn't been gone long; act curious, not clingy. Reference something specific from his last few messages so it reads as 'i'm still thinking about that thing you said' not 'i'm pinging you.' Tone: playful, warm, ONE bubble, max 18 words. Optional 1 emoji (no 🥺 yet — he isn't gone long enough for soft-want).",
+    "STEP 2 (2 hours after silence) — slightly more deliberate, still flirty. Mention you've been thinking about him in a specific way — pull from what he said earlier in the chat. Light tease ok. ONE bubble, max 22 words, optional 1 emoji (🥺 / 🖤 ok now).",
+    "STEP 3 (6 hours, FINAL nudge) — warm and a little vulnerable, leave the door open. NOT begging, NOT desperate. The vibe is 'i miss the energy we had, come back when you can' — no follow-up after this one if he stays silent. ONE bubble, max 25 words, optional 1 emoji.",
+  ],
+  ppv: [
+    "STEP 1 (30 min after the priced PPV went unanswered) — soft check on whether he saw it. Reference what he was talking about right before the pitch. NOT pushy, NOT 'unlock pls'. ONE bubble, max 18 words.",
+    "STEP 2 (2 hours, FINAL PPV nudge) — last call, warm. Hold the door open without begging. ONE bubble, max 22 words.",
+  ],
+} as const;
+
+/**
+ * Build the LLM nudge generator prompt and call it. Returns the generated
+ * caption on success, null on any failure (caller falls back to the static
+ * template pool). Layered like the chat generator so nudges read in the same
+ * v1.8 pick-me voice as everything else, but instructed to output a single
+ * plain-text bubble rather than the chat generator's JSON envelope.
+ */
+async function generateNudgeText(args: {
+  conversationId: string;
+  accountId: string;
+  subscriberId: string;
+  kind: "idle" | "ppv";
+  step: number; // 0-indexed
+}): Promise<string | null> {
+  const stepObjective =
+    NUDGE_STEP_OBJECTIVES[args.kind][args.step] ?? NUDGE_STEP_OBJECTIVES[args.kind][0]!;
+  try {
+    const [history, archetype] = await Promise.all([
+      loadRecentMessages(args.conversationId, 10),
+      loadLatestArchetype(args.subscriberId),
+    ]);
+    const identity = loadIdentityLayer(args.accountId);
+
+    // Reuse the same persona + contract + humanness prefix as the chat
+    // generator so voice is consistent. Cache prefix lands first; volatile
+    // bits follow as separate system messages.
+    const prefix = [
+      `# Identity`,
+      identity,
+      ``,
+      `# Contract (v${CONTRACT_VERSION})`,
+      CONTRACT_LAYER,
+      ``,
+      `# Humanness (v${HUMANNESS_VERSION})`,
+      HUMANNESS_LAYER,
+    ].join("\n");
+
+    const messages: LlmMessage[] = [{ role: "system", content: prefix }];
+
+    if (archetype) {
+      const facts: string[] = [];
+      if (archetype.spenderTier) facts.push(`spender tier: ${archetype.spenderTier}`);
+      if (archetype.engagementLevel) facts.push(`engagement: ${archetype.engagementLevel}`);
+      if (archetype.relationshipTone) facts.push(`tone: ${archetype.relationshipTone}`);
+      if (archetype.fetishTags?.length) facts.push(`interests: ${archetype.fetishTags.join(", ")}`);
+      if (facts.length > 0) {
+        messages.push({
+          role: "system",
+          content: `# Known facts about this fan\n${facts.map((f) => `- ${f}`).join("\n")}`,
+        });
+      }
+    }
+
+    if (history.length > 0) {
+      // Most recent N messages, oldest first, labelled. Lets the reasoning
+      // model see the conversation arc and pick a hook.
+      const transcript = history
+        .filter((m) => (m.direction === "inbound" || m.direction === "outbound") && m.text)
+        .slice(-10)
+        .map((m) => `${m.direction === "inbound" ? "FAN" : "YOU"}: ${m.text}`)
+        .join("\n");
+      messages.push({
+        role: "system",
+        content: `# Recent conversation (most recent at the bottom)\n${transcript}`,
+      });
+    }
+
+    messages.push({
+      role: "system",
+      content: [
+        `# Task — auto-nudge re-engagement`,
+        `Fan went silent after the conversation above. You are sending an UNPROMPTED follow-up message to pull him back in.`,
+        ``,
+        stepObjective,
+        ``,
+        `HARD REQUIREMENTS:`,
+        `- Hook to a SPECIFIC word, phrase, or vibe from his last message in the transcript above. Generic openers like "hey u still around babe" / "miss u" / "where u been" with no reference to him FAIL.`,
+        `- Match the v1.8 pick-me / flirty / eager voice (humanness layer above). Warm, attentive, into him.`,
+        `- ONE bubble only. Plain text. No JSON, no quotes around the output, no preamble like "Here's a nudge:".`,
+        `- No mention of price, no PPV pitch, no "unlock". This is rapport repair, not selling.`,
+        `- No begging, no "please". Confident warmth.`,
+        ``,
+        `OUTPUT: just the caption text, nothing else.`,
+      ].join("\n"),
+    });
+
+    const result = await routeLlmCall({
+      task: "NUDGE_GENERATE",
+      messages,
+      meta: {
+        conversationId: args.conversationId,
+        subscriberId: args.subscriberId,
+        accountId: args.accountId,
+        nudgeKind: args.kind,
+        nudgeStep: args.step,
+      },
+    });
+
+    const text = result.content
+      .trim()
+      .replace(/^["'`]+|["'`]+$/g, "")
+      .replace(/\s+/g, " ");
+    if (!text || text.length < 3 || text.length > 280) {
+      logger.warn(
+        { conversationId: args.conversationId, contentLength: text.length },
+        "nudge LLM output rejected (empty or too long)",
+      );
+      return null;
+    }
+    return text;
+  } catch (err) {
+    logger.warn(
+      { err: err instanceof Error ? err.message : err, conversationId: args.conversationId },
+      "nudge LLM generation failed — falling back to template",
+    );
+    return null;
+  }
 }
 
 async function sendNudge(args: SendNudgeArgs): Promise<void> {

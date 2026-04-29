@@ -46,6 +46,11 @@ const envSchema = z.object({
   GROK_API_BASE: z.string().url().default("https://api.x.ai/v1"),
   GROK_MODEL_GENERATOR: z.string().default("grok-4"),
   GROK_MODEL_CLASSIFIER: z.string().default("grok-4-1-fast-reasoning"),
+  // Nudge generator — operator chose grok-4.1 reasoning so the re-engagement
+  // line has access to the conversation context and reasons about the right
+  // tone (sweet vs flirty vs apologetic) for each step. Independent of the
+  // chat generator so we can tune separately.
+  GROK_MODEL_NUDGE: z.string().default("grok-4-1-fast-reasoning"),
 
   OPENROUTER_API_KEY: z.string().optional(),
   OPENROUTER_API_BASE: z.string().url().default("https://openrouter.ai/api/v1"),
