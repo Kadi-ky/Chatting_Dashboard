@@ -9,7 +9,7 @@ import { env } from "../config/index.js";
 import { db } from "../db/client.js";
 import { getPlatformAdapter } from "../platform/index.js";
 import { loadAccountByPlatformId, upsertShadowAccount } from "../db/repos/accounts.js";
-import { getRecentPlatformErrors } from "../platform/impl/http/client.js";
+import { getRecentPlatformErrors, parseRetryAfter } from "../platform/impl/http/client.js";
 import { getRecentNudges } from "../worker/nudgeWorker.js";
 import { getRecentPitchDecisions } from "../ppv/orchestrator.js";
 
@@ -378,7 +378,17 @@ async function handle(
         );
         if (!r.ok) {
           const errBody = await r.text().catch(() => "");
-          return json(res, 502, { error: `ofapi ${r.status}`, body: errBody.slice(0, 500) });
+          // Surface Retry-After so the dashboard can show a smart "try again
+          // in N seconds" message instead of generic error. OFAPI sends this
+          // header on 429s per their 2026-04-28 guidance.
+          const retryAfterRaw = r.headers.get("retry-after");
+          const retryAfterMs = parseRetryAfter(retryAfterRaw);
+          return json(res, 502, {
+            error: `ofapi ${r.status}`,
+            body: errBody.slice(0, 500),
+            ...(retryAfterRaw ? { retryAfterHeaderRaw: retryAfterRaw } : {}),
+            ...(retryAfterMs != null ? { retryAfterMs } : {}),
+          });
         }
         const data = (await r.json()) as { data?: Array<Record<string, unknown>> };
         // Distill to just what the dashboard needs to render + decide.
