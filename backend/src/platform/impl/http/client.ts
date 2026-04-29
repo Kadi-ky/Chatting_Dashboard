@@ -61,6 +61,10 @@ interface RecentError {
   path: string;
   method: string;
   responseBody: string;
+  /** Parsed Retry-After header value in milliseconds (set on 429s when the header is present). */
+  retryAfterMs?: number;
+  /** Raw Retry-After header value as the server sent it. Shown for verification. */
+  retryAfterHeaderRaw?: string;
   requestBodyKeys?: string[];
 }
 const RECENT_ERRORS: RecentError[] = [];
@@ -119,12 +123,16 @@ export class PlatformHttpClient {
       // sensitive content (fan-facing message text), so we hash it instead
       // of logging raw — that's enough to correlate two failures of the
       // same outbound retry.
+      const retryAfterRaw = res.headers.get("retry-after");
+      const retryAfterMs = parseRetryAfter(retryAfterRaw);
       const errEntry: RecentError = {
         at: new Date().toISOString(),
         status: res.status,
         path,
         method: opts.method ?? "GET",
         responseBody: text.slice(0, 1000),
+        ...(retryAfterMs != null ? { retryAfterMs } : {}),
+        ...(retryAfterRaw ? { retryAfterHeaderRaw: retryAfterRaw } : {}),
         ...(opts.body && typeof opts.body === "object"
           ? { requestBodyKeys: Object.keys(opts.body as Record<string, unknown>) }
           : {}),
@@ -132,7 +140,6 @@ export class PlatformHttpClient {
       RECENT_ERRORS.unshift(errEntry);
       if (RECENT_ERRORS.length > RECENT_ERRORS_MAX) RECENT_ERRORS.length = RECENT_ERRORS_MAX;
       logger.warn(errEntry, "platform http error");
-      const retryAfterMs = parseRetryAfter(res.headers.get("retry-after"));
       throw new PlatformHttpError(res.status, path, text, retryAfterMs);
     }
 
