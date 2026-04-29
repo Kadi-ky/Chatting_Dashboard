@@ -155,6 +155,18 @@ export interface PlatformAdapter {
    * send because typing indicator failed). Call multiple times to extend.
    */
   sendTypingIndicator(ctx: AccountContext, subscriberExternalId: string): Promise<void>;
+  /**
+   * Unsend a message from a chat (DELETE on the platform side). Used by drip
+   * re-pitch flow to remove the prior buyable PPV bubble when a new one fires
+   * for the same asset, so the fan can't double-pay. OFAPI restriction:
+   * only messages <24h old can be deleted; older ones return an error which
+   * implementations MUST swallow (DB row is already marked expired and
+   * nothing else depends on this succeeding).
+   */
+  deleteMessage(
+    ctx: AccountContext,
+    args: { chatId: string; messageExternalId: string },
+  ): Promise<void>;
   markRead(ctx: AccountContext, conversationExternalId: string): Promise<void>;
 
   // lifecycle

@@ -7,6 +7,9 @@ import { humanizeTurn, type HumanizedTurn } from "../humanness/pipeline.js";
 import { seededRng } from "../humanness/rng.js";
 import { listLiveCatalog } from "../db/repos/ppv_catalog.js";
 import { listRecentAttempts } from "../db/repos/ppv_attempts.js";
+import { db } from "../db/client.js";
+import { getPlatformAdapter } from "../platform/index.js";
+import { loadAccountById } from "../db/repos/accounts.js";
 import { filterNonRepeating, recordRecentBubbles, loadRecentEmojis, recordRecentEmojis, countRecentLazyOpeners } from "../humanness/dedup.js";
 import { emojisOf } from "../humanness/cleanup.js";
 import { deriveAntiMirrorDirective, scrubMirrorOpeners } from "../humanness/antimirror.js";
@@ -131,8 +134,11 @@ async function generateLlmReply(
   const directive = PHASE_DIRECTIVES[input.phase];
   const isPitch = input.pitch != null;
   const isBroadcast = input.broadcastObjective != null;
-  // Broadcasts have no inbound text to echo; everything else can mirror.
-  const antiMirror = isBroadcast ? null : deriveAntiMirrorDirective(input.incomingText);
+  // Broadcasts have no inbound text to echo. Pitch turns INTENTIONALLY
+  // mirror the fan's last message — the caption is supposed to hook to his
+  // exact words so the content feels made for him — so the anti-mirror
+  // directive must NOT fire on pitches. Only normal reply turns get it.
+  const antiMirror = isBroadcast || isPitch ? null : deriveAntiMirrorDirective(input.incomingText);
 
   // When we're pitching, the phase's "do not pitch / do not mention price /
   // do not promise to send" rules would directly contradict the task. The
@@ -583,11 +589,16 @@ async function generateLlmReply(
 
   // Deterministic fallback for when the model ignores the anti-mirror rule.
   // Strips an echo-opener from the first bubble when it parrots the fan.
-  const scrubbed = scrubMirrorOpeners(humanized.bubbles, input.incomingText);
-  if (scrubbed !== humanized.bubbles) {
-    logger.debug(ctx, "stripped mirror opener from first bubble");
+  // Pitch turns are exempt — captions are SUPPOSED to echo the fan's words
+  // so the content feels made for him. Stripping there would undo the
+  // context-tie work the prompt is asking for.
+  if (!isPitch) {
+    const scrubbed = scrubMirrorOpeners(humanized.bubbles, input.incomingText);
+    if (scrubbed !== humanized.bubbles) {
+      logger.debug(ctx, "stripped mirror opener from first bubble");
+    }
+    humanized.bubbles = scrubbed;
   }
-  humanized.bubbles = scrubbed;
 
   // Drop bubbles whose n-gram shingles overlap with recent outbound for this
   // conversation. Protects against the model looping phrases across turns.
@@ -735,6 +746,20 @@ async function enqueueHumanizedTurn(args: {
           { conversationId: input.conversationId, assetId: pitch.asset.id, expired: expired.count },
           "expired prior pending PPV attempts for same asset (re-pitch)",
         );
+        // Platform-side unsend so the fan can't double-buy. Best-effort —
+        // OFAPI only allows deleting messages <24h old; older calls return
+        // an error which the adapter swallows. Runs in parallel with the
+        // outbound send so the new bubble isn't blocked on it.
+        void deleteSupersededOnPlatform({
+          accountId: input.accountId,
+          subscriberExternalId: input.subscriberExternalId,
+          messageIds: expired.messageIds,
+        }).catch((err) => {
+          logger.warn(
+            { err: err instanceof Error ? err.message : err, conversationId: input.conversationId },
+            "deleteSupersededOnPlatform threw (non-fatal)",
+          );
+        });
       }
 
       await Promise.all([
@@ -907,6 +932,39 @@ async function sendFallbackBridge(
     detectedIntents: ["fallback_bridge"],
     suggestedFacts: [],
   };
+}
+
+/**
+ * Issue platform-side DELETE for messages whose ppv_attempts rows we just
+ * marked expired (drip re-pitch flow). Best-effort: OFAPI only permits
+ * deletes within 24h of send; the adapter swallows failures so the new
+ * pitch isn't blocked. Looks up external_id from v3.messages — drafts
+ * that never sent (sent_at=null, external_id=null) are skipped.
+ */
+async function deleteSupersededOnPlatform(args: {
+  accountId: string;
+  subscriberExternalId: string;
+  messageIds: string[];
+}): Promise<void> {
+  if (args.messageIds.length === 0) return;
+  const rows = await db
+    .selectFrom("v3.messages")
+    .select(["id", "external_id"])
+    .where("id", "in", args.messageIds)
+    .execute();
+  const externals = rows
+    .map((r) => r.external_id)
+    .filter((e): e is string => typeof e === "string" && e.length > 0 && !e.startsWith("shadow:"));
+  if (externals.length === 0) return;
+  const account = await loadAccountById(args.accountId);
+  if (!account?.platformAccountId) return;
+  const adapter = getPlatformAdapter();
+  const ctx = { accountId: args.accountId, platformAccountId: account.platformAccountId };
+  await Promise.all(
+    externals.map((messageExternalId) =>
+      adapter.deleteMessage(ctx, { chatId: args.subscriberExternalId, messageExternalId }),
+    ),
+  );
 }
 
 /** The platform-facing ref (media id / URL) lives in mediaRefs[0] by convention. */

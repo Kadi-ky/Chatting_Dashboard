@@ -203,6 +203,40 @@ export class HttpPlatformAdapter implements PlatformAdapter {
     return { externalId: String(resp.data.id), sentAt: new Date(resp.data.createdAt) };
   }
 
+  async deleteMessage(
+    ctx: AccountContext,
+    args: { chatId: string; messageExternalId: string },
+  ): Promise<void> {
+    if (env.SHADOW_MODE) {
+      logger.debug(
+        { shadow: true, chatId: args.chatId, messageExternalId: args.messageExternalId },
+        "SHADOW_MODE: would-delete message",
+      );
+      return;
+    }
+    // OFAPI: DELETE /api/{account}/chats/{chat_id}/messages/{message_id}
+    // Costs 1 credit, only works on messages <24h old. Older deletes return
+    // an error — we swallow because the DB row is already marked expired
+    // and downstream logic doesn't depend on the platform-side delete
+    // succeeding. Fan might still SEE the old bubble in their app, but
+    // any unlock against it routes to the new attempt anyway.
+    try {
+      await this.http.request(
+        `/api/${ctx.platformAccountId}/chats/${args.chatId}/messages/${args.messageExternalId}`,
+        { method: "DELETE" },
+      );
+    } catch (err) {
+      logger.warn(
+        {
+          err: err instanceof Error ? err.message : err,
+          chatId: args.chatId,
+          messageExternalId: args.messageExternalId,
+        },
+        "deleteMessage failed (non-fatal — DB already marked expired)",
+      );
+    }
+  }
+
   async sendTypingIndicator(ctx: AccountContext, subscriberExternalId: string): Promise<void> {
     if (env.SHADOW_MODE) {
       logger.debug({ shadow: true, subscriberExternalId }, "SHADOW_MODE: would-fire typing indicator");

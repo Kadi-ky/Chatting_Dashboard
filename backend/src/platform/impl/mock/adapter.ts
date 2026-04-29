@@ -32,6 +32,7 @@ export class MockPlatformAdapter implements PlatformAdapter {
   }> = [];
   public readonly reads: Array<{ accountId: string; conversationExternalId: string }> = [];
   public readonly typingFires: Array<{ accountId: string; subscriberExternalId: string; at: Date }> = [];
+  public readonly deletes: Array<{ accountId: string; chatId: string; messageExternalId: string; at: Date }> = [];
 
   enqueue(...events: PlatformEvent[]): void {
     this.queue.push(...events);
@@ -86,6 +87,18 @@ export class MockPlatformAdapter implements PlatformAdapter {
 
   async sendTypingIndicator(ctx: AccountContext, subscriberExternalId: string): Promise<void> {
     this.typingFires.push({ accountId: ctx.accountId, subscriberExternalId, at: new Date() });
+  }
+
+  async deleteMessage(
+    ctx: AccountContext,
+    args: { chatId: string; messageExternalId: string },
+  ): Promise<void> {
+    this.deletes.push({
+      accountId: ctx.accountId,
+      chatId: args.chatId,
+      messageExternalId: args.messageExternalId,
+      at: new Date(),
+    });
   }
 
   async markRead(ctx: AccountContext, conversationExternalId: string): Promise<void> {
