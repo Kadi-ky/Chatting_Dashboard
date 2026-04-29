@@ -203,6 +203,28 @@ export class HttpPlatformAdapter implements PlatformAdapter {
     return { externalId: String(resp.data.id), sentAt: new Date(resp.data.createdAt) };
   }
 
+  async sendTypingIndicator(ctx: AccountContext, subscriberExternalId: string): Promise<void> {
+    if (env.SHADOW_MODE) {
+      logger.debug({ shadow: true, subscriberExternalId }, "SHADOW_MODE: would-fire typing indicator");
+      return;
+    }
+    // OFAPI: POST /api/{account}/chats/{chat_id}/typing — shows "Model is
+    // typing..." for ~4s. Free (no credits), no body, no idempotency.
+    // Fan UX win: covers the API call latency so messages don't appear out
+    // of nowhere. NEVER throw — typing failure must not fail the send.
+    try {
+      await this.http.request(
+        `/api/${ctx.platformAccountId}/chats/${subscriberExternalId}/typing`,
+        { method: "POST" },
+      );
+    } catch (err) {
+      logger.warn(
+        { err: err instanceof Error ? err.message : err, subscriberExternalId },
+        "typing indicator failed (non-fatal)",
+      );
+    }
+  }
+
   async markRead(ctx: AccountContext, conversationExternalId: string): Promise<void> {
     await this.http.request(`/api/${ctx.platformAccountId}/chats/${conversationExternalId}/read`, {
       method: "POST",

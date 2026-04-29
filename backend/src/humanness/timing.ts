@@ -10,9 +10,9 @@ export interface TimingOptions {
   readTimeMs?: number;
   /** Standard deviation on read-time, in ms. Default 600. */
   readTimeStdMs?: number;
-  /** Hard ceiling on per-bubble typing time, in ms. Default 45_000 (45s). */
+  /** Hard ceiling on per-bubble typing time, in ms. Default 12_000 (12s). */
   maxBubbleMs?: number;
-  /** Hard floor on per-bubble typing time, in ms. Default 800. */
+  /** Hard floor on per-bubble typing time, in ms. Default 600. */
   minBubbleMs?: number;
   /** Extra pause between bubbles beyond typing time. Default 400ms + jitter. */
   interBubbleGapMs?: number;
@@ -43,8 +43,8 @@ export function computeTimings(bubbles: string[], rng: Rng, opts: TimingOptions 
   const wpmStd = opts.wpmStd ?? 10;
   const readTimeMs = opts.readTimeMs ?? 800;
   const readTimeStdMs = opts.readTimeStdMs ?? 600;
-  const maxBubbleMs = opts.maxBubbleMs ?? 45_000;
-  const minBubbleMs = opts.minBubbleMs ?? 800;
+  const maxBubbleMs = opts.maxBubbleMs ?? 12_000;
+  const minBubbleMs = opts.minBubbleMs ?? 600;
   const interBubbleGapMs = opts.interBubbleGapMs ?? 400;
 
   return bubbles.map((b, i) => {

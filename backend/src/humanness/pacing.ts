@@ -18,13 +18,20 @@ export interface PacingVariant {
   interBubbleGapMs: number;
 }
 
+// Pacing baselines bumped 2026-04-29 — old values (control 62 wpm,
+// readTime 800±600ms, gap 400ms) made a 70-word reply take 65-90s of
+// typing simulation. By the time bubble 4 landed, the fan had sent 2
+// more messages and moved past whatever the bot was answering. New
+// baselines fire ~2-3× faster, matching how real chat creators type
+// in dirty register where velocity = heat. The OF typing indicator
+// (sendTypingIndicator) covers the remaining API-call latency.
 const CONTROL: PacingVariant = {
   id: "control",
-  wpm: 62,
-  wpmStd: 10,
-  readTimeMs: 800,
-  readTimeStdMs: 600,
-  interBubbleGapMs: 400,
+  wpm: 110,
+  wpmStd: 12,
+  readTimeMs: 350,
+  readTimeStdMs: 200,
+  interBubbleGapMs: 180,
 };
 
 /**
@@ -35,19 +42,19 @@ const VARIANTS: PacingVariant[] = [
   CONTROL,
   {
     id: "fast",
-    wpm: 75,
-    wpmStd: 8,
-    readTimeMs: 400,
-    readTimeStdMs: 300,
-    interBubbleGapMs: 250,
+    wpm: 145,
+    wpmStd: 10,
+    readTimeMs: 200,
+    readTimeStdMs: 120,
+    interBubbleGapMs: 120,
   },
   {
     id: "slow",
-    wpm: 50,
-    wpmStd: 12,
-    readTimeMs: 1600,
-    readTimeStdMs: 800,
-    interBubbleGapMs: 800,
+    wpm: 85,
+    wpmStd: 14,
+    readTimeMs: 600,
+    readTimeStdMs: 350,
+    interBubbleGapMs: 320,
   },
 ];
 

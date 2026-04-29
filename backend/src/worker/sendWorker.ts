@@ -170,6 +170,14 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
       const platformAccountId = account?.platformAccountId ?? "mock";
       const adapterCtx = { accountId: data.accountId, platformAccountId };
 
+      // Fire "Model is typing..." indicator for ~4s. Free OF endpoint, covers
+      // the actual API-call latency so the message doesn't appear out of
+      // nowhere. Fire-and-forget (adapter swallows its own errors); we do
+      // NOT await it because the API call itself is the next thing we do
+      // and the indicator should overlap with it. Adapter.sendTypingIndicator
+      // is contract-bound to never throw, so .catch() is belt-and-suspenders.
+      void deps.adapter.sendTypingIndicator(adapterCtx, data.subscriberExternalId).catch(() => {});
+
       const idempotencyKey = `${data.messageId}:${data.bubbleIndex}`;
       let result: SendResult;
       try {

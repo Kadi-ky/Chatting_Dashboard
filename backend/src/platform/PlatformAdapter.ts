@@ -149,6 +149,12 @@ export interface PlatformAdapter {
   sendMessage(ctx: AccountContext, req: SendMessageRequest): Promise<SendResult>;
   sendPPV(ctx: AccountContext, req: SendPPVRequest): Promise<SendResult>;
   sendFreeMedia(ctx: AccountContext, req: SendFreeMediaRequest): Promise<SendResult>;
+  /**
+   * Show "Model is typing..." in the fan's chat for ~4s. Free, fire-and-forget,
+   * non-fatal — implementations MUST NOT throw on failure (we never fail a
+   * send because typing indicator failed). Call multiple times to extend.
+   */
+  sendTypingIndicator(ctx: AccountContext, subscriberExternalId: string): Promise<void>;
   markRead(ctx: AccountContext, conversationExternalId: string): Promise<void>;
 
   // lifecycle

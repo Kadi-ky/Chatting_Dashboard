@@ -31,6 +31,7 @@ export class MockPlatformAdapter implements PlatformAdapter {
     result: SendResult;
   }> = [];
   public readonly reads: Array<{ accountId: string; conversationExternalId: string }> = [];
+  public readonly typingFires: Array<{ accountId: string; subscriberExternalId: string; at: Date }> = [];
 
   enqueue(...events: PlatformEvent[]): void {
     this.queue.push(...events);
@@ -81,6 +82,10 @@ export class MockPlatformAdapter implements PlatformAdapter {
     };
     this.sent.push({ accountId: ctx.accountId, kind: "free_media", req, result });
     return result;
+  }
+
+  async sendTypingIndicator(ctx: AccountContext, subscriberExternalId: string): Promise<void> {
+    this.typingFires.push({ accountId: ctx.accountId, subscriberExternalId, at: new Date() });
   }
 
   async markRead(ctx: AccountContext, conversationExternalId: string): Promise<void> {
