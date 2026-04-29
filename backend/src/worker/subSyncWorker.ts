@@ -133,22 +133,33 @@ async function syncAccount(accountId: string): Promise<SyncStats | null> {
 }
 
 /**
- * Pull the list of accounts to sync. Currently driven by the
+ * Pull the list of accounts to sync. Driven by the
  * platform_account_allowlist env (same allowlist that gates webhook
  * ingress). Defensive: filters to real acct_ ids only.
+ *
+ * Status filter intentionally NOT applied — operator runs may have
+ * accounts with status 'shadow' or other values and we still want to
+ * sync them. The allowlist itself is the gate.
  */
-async function listAllowedAccounts(): Promise<string[]> {
+async function listAllowedAccounts(): Promise<{ accounts: string[]; reason?: string }> {
   const allowlist = env.PLATFORM_ACCOUNT_ALLOWLIST?.split(",")
     .map((s) => s.trim())
     .filter((s) => s.startsWith("acct_")) ?? [];
-  if (allowlist.length === 0) return [];
+  if (allowlist.length === 0) {
+    return { accounts: [], reason: "PLATFORM_ACCOUNT_ALLOWLIST env is empty or contains no acct_ ids" };
+  }
   const rows = await db
     .selectFrom("v3.accounts")
-    .select(["id"])
+    .select(["id", "platform_account_id", "status"])
     .where("platform_account_id", "in", allowlist)
-    .where("status", "=", "active")
     .execute();
-  return rows.map((r) => r.id);
+  if (rows.length === 0) {
+    return {
+      accounts: [],
+      reason: `no v3.accounts rows match allowlist (${allowlist.join(",")}). Run upsert against v3.accounts or check platform_account_id values.`,
+    };
+  }
+  return { accounts: rows.map((r) => r.id) };
 }
 
 export interface SubSyncWorkerHandle {
@@ -167,9 +178,9 @@ export function startSubSyncWorker(): SubSyncWorkerHandle | null {
   const tick = async (): Promise<void> => {
     if (stopped) return;
     try {
-      const accounts = await listAllowedAccounts();
+      const { accounts, reason } = await listAllowedAccounts();
       if (accounts.length === 0) {
-        logger.debug("subsync tick — no allowed accounts");
+        logger.debug({ reason }, "subsync tick — no allowed accounts");
       } else {
         for (const accountId of accounts) {
           await syncAccount(accountId);
@@ -200,13 +211,35 @@ export function startSubSyncWorker(): SubSyncWorkerHandle | null {
  * Manual trigger — bypasses the schedule. Used by the
  * /admin/subsync-now endpoint so the operator can force a sync without
  * waiting for the next tick.
+ *
+ * Returns { syncs, skipped, reason } so an empty syncs array can be
+ * diagnosed instead of looking silently broken.
  */
-export async function triggerSubSyncNow(): Promise<SyncStats[]> {
-  const accounts = await listAllowedAccounts();
+export interface ManualSyncResult {
+  syncs: SyncStats[];
+  candidates: number;
+  skippedAccounts: string[];
+  reason?: string;
+}
+
+export async function triggerSubSyncNow(): Promise<ManualSyncResult> {
+  const { accounts, reason } = await listAllowedAccounts();
+  if (accounts.length === 0) {
+    return { syncs: [], candidates: 0, skippedAccounts: [], ...(reason ? { reason } : {}) };
+  }
   const results: SyncStats[] = [];
+  const skipped: string[] = [];
   for (const accountId of accounts) {
     const r = await syncAccount(accountId);
     if (r) results.push(r);
+    else skipped.push(accountId);
   }
-  return results;
+  return {
+    syncs: results,
+    candidates: accounts.length,
+    skippedAccounts: skipped,
+    ...(skipped.length > 0
+      ? { reason: `${skipped.length} accounts skipped — likely Redis lock held (TTL=1h) OR account missing real acct_ id. Check Railway logs for "subsync skipped" / "subsync lock held".` }
+      : {}),
+  };
 }

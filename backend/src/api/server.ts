@@ -768,8 +768,8 @@ async function handle(
     // the operator suspects v3.subscribers is missing recent subs.
     if (method === "POST" && path === "/admin/subsync-now") {
       try {
-        const results = await triggerSubSyncNow();
-        return json(res, 200, { syncs: results });
+        const result = await triggerSubSyncNow();
+        return json(res, 200, result);
       } catch (err) {
         return json(res, 500, {
           error: err instanceof Error ? err.message : String(err),
