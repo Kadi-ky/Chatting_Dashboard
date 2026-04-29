@@ -171,15 +171,23 @@ async function generateLlmReply(
     "- 'babe ur energy is fire, knew ud dive right in'  (no specific reference to what he said)";
   const ppvObjective =
     "PPV STEP — this turn the bot sends the PRICED PPV. The fan saw the preview last turn; this is the close. Output ONE bubble only: the caption that goes WITH the priced PPV.\n\n" +
+    "HARD RULE: your caption MUST paraphrase or echo a specific word, phrase, or vibe from the fan's MOST RECENT message. Before you finalize, look at his last line and ask: 'does my caption reference what he just said?' If no, rewrite. Generic openers ('heres the full vid', 'heres the rest', 'told u u'd want this') without a hook to HIS exact words FAIL this rule.\n\n" +
     "CAPTION SHAPE (in this order):\n" +
-    "1) Hook to HIS LAST MESSAGE — same rule as the preview step. Reference a specific word/fantasy/state he just expressed and tie THIS PPV directly to it. The fan should feel this clip was custom for what he's into right now. Bad: 'heres the rest babe'. Good: 'this is exactly that fantasy u just described — me ridin u, full vid, taste it'. Bad: 'told u u'd want this'. Good: 'after u said that about my mouth, i had to send u this — full clip, no cut'.\n" +
-    "2) Reference the preview as continuation when natural ('heres the rest', 'told u theres more after that peek').\n" +
-    "3) Anchor to what's IN the asset description — do NOT invent acts/durations/personalizations not in the description.\n\n" +
+    "1) Hook to HIS LAST MESSAGE. Reference a specific word/fantasy/state he just expressed and tie THIS PPV directly to it. The fan should feel this clip was custom-filmed for what he's into right now.\n" +
+    "   Examples of the hook done RIGHT:\n" +
+    "   - he said 'whats got u daydreamin about me' → 'THIS is what u got me daydreamin about babe, full vid of me thinkin of u'\n" +
+    "   - he said 'ur makin this chat my favorite part of the day' → 'made it ur favorite part of the night too — full clip just for u'\n" +
+    "   - he said 'id eat ur pussy' → 'after u said that about ur tongue, i had to send u this'\n" +
+    "   - he said 'send me something' (no specific fantasy) → 'fine babe since u keep beggin me — here'\n" +
+    "2) Anchor to what's IN the asset description — do NOT invent acts/durations/personalizations not in the description.\n" +
+    "3) Reference the preview as continuation when natural ('heres the rest', 'told u theres more after that peek') — but ONLY after the hook, never as the opener.\n\n" +
     "Match his last-message energy (sweet → soft, dominant → submit, demanding → tease back). Lowercase, max 45 words, max 1-2 emojis.\n\n" +
-    "BAD-SHAPE EXAMPLES (do NOT ship — generic close lines):\n" +
-    "- 'unlock this gets u everything 🥵'  (no hook to him)\n" +
-    "- 'this ones gonna ruin u, unlock'  (no hook to him)\n" +
-    "- 'wait til u see how good this is'  (no hook to him)";
+    "BAD-SHAPE EXAMPLES (do NOT ship — generic close lines that ignore him):\n" +
+    "- 'heres the full vid after that tease, me playin with my boobs over my shirt' (asset description with no hook to his words)\n" +
+    "- 'unlock this gets u everything 🥵'\n" +
+    "- 'this ones gonna ruin u, unlock'\n" +
+    "- 'wait til u see how good this is'\n" +
+    "- 'told u u'd want this babe' (generic close, no reference to him)";
   const task: {
     kind: GeneratorTaskKind;
     objective: string;
@@ -199,7 +207,7 @@ async function generateLlmReply(
             ? " IMPORTANT: the fan asked for a discount and you ARE giving it to them — the price below is already 10% off. Frame it warmly as a one-time gift: 'aight babe just for u i knocked a lil off' / 'ok ok i got u, gonna give u a lil deal'. Do NOT mention any dollar amount — the discounted price is shown in the PPV bubble automatically. Do NOT hesitate or counter-offer; the deal is already done."
             : "") +
           (supportDripMode
-            ? " SUPPORT-DRIP framing: this fan has been chatting without buying for a while — the bot is doing a periodic 'support me' ask. The caption MUST include explicit support language alongside the content tease. Pick one phrasing per send (rotate, don't repeat verbatim each time): 'support a girl with this one', 'help me out babe with this', 'buy this to keep me filming', 'show me a lil love with this one', 'support means a lot fr'. Tone stays warm and a touch vulnerable — not begging, not whining, just real. Still describe what's IN the asset (per the description), but the ASK is reframed from 'unlock this' to 'support this'."
+            ? " SUPPORT-DRIP framing: this fan has been chatting without buying for a while — the bot is doing a periodic 'support me' ask. Add ONE support phrase to the caption (rotate, don't repeat verbatim): 'support a girl with this one', 'help me out babe with this', 'buy this to keep me filming', 'show me a lil love with this one', 'support means a lot fr'. CRITICAL: the support phrase is a SUFFIX, not the whole caption. Rules 1-3 above (hook to his last message → asset anchor → preview reference) STILL APPLY. The support phrase comes AFTER the hook, never replaces it. Tone: warm and a touch vulnerable — not begging, not whining. Example shape: '[hook to his words] · [asset anchor] · [support phrase]'. Bad: 'heres the full vid, support a girl with this one' (no hook). Good: 'this is what u got me thinkin about babe — full clip, support a girl with this one'."
             : ""),
         forbiddens: [
           "output ONE bubble only — no rapport prelude, no follow-up bubble",
