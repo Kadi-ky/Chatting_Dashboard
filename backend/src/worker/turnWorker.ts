@@ -180,6 +180,7 @@ async function processTurn(jobData: TurnJobData): Promise<void> {
         explicitRequest,
         requestedTopic: intent.requested_topic ?? null,
         discountRequest: intent.discount_request ?? false,
+        cantAfford: intent.cant_afford ?? false,
         intent,
       });
       logPitchDecision(conversationId, pitchDecision);
@@ -204,6 +205,7 @@ async function processTurn(jobData: TurnJobData): Promise<void> {
                 asset: pitchDecision.asset,
                 priceCents: pitchDecision.priceCents,
                 ...(pitchDecision.discountApplied ? { discountApplied: true } : {}),
+                ...(pitchDecision.cantAffordDiscount ? { cantAffordDiscount: true } : {}),
                 ...(pitchDecision.supportDripMode ? { supportDripMode: true } : {}),
                 ...(pitchDecision.previewMediaRef ? { previewMediaRef: pitchDecision.previewMediaRef } : {}),
               },

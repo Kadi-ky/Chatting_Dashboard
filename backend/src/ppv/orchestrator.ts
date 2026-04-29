@@ -91,6 +91,14 @@ export interface PitchDecision {
    */
   discountApplied?: boolean;
   /**
+   * Set when the discount was triggered by a cant_afford signal (fan said
+   * "i'm broke / next paycheck"), not a haggle. Caption framing is warmer:
+   * "i got u babe, knockin some off just for u tonight" rather than the
+   * cooler "ok ok lemme knock a lil off." The actual price math is the same
+   * (CANT_AFFORD_DISCOUNT_RATE applied to the prior pending asset's price).
+   */
+  cantAffordDiscount?: boolean;
+  /**
    * Set when shouldPitch is false BECAUSE the bot's last UNBOUGHT_LOOKBACK
    * pitches were both ignored. Reply pipeline uses this to switch the persona
    * into rapport-recovery mode — share something personal, ask one real
@@ -132,6 +140,8 @@ export interface DecidePitchArgs {
   requestedTopic?: string | null;
   /** Fan asked for a discount this turn ("any discount?", "lower it"). When true and a pitch is otherwise approved, priceCents is reduced by DISCOUNT_RATE and discountApplied=true is set on the decision. */
   discountRequest?: boolean;
+  /** Fan signaled cant_afford this turn ("im broke", "no money", "only got $15 left"). When true the orchestrator re-pitches the most recent pending asset at CANT_AFFORD_DISCOUNT_RATE off and bypasses funnel/cooldown — turning a "lost sale" objection into a closed sale at lower price. */
+  cantAfford?: boolean;
   /**
    * Full intent classification this turn — passed to the pitch-readiness
    * analyzer as a cheap-signal hint (NOT used as the override gate). Optional
@@ -142,6 +152,16 @@ export interface DecidePitchArgs {
 
 /** Fixed discount fans get when they ask. Configurable; bot frames as one-time gift. */
 const DISCOUNT_RATE = 0.10;
+
+/**
+ * Bigger discount when fan explicitly says they CAN'T AFFORD the pitch.
+ * Distinct from discount_request (haggling). cant_afford is "i'm broke / next
+ * paycheck / only got $X left" — operator directive 2026-04-30: don't lose
+ * the sale to a "can't pay today" objection; meet them where they are with
+ * a meaningful drop and close at the lower price tonight rather than promise
+ * to hold something for next month.
+ */
+const CANT_AFFORD_DISCOUNT_RATE = 0.30;
 
 /**
  * After this many of the most recent pitches in a conversation are still
@@ -212,6 +232,54 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
 
   if (!args.creatorUuid) {
     return { shouldPitch: false, reason: "account missing creator_uuid" };
+  }
+
+  // CANT_AFFORD discount path — operator directive 2026-04-30. Fan said
+  // they can't pay right now ("im broke", "next paycheck", "only $X left").
+  // Don't lose the sale to a price objection. Find the most recent pending
+  // pitch in this conversation; if it exists, re-fire that exact asset at
+  // 30% off + bypass funnel/cooldown blocks. Caption framing is "i got u
+  // babe, knockin some off just for u tonight" via task-layer hint. This
+  // is the single highest-leverage objection-handling path in the funnel.
+  if (args.cantAfford) {
+    const recent = await listRecentAttempts(args.conversationId, 5);
+    const lastPending = recent.find((a) => a.outcome === "pending");
+    if (lastPending) {
+      const { loadCatalogItem } = await import("../db/repos/ppv_catalog.js");
+      const asset = await loadCatalogItem(lastPending.assetId);
+      if (asset) {
+        const discountedPrice = Math.max(
+          1,
+          Math.round(lastPending.priceCents * (1 - CANT_AFFORD_DISCOUNT_RATE)),
+        );
+        await clearFunnel(args.conversationId, lastPending.assetId);
+        logger.info(
+          {
+            conversationId: args.conversationId,
+            assetId: lastPending.assetId,
+            originalPrice: lastPending.priceCents,
+            discountedPrice,
+          },
+          "cant_afford detected — re-pitching last pending asset at 30% off",
+        );
+        return {
+          shouldPitch: true,
+          reason: `cant_afford (re-pitching last pending asset @ ${Math.round((1 - CANT_AFFORD_DISCOUNT_RATE) * 100)}% of original)`,
+          kind: "ppv",
+          asset,
+          priceCents: discountedPrice,
+          discountApplied: true,
+          cantAffordDiscount: true,
+        };
+      }
+    }
+    // No pending pitch to discount — fall through to normal flow. The
+    // task layer can still suggest a soft retention beat next turn if
+    // nothing fires this turn.
+    logger.debug(
+      { conversationId: args.conversationId },
+      "cant_afford detected but no recent pending pitch to discount; falling through",
+    );
   }
 
   // Back-off + drip: if the fan has ignored the last N pitches (still pending

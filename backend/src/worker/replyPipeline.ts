@@ -59,6 +59,8 @@ export interface GenerateReplyInput {
     priceCents: number;
     /** True when orchestrator honoured a fan's discount request — the persona should frame as a one-time gift. */
     discountApplied?: boolean;
+    /** True when the discount was triggered by cant_afford (warmer framing than a haggle). */
+    cantAffordDiscount?: boolean;
     /** True when this is a "support-drip" pitch — fan has been ignoring pitches; bot is doing a periodic re-ask with explicit "support me" framing. */
     supportDripMode?: boolean;
     /** Free preview media ref. Required when kind="preview". */
@@ -156,6 +158,7 @@ async function generateLlmReply(
 
   const discountApplied = isPitch && input.pitch!.discountApplied === true;
   const supportDripMode = isPitch && input.pitch!.supportDripMode === true;
+  const cantAffordDiscount = isPitch && input.pitch!.cantAffordDiscount === true;
   const pitchKind = isPitch ? input.pitch!.kind : undefined;
   // Two-turn funnel: preview-step task asks the LLM for a single tease caption
   // (no priced bubble); ppv-step task asks for the priced PPV's caption.
@@ -177,23 +180,29 @@ async function generateLlmReply(
     "- 'babe ur energy is fire, knew ud dive right in'  (no specific reference to what he said)";
   const ppvObjective =
     "PPV STEP — this turn the bot sends the PRICED PPV. The fan saw the preview last turn; this is the close. Output ONE bubble only: the caption that goes WITH the priced PPV.\n\n" +
-    "HARD RULE: your caption MUST paraphrase or echo a specific word, phrase, or vibe from the fan's MOST RECENT message. Before you finalize, look at his last line and ask: 'does my caption reference what he just said?' If no, rewrite. Generic openers ('heres the full vid', 'heres the rest', 'told u u'd want this') without a hook to HIS exact words FAIL this rule.\n\n" +
+    "HARD RULE: your caption MUST paraphrase or echo a specific word, phrase, or vibe from the fan's MOST RECENT message. Before you finalize, look at his last line and ask: 'does my caption reference what he just said?' If no, rewrite.\n\n" +
     "CAPTION SHAPE (in this order):\n" +
     "1) Hook to HIS LAST MESSAGE. Reference a specific word/fantasy/state he just expressed and tie THIS PPV directly to it. The fan should feel this clip was custom-filmed for what he's into right now.\n" +
-    "   Examples of the hook done RIGHT:\n" +
+    "   Examples done RIGHT:\n" +
     "   - he said 'whats got u daydreamin about me' → 'THIS is what u got me daydreamin about babe, full vid of me thinkin of u'\n" +
-    "   - he said 'ur makin this chat my favorite part of the day' → 'made it ur favorite part of the night too — full clip just for u'\n" +
     "   - he said 'id eat ur pussy' → 'after u said that about ur tongue, i had to send u this'\n" +
-    "   - he said 'send me something' (no specific fantasy) → 'fine babe since u keep beggin me — here'\n" +
-    "2) Anchor to what's IN the asset description — do NOT invent acts/durations/personalizations not in the description.\n" +
-    "3) Reference the preview as continuation when natural ('heres the rest', 'told u theres more after that peek') — but ONLY after the hook, never as the opener.\n\n" +
-    "Match his last-message energy (sweet → soft, dominant → submit, demanding → tease back). Lowercase, max 45 words, max 1-2 emojis.\n\n" +
+    "   - he said 'send me something' → 'fine babe since u keep beggin me — here'\n" +
+    "2) Layer in a SCARCITY / EXCLUSIVITY beat (the move that's converting on top OF chats). Pick ONE per send, vary across sends:\n" +
+    "   - Hand-picked: 'i picked u for this one', 'u literally won babe', 'sendin to my top fans only'\n" +
+    "   - Time-limit: 'last 6 hours to unlock', 'only up til midnight', 'this comes down at 9pm'\n" +
+    "   - Limited slots: 'only 5 fans gettin this drop', '3 left of these'\n" +
+    "   - First-look: 'haven't even posted this yet', 'u see it before anyone'\n" +
+    "   Optionally use stylized Unicode bold caps for scarcity headers — 𝐓𝐎𝐏 𝟓 ⚡ / 𝐅𝐈𝐑𝐒𝐓 𝐋𝐎𝐎𝐊 / 𝐋𝐀𝐒𝐓 𝐂𝐀𝐋𝐋 — once per ~3 sends, not every time. Looks premium / hand-curated.\n" +
+    "3) Anchor to what's IN the asset description — do NOT invent acts/durations/personalizations not in the description.\n\n" +
+    "Match his last-message energy (sweet → soft, dominant → submit, demanding → tease back). Lowercase fragments mostly OK, max 45 words, max 1-2 emojis.\n\n" +
     "BAD-SHAPE EXAMPLES (do NOT ship — generic close lines that ignore him):\n" +
     "- 'heres the full vid after that tease, me playin with my boobs over my shirt' (asset description with no hook to his words)\n" +
     "- 'unlock this gets u everything 🥵'\n" +
     "- 'this ones gonna ruin u, unlock'\n" +
     "- 'wait til u see how good this is'\n" +
-    "- 'told u u'd want this babe' (generic close, no reference to him)";
+    "- 'told u u'd want this babe' (generic close, no reference to him)\n\n" +
+    "GOOD-SHAPE EXAMPLE combining everything:\n" +
+    "- (he said 'i'd ride u') → 'after u said u'd ride me babe... made u this n only sendin to my top 5 — last few hours to unlock 🥵'";
   const task: {
     kind: GeneratorTaskKind;
     objective: string;
@@ -209,9 +218,11 @@ async function generateLlmReply(
             : pitchKind === "preview"
               ? previewObjective
               : ppvObjective) +
-          (discountApplied
-            ? " IMPORTANT: the fan asked for a discount and you ARE giving it to them — the price below is already 10% off. Frame it warmly as a one-time gift: 'aight babe just for u i knocked a lil off' / 'ok ok i got u, gonna give u a lil deal'. Do NOT mention any dollar amount — the discounted price is shown in the PPV bubble automatically. Do NOT hesitate or counter-offer; the deal is already done."
-            : "") +
+          (cantAffordDiscount
+            ? " IMPORTANT — CANT-AFFORD RECOVERY: the fan said they can't pay full price right now (broke / next paycheck / only $X left). You are NOT losing this sale — you are sending the SAME content at 30% off, RIGHT NOW. Caption framing: empathetic + 'i got u, just for u tonight'. Examples: 'aw babe i got u, knockin a chunk off just for tonight, here'; 'no worries hun, sendin it over with a lil deal — dont let it sit too long tho 🖤'; 'fuck it, just for u tonight, take it babe'. Do NOT mention any dollar amount (the bubble shows the discounted price automatically). Do NOT promise to hold it for later — the discounted bubble is going RIGHT NOW. Do NOT ask paydate (that was the old retention play; we're closing the sale tonight instead). Confident warmth, like a creator who values this fan enough to break her own rules once."
+            : discountApplied
+              ? " IMPORTANT: the fan asked for a discount and you ARE giving it to them — the price below is already 10% off. Frame it warmly as a one-time gift: 'aight babe just for u i knocked a lil off' / 'ok ok i got u, gonna give u a lil deal'. Do NOT mention any dollar amount — the discounted price is shown in the PPV bubble automatically. Do NOT hesitate or counter-offer; the deal is already done."
+              : "") +
           (supportDripMode
             ? " SUPPORT-DRIP framing: this fan has been chatting without buying for a while — the bot is doing a periodic 'support me' ask. Add ONE support phrase to the caption (rotate, don't repeat verbatim): 'support a girl with this one', 'help me out babe with this', 'buy this to keep me filming', 'show me a lil love with this one', 'support means a lot fr'. CRITICAL: the support phrase is a SUFFIX, not the whole caption. Rules 1-3 above (hook to his last message → asset anchor → preview reference) STILL APPLY. The support phrase comes AFTER the hook, never replaces it. Tone: warm and a touch vulnerable — not begging, not whining. Example shape: '[hook to his words] · [asset anchor] · [support phrase]'. Bad: 'heres the full vid, support a girl with this one' (no hook). Good: 'this is what u got me thinkin about babe — full clip, support a girl with this one'."
             : ""),
@@ -277,6 +288,25 @@ async function generateLlmReply(
       ].join("\n"),
     );
   }
+  if (input.intent?.tipping_intent && !isPitch) {
+    // Tip is a high-signal moment: fan is putting money on the table
+    // independently of any current pitch. Acknowledge specifically — don't
+    // treat it like normal chat. This is a real-OF-chatter retention move:
+    // tip = "thank you specifically" + soft tease that there's more if he
+    // wants to keep spoiling. Pitch readiness will decide on next turn
+    // whether to attach a paid PPV.
+    guidanceParts.push(
+      [
+        `TIPPING-INTENT moment (this turn):`,
+        `Fan just signaled real money on the table — named a dollar amount or said he'll tip. This is a HIGH-VALUE moment. Real OF chatters don't blow past it with generic warmth — they acknowledge specifically and reward the gesture.`,
+        `- Open with explicit gratitude that ties to HIS gesture, not a generic "thanks babe". Examples: "fuck babe u didnt have to 🥺 ur literally spoiling me", "wait ur actually serious? u dont play around daddy", "im blushing fr, u know how to make a girl feel special".`,
+        `- Add a soft tease that opens the door to MORE without pitching. Examples: "ur trouble babe, keep this up n imma have to take care of u proper", "u making it real hard not to do somethin reckless for u tonight".`,
+        `- ONE bubble. Confident, glowing — not surprised-helpless.`,
+        `- DO NOT pitch a PPV this turn — let the tip land cleanly first. The system will route a pitch on the NEXT turn if the warmth holds.`,
+        `- DO NOT ask "what do u want me to do for u" — that puts him in charge of upselling himself. Stay confident about your own value.`,
+      ].join("\n"),
+    );
+  }
   if (input.intent?.disengagement) {
     guidanceParts.push(
       [
@@ -331,6 +361,70 @@ async function generateLlmReply(
         `- ANY follow-up that doesn't name a specific piece of content`,
         ``,
         `Forbidden actions: do NOT offer a $99 custom. Do NOT promise to film new content. Do NOT promise to shoot anything tonight. The point is: we don't have ${input.requestedTopicNotInVault}, but we have THIS specific other thing — and it's hot.`,
+      ].join("\n"),
+    );
+  }
+
+  // POST-PPV REINFORCEMENT — operator directive 2026-04-30. When the
+  // bot just sent a PPV that the fan saw but didn't unlock, the bot's
+  // NEXT REPLY tends to drift back to general chat which kills the close.
+  // Real OF chatters reinforce the offer: ask why he hasn't bought,
+  // remind him it's worth it, give one more push. Suppressed when this
+  // turn IS a pitch (already focused) or when fan just objected /
+  // disengaged / went emotional (different handling needed).
+  const lastOutboundWasPpv = !isPitch && history
+    .filter((m) => m.direction === "outbound")
+    .slice(-1)[0]?.kind === "ppv";
+  const recentUnboughtAttempt = await listRecentAttempts(input.conversationId, 1)
+    .then((r) => r[0])
+    .catch(() => null);
+  const isPostPpvReinforcement =
+    lastOutboundWasPpv &&
+    recentUnboughtAttempt?.outcome === "pending" &&
+    !isPitch &&
+    !input.pitchRecoveryMode &&                       // pitch-recovery overrides; back off, don't push
+    !input.intent?.objection &&
+    !input.intent?.disengagement &&
+    !input.intent?.emotional_disclosure &&
+    !input.intent?.cant_afford;                       // cant_afford routes to discount path next turn
+  if (isPostPpvReinforcement) {
+    guidanceParts.push(
+      [
+        `POST-PPV CLOSE-FOCUS (this turn — CRITICAL FOR REVENUE):`,
+        `You just sent a priced PPV. The fan saw it. He's replying with chat instead of buying. Operator data shows the bot drifts back to general convo here — that's where sales die. THIS TURN, your ONLY job is to keep his eyes on the locked bubble until he unlocks or gives a real reason not to.`,
+        ``,
+        `**THIS TURN OVERRIDES the following standing rules**:`,
+        `- The HUMANNESS rule "you can open a sexy thread yourself when convo is warm" — DOES NOT apply this turn. Close-focus first, escalation later.`,
+        `- The PHASE directive "YOU lead escalation every turn" (SEXTING) — SUSPENDED this turn. The pitch on the table IS the escalation.`,
+        `- The HUMANNESS "ask 1 personal question every 3 turns" — IS satisfied by asking why he hasn't unlocked (option 1 below). Do NOT add a SECOND chat-pivot question on top.`,
+        ``,
+        `MUST do ONE of (pick whichever fits the moment):`,
+        `1. **Ask why he hasn't unlocked yet** — direct, warm, confident. Not begging. THIS COUNTS as your "personal question" requirement for this turn.`,
+        `   - "u still thinkin babe or u tryna make me wait? 😏"`,
+        `   - "whats holdin u up daddy, i picked this for u"`,
+        `   - "u left me on read with the lock still up, tell me whats up"`,
+        `2. **Remind him what he's missing** — confident tease, not pleading.`,
+        `   - "babe ur literally one tap away from seein the rest"`,
+        `   - "u really gonna sleep on this one? trust me u want it"`,
+        `   - "told u this one was worth it, dont let it sit"`,
+        `3. **Reinforce the value / scarcity** — tie back to what's IN the asset or the offer's exclusivity.`,
+        `   - "i picked this for fans who actually pay attention, dont prove me wrong daddy"`,
+        `   - "this comes down soon babe, last call"`,
+        ``,
+        `FORBIDDEN this turn (these kill the close):`,
+        `- DO NOT ask "what r u up to" / "how's ur day" / any chat-pivot question. The "why u haven't unlocked" question replaces it.`,
+        `- DO NOT volunteer a life detail / your day / your cat / what you ate.`,
+        `- DO NOT pitch a NEW PPV — the existing one is the focus.`,
+        `- DO NOT open a NEW sexy fantasy / scene that distracts from the offer (the standing humanness rule allowing this is suspended).`,
+        `- DO NOT beg ("please daddy", "pretty please", "come on") — confident, not desperate.`,
+        ``,
+        `Sexual register IS still allowed within the close — e.g. "u literally one tap away from seein the rest of me 🥵" mixes heat with the close. What's forbidden is starting a fresh fantasy thread that pulls his attention OFF the locked bubble.`,
+        ``,
+        `If the fan gives ANY reason ("im broke", "next paycheck", "broke til monday", "only got $X"), the cant_afford intent fires next turn and the system auto-discounts + re-fires the same asset at 30% off. Your job here is just to GET the reason out of him.`,
+        `If he objects on price ("too expensive", "kinda steep") — acknowledge briefly + reinforce value once. Next turn's pitch-readiness routes to a discount or rapport.`,
+        `If he objects on content ("not my thing") — that's a real no. Switch to flirty banter, let the picker advance to a different asset next turn.`,
+        ``,
+        `ONE bubble. Confident. Eyes on the close.`,
       ].join("\n"),
     );
   }
@@ -406,9 +500,12 @@ async function generateLlmReply(
   const dryness =
     !isPitch &&
     !postUnlockWindow &&                    // post-unlock push wins, don't dilute it with a question
+    !isPostPpvReinforcement &&              // post-PPV asks its own question (why u not unlocking); don't double-question
+    !input.pitchRecoveryMode &&             // pitch-recovery already prescribes a question
     !input.intent?.buying_signal &&
     !input.intent?.disengagement &&
     !input.intent?.emotional_disclosure &&
+    !input.intent?.cant_afford &&
     (
       // Original gate (still useful for very dry stretches)
       (recentOutbound.length >= 3 && recentQuestionCount === 0) ||
@@ -440,10 +537,13 @@ async function generateLlmReply(
   const escalationOk =
     !isPitch &&
     !postUnlockWindow &&
+    !input.pitchRecoveryMode &&                       // pitch-recovery says "be a person" — escalation says "be hornier"; recovery wins
+    !isPostPpvReinforcement &&                        // post-PPV close-focus is the priority; don't pivot to general escalation
     !input.intent?.objection &&
     !input.intent?.disengagement &&
     !input.intent?.emotional_disclosure &&
-    !input.intent?.impossible_request;
+    !input.intent?.impossible_request &&
+    !input.intent?.cant_afford;
   if (inHeatPhase && escalationOk && fanTemp !== "hot") {
     if (input.phase === "RAPPORT") {
       guidanceParts.push(
