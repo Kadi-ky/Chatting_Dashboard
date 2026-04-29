@@ -372,9 +372,19 @@ async function handle(
         const apiBase = env.PLATFORM_API_BASE;
         const apiKey = env.PLATFORM_API_KEY;
         if (!apiBase || !apiKey) return json(res, 500, { error: "PLATFORM_API_BASE / PLATFORM_API_KEY missing" });
+        // Match n8n / browser request shape — see client.ts comment.
         const r = await fetch(
           `${apiBase}/api/${platformAccountId}/chats?filter=unread&limit=50&skip_users=none&order=recent`,
-          { headers: { Authorization: `Bearer ${apiKey}`, Accept: "application/json" } },
+          {
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              Accept:
+                "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7",
+              "User-Agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+              "Accept-Encoding": "gzip, deflate, br",
+            },
+          },
         );
         if (!r.ok) {
           const errBody = await r.text().catch(() => "");

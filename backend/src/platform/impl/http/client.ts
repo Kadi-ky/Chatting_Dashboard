@@ -97,12 +97,31 @@ export class PlatformHttpClient {
       }
     }
 
+    // Headers mimic n8n's HTTP Request node which (empirically 2026-04-29)
+    // does NOT trigger OF Cloudflare 1015s on the same OF account that V3
+    // gets locked out from. Likely Cloudflare's WAF scores our prior shape
+    // as bot-like:
+    //   - Accept: application/json (narrow, programmatic)
+    //   - default Node fetch User-Agent (undici/...)
+    //   - Idempotency-Key: ... (unusual header)
+    // Switching to a browser-shaped Accept header + a real Chrome UA + no
+    // Idempotency-Key matches what n8n sends and what real browser traffic
+    // looks like.
     const headers: Record<string, string> = {
       Authorization: `Bearer ${this.apiKey}`,
-      Accept: "application/json",
+      Accept:
+        "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7",
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+      "Accept-Encoding": "gzip, deflate, br",
     };
     if (opts.body !== undefined) headers["Content-Type"] = "application/json";
-    if (opts.idempotencyKey) headers["Idempotency-Key"] = opts.idempotencyKey;
+    // Idempotency-Key intentionally OMITTED. n8n doesn't send one and we've
+    // observed Cloudflare 1015 lockouts on identical-rate traffic from us
+    // that n8n doesn't get. If we lose retry safety here, the worst case is
+    // a duplicate send on transient network failure — already mitigated by
+    // BullMQ removeOnComplete + per-message message_id idempotency on our
+    // own DB side. Worth the trade for actual rate-limit relief.
 
     const started = Date.now();
     const init: RequestInit = {
