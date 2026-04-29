@@ -8,7 +8,13 @@ import { inboundQueue, serializeEvent } from "../queue/inbound.js";
 import { env } from "../config/index.js";
 import { db } from "../db/client.js";
 import { getPlatformAdapter } from "../platform/index.js";
-import { loadAccountByPlatformId, loadAccountById, upsertShadowAccount } from "../db/repos/accounts.js";
+import {
+  loadAccountByPlatformId,
+  loadAccountById,
+  loadAccountByCreatorUuid,
+  upsertShadowAccount,
+} from "../db/repos/accounts.js";
+import { generateMassCaption, isValidVibe } from "../mass/caption.js";
 import { getRecentPlatformErrors, parseRetryAfter, getLastRateLimitInfo } from "../platform/impl/http/client.js";
 import {
   recordWebhookEvent,
@@ -42,6 +48,7 @@ export interface AdminServerHandle {
  *   POST /admin/halt-fan?name=X|external_id=Y[&action=on|off]
  *                                                  one-shot find-and-takeover by name / external id
  *   GET  /admin/conversations/:id/pitch-state       phase, drip cadence, next-pick, funnel, purchase history
+ *   POST /admin/mass-caption?account=X[&vibe=Y]     grok-4.1 mass-message caption (replaces static n8n pool)
  *   POST /admin/test/inject                         inject a fake inbound message (testing)
  *
  * Auth: ADMIN_TOKEN env required on /admin paths; if unset, /admin returns 503
@@ -396,6 +403,45 @@ async function handle(
     if (method === "GET" && whyMatch) {
       const [, convId] = whyMatch;
       return json(res, 200, await loadLastTurnAudit(convId as string));
+    }
+
+    // POST /admin/mass-caption?account=<creator_uuid_or_platform_id>[&vibe=tease|sweet|chaotic|...]
+    // Returns ONE freshly-generated mass-message caption in the v1.8 pick-me
+    // voice. Replaces n8n's static `mass_captions_onlyfans` rotation with
+    // grok-4.1 reasoning. Per-account Redis ring of last 20 captions stops
+    // the model from accidentally repeating itself across hours.
+    //
+    // Optional ?vibe locks the angle (mood / tease / soft / chaotic /
+    // scarcity / question / horny / playful / sweet). Without it, the model
+    // picks from the rotation freely.
+    if (method === "POST" && path === "/admin/mass-caption") {
+      const url = new URL(req.url ?? "", `http://${req.headers.host ?? "localhost"}`);
+      const accountParam = (url.searchParams.get("account") ?? "").trim();
+      if (!accountParam) {
+        return json(res, 400, { error: "account query param required (creator_uuid or platform_account_id)" });
+      }
+      // n8n stores creatoruuid which OFAPI uses as both the account ref AND
+      // the platform_account_id. Try both lookups so either form works.
+      const account =
+        (await loadAccountByCreatorUuid(accountParam)) ??
+        (await loadAccountByPlatformId("onlyfans", accountParam));
+      if (!account) {
+        return json(res, 404, { error: `no account matched ${accountParam}` });
+      }
+      const vibeParam = url.searchParams.get("vibe");
+      const vibe = vibeParam && isValidVibe(vibeParam) ? vibeParam : null;
+      try {
+        const result = await generateMassCaption({
+          accountId: account.id,
+          vibe,
+          hourOfDay: new Date().getHours(),
+        });
+        return json(res, 200, result);
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
     }
 
     // POST /admin/halt-fan?name=ari        — find by display_name (ILIKE)
