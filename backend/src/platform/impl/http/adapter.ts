@@ -147,6 +147,14 @@ export class HttpPlatformAdapter implements PlatformAdapter {
   // ─── outbound ─────────────────────────────────────────────────────────
   async sendMessage(ctx: AccountContext, req: SendMessageRequest): Promise<SendResult> {
     if (env.SHADOW_MODE) return shadowSend("message", ctx, req);
+    if (!isRealOfapiAccount(ctx.platformAccountId)) {
+      // Synthetic test fan (loop-* / longtime-* / *-probe-* paired with
+      // mock account id). Stop hitting real OFAPI with /api/mock/... 404s
+      // (which were inflating the "outbound failure rate" metric).
+      // Returns a shadow result so the rest of the pipeline still records
+      // the message correctly.
+      return shadowSend("message", ctx, req);
+    }
     // OnlyFansAPI returns { data: { id, createdAt, ... }, _meta: {...} }.
     // id comes back as a NUMBER (not string), so we coerce. createdAt is the
     // server timestamp; there is no separate `sent_at` field.
@@ -163,6 +171,9 @@ export class HttpPlatformAdapter implements PlatformAdapter {
 
   async sendPPV(ctx: AccountContext, req: SendPPVRequest): Promise<SendResult> {
     if (env.SHADOW_MODE) return shadowSend("ppv", ctx, req);
+    if (!isRealOfapiAccount(ctx.platformAccountId)) {
+      return shadowSend("ppv", ctx, req);
+    }
     // OnlyFansAPI quirks (verified against real n8n outbound + response samples):
     //   - field is `mediaFiles` (camelCase, NOT `media_ids`)
     //   - field is `price` in DOLLARS as a number (NOT `price_cents` in cents)
@@ -184,6 +195,9 @@ export class HttpPlatformAdapter implements PlatformAdapter {
 
   async sendFreeMedia(ctx: AccountContext, req: SendFreeMediaRequest): Promise<SendResult> {
     if (env.SHADOW_MODE) return shadowSend("free_media", ctx, req);
+    if (!isRealOfapiAccount(ctx.platformAccountId)) {
+      return shadowSend("free_media", ctx, req);
+    }
     // Free preview send. CRITICAL: omit the `price` field entirely — sending
     // `price: 0` makes OFAPI treat the message as a malformed PPV and reject
     // it (or render it as a $0 paywalled bubble, which looks broken). The

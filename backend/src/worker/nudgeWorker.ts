@@ -282,6 +282,8 @@ async function runIdlePass(): Promise<{ candidates: number; sent: number }> {
     // synthetic fan ids that aren't real OF users — nudging them is just
     // log noise.
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
     .orderBy("c.last_activity_at", "desc")
     .limit(200)
     .execute();
@@ -382,6 +384,8 @@ async function runPpvPass(): Promise<{ candidates: number; sent: number }> {
     .where(sql<SqlBool>`a.pitched_at < ${cutoff}`)
     // Skip synthetic test conversations (loop-* fan ids).
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
     .orderBy("a.pitched_at", "desc")
     .limit(100)
     .execute();

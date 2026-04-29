@@ -508,6 +508,8 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
     .where("s.last_inbound_at", "is", null)               // never replied
     .where(sql<SqlBool>`s.created_at < ${firstAllowedAge}`) // 24h+ old sub
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
     .where(sql<SqlBool>`(s.last_outbound_at IS NULL OR s.last_outbound_at < ${cutoff})`)
     .orderBy("s.created_at", "asc")
     .limit(50)
@@ -570,6 +572,8 @@ async function runReactivationPass(): Promise<{ candidates: number; sent: number
     .where("s.last_inbound_at", "is not", null)
     .where(sql<SqlBool>`s.last_inbound_at < ${reactCutoff}`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
     .orderBy("s.last_inbound_at", "asc")
     .limit(50)
     .execute();

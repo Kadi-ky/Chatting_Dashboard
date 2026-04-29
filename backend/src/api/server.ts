@@ -161,11 +161,16 @@ async function handle(
           .select(["phase", sql<string>`count(*)`.as("count")])
           .groupBy("phase")
           .execute(),
-        // Top fans by total spend (lifetime, all-time)
+        // Top fans by total spend (lifetime, all-time). Synthetic test fans
+        // from the V3 testing harness are excluded to keep the operator's
+        // top-fans list reflective of REAL revenue.
         db
           .selectFrom("v3.subscribers")
           .select(["external_id", "display_name", "total_spend_cents", "spend_30d_cents", "last_inbound_at"])
           .where(sql<SqlBool>`total_spend_cents > 0`)
+          .where(sql<SqlBool>`external_id NOT LIKE 'loop-%'`)
+          .where(sql<SqlBool>`external_id NOT LIKE 'longtime-%'`)
+          .where(sql<SqlBool>`external_id NOT LIKE '%-probe-%'`)
           .orderBy("total_spend_cents", "desc")
           .limit(10)
           .execute(),
