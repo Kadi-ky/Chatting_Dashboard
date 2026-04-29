@@ -8,7 +8,7 @@ import { inboundQueue, serializeEvent } from "../queue/inbound.js";
 import { env } from "../config/index.js";
 import { db } from "../db/client.js";
 import { getPlatformAdapter } from "../platform/index.js";
-import { loadAccountByPlatformId, upsertShadowAccount } from "../db/repos/accounts.js";
+import { loadAccountByPlatformId, loadAccountById, upsertShadowAccount } from "../db/repos/accounts.js";
 import { getRecentPlatformErrors, parseRetryAfter, getLastRateLimitInfo } from "../platform/impl/http/client.js";
 import {
   recordWebhookEvent,
@@ -18,7 +18,12 @@ import {
 import { turnQueue } from "../queue/turns.js";
 import { outboundQueue } from "../queue/outbound.js";
 import { getRecentNudges } from "../worker/nudgeWorker.js";
-import { getRecentPitchDecisions } from "../ppv/orchestrator.js";
+import { getRecentPitchDecisions, turnsSinceLastPitch as ppvTurnsSinceLastPitch } from "../ppv/orchestrator.js";
+import { listRecentAttempts, countUnboughtRecentPitches } from "../db/repos/ppv_attempts.js";
+import { listPurchasesByFan, parseLegacySourceRef } from "../db/repos/purchases.js";
+import { pickNextForFan } from "../ppv/scriptPicker.js";
+import { getFunnelStep } from "../ppv/funnel.js";
+import { loadLatestArchetype } from "../db/repos/archetypes.js";
 
 export interface AdminServerHandle {
   stop(): Promise<void>;
@@ -36,6 +41,7 @@ export interface AdminServerHandle {
  *   POST /admin/conversations/:id/takeover/on|off   toggle operator takeover
  *   POST /admin/halt-fan?name=X|external_id=Y[&action=on|off]
  *                                                  one-shot find-and-takeover by name / external id
+ *   GET  /admin/conversations/:id/pitch-state       phase, drip cadence, next-pick, funnel, purchase history
  *   POST /admin/test/inject                         inject a fake inbound message (testing)
  *
  * Auth: ADMIN_TOKEN env required on /admin paths; if unset, /admin returns 503
@@ -456,6 +462,21 @@ async function handle(
     if (method === "GET" && threadDetailMatch) {
       const [, convId] = threadDetailMatch;
       return json(res, 200, await loadThread(convId as string));
+    }
+
+    // GET /admin/conversations/:id/pitch-state — operator visibility into:
+    //   - current phase + turns
+    //   - drip cadence countdown ("X / 10 turns until next drip pitch")
+    //   - what asset the picker would hand back next turn
+    //   - funnel state for that asset (none / preview_sent / ppv_sent)
+    //   - recent pitch attempts + outcomes
+    //   - purchase history (script, rung, amount, when)
+    // Useful for shadow-mode operation: see what the bot WOULD do without
+    // having to read code. Surfaces all the gates that decide pitch firing.
+    const pitchStateMatch = /^\/admin\/conversations\/([^/]+)\/pitch-state$/.exec(path);
+    if (method === "GET" && pitchStateMatch) {
+      const [, convId] = pitchStateMatch;
+      return json(res, 200, await loadPitchState(convId as string));
     }
 
     // Simulate a fan purchasing a PPV. Fires a synthetic ppv.unlocked event
@@ -1010,6 +1031,199 @@ async function loadThread(conversationId: string): Promise<unknown> {
         ppv: ppv ?? null,
       };
     }),
+  };
+}
+
+/**
+ * Pitch-state diagnostic for a conversation. Surfaces every gate the
+ * orchestrator considers when deciding to fire a PPV, plus the fan's
+ * actual unlock history. Read-only — does not enqueue or change state.
+ *
+ * Note: pickNextForFan has a side effect (idempotent upsert into
+ * v3.ppv_catalog mirror table). That's fine to fire on a peek; the
+ * row would have been written on the next real pitch turn anyway.
+ */
+async function loadPitchState(conversationId: string): Promise<unknown> {
+  const conv = await db
+    .selectFrom("v3.conversations as c")
+    .innerJoin("v3.subscribers as s", "s.id", "c.subscriber_id")
+    .select([
+      "c.id as conversation_id",
+      "c.account_id as account_id",
+      "c.phase as phase",
+      "c.turns_in_phase as turns_in_phase",
+      "c.last_activity_at as last_activity_at",
+      "s.id as subscriber_id",
+      "s.external_id as subscriber_external_id",
+      "s.display_name as display_name",
+    ])
+    .where("c.id", "=", conversationId)
+    .executeTakeFirst();
+  if (!conv) return { found: false };
+
+  const account = await loadAccountById(conv.account_id);
+
+  // Drip + cooldown signals.
+  const turnsSinceLast = await ppvTurnsSinceLastPitch(conversationId);
+  const unbought = await countUnboughtRecentPitches({
+    conversationId,
+    lookback: 2,
+    inboundSince: 2,
+  });
+
+  // Recent attempts joined with catalog so the UI can show script/rung.
+  const recentAttempts = await listRecentAttempts(conversationId, 10);
+  const attemptCatalogRows = recentAttempts.length > 0
+    ? await db
+        .selectFrom("v3.ppv_catalog")
+        .select(["id", "title", "source_ref"])
+        .where("id", "in", recentAttempts.map((a) => a.assetId))
+        .execute()
+    : [];
+  const catalogById = new Map(attemptCatalogRows.map((r) => [r.id, r]));
+
+  // Try to predict the next pick. Skip if the account has no creator_uuid
+  // (the picker requires it to query content_inventory_onlyfans).
+  let nextPick: {
+    assetId: string;
+    title: string;
+    description: string | null;
+    scriptNumber: number;
+    rung: number;
+    priceCents: number;
+    previewMediaRef: string | null;
+    reason: string;
+  } | null = null;
+  let nextPickError: string | null = null;
+  if (account?.creatorUuid) {
+    try {
+      const archetype = await loadLatestArchetype(conv.subscriber_id);
+      const picked = await pickNextForFan({
+        accountId: conv.account_id,
+        creatorUuid: account.creatorUuid,
+        fanUuid: conv.subscriber_external_id,
+        archetype,
+        phase: conv.phase,
+        requestedTopic: null,
+      });
+      if (picked) {
+        nextPick = {
+          assetId: picked.asset.id,
+          title: picked.asset.title,
+          description: picked.asset.description,
+          scriptNumber: picked.scriptNumber,
+          rung: picked.rung,
+          priceCents: picked.priceCents,
+          previewMediaRef: picked.previewMediaRef,
+          reason: picked.reason,
+        };
+      }
+    } catch (err) {
+      nextPickError = err instanceof Error ? err.message : String(err);
+    }
+  } else {
+    nextPickError = "account missing creator_uuid";
+  }
+
+  // Funnel state for the next-pick asset.
+  const funnelStep = nextPick ? await getFunnelStep(conversationId, nextPick.assetId) : null;
+
+  // Phase-based pitch eligibility (mirrors orchestrator MIN_TURNS_BETWEEN_PITCHES).
+  const phasePitches = !["WARMUP", "RAPPORT", "SEXTING", "REACTIVATION", "COLD"].includes(conv.phase);
+
+  // Decide a single human-readable label answering "what is the bot about
+  // to do, ppv-wise?" — the most useful one-line summary.
+  const dripIntervalTurns = 10;
+  const unboughtThreshold = 2;
+  let label: string;
+  let willPitchSoon: boolean;
+  let turnsUntilNextPitch: number | null = null;
+  if (!phasePitches) {
+    label = `phase ${conv.phase} doesn't pitch — building rapport / heat first`;
+    willPitchSoon = false;
+  } else if (!nextPick) {
+    label = nextPickError
+      ? `picker cannot return next asset (${nextPickError})`
+      : "picker found no eligible asset (catalog empty or all consumed)";
+    willPitchSoon = false;
+  } else if (funnelStep === "preview_sent") {
+    label = `preview already sent for ${nextPick.title} — next turn fires the priced PPV`;
+    willPitchSoon = true;
+    turnsUntilNextPitch = 1;
+  } else if (funnelStep === "ppv_sent") {
+    label = `priced PPV already sent for ${nextPick.title} — awaiting unlock or drip re-pitch`;
+    willPitchSoon = false;
+  } else if (unbought >= unboughtThreshold) {
+    const remaining = Math.max(0, dripIntervalTurns - turnsSinceLast);
+    if (remaining === 0) {
+      label = `drip pitch ready (${unbought} unbought, ${turnsSinceLast} turns since last) — next pitch fires WITH "support me" framing`;
+      willPitchSoon = true;
+      turnsUntilNextPitch = 0;
+    } else {
+      label = `drip pitch in ~${remaining} turns (${turnsSinceLast}/${dripIntervalTurns} since last pitch, ${unbought} unbought)`;
+      willPitchSoon = false;
+      turnsUntilNextPitch = remaining;
+    }
+  } else {
+    label = `next asset ready: ${nextPick.title} (Script ${nextPick.scriptNumber} · rung ${nextPick.rung}). Will fire when AI readiness analyzer says go.`;
+    willPitchSoon = true;
+    turnsUntilNextPitch = 0;
+  }
+
+  // Purchase history.
+  let purchases: Array<{
+    scriptNumber: number | null;
+    rung: number | null;
+    amountCents: number | null;
+    purchasedAt: Date;
+  }> = [];
+  if (account?.creatorUuid) {
+    const rows = await listPurchasesByFan(conv.subscriber_external_id, account.creatorUuid);
+    purchases = rows.map((p) => ({
+      scriptNumber: p.scriptNumber,
+      rung: p.rung,
+      amountCents: p.amountCents,
+      purchasedAt: p.purchasedAt,
+    }));
+  }
+
+  return {
+    found: true,
+    conversationId: conv.conversation_id,
+    subscriberExternalId: conv.subscriber_external_id,
+    displayName: conv.display_name,
+    phase: conv.phase,
+    turnsInPhase: conv.turns_in_phase,
+    lastActivityAt: conv.last_activity_at,
+    pitchState: {
+      label,
+      willPitchSoon,
+      turnsUntilNextPitch,
+      phasePitches,
+      turnsSinceLastPitch: Number.isFinite(turnsSinceLast) ? turnsSinceLast : null,
+      unboughtRecent: unbought,
+      dripActive: unbought >= unboughtThreshold,
+      dripIntervalTurns,
+      funnelStep,
+      nextPick,
+      nextPickError,
+    },
+    recentAttempts: recentAttempts.map((a) => {
+      const cat = catalogById.get(a.assetId);
+      const parsed = parseLegacySourceRef(cat?.source_ref ?? null);
+      return {
+        attemptId: a.id,
+        assetId: a.assetId,
+        title: cat?.title ?? null,
+        scriptNumber: parsed?.scriptNumber ?? null,
+        rung: parsed?.rung ?? null,
+        priceCents: a.priceCents,
+        outcome: a.outcome,
+        pitchedAt: a.pitchedAt,
+        unlockedAt: a.unlockedAt,
+      };
+    }),
+    purchases,
   };
 }
 

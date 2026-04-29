@@ -337,6 +337,8 @@ export default function V3TestingGroundTab() {
   const [takeoverOn, setTakeoverOn] = useState(false)
   const [showWhy, setShowWhy] = useState(false)
   const [buyingMessageId, setBuyingMessageId] = useState(null)
+  const [pitchState, setPitchState] = useState(null)
+  const [showPitchState, setShowPitchState] = useState(true)
 
   const loadThreads = useCallback(async () => {
     if (!v3Configured) {
@@ -444,6 +446,12 @@ export default function V3TestingGroundTab() {
         setSelectedDetail(detail)
         const t = await v3api.getTakeover(id)
         setTakeoverOn(Boolean(t.takeover))
+        // Pitch-state runs in parallel; failures are non-fatal (panel just
+        // hides) so the chat view still renders if this endpoint is slow
+        // or returns 500 on a malformed conversation.
+        v3api.getPitchState(id)
+          .then((ps) => { if (ps?.found) setPitchState(ps); else setPitchState(null) })
+          .catch(() => setPitchState(null))
       }
     } catch (err) {
       setError(err.message)
@@ -790,6 +798,143 @@ VITE_V3_ADMIN_TOKEN=your-admin-token`}</pre>
                 {takeoverOn ? 'Resume AI' : 'Take Over'}
               </button>
             </div>
+
+            {/* Pitch pipeline state — what the bot is about to do (or why not). */}
+            {pitchState && (
+              <div className="mt-3 rounded-xl border border-white/10 bg-white/5">
+                <button
+                  onClick={() => setShowPitchState((v) => !v)}
+                  className="w-full flex items-center justify-between px-3 py-2 text-left"
+                  title="Toggle pitch state panel"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span
+                      className={`text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                        pitchState.pitchState.willPitchSoon
+                          ? 'bg-emerald-500/20 text-emerald-300'
+                          : 'bg-white/10 text-white/60'
+                      }`}
+                    >
+                      {pitchState.pitchState.willPitchSoon ? 'Pitch ready' : 'Holding'}
+                    </span>
+                    <span className="text-xs text-white/80 truncate">
+                      {pitchState.pitchState.label}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-white/40 flex-shrink-0">
+                    {showPitchState ? 'hide ▾' : 'show ▸'}
+                  </span>
+                </button>
+                {showPitchState && (
+                  <div className="px-3 pb-3 pt-1 text-xs text-white/70 space-y-2 border-t border-white/10">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                      <div>
+                        <span className="text-white/40">phase:</span>{' '}
+                        <span className="text-white/90">{pitchState.phase}</span>
+                        {' · turn '}
+                        <span className="text-white/90">{pitchState.turnsInPhase}</span>
+                      </div>
+                      <div>
+                        <span className="text-white/40">turns since last pitch:</span>{' '}
+                        <span className="text-white/90">
+                          {pitchState.pitchState.turnsSinceLastPitch ?? '∞'}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-white/40">drip:</span>{' '}
+                        <span className={pitchState.pitchState.dripActive ? 'text-amber-300' : 'text-white/90'}>
+                          {pitchState.pitchState.dripActive
+                            ? `active · ${pitchState.pitchState.unboughtRecent} unbought`
+                            : `inactive (${pitchState.pitchState.unboughtRecent} unbought)`}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-white/40">funnel:</span>{' '}
+                        <span className="text-white/90">{pitchState.pitchState.funnelStep ?? 'n/a'}</span>
+                      </div>
+                    </div>
+
+                    {pitchState.pitchState.nextPick ? (
+                      <div className="rounded-lg bg-white/5 px-2.5 py-2 border border-white/10">
+                        <div className="text-[10px] uppercase text-white/40 tracking-wider mb-0.5">
+                          next asset picker would return
+                        </div>
+                        <div className="text-white/90">
+                          Script {pitchState.pitchState.nextPick.scriptNumber} · rung{' '}
+                          {pitchState.pitchState.nextPick.rung} —{' '}
+                          ${(pitchState.pitchState.nextPick.priceCents / 100).toFixed(2)}
+                          <span className="text-white/40"> · reason: {pitchState.pitchState.nextPick.reason}</span>
+                        </div>
+                        <div className="text-white/60 text-[11px] truncate" title={pitchState.pitchState.nextPick.title}>
+                          {pitchState.pitchState.nextPick.title}
+                        </div>
+                        {pitchState.pitchState.nextPick.description && (
+                          <div className="text-white/50 text-[11px] line-clamp-2 mt-0.5">
+                            {pitchState.pitchState.nextPick.description}
+                          </div>
+                        )}
+                      </div>
+                    ) : pitchState.pitchState.nextPickError ? (
+                      <div className="text-white/50 italic">no next pick · {pitchState.pitchState.nextPickError}</div>
+                    ) : null}
+
+                    {pitchState.recentAttempts.length > 0 && (
+                      <div>
+                        <div className="text-[10px] uppercase text-white/40 tracking-wider mb-1">
+                          recent pitches ({pitchState.recentAttempts.length})
+                        </div>
+                        <div className="space-y-0.5">
+                          {pitchState.recentAttempts.slice(0, 5).map((a) => (
+                            <div key={a.attemptId} className="flex items-center gap-2 text-[11px]">
+                              <span
+                                className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                                  a.outcome === 'unlocked'
+                                    ? 'bg-emerald-400'
+                                    : a.outcome === 'pending'
+                                    ? 'bg-amber-400'
+                                    : 'bg-white/30'
+                                }`}
+                              />
+                              <span className="text-white/80">
+                                {a.scriptNumber != null ? `S${a.scriptNumber}R${a.rung}` : 'asset'}
+                                {' · $'}
+                                {(a.priceCents / 100).toFixed(2)}
+                              </span>
+                              <span className="text-white/40">— {a.outcome}</span>
+                              <span className="text-white/40 ml-auto">{formatTime(a.pitchedAt)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div>
+                      <div className="text-[10px] uppercase text-white/40 tracking-wider mb-1">
+                        purchases ({pitchState.purchases.length})
+                      </div>
+                      {pitchState.purchases.length === 0 ? (
+                        <div className="text-white/40 italic text-[11px]">none</div>
+                      ) : (
+                        <div className="space-y-0.5">
+                          {pitchState.purchases.slice(-5).reverse().map((p, i) => (
+                            <div key={i} className="flex items-center gap-2 text-[11px]">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
+                              <span className="text-white/80">
+                                {p.scriptNumber != null ? `S${p.scriptNumber}R${p.rung ?? '?'}` : 'unknown'}
+                                {p.amountCents != null && (
+                                  <> · ${(p.amountCents / 100).toFixed(2)}</>
+                                )}
+                              </span>
+                              <span className="text-white/40 ml-auto">{formatTime(p.purchasedAt)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="flex-1 overflow-y-auto py-4 space-y-2">
               {messages.length === 0 && (

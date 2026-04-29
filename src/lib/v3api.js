@@ -40,6 +40,10 @@ export const v3api = {
     }),
   getTakeover: (conversationId) => call(`/admin/conversations/${conversationId}/takeover`),
   why: (conversationId) => call(`/admin/conversations/${conversationId}/why`),
+  // Operator visibility into pitch pipeline state for shadow-mode debugging:
+  // current phase, drip cadence countdown, next-pick prediction, funnel state,
+  // recent attempts, and purchase history. Returns { found, pitchState, ... }.
+  getPitchState: (conversationId) => call(`/admin/conversations/${conversationId}/pitch-state`),
   // Simulates a fan purchasing a PPV. Backend fires a synthetic ppv.unlocked
   // event through the same handler a real webhook would — so the learning
   // loop, purchases_onlyfans, and ladder progression all advance.
