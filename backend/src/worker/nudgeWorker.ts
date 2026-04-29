@@ -102,11 +102,12 @@ interface NudgeState {
 }
 
 /**
- * Redis-backed per-conversation nudge lock. Defense-in-depth against
- * state_ctx write races and send-failure loops where last_activity_at
- * doesn't update on failed sends, causing the same fan to be re-picked
- * tick after tick. Operator observed 10+ identical nudges to one fan in
- * 10 minutes 2026-04-29 — this lock guarantees that can't happen.
+ * Redis-backed CONVERSATION-WIDE nudge lock. Single key per conv, both
+ * idle and ppv passes share it. Operator observed 2026-04-29 dry-run:
+ * the same conversation got an idle nudge AND a ppv nudge 2 seconds
+ * apart because the previous lock had separate keys per kind. That
+ * would be spam in live mode. Fix: one lock per conv per 25 min,
+ * regardless of which ladder triggered.
  *
  * TTL is 25 min — slightly less than the smallest ladder threshold (30 min)
  * so legitimate ladder progression isn't blocked. Fail-CLOSED on Redis
@@ -114,13 +115,12 @@ interface NudgeState {
  * spamming).
  */
 const NUDGE_LOCK_TTL_SEC = 25 * 60;
-const nudgeLockKey = (kind: "idle" | "ppv", convId: string): string =>
-  `peach:nudge:lock:${kind}:${convId}`;
+const nudgeLockKey = (convId: string): string => `peach:nudge:lock:any:${convId}`;
 
-async function tryAcquireNudgeLock(kind: "idle" | "ppv", convId: string): Promise<boolean> {
+async function tryAcquireNudgeLock(convId: string): Promise<boolean> {
   try {
     const result = await sharedRedis().set(
-      nudgeLockKey(kind, convId),
+      nudgeLockKey(convId),
       "1",
       "EX",
       NUDGE_LOCK_TTL_SEC,
@@ -129,10 +129,53 @@ async function tryAcquireNudgeLock(kind: "idle" | "ppv", convId: string): Promis
     return result === "OK";
   } catch (err) {
     logger.error(
-      { err: err instanceof Error ? err.message : err, convId, kind },
+      { err: err instanceof Error ? err.message : err, convId },
       "nudge lock acquire failed — failing closed (no fire this tick)",
     );
     return false;
+  }
+}
+
+/**
+ * Per-(account, fan) recent-nudge dedup ring. Mirrors the mass-caption
+ * pattern: keeps the last 10 nudge texts per fan in Redis so the LLM can
+ * be told "DO NOT repeat these themes/phrasing" — prevents the
+ * "Hey babe, still lmao at that PC-133 ram" issue where step 1 and step 2
+ * came out nearly identical because the prompt context was the same.
+ */
+const RECENT_NUDGE_TEXT_TTL_SEC = 14 * 24 * 3600; // 14 days
+const RECENT_NUDGE_TEXT_MAX = 10;
+const recentNudgeTextsKey = (accountId: string, conversationId: string): string =>
+  `peach:nudge:recent:${accountId}:${conversationId}`;
+
+async function loadRecentNudgeTexts(accountId: string, conversationId: string): Promise<string[]> {
+  try {
+    return await sharedRedis().lrange(
+      recentNudgeTextsKey(accountId, conversationId),
+      0,
+      RECENT_NUDGE_TEXT_MAX - 1,
+    );
+  } catch {
+    return [];
+  }
+}
+
+async function recordRecentNudgeText(
+  accountId: string,
+  conversationId: string,
+  text: string,
+): Promise<void> {
+  try {
+    const r = sharedRedis();
+    const k = recentNudgeTextsKey(accountId, conversationId);
+    await r.lpush(k, text);
+    await r.ltrim(k, 0, RECENT_NUDGE_TEXT_MAX - 1);
+    await r.expire(k, RECENT_NUDGE_TEXT_TTL_SEC);
+  } catch (err) {
+    logger.warn(
+      { err: err instanceof Error ? err.message : err, accountId, conversationId },
+      "failed to record recent nudge text (nudge sent regardless)",
+    );
   }
 }
 
@@ -234,6 +277,11 @@ async function runIdlePass(): Promise<{ candidates: number; sent: number }> {
     // Only nudge accounts that the operator actually wants live (allowlist
     // already gates webhook ingress; double-check at nudge time too).
     .where("a.platform_account_id", "is not", null)
+    // Skip synthetic test conversations from the V3 testing harness
+    // (loop-freebie_hunter-..., loop-time_waster-..., etc.). Those have
+    // synthetic fan ids that aren't real OF users — nudging them is just
+    // log noise.
+    .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .orderBy("c.last_activity_at", "desc")
     .limit(200)
     .execute();
@@ -263,10 +311,10 @@ async function runIdlePass(): Promise<{ candidates: number; sent: number }> {
       // Skip if the most recent inbound text contains disengagement signals.
       if (await fanIsDisengaging(row.conv_id)) continue;
 
-      // Hard rate limit floor — Redis lock independent of state_ctx tracking
-      // (which has been observed failing under send-failure / retry storms).
-      // If lock is held, another tick already fired for this conv recently.
-      if (!(await tryAcquireNudgeLock("idle", row.conv_id))) {
+      // Hard rate limit floor — single conv-wide lock for both idle + ppv
+      // (operator observed dry-run firing both kinds 2s apart on same conv
+      // when locks were per-kind). Lock = 25 min TTL.
+      if (!(await tryAcquireNudgeLock(row.conv_id))) {
         logger.debug({ convId: row.conv_id }, "idle nudge lock held — skipping");
         continue;
       }
@@ -332,6 +380,8 @@ async function runPpvPass(): Promise<{ candidates: number; sent: number }> {
     ])
     .where("a.outcome", "=", "pending")
     .where(sql<SqlBool>`a.pitched_at < ${cutoff}`)
+    // Skip synthetic test conversations (loop-* fan ids).
+    .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .orderBy("a.pitched_at", "desc")
     .limit(100)
     .execute();
@@ -352,8 +402,8 @@ async function runPpvPass(): Promise<{ candidates: number; sent: number }> {
       // Skip if disengaged
       if (await fanIsDisengaging(row.conv_id)) continue;
 
-      // Hard rate limit floor (same as idle pass).
-      if (!(await tryAcquireNudgeLock("ppv", row.conv_id))) {
+      // Hard rate limit floor (same conv-wide lock as idle pass).
+      if (!(await tryAcquireNudgeLock(row.conv_id))) {
         logger.debug({ convId: row.conv_id }, "ppv nudge lock held — skipping");
         continue;
       }
@@ -551,8 +601,8 @@ async function generateNudgeText(args: {
     }
 
     if (history.length > 0) {
-      // Most recent N messages, oldest first, labelled. Lets the reasoning
-      // model see the conversation arc and pick a hook.
+      // Most recent N messages, oldest first, labelled. Lets the model
+      // see the conversation arc and pick a hook.
       const transcript = history
         .filter((m) => (m.direction === "inbound" || m.direction === "outbound") && m.text)
         .slice(-10)
@@ -564,6 +614,12 @@ async function generateNudgeText(args: {
       });
     }
 
+    // Per-fan recent-nudge dedup. Without this, step 1 and step 2 nudges to
+    // the same conversation get nearly identical text because the LLM is
+    // seeded with the same context. Feeding the last 10 sent texts as a
+    // "do-not-repeat" list breaks the loop.
+    const recentTexts = await loadRecentNudgeTexts(args.accountId, args.conversationId);
+
     messages.push({
       role: "system",
       content: [
@@ -574,18 +630,37 @@ async function generateNudgeText(args: {
         ``,
         `HARD REQUIREMENTS:`,
         `- Hook to a SPECIFIC word, phrase, or vibe from his last message in the transcript above. Generic openers like "hey u still around babe" / "miss u" / "where u been" with no reference to him FAIL.`,
-        `- Match the v1.8 pick-me / flirty / eager voice (humanness layer above). Warm, attentive, into him.`,
-        `- ONE bubble only. Plain text. No JSON, no quotes around the output, no preamble like "Here's a nudge:".`,
+        `- Match the active humanness layer voice (above). Warm, attentive, specific.`,
+        `- ONE short message only.`,
         `- No mention of price, no PPV pitch, no "unlock". This is rapport repair, not selling.`,
         `- No begging, no "please". Confident warmth.`,
         ``,
-        `OUTPUT: just the caption text, nothing else.`,
+        ...(recentTexts.length > 0
+          ? [
+              `RECENT SENDS to this same fan — DO NOT repeat the angle, opener, or phrasing of any of these:`,
+              ...recentTexts.slice(0, 6).map((t, i) => `  ${i + 1}. ${t}`),
+              ``,
+            ]
+          : []),
+        `OUTPUT FORMAT — STRICT JSON. Return a single JSON object exactly like:`,
+        `  {"nudge": "the actual nudge text here"}`,
+        `Rules:`,
+        `- Do NOT wrap in markdown code fences.`,
+        `- Do NOT include any prose before or after the JSON.`,
+        `- Do NOT use placeholder values like "text here" or wrapped in <...> / [...].`,
       ].join("\n"),
     });
 
     const result = await routeLlmCall({
-      task: "NUDGE_GENERATE",
+      // CHAT_GENERATE = grok-4 (non-reasoning generator). Mass captions hit
+      // the same chain-of-thought verbosity issue with grok-4.1-reasoning
+      // that we fixed by switching to grok-4 — same fix applies here. The
+      // chat generator handles short flirty prose reliably.
+      task: "CHAT_GENERATE",
       messages,
+      maxTokens: 300,
+      temperature: 0.95,
+      responseFormat: "json_object",
       meta: {
         conversationId: args.conversationId,
         subscriberId: args.subscriberId,
@@ -595,17 +670,22 @@ async function generateNudgeText(args: {
       },
     });
 
-    const text = result.content
-      .trim()
-      .replace(/^["'`]+|["'`]+$/g, "")
-      .replace(/\s+/g, " ");
-    if (!text || text.length < 3 || text.length > 280) {
+    const text = extractNudgeText(result.content);
+    if (!text || text.length < 3 || text.length > 280 || isPlaceholderText(text)) {
       logger.warn(
-        { conversationId: args.conversationId, contentLength: text.length },
-        "nudge LLM output rejected (empty or too long)",
+        {
+          conversationId: args.conversationId,
+          contentLength: result.content.length,
+          extractedLength: text.length,
+          extracted: text.slice(0, 100),
+          rawPreview: result.content.slice(0, 200),
+        },
+        "nudge LLM output rejected (empty / too long / placeholder)",
       );
       return null;
     }
+    // Record successful nudge text so future nudges to same fan don't echo it.
+    await recordRecentNudgeText(args.accountId, args.conversationId, text);
     return text;
   } catch (err) {
     logger.warn(
@@ -614,6 +694,61 @@ async function generateNudgeText(args: {
     );
     return null;
   }
+}
+
+/**
+ * Pull the nudge text out of the LLM response. Primary path is JSON mode
+ * ({"nudge": "..."}). Fallbacks cover models that ignore the format.
+ */
+function extractNudgeText(raw: string): string {
+  const trimmed = raw.trim();
+  // 1. Pure JSON
+  try {
+    const parsed = JSON.parse(trimmed) as unknown;
+    if (typeof parsed === "object" && parsed !== null) {
+      const obj = parsed as Record<string, unknown>;
+      if (typeof obj.nudge === "string") return cleanNudge(obj.nudge);
+      if (typeof obj.text === "string") return cleanNudge(obj.text);
+      if (typeof obj.caption === "string") return cleanNudge(obj.caption);
+    }
+  } catch {
+    /* fall through */
+  }
+  // 2. Embedded JSON
+  const jsonMatch = trimmed.match(/\{[\s\S]*?"(?:nudge|text|caption)"\s*:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?\}/);
+  if (jsonMatch) {
+    try {
+      const unescaped = JSON.parse(`"${jsonMatch[1]!}"`) as string;
+      if (unescaped.length >= 3) return cleanNudge(unescaped);
+    } catch {
+      /* fall through */
+    }
+  }
+  // 3. Last non-empty line of plausible length
+  const lines = trimmed.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 0);
+  if (lines.length > 0) {
+    const last = lines[lines.length - 1]!;
+    if (last.length >= 5 && last.length <= 280) return cleanNudge(last);
+  }
+  // 4. Whole body trimmed
+  return cleanNudge(trimmed);
+}
+
+function cleanNudge(s: string): string {
+  return s.trim().replace(/^["'`]+|["'`]+$/g, "").replace(/\s+/g, " ").trim();
+}
+
+/** Reject obvious placeholder strings the model occasionally echoes. */
+function isPlaceholderText(s: string): boolean {
+  if (!s) return false;
+  const t = s.trim();
+  if (/^<.*>$/.test(t) || /^\[.*\]$/.test(t)) return true;
+  if (t.startsWith("<") || t.startsWith("[")) return true;
+  if (/your\s+(actual\s+)?(flirty\s+)?(nudge|caption|message)/i.test(t)) return true;
+  if (t.length < 12) {
+    return /^(text|nudge|caption|placeholder|example|fill in|the nudge)\s*(here)?$/i.test(t);
+  }
+  return false;
 }
 
 async function sendNudge(args: SendNudgeArgs): Promise<void> {
