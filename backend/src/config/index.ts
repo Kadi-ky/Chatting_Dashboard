@@ -110,6 +110,10 @@ const envSchema = z.object({
   // OUTREACH_DRY_RUN logs would-send without actually sending.
   OUTREACH_ENABLED: stringBool(false),
   OUTREACH_DRY_RUN: stringBool(false),
+  // SUB-SYNC worker — periodically pulls OFAPI's full subscriber list
+  // into v3.subscribers so cold outreach can target lurkers. Default OFF.
+  // Calls /api/{account}/fans via adapter.listSubscribers.
+  SUB_SYNC_ENABLED: stringBool(false),
   // Soft-resume ramp-up. When set to an ISO timestamp in the future, the
   // per-account token bucket runs at HALF its normal refill rate until that
   // time passes. Use this when un-pausing after a long 429 cooldown to

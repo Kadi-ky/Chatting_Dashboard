@@ -25,6 +25,7 @@ import { turnQueue } from "../queue/turns.js";
 import { outboundQueue } from "../queue/outbound.js";
 import { getRecentNudges } from "../worker/nudgeWorker.js";
 import { getRecentOutreach } from "../worker/outreachWorker.js";
+import { getRecentSubSyncs, triggerSubSyncNow } from "../worker/subSyncWorker.js";
 import { getRecentPitchDecisions, turnsSinceLastPitch as ppvTurnsSinceLastPitch } from "../ppv/orchestrator.js";
 import { listRecentAttempts, countUnboughtRecentPitches } from "../db/repos/ppv_attempts.js";
 import { listPurchasesByFan, parseLegacySourceRef } from "../db/repos/purchases.js";
@@ -126,6 +127,11 @@ async function handle(
   // the operator visibility into proactive DMs to silent subs / lapsed fans.
   if (method === "GET" && path === "/diag/recent-outreach") {
     return json(res, 200, { outreach: getRecentOutreach() });
+  }
+
+  // Recent sub-sync stats (per-account fan-count snapshots).
+  if (method === "GET" && path === "/diag/recent-subsyncs") {
+    return json(res, 200, { syncs: getRecentSubSyncs() });
   }
 
   // Engagement dashboard — aggregate funnel metrics for the last N hours.
@@ -749,6 +755,21 @@ async function handle(
           hourOfDay: new Date().getHours(),
         });
         return json(res, 200, result);
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+    }
+
+    // POST /admin/subsync-now — force an immediate subscriber sync from
+    // OFAPI for all allowlisted accounts. Bypasses the 6-hour schedule.
+    // Returns per-account fan counts. Use this after deploy or whenever
+    // the operator suspects v3.subscribers is missing recent subs.
+    if (method === "POST" && path === "/admin/subsync-now") {
+      try {
+        const results = await triggerSubSyncNow();
+        return json(res, 200, { syncs: results });
       } catch (err) {
         return json(res, 500, {
           error: err instanceof Error ? err.message : String(err),

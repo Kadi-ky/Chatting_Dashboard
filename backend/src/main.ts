@@ -12,6 +12,7 @@ import { startSendWorker } from "./worker/sendWorker.js";
 import { startBroadcastRunner, type BroadcastRunnerHandle } from "./worker/broadcastWorker.js";
 import { startNudgeWorker, type NudgeWorkerHandle } from "./worker/nudgeWorker.js";
 import { startOutreachWorker, type OutreachWorkerHandle } from "./worker/outreachWorker.js";
+import { startSubSyncWorker, type SubSyncWorkerHandle } from "./worker/subSyncWorker.js";
 import { startAdminServer, type AdminServerHandle } from "./api/server.js";
 import { getPlatformAdapter } from "./platform/index.js";
 import type { Worker } from "bullmq";
@@ -26,6 +27,7 @@ let sendWorker: Worker<OutboundJobData> | null = null;
 let broadcastRunner: BroadcastRunnerHandle | null = null;
 let nudgeWorker: NudgeWorkerHandle | null = null;
 let outreachWorker: OutreachWorkerHandle | null = null;
+let subSyncWorker: SubSyncWorkerHandle | null = null;
 let adminServer: AdminServerHandle | null = null;
 
 async function preflight(): Promise<void> {
@@ -53,6 +55,7 @@ async function shutdown(signal: string): Promise<void> {
     if (broadcastRunner) await broadcastRunner.stop();
     if (nudgeWorker) await nudgeWorker.stop();
     if (outreachWorker) await outreachWorker.stop();
+    if (subSyncWorker) await subSyncWorker.stop();
     if (adminServer) await adminServer.stop();
     if (worker) await worker.close();
     if (turnWorkerRef) await turnWorkerRef.close();
@@ -81,6 +84,7 @@ async function boot(): Promise<void> {
   broadcastRunner = startBroadcastRunner();
   nudgeWorker = startNudgeWorker();
   outreachWorker = startOutreachWorker();
+  subSyncWorker = startSubSyncWorker();
   adminServer = startAdminServer();
   // Poller is opt-in (POLLING_ENABLED=true). OnlyFansAPI delivers webhooks
   // reliably and doesn't expose an /inbox/events endpoint, so polling just
