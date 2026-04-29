@@ -9,7 +9,7 @@ import { env } from "../config/index.js";
 import { db } from "../db/client.js";
 import { getPlatformAdapter } from "../platform/index.js";
 import { loadAccountByPlatformId, upsertShadowAccount } from "../db/repos/accounts.js";
-import { getRecentPlatformErrors, parseRetryAfter } from "../platform/impl/http/client.js";
+import { getRecentPlatformErrors, parseRetryAfter, getLastRateLimitInfo } from "../platform/impl/http/client.js";
 import { getRecentNudges } from "../worker/nudgeWorker.js";
 import { getRecentPitchDecisions } from "../ppv/orchestrator.js";
 
@@ -101,6 +101,10 @@ async function handle(
   // Critical for debugging "bot didn't pitch when fan asked how much" cases.
   if (method === "GET" && path === "/diag/recent-pitches") {
     return json(res, 200, { decisions: getRecentPitchDecisions() });
+  }
+
+  if (method === "GET" && path === "/diag/rate-limit") {
+    return json(res, 200, { lastSeen: getLastRateLimitInfo() });
   }
 
   if (method === "GET" && path === "/diag/runtime-flags") {

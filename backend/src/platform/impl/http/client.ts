@@ -162,6 +162,30 @@ export class PlatformHttpClient {
       throw new PlatformHttpError(res.status, path, text, retryAfterMs);
     }
 
+    // Surface OFAPI's rate-limit headers on every successful response so
+    // we can self-throttle before hitting limits AND so /diag can expose
+    // the remaining quota. OFAPI sends:
+    //   x-rate-limit-limit-minute       (e.g. 5000)
+    //   x-rate-limit-remaining-minute   (e.g. 4991)
+    //   x-ofapi-credits-balance         (account-wide credit pool)
+    const remainingMinute = res.headers.get("x-rate-limit-remaining-minute");
+    const limitMinute = res.headers.get("x-rate-limit-limit-minute");
+    const creditsBalance = res.headers.get("x-ofapi-credits-balance");
+    if (remainingMinute != null && limitMinute != null) {
+      LAST_RATE_LIMIT_INFO = {
+        at: new Date().toISOString(),
+        remainingMinute: Number(remainingMinute),
+        limitMinute: Number(limitMinute),
+        ...(creditsBalance != null ? { creditsBalance: Number(creditsBalance) } : {}),
+      };
+      // Warn if we're close to OFAPI's per-minute cap so the operator can
+      // throttle dashboard/admin reads before they spill into 429s.
+      const remaining = Number(remainingMinute);
+      const limit = Number(limitMinute);
+      if (limit > 0 && remaining < limit * 0.1) {
+        logger.warn({ remaining, limit }, "OFAPI rate-limit window near exhaustion");
+      }
+    }
     logger.debug({ path, status: res.status, elapsed }, "platform http ok");
 
     if (res.status === 204) return undefined as T;
@@ -169,4 +193,16 @@ export class PlatformHttpClient {
     if (ct.includes("application/json")) return (await res.json()) as T;
     return (await res.text()) as unknown as T;
   }
+}
+
+/** Latest rate-limit snapshot, populated on every successful PlatformHttpClient response. */
+interface RateLimitInfo {
+  at: string;
+  remainingMinute: number;
+  limitMinute: number;
+  creditsBalance?: number;
+}
+let LAST_RATE_LIMIT_INFO: RateLimitInfo | null = null;
+export function getLastRateLimitInfo(): RateLimitInfo | null {
+  return LAST_RATE_LIMIT_INFO;
 }
