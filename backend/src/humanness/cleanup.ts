@@ -149,15 +149,21 @@ export interface CleanupInput {
 }
 
 /**
- * Strip a lazy "mmm" / "aw" opener from the start of a bubble if the bot has
- * used one of those openers recently. Preserves the rest of the message — we
- * just remove the empty-calorie lead-in.
+ * Strip a lazy "mmm" / "aw" / "damn" opener from the start of a bubble. The
+ * model defaults to these as filler lead-ins on roughly half of replies and
+ * the persona prompt's instruction to "vary openers" doesn't reliably stick.
+ * This is the post-process safety net.
  *
- * "mmm thanks for noticin babe" → "thanks for noticin babe"
- * "Aw babe i havent shot that"  → "babe i havent shot that"
+ * Matches the filler optionally preceded by a laugh-token ("haha damn babe"
+ * → strips "haha damn"). Preserves the rest of the message.
+ *
+ * "mmm thanks for noticin babe"   → "thanks for noticin babe"
+ * "Aw babe i havent shot that"    → "babe i havent shot that"
+ * "Damn babe, that has me hot"    → "babe, that has me hot"
+ * "Haha damn babe, already makin" → "babe, already makin"
  */
 const LAZY_OPENER_STRIP_RE =
-  /^[ \t]*(?:m+m+|mmm+m*|a+w+|aww+w*|ohh*|oof+)[\s,!.\-—–]+(?=\S)/i;
+  /^[ \t]*(?:(?:lo+l+|ha+ha+h?|lma+o+|ahaha+)\s+)?(?:m+m+|mmm+m*|a+w+|aww+w*|ohh*|oof+|d+a+m+n+)[\s,!.\-—–]+(?=\S)/i;
 export function stripLazyOpener(text: string): string {
   if (!LAZY_OPENER_STRIP_RE.test(text)) return text;
   let out = text.replace(LAZY_OPENER_STRIP_RE, "");
