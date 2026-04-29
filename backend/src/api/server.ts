@@ -142,6 +142,41 @@ async function handle(
     return json(res, 200, { skips: getRecentSkipReasons() });
   }
 
+  // Sample of FAILED jobs from each queue with their last error message.
+  // Lets the operator see WHY jobs are failing without raw Redis access.
+  // Public diag (no sensitive data, just job metadata + failure reason).
+  if (method === "GET" && path === "/diag/failed-jobs") {
+    try {
+      const [turnFailed, outFailed, inbFailed] = await Promise.all([
+        turnQueue().getFailed(0, 9),
+        outboundQueue().getFailed(0, 9),
+        inboundQueue().getFailed(0, 9),
+      ]);
+      const fmt = (jobs: Array<{ id?: string; data?: unknown; failedReason?: string; attemptsMade?: number; timestamp?: number }>) =>
+        jobs.map((j) => ({
+          id: j.id,
+          attemptsMade: j.attemptsMade,
+          failedReason: j.failedReason,
+          enqueuedAt: j.timestamp ? new Date(j.timestamp).toISOString() : null,
+          // Truncate data to keep response small.
+          dataPreview: typeof j.data === "object" && j.data !== null
+            ? Object.keys(j.data as Record<string, unknown>).reduce((acc, k) => {
+                const v = (j.data as Record<string, unknown>)[k];
+                acc[k] = typeof v === "string" && v.length > 80 ? `${v.slice(0, 80)}...` : v;
+                return acc;
+              }, {} as Record<string, unknown>)
+            : null,
+        }));
+      return json(res, 200, {
+        turn: fmt(turnFailed),
+        outbound: fmt(outFailed),
+        inbound: fmt(inbFailed),
+      });
+    } catch (err) {
+      return json(res, 500, { error: err instanceof Error ? err.message : String(err) });
+    }
+  }
+
   if (method === "GET" && path === "/diag/runtime-flags") {
     return json(res, 200, {
       shadow_mode: env.SHADOW_MODE,
@@ -589,6 +624,78 @@ async function handle(
         "manual fan-reply trigger enqueued",
       );
       return json(res, 200, { ok: true, externalId: event.externalId, accountId: account.id });
+    }
+
+    // Re-queue turn jobs for conversations where the fan's last message is
+    // INBOUND but no bot reply happened (orphaned by an earlier worker
+    // failure such as the SEXTING enum bug). Useful after a structural fix
+    // ships and we need to drain the backlog of fans waiting for replies.
+    //
+    // POST body (optional): { maxAgeMinutes?: number }  default 120 min.
+    // Won't replay convs older than that to avoid spamming long-cold fans.
+    //
+    // Idempotent — same jobId per conv, BullMQ will deduplicate if a turn
+    // is already queued for that conv.
+    if (method === "POST" && path === "/admin/replay-stuck-convs") {
+      const body = await readBody(req).catch(() => ({}));
+      const rawMax = (body as Record<string, unknown>).maxAgeMinutes;
+      const maxAgeMinutes: number = typeof rawMax === "number" && Number.isFinite(rawMax) ? rawMax : 120;
+      try {
+        const cutoff = new Date(Date.now() - maxAgeMinutes * 60_000);
+        // Find conversations whose latest message is inbound AND newer than cutoff.
+        const stuck = await db
+          .selectFrom("v3.conversations as c")
+          .innerJoin(
+            db
+              .selectFrom("v3.messages")
+              .select(["conversation_id", "direction", "created_at"])
+              .distinctOn(["conversation_id"])
+              .orderBy("conversation_id")
+              .orderBy("created_at", "desc")
+              .as("latest"),
+            "latest.conversation_id",
+            "c.id",
+          )
+          .innerJoin("v3.subscribers as s", "s.id", "c.subscriber_id")
+          .select([
+            "c.id as conversationId",
+            "c.account_id as accountId",
+            "c.subscriber_id as subscriberId",
+            "s.external_id as subscriberExternalId",
+            "latest.created_at as lastMessageAt",
+          ])
+          .where("latest.direction", "=", "inbound")
+          .where(sql<SqlBool>`latest.created_at > ${cutoff}`)
+          .execute();
+
+        let queued = 0;
+        for (const row of stuck) {
+          await turnQueue().add(
+            "turn",
+            {
+              accountId: row.accountId as string,
+              conversationId: row.conversationId as string,
+              subscriberId: row.subscriberId as string,
+              subscriberExternalId: row.subscriberExternalId as string,
+            },
+            { jobId: `turn-${row.conversationId}`, delay: 1000 },
+          );
+          queued++;
+        }
+        return json(res, 200, {
+          ok: true,
+          maxAgeMinutes,
+          stuckCount: stuck.length,
+          queued,
+          conversations: stuck.map((r) => ({
+            convId: r.conversationId,
+            subExt: r.subscriberExternalId,
+            lastMessageAt: (r.lastMessageAt as unknown as Date)?.toISOString?.() ?? r.lastMessageAt,
+          })),
+        });
+      } catch (err) {
+        return json(res, 500, { error: err instanceof Error ? err.message : String(err) });
+      }
     }
 
     if (method === "POST" && path === "/admin/test/inject") {
