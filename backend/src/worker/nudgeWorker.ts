@@ -12,9 +12,11 @@ import { insertOutboundDraft } from "../db/repos/messages.js";
  *
  *   1. IDLE FAN re-engagement
  *      - Fan stopped replying after a normal exchange
- *      - Ladder: 30 min → 5 h → 10 h, capped at 3 nudges
- *      - Counter resets when fan sends an inbound message (handled by the
- *        conversation worker, which clears state_ctx.nudge on each inbound)
+ *      - Ladder (cumulative from last fan inbound): 30 min → 2 h → 6 h
+ *      - Capped at 3 nudges. Once exhausted, NO further nudges fire until
+ *        the fan sends a new inbound (which resets the counter via
+ *        clearIdleNudgeState, called from conversationWorker on every
+ *        message.received).
  *
  *   2. PPV nudge after no-buy
  *      - Bot pitched a PPV, fan didn't unlock and didn't reply
@@ -45,11 +47,13 @@ import { insertOutboundDraft } from "../db/repos/messages.js";
 const NUDGE_TICK_MS = 5 * 60_000;
 const NUDGE_STARTUP_DELAY_MS = 30_000;
 
-// Idle fan re-engagement ladder (ms since fan's last inbound).
+// Idle fan re-engagement ladder (ms since fan's LAST INBOUND — cumulative,
+// not interval). Operator spec 2026-04-29: 30 min → 2 h → 6 h, then stop
+// forever until the fan sends a new inbound that resets the counter.
 const IDLE_LADDER_MS = [
-  30 * 60_000, // 1st nudge after 30 min
-  5 * 60 * 60_000, // 2nd nudge after 5 h
-  10 * 60 * 60_000, // 3rd nudge after 10 h
+  30 * 60_000, // 1st nudge: 30 min after fan went silent
+  2 * 60 * 60_000, // 2nd nudge: 2 h after fan went silent
+  6 * 60 * 60_000, // 3rd + final: 6 h after fan went silent
 ];
 
 const IDLE_TEMPLATES: string[][] = [
@@ -331,6 +335,34 @@ async function writeNudgeState(convId: string, next: NudgeState): Promise<void> 
   await sql`
     UPDATE v3.conversations
     SET state_ctx = jsonb_set(coalesce(state_ctx, '{}'::jsonb), '{nudge}', ${JSON.stringify(next)}::jsonb, true)
+    WHERE id = ${convId}
+  `.execute(db);
+}
+
+/**
+ * Reset the idle-nudge counter on a conversation. Called from
+ * conversationWorker when a new fan inbound arrives — gives the fan a fresh
+ * 3-nudge ladder for the next time they go silent. We DO NOT touch
+ * ppvNudges (those are keyed per ppv_attempt and naturally retire when
+ * the attempt resolves).
+ *
+ * Implementation: jsonb_set the {nudge,idleCount} key to 0 and
+ * {nudge,lastIdleAt} to null. Other keys under "nudge" are preserved.
+ */
+export async function clearIdleNudgeState(convId: string): Promise<void> {
+  await sql`
+    UPDATE v3.conversations
+    SET state_ctx = jsonb_set(
+      jsonb_set(
+        coalesce(state_ctx, '{}'::jsonb),
+        '{nudge,idleCount}',
+        '0'::jsonb,
+        true
+      ),
+      '{nudge,lastIdleAt}',
+      'null'::jsonb,
+      true
+    )
     WHERE id = ${convId}
   `.execute(db);
 }

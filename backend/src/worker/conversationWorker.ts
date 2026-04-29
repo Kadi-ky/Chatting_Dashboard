@@ -17,6 +17,7 @@ import { pickPacingVariant } from "../humanness/pacing.js";
 import { metrics } from "../observability/metrics.js";
 import { turnQueue } from "../queue/turns.js";
 import { env } from "../config/index.js";
+import { clearIdleNudgeState } from "./nudgeWorker.js";
 import type { PlatformEvent } from "../platform/PlatformAdapter.js";
 
 /**
@@ -96,6 +97,11 @@ async function handleMessageReceived(
   await Promise.all([
     markLastInbound(subscriberId, event.occurredAt),
     touchConversation(conversationId),
+    // Fan replied — reset the idle-nudge counter so the next silence period
+    // gets a fresh 30m / 2h / 6h ladder. Without this the counter would
+    // monotonically tick up forever, exhausting fans permanently after one
+    // 3-nudge run even if they later re-engaged.
+    clearIdleNudgeState(conversationId),
   ]);
 
   logger.info(
