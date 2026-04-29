@@ -3,18 +3,28 @@ import type { Phase } from "../state/types.js";
 import type { LatestArchetypeRow } from "../db/repos/archetypes.js";
 import type { PpvCatalogRow } from "../db/repos/ppv_catalog.js";
 import {
-  assetsPitchedWithin,
   countUnboughtRecentPitches,
   listRecentAttempts,
 } from "../db/repos/ppv_attempts.js";
 import { pickNextForFan } from "./scriptPicker.js";
-import { getFunnelStep } from "./funnel.js";
+import { getFunnelStep, clearFunnel } from "./funnel.js";
 import { analyzePitchReadiness } from "./pitchReadiness.js";
 import type { IntentFlags } from "../classify/intent.js";
 import { sql, type SqlBool } from "kysely";
 import { db } from "../db/client.js";
 
-const COOLDOWN_DAYS = 14;
+// Asset cooldown was REMOVED 2026-04-29. Old behavior: don't pitch the same
+// asset_id (per-rung paywalled bubble) to a fan within 14 days. Reasoning at
+// the time: anti-fatigue. Reality on production:
+//   - Fans never see the asset's contents (it's locked) — they only see the
+//     LLM-generated caption, which varies every turn.
+//   - The cooldown directly contradicted support-drip: drip says "re-pitch
+//     in 10 turns after 2 unbought" but cooldown said "no, wait 14 days."
+//     Drip lost every time. Documented "Lost sale" symptom 2026-04-29.
+// Funnel state (per (conversation, asset) Redis flag with 24h TTL) still
+// gates same-asset re-pitch within a single chat session, except in drip
+// mode where re-pitching with new caption + support framing is the whole
+// point. That gives us the sane spacing without freezing chat-only fans.
 
 /**
  * How often a fan can see a new pitch, keyed by phase.
@@ -230,13 +240,6 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     }
   }
 
-  const pitchedRecently = new Set(
-    await assetsPitchedWithin({
-      subscriberId: args.subscriberId,
-      days: COOLDOWN_DAYS,
-    }),
-  );
-
   const picked = await pickNextForFan({
     accountId: args.accountId,
     creatorUuid: args.creatorUuid,
@@ -260,25 +263,8 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     return { shouldPitch: false, reason: "no eligible scripts after filtering" };
   }
 
-  // If this exact asset was pitched within the cooldown window, skip. Note
-  // "continuing" an in-progress script is still a different asset_id from the
-  // previous rung, so cooldowns apply per-rung, not per-script.
-  //
-  // EXCEPTION: when the fan EXPLICITLY asks for content right now ("send me",
-  // "how much", a buying signal), we bypass the cooldown. Otherwise on heavy
-  // chat days the picker can run out of un-pitched assets and the bot stalls
-  // forever — no pitches even when fans are explicitly buying. Better to
-  // re-pitch a recently-shown asset than to never pitch and lose the sale.
-  if (pitchedRecently.has(picked.asset.id)) {
-    if (args.explicitRequest) {
-      logger.info(
-        { fanUuid: args.subscriberExternalId, assetId: picked.asset.id },
-        "asset cooldown bypassed — fan explicitly asked for content",
-      );
-    } else {
-      return { shouldPitch: false, reason: "asset pitched recently" };
-    }
-  }
+  // Asset cooldown removed (see file header). Funnel state below handles
+  // intra-session spacing; drip mode handles cross-session re-engagement.
 
   // Apply fan-requested discount AFTER picker has committed to an asset. We
   // never re-pick based on discount — discount is purely a price cut on the
@@ -317,22 +303,27 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
 
   // 2-turn funnel guards — the FUNNEL STATE is structural truth, the AI
   // decision is only consulted to choose between preview-now vs hold-back.
-  // The AI cannot skip the teaser step for a new asset, and it cannot
-  // re-fire a priced PPV that's already been sent for the same asset.
+  // The AI cannot skip the teaser step for a new asset.
   //
-  // Rationale: observed in production — fan asked for content while in
-  // RAPPORT, AI decided "ppv" directly, bot fired the priced rung 1 PPV
-  // without a free teaser first. Lost the teaser-build value AND surprised
-  // the fan with a $-bubble before any free taste.
-  if (funnelStep === "ppv_sent") {
-    // The priced PPV already went out for this exact asset. Picker should
-    // be advancing to the next rung; if it's not, we still don't re-fire
-    // the same paid bubble. Refusing here lets the next picker call (after
-    // the unlock event commits) advance properly.
+  // EXCEPTION (added 2026-04-29): drip mode (`dripPitch=true`) is allowed
+  // to re-fire the same priced PPV even when funnelStep="ppv_sent". The
+  // whole point of drip is "fan ignored the last few pitches — try again
+  // every 10 turns with new caption + support framing." Without this
+  // bypass, drip silently lost every "ignored PPV1" sale because funnel
+  // state still said the asset was pitched. Funnel state is cleared
+  // afterwards so the next non-drip turn behaves normally.
+  if (funnelStep === "ppv_sent" && !dripPitch) {
     return {
       shouldPitch: false,
       reason: `funnelStep=ppv_sent for asset ${picked.asset.id} — refusing duplicate priced PPV`,
     };
+  }
+  if (funnelStep === "ppv_sent" && dripPitch) {
+    logger.info(
+      { conversationId: args.conversationId, assetId: picked.asset.id },
+      "drip pitch bypassing funnel ppv_sent — clearing funnel state for re-pitch",
+    );
+    await clearFunnel(args.conversationId, picked.asset.id);
   }
 
   let kind: "preview" | "ppv";

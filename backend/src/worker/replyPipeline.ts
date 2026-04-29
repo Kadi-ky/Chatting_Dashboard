@@ -153,10 +153,33 @@ async function generateLlmReply(
   const pitchKind = isPitch ? input.pitch!.kind : undefined;
   // Two-turn funnel: preview-step task asks the LLM for a single tease caption
   // (no priced bubble); ppv-step task asks for the priced PPV's caption.
+  // Context-tied captions: the goal of every caption is to make the fan feel
+  // "she made this for me, just now, because of what i just said." Generic
+  // "babe wait til u see this 🥵" reads as a vending machine. A caption that
+  // hooks his exact words/fantasy reads like the content was authored for
+  // him in that moment — even though it's a catalog asset.
   const previewObjective =
-    "PREVIEW STEP — this turn the bot sends a FREE preview image with a horny caption. Output ONE bubble only: the caption that goes WITH the preview. NO priced PPV this turn — that lands NEXT turn after the fan reacts. Caption rules: 1) start with a horny reaction to the fan's last message (match his energy — let-him-lead if he described what he'd do, girlfriend-energy if sweet, dominant only if he asked for it). 2) Anchor the tease to what's IN the preview (paraphrase the asset description, do NOT invent acts/durations/people not in the description). 3) End with bait that pulls him into the next message ('wait til u see the rest', 'this is just a peek', 'imagine what's after this'). Keep it short, lowercase, max 35 words, max 1 emoji.";
+    "PREVIEW STEP — this turn the bot sends a FREE preview image with a horny caption. Output ONE bubble only: the caption that goes WITH the preview. NO priced PPV this turn — that lands NEXT turn after the fan reacts.\n\n" +
+    "CAPTION SHAPE (in this order):\n" +
+    "1) Hook to HIS LAST MESSAGE specifically. Pull a concrete word, phrase, fantasy, or vibe he just expressed — paraphrase it into your line so it feels like the preview was made FOR HIM about THAT exact thing. Examples: he said 'id eat ur pussy' → 'thinkin about exactly that babe, made this lil clip of me imagining ur tongue'. He said 'ur smile got me smilin' → 'babe ur the reason im smilin like this, look what u did to me'. He said 'send something' (no specific fantasy) → react to his demand-energy: 'fine babe, since u been so good, here'. Always TIE THE CAPTION TO SOMETHING SPECIFIC HE JUST SAID — not just 'babe wait til u see this'.\n" +
+    "2) Anchor the tease to what's IN the preview (paraphrase the asset description in your voice; do NOT invent acts/durations/people not in the description).\n" +
+    "3) End with bait that pulls him into the next message: 'wait til u see the rest', 'this is just a peek', 'imagine whats after this'.\n\n" +
+    "Keep it short, lowercase, max 35 words, max 1 emoji.\n\n" +
+    "BAD-SHAPE EXAMPLES (do NOT ship — these are generic and read like spam):\n" +
+    "- 'babe wait til u see this 🥵'  (no hook to him)\n" +
+    "- 'got somethin even hotter, lemme grab it for u'  (no hook to him)\n" +
+    "- 'babe ur energy is fire, knew ud dive right in'  (no specific reference to what he said)";
   const ppvObjective =
-    "PPV STEP — this turn the bot sends the PRICED PPV. The fan saw the preview last turn; this is the close. Output ONE bubble only: the caption that goes WITH the priced PPV. Reference the preview naturally ('here's the rest babe', 'told u u'd want this', 'unlocking this gets u everything'). Anchor the caption to what's IN the asset description — do NOT invent acts/durations/personalizations. Match his last-message energy. Lowercase, max 45 words, max 1-2 emojis.";
+    "PPV STEP — this turn the bot sends the PRICED PPV. The fan saw the preview last turn; this is the close. Output ONE bubble only: the caption that goes WITH the priced PPV.\n\n" +
+    "CAPTION SHAPE (in this order):\n" +
+    "1) Hook to HIS LAST MESSAGE — same rule as the preview step. Reference a specific word/fantasy/state he just expressed and tie THIS PPV directly to it. The fan should feel this clip was custom for what he's into right now. Bad: 'heres the rest babe'. Good: 'this is exactly that fantasy u just described — me ridin u, full vid, taste it'. Bad: 'told u u'd want this'. Good: 'after u said that about my mouth, i had to send u this — full clip, no cut'.\n" +
+    "2) Reference the preview as continuation when natural ('heres the rest', 'told u theres more after that peek').\n" +
+    "3) Anchor to what's IN the asset description — do NOT invent acts/durations/personalizations not in the description.\n\n" +
+    "Match his last-message energy (sweet → soft, dominant → submit, demanding → tease back). Lowercase, max 45 words, max 1-2 emojis.\n\n" +
+    "BAD-SHAPE EXAMPLES (do NOT ship — generic close lines):\n" +
+    "- 'unlock this gets u everything 🥵'  (no hook to him)\n" +
+    "- 'this ones gonna ruin u, unlock'  (no hook to him)\n" +
+    "- 'wait til u see how good this is'  (no hook to him)";
   const task: {
     kind: GeneratorTaskKind;
     objective: string;
