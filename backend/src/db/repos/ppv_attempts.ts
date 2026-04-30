@@ -37,6 +37,48 @@ export async function insertPpvAttempt(args: {
  * Mark the most recent pending attempt in a conversation as unlocked. Returns
  * the attempt that was resolved (if any) so callers can update rollups.
  */
+/**
+ * Match an unlock to its EXACT ppv_attempt via the platform-side message
+ * external id. OFAPI surfaces the source message id in the unlock event's
+ * text (e.g. ?firstId=12345), and parseWebhook normalises it as
+ * payload.asset_ref. Looking up by external id is the authoritative way
+ * to know which specific PPV the fan paid for — needed when multiple
+ * PPVs for the same asset are pending in the fan's inbox at once (e.g.
+ * original $15 + cant_afford-discounted $10.50 simultaneously).
+ *
+ * Returns null if no matching pending attempt exists; caller should
+ * fall back to markMostRecentAttemptUnlocked.
+ */
+export async function markAttemptUnlockedByMessageExternalId(args: {
+  messageExternalId: string;
+  unlockedAt: Date;
+}): Promise<PpvAttemptRow | null> {
+  // Find the v3.messages row by its platform external_id, get its id,
+  // then find the ppv_attempt whose message_id matches.
+  const message = await db
+    .selectFrom("v3.messages")
+    .select(["id"])
+    .where("external_id", "=", args.messageExternalId)
+    .executeTakeFirst();
+  if (!message) return null;
+
+  const pending = await db
+    .selectFrom("v3.ppv_attempts")
+    .selectAll()
+    .where("message_id", "=", message.id)
+    .where("outcome", "=", "pending")
+    .executeTakeFirst();
+  if (!pending) return null;
+
+  await db
+    .updateTable("v3.ppv_attempts")
+    .set({ outcome: "unlocked", unlocked_at: args.unlockedAt })
+    .where("id", "=", pending.id)
+    .execute();
+
+  return mapRow({ ...pending, outcome: "unlocked" });
+}
+
 export async function markMostRecentAttemptUnlocked(args: {
   conversationId: string;
   assetId?: string | null;

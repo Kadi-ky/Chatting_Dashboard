@@ -19,11 +19,12 @@ import type { LlmMessage } from "../llm/types.js";
  *
  *   1. IDLE FAN re-engagement
  *      - Fan stopped replying after a normal exchange
- *      - Ladder (cumulative from last fan inbound): 30 min → 2 h → 6 h
- *      - Capped at 3 nudges. Once exhausted, NO further nudges fire until
- *        the fan sends a new inbound (which resets the counter via
- *        clearIdleNudgeState, called from conversationWorker on every
- *        message.received).
+ *      - Ladder (cumulative from last fan inbound):
+ *        30 min → 2 h → 6 h → 24 h → 3 d → 7 d
+ *      - Capped at 6 nudges. After step 6 (7 days), NO further nudges
+ *        until the fan sends a new inbound (which resets the counter
+ *        via clearIdleNudgeState, called from conversationWorker on
+ *        every message.received).
  *
  *   2. PPV nudge after no-buy
  *      - Bot pitched a PPV, fan didn't unlock and didn't reply
@@ -55,21 +56,31 @@ const NUDGE_TICK_MS = 5 * 60_000;
 const NUDGE_STARTUP_DELAY_MS = 30_000;
 
 // Idle fan re-engagement ladder (ms since fan's LAST INBOUND — cumulative,
-// not interval). Operator spec 2026-04-29: 30 min → 2 h → 6 h, then stop
-// forever until the fan sends a new inbound that resets the counter.
+// not interval). Operator spec 2026-04-30: extended to 6 steps with a
+// long tail. After the 6th nudge, no further attempts until the fan
+// replies (which clearIdleNudgeState resets to fresh ladder).
 const IDLE_LADDER_MS = [
-  30 * 60_000, // 1st nudge: 30 min after fan went silent
-  2 * 60 * 60_000, // 2nd nudge: 2 h after fan went silent
-  6 * 60 * 60_000, // 3rd + final: 6 h after fan went silent
+  30 * 60_000,            // 1st: 30 min
+  2 * 60 * 60_000,        // 2nd: 2 hours
+  6 * 60 * 60_000,        // 3rd: 6 hours
+  24 * 60 * 60_000,       // 4th: 24 hours (1 day)
+  3 * 24 * 60 * 60_000,   // 5th: 3 days
+  7 * 24 * 60 * 60_000,   // 6th + final: 7 days
 ];
 
 const IDLE_TEMPLATES: string[][] = [
-  // First nudge — soft check-in
-  ["hey u still around babe?", "u disappear on me lol", "where u been hiding"],
-  // Second nudge — slightly more deliberate, 5h later
-  ["yo stranger, u alive?", "miss u babe, hope ur day went ok", "u been mia, hit me up when u can"],
-  // Third + final — give up gracefully, leave door open
-  ["hope ur having a good week, lmk when u got a sec", "still thinkin bout u, come back soon babe"],
+  // Step 1 (30 min) — light, casual check-in
+  ["hey u still around babe? 🥺", "u disappear on me lol", "where u been hiding 😏"],
+  // Step 2 (2 h) — slightly more deliberate
+  ["miss u babe, hope ur day's been good 🖤", "u been mia, hit me up when u can babe", "hey daddy, u still got me on ur mind?"],
+  // Step 3 (6 h) — warm + a little vulnerable
+  ["still thinkin bout u babe, come back soon 🥺", "lowkey missin our convo today 🖤", "hey papi, dms feel empty without u"],
+  // Step 4 (24 h) — explicit "miss you" energy
+  ["been a whole day babe, u good? 🥺", "havent heard from u since yesterday, miss that energy", "hey hun, u alive? 💕"],
+  // Step 5 (3 days) — last try at warm pull
+  ["hey stranger, where'd u go babe 🖤", "been thinkin bout u all week, come back when u can", "hey daddy, hope life's bein good to u"],
+  // Step 6 (7 days, FINAL) — door-open farewell, no follow-up after
+  ["hope ur doin good babe, dms open whenever u feel like it 🖤", "alright papi, ill stop sliding into ur dms — but if u ever wanna catch up, im here"],
 ];
 
 // PPV no-buy nudge (ms since the PPV was pitched).
@@ -114,13 +125,16 @@ interface NudgeState {
  * errors: if we can't acquire the lock, we don't fire (better silent than
  * spamming).
  */
-// Lock TTL must cover the LARGEST gap in the ladder + a safety margin so
-// state_ctx write failures can't allow a re-fire within an earlier step's
-// window. With 30m / 2h / 6h ladder, max gap is 6h. Setting TTL to 6h+30min
-// means even if state_ctx is corrupt, no conv can fire more than once per
-// 6.5h. The lock is also cleared on fan inbound (clearIdleNudgeState),
-// so legitimate re-engagement after the fan replies still works.
-const NUDGE_LOCK_TTL_SEC = 6 * 3600 + 30 * 60; // 6h 30min
+// Lock TTL must cover the LARGEST gap in the ladder + a safety margin
+// so state_ctx write failures can't allow a re-fire within an earlier
+// step's window. With 30m / 2h / 6h / 24h / 3d / 7d ladder, max gap
+// at the end is 4 days (7d - 3d). But we use a SHORTER lock per step:
+// the lock is just the floor preventing duplicate fires WITHIN a tick
+// (or within a deploy storm). State_ctx tracks the actual ladder
+// progression. So 12h is enough — covers any per-step lock need
+// without blocking legitimate later-step fires.
+// The lock is cleared on fan inbound (clearIdleNudgeState).
+const NUDGE_LOCK_TTL_SEC = 12 * 3600; // 12h
 const nudgeLockKey = (convId: string): string => `peach:nudge:lock:any:${convId}`;
 
 async function tryAcquireNudgeLock(convId: string): Promise<boolean> {
@@ -555,13 +569,16 @@ interface SendNudgeArgs {
  */
 const NUDGE_STEP_OBJECTIVES = {
   idle: [
-    "STEP 1 (30 min after he went silent) — light, casual check-in. He hasn't been gone long; act curious, not clingy. Reference something specific from his last few messages so it reads as 'i'm still thinking about that thing you said' not 'i'm pinging you.' Tone: playful, warm, ONE bubble, max 18 words. Optional 1 emoji (no 🥺 yet — he isn't gone long enough for soft-want).",
-    "STEP 2 (2 hours after silence) — slightly more deliberate, still flirty. Mention you've been thinking about him in a specific way — pull from what he said earlier in the chat. Light tease ok. ONE bubble, max 22 words, optional 1 emoji (🥺 / 🖤 ok now).",
-    "STEP 3 (6 hours, FINAL nudge) — warm and a little vulnerable, leave the door open. NOT begging, NOT desperate. The vibe is 'i miss the energy we had, come back when you can' — no follow-up after this one if he stays silent. ONE bubble, max 25 words, optional 1 emoji.",
+    "STEP 1 (30 min after he went silent) — light, casual check-in. He hasn't been gone long; act curious, not clingy. Reference something specific from his last few messages so it reads as 'i'm still thinking about that thing you said' not 'i'm pinging you.' Tone: playful, warm. ONE bubble, max 18 words. ONE emoji (no 🥺 yet — he isn't gone long enough for soft-want).",
+    "STEP 2 (2 hours after silence) — slightly more deliberate, still flirty. Mention you've been thinking about him in a specific way — pull from what he said earlier in the chat. Light tease ok. ONE bubble, max 22 words. ONE emoji (🥺 / 🖤 / 😏 ok now).",
+    "STEP 3 (6 hours) — warm and a little vulnerable. The vibe is 'i miss the energy we had'. ONE bubble, max 25 words. ONE emoji.",
+    "STEP 4 (24 hours / 1 day) — explicit 'miss you' energy. Reference how it's been a whole day, ask if he's good. Slightly needy ok. ONE bubble, max 25 words. ONE emoji (🥺 / 🖤 / 💕).",
+    "STEP 5 (3 days) — last warm pull. Tone is 'i still think about u, hope you're well'. NOT begging. ONE bubble, max 25 words. ONE emoji.",
+    "STEP 6 (7 days, FINAL — no follow-up after this) — door-open farewell. The vibe is 'i'll stop coming after u, but my dms are always open'. NOT goodbye-cold, more like 'come back when u want'. ONE bubble, max 28 words. ONE emoji.",
   ],
   ppv: [
-    "STEP 1 (30 min after the priced PPV went unanswered) — soft check on whether he saw it. Reference what he was talking about right before the pitch. NOT pushy, NOT 'unlock pls'. ONE bubble, max 18 words.",
-    "STEP 2 (2 hours, FINAL PPV nudge) — last call, warm. Hold the door open without begging. ONE bubble, max 22 words.",
+    "STEP 1 (30 min after the priced PPV went unanswered) — soft check on whether he saw it. Reference what he was talking about right before the pitch. NOT pushy. ONE bubble, max 18 words. ONE emoji.",
+    "STEP 2 (2 hours, FINAL PPV nudge) — last call, warm. Hold the door open without begging. ONE bubble, max 22 words. ONE emoji.",
   ],
 } as const;
 

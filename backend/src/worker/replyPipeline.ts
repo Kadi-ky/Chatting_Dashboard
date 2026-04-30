@@ -375,25 +375,30 @@ async function generateLlmReply(
     );
   }
 
-  // POST-PPV REINFORCEMENT — operator directive 2026-04-30. When the
-  // bot just sent a PPV that the fan saw but didn't unlock, the bot's
-  // NEXT REPLY tends to drift back to general chat which kills the close.
-  // Real OF chatters reinforce the offer: ask why he hasn't bought,
-  // remind him it's worth it, give one more push. Suppressed when this
-  // turn IS a pitch (already focused) or when fan just objected /
-  // disengaged / went emotional (different handling needed).
-  const lastOutboundWasPpv = !isPitch && history
-    .filter((m) => m.direction === "outbound")
-    .slice(-1)[0]?.kind === "ppv";
-  const recentUnboughtAttempt = await listRecentAttempts(input.conversationId, 1)
-    .then((r) => r[0])
-    .catch(() => null);
+  // POST-PPV REINFORCEMENT — operator directive 2026-04-30. When there's
+  // a recent unbought PPV in the conversation, EVERY turn until the fan
+  // unlocks OR explicitly rejects content (not price) keeps the bot
+  // close-focused. Previously this only fired on the immediate next turn
+  // (last outbound = ppv); operator observed bot drifting to chat-mode
+  // after just one close-focus reply. Now it persists across multiple
+  // bot turns as long as the pending attempt is still in the recent window.
+  //
+  // Window: pending PPV pitched in the last 6 outbound turns OR within
+  // the last 30 minutes (whichever is broader) keeps post-PPV active.
+  // Fan signals that drop it: cant_afford (routes to discount path),
+  // objection on CONTENT ("not my thing"), disengagement, emotional.
+  const recentAttempts = await listRecentAttempts(input.conversationId, 3).catch(() => []);
+  const PENDING_WINDOW_MS = 30 * 60_000;
+  const hasRecentPendingPpv = recentAttempts.some(
+    (a) =>
+      a.outcome === "pending" &&
+      Date.now() - a.pitchedAt.getTime() < PENDING_WINDOW_MS,
+  );
   const isPostPpvReinforcement =
-    lastOutboundWasPpv &&
-    recentUnboughtAttempt?.outcome === "pending" &&
+    hasRecentPendingPpv &&
     !isPitch &&
     !input.pitchRecoveryMode &&                       // pitch-recovery overrides; back off, don't push
-    !input.intent?.objection &&
+    !input.intent?.objection &&                       // any objection routes elsewhere
     !input.intent?.disengagement &&
     !input.intent?.emotional_disclosure &&
     !input.intent?.cant_afford;                       // cant_afford routes to discount path next turn

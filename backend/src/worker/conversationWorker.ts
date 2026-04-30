@@ -5,7 +5,10 @@ import { recordEvent, markEventProcessed } from "../db/repos/events.js";
 import { upsertSubscriber, markLastInbound } from "../db/repos/subscribers.js";
 import { ensureConversation, touchConversation } from "../db/repos/conversations.js";
 import { insertMessage } from "../db/repos/messages.js";
-import { markMostRecentAttemptUnlocked } from "../db/repos/ppv_attempts.js";
+import {
+  markMostRecentAttemptUnlocked,
+  markAttemptUnlockedByMessageExternalId,
+} from "../db/repos/ppv_attempts.js";
 import { incrementUnlockCounter, loadCatalogItem } from "../db/repos/ppv_catalog.js";
 import { bumpUnlock } from "../db/repos/asset_performance.js";
 import { recordPurchase, parseLegacySourceRef } from "../db/repos/purchases.js";
@@ -155,10 +158,26 @@ async function handlePpvUnlocked(accountId: string, event: PlatformEvent): Promi
   // never set isTest, so production behaviour is unchanged.
   const isTest = event.payload.isTest === true;
 
-  const attempt = await markMostRecentAttemptUnlocked({
-    conversationId,
-    unlockedAt: event.occurredAt,
-  });
+  // Match the unlock to its EXACT pending attempt via the message id
+  // OFAPI surfaces in the unlock text (parseWebhook stores it as
+  // payload.asset_ref). This is the authoritative way to know which
+  // PPV the fan paid for — critical when multiple PPVs for the same
+  // asset are pending in the fan's inbox at once (e.g. original $15 +
+  // cant_afford-discounted $10.50 simultaneously). Falling back to
+  // "most recent pending" was the bug that caused unlock detection
+  // to mis-fire on discounted re-pitches (operator-observed 2026-04-30).
+  let attempt = assetRef
+    ? await markAttemptUnlockedByMessageExternalId({
+        messageExternalId: assetRef,
+        unlockedAt: event.occurredAt,
+      })
+    : null;
+  if (!attempt) {
+    attempt = await markMostRecentAttemptUnlocked({
+      conversationId,
+      unlockedAt: event.occurredAt,
+    });
+  }
 
   // ALWAYS record the unlock into purchases_onlyfans, even for test events.
   // The script picker reads this table to know "fan unlocked rung N, pitch

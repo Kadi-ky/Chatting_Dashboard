@@ -349,6 +349,13 @@ async function handle(
         return Number.isFinite(t) && Date.now() < t;
       })(),
       bubble_combine: env.BUBBLE_COMBINE,
+      humanness_voice: env.HUMANNESS_VOICE,            // "model" or "gfe"
+      humanness_voice_raw: process.env.HUMANNESS_VOICE ?? "(unset, defaults to model)",
+      nudge_enabled: env.NUDGE_ENABLED,
+      nudge_dry_run: env.NUDGE_DRY_RUN,
+      outreach_enabled: env.OUTREACH_ENABLED,
+      outreach_dry_run: env.OUTREACH_DRY_RUN,
+      sub_sync_enabled: env.SUB_SYNC_ENABLED,
       node_env: env.NODE_ENV,
       booted_at: process.env.PEACHBOT_BOOTED_AT ?? "(unknown)",
     });
