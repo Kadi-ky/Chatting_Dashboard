@@ -15,7 +15,7 @@ import {
   upsertShadowAccount,
 } from "../db/repos/accounts.js";
 import { generateMassCaption, isValidVibe } from "../mass/caption.js";
-import { getRecentPlatformErrors, parseRetryAfter, getLastRateLimitInfo } from "../platform/impl/http/client.js";
+import { getRecentPlatformErrors, parseRetryAfter, getLastRateLimitInfo, PlatformHttpClient } from "../platform/impl/http/client.js";
 import {
   recordWebhookEvent,
   getRecentWebhookEvents,
@@ -807,6 +807,80 @@ async function handle(
         const force = url.searchParams.get("force") === "true";
         const result = await triggerSubSyncNow({ force });
         return json(res, 200, result);
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+    }
+
+    // GET /admin/debug/ofapi-fans?account=acct_X[&offset=0&limit=20&type=active]
+    //
+    // One-shot diagnostic: hit OFAPI's /fans/all directly and return the raw
+    // response shape. Subsync has been returning fansSeen=0 with no errors —
+    // we can't view Railway logs so the in-adapter shape logging is invisible.
+    // This endpoint surfaces top-level keys, extractor result, and a sample
+    // fan so we can fix extractFanList / normalizeOfapiFan on solid evidence.
+    if (method === "GET" && path === "/admin/debug/ofapi-fans") {
+      try {
+        const url = new URL(req.url ?? "", `http://${req.headers.host ?? "localhost"}`);
+        const accountParam = (url.searchParams.get("account") ?? "").trim();
+        if (!accountParam.startsWith("acct_")) {
+          return json(res, 400, { error: "?account=acct_X required (real OFAPI id)" });
+        }
+        const offset = Number(url.searchParams.get("offset") ?? "0") || 0;
+        const limit = Number(url.searchParams.get("limit") ?? "20") || 20;
+        const type = url.searchParams.get("type") ?? "active";
+        const client = new PlatformHttpClient();
+        const resp = await client.request<unknown>(
+          `/api/${accountParam}/fans/all`,
+          { query: { limit, offset, type } },
+        );
+        const isObj = typeof resp === "object" && resp !== null;
+        const topLevelKeys = isObj
+          ? Object.keys(resp as Record<string, unknown>).slice(0, 20)
+          : [];
+        // Mirror the extractor's branches inline so we can see which one fired
+        // (or didn't) without coupling to the adapter export shape.
+        let listSource: string = "none";
+        let list: unknown[] = [];
+        if (Array.isArray(resp)) {
+          listSource = "root-array";
+          list = resp;
+        } else if (isObj) {
+          const r = resp as Record<string, unknown>;
+          if (Array.isArray(r.data)) {
+            listSource = "data";
+            list = r.data;
+          } else if (Array.isArray(r.fans)) {
+            listSource = "fans";
+            list = r.fans;
+          } else if (typeof r.data === "object" && r.data !== null) {
+            const d = r.data as Record<string, unknown>;
+            if (Array.isArray(d.fans)) {
+              listSource = "data.fans";
+              list = d.fans;
+            } else if (Array.isArray(d.data)) {
+              listSource = "data.data";
+              list = d.data;
+            }
+          }
+        }
+        const sampleFan = list[0] ?? null;
+        const sampleFanKeys =
+          typeof sampleFan === "object" && sampleFan !== null
+            ? Object.keys(sampleFan as Record<string, unknown>).slice(0, 30)
+            : [];
+        return json(res, 200, {
+          requested: { account: accountParam, offset, limit, type },
+          topLevelKeys,
+          isArray: Array.isArray(resp),
+          listSource,
+          extractedCount: list.length,
+          sampleFanKeys,
+          sampleFan,
+          rawPreview: JSON.stringify(resp).slice(0, 4000),
+        });
       } catch (err) {
         return json(res, 500, {
           error: err instanceof Error ? err.message : String(err),
