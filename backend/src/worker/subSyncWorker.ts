@@ -35,7 +35,11 @@ import { loadAccountById } from "../db/repos/accounts.js";
 
 const TICK_MS = Number(process.env.SUB_SYNC_INTERVAL_MS) || 6 * 3600_000;
 const STARTUP_DELAY_MS = 2 * 60_000;
-const LOCK_TTL_SEC = 3600; // 1h lock per account
+// Lock prevents two concurrent syncs from racing. Sync should complete in
+// <5 min for a typical 2K-fan account; 10-min TTL is plenty without
+// blocking ad-hoc re-runs after a failed attempt. (Was 1h — too long;
+// blocked operator debugging.)
+const LOCK_TTL_SEC = 600;
 
 const lockKey = (accountId: string): string => `peach:subsync:lock:${accountId}`;
 
@@ -60,12 +64,15 @@ export function getRecentSubSyncs(): RecentSync[] {
   return RECENT_SYNCS.slice();
 }
 
-async function syncAccount(accountId: string): Promise<SyncStats | null> {
+async function syncAccount(accountId: string, opts: { force?: boolean } = {}): Promise<SyncStats | { skipped: true; reason: string }> {
   const r = sharedRedis();
+  if (opts.force) {
+    await r.del(lockKey(accountId)).catch(() => undefined);
+  }
   const acquired = await r.set(lockKey(accountId), "1", "EX", LOCK_TTL_SEC, "NX");
   if (acquired !== "OK") {
     logger.debug({ accountId }, "subsync lock held — skipping (another worker syncing)");
-    return null;
+    return { skipped: true, reason: "lock held (TTL 10min) — pass force=true to bypass" };
   }
 
   const account = await loadAccountById(accountId);
@@ -74,7 +81,10 @@ async function syncAccount(accountId: string): Promise<SyncStats | null> {
       { accountId, platformAccountId: account?.platformAccountId },
       "subsync skipped — account missing real OFAPI acct_ id",
     );
-    return null;
+    return {
+      skipped: true,
+      reason: `account row's platform_account_id is "${account?.platformAccountId ?? "null"}" — must start with acct_`,
+    };
   }
 
   const adapter = getPlatformAdapter();
@@ -183,7 +193,10 @@ export function startSubSyncWorker(): SubSyncWorkerHandle | null {
         logger.debug({ reason }, "subsync tick — no allowed accounts");
       } else {
         for (const accountId of accounts) {
-          await syncAccount(accountId);
+          const r = await syncAccount(accountId);
+          if ("skipped" in r) {
+            logger.debug({ accountId, reason: r.reason }, "subsync tick — account skipped");
+          }
         }
       }
     } catch (err) {
@@ -218,28 +231,28 @@ export function startSubSyncWorker(): SubSyncWorkerHandle | null {
 export interface ManualSyncResult {
   syncs: SyncStats[];
   candidates: number;
-  skippedAccounts: string[];
+  skipped: Array<{ accountId: string; reason: string }>;
   reason?: string;
 }
 
-export async function triggerSubSyncNow(): Promise<ManualSyncResult> {
+export async function triggerSubSyncNow(opts: { force?: boolean } = {}): Promise<ManualSyncResult> {
   const { accounts, reason } = await listAllowedAccounts();
   if (accounts.length === 0) {
-    return { syncs: [], candidates: 0, skippedAccounts: [], ...(reason ? { reason } : {}) };
+    return { syncs: [], candidates: 0, skipped: [], ...(reason ? { reason } : {}) };
   }
   const results: SyncStats[] = [];
-  const skipped: string[] = [];
+  const skipped: Array<{ accountId: string; reason: string }> = [];
   for (const accountId of accounts) {
-    const r = await syncAccount(accountId);
-    if (r) results.push(r);
-    else skipped.push(accountId);
+    const r = await syncAccount(accountId, opts);
+    if ("skipped" in r) {
+      skipped.push({ accountId, reason: r.reason });
+    } else {
+      results.push(r);
+    }
   }
   return {
     syncs: results,
     candidates: accounts.length,
-    skippedAccounts: skipped,
-    ...(skipped.length > 0
-      ? { reason: `${skipped.length} accounts skipped — likely Redis lock held (TTL=1h) OR account missing real acct_ id. Check Railway logs for "subsync skipped" / "subsync lock held".` }
-      : {}),
+    skipped,
   };
 }

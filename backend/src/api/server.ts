@@ -768,7 +768,9 @@ async function handle(
     // the operator suspects v3.subscribers is missing recent subs.
     if (method === "POST" && path === "/admin/subsync-now") {
       try {
-        const result = await triggerSubSyncNow();
+        const url = new URL(req.url ?? "", `http://${req.headers.host ?? "localhost"}`);
+        const force = url.searchParams.get("force") === "true";
+        const result = await triggerSubSyncNow({ force });
         return json(res, 200, result);
       } catch (err) {
         return json(res, 500, {
