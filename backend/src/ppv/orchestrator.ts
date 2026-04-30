@@ -305,11 +305,14 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
       // Drip cadence reached — allow this pitch, flag it for support framing.
       dripPitch = true;
     } else {
-      // Still inside the silent rapport window between drips.
+      // Still inside the silent rapport window between drips. Operator
+      // dropped pitchRecoveryMode 2026-04-30: the "be a person, share a
+      // life detail" guidance contradicted post-PPV close-focus. Now we
+      // just return no-pitch for this turn; close-focus + post-unlock
+      // push handle the messaging when there's a recent pending PPV.
       return {
         shouldPitch: false,
-        reason: `pitch_recovery (last ${UNBOUGHT_LOOKBACK} pitches unbought, ${args.turnsSinceLastPitch}/${SUPPORT_DRIP_INTERVAL_TURNS} until next drip)`,
-        pitchRecoveryMode: true,
+        reason: `drip_window (last ${UNBOUGHT_LOOKBACK} pitches unbought, ${args.turnsSinceLastPitch}/${SUPPORT_DRIP_INTERVAL_TURNS} until next drip)`,
       };
     }
   }

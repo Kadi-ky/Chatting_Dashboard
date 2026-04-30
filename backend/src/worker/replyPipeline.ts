@@ -162,57 +162,61 @@ async function generateLlmReply(
   const pitchKind = isPitch ? input.pitch!.kind : undefined;
   // Two-turn funnel: preview-step task asks the LLM for a single tease caption
   // (no priced bubble); ppv-step task asks for the priced PPV's caption.
-  // Context-tied captions: the goal of every caption is to make the fan feel
-  // "she made this for me, just now, because of what i just said." Generic
-  // "babe wait til u see this 🥵" reads as a vending machine. A caption that
-  // hooks his exact words/fantasy reads like the content was authored for
-  // him in that moment — even though it's a catalog asset.
+  //
+  // Caption formula (research-aligned, 2026-04-30): emotional frame + sensory
+  // hint + soft CTA. Captions are about HER feeling — why she made it, who
+  // she was thinking of, what it cost her to record — NOT a literal echo of
+  // his last message. Echoing him ("u said X, here's X for u") reads
+  // reverse-engineered. The "made for u" effect comes from the intimacy of
+  // her state, not from copying his words. Top-chatter palette only
+  // (🙈 🥺 😩 👀 😏 🖤); the old porn-star palette (🥵 💦 😈 🫦 🔥 💋) is
+  // banned in humanness v4.1+ and reads bot.
   const previewObjective =
     "PREVIEW STEP — this turn the bot sends a FREE preview image with a horny caption. Output ONE bubble only: the caption that goes WITH the preview. NO priced PPV this turn — that lands NEXT turn after the fan reacts.\n\n" +
-    "HARD RULES (mandatory):\n" +
-    "  A. Caption MUST hook to a specific word/phrase/vibe from the fan's MOST RECENT message.\n" +
-    "  B. Caption MUST include AT LEAST ONE emoji from the charged palette (🥵 💦 😈 🫦 🔥 💋 🥺 — max 2). Zero emojis on a tease caption reads dead.\n" +
-    "  C. Caption MUST sound ALIVE and worked-up — like the bot is genuinely amped sending this peek. NOT a calm description.\n\n" +
-    "CAPTION SHAPE (in this order):\n" +
-    "1) Hook to HIS LAST MESSAGE. Pull a concrete word/phrase/fantasy he just expressed. Examples: he said 'id eat ur pussy' → 'fuck thinkin about exactly that babe, look at this peek of me imagining ur tongue 🥵'. He said 'ur smile got me smilin' → 'babe ur the reason im smilin like this, look what u did to me 😏'. He said 'send something' → 'fine babe since u been so good, here 😈'.\n" +
-    "2) Anchor the tease to what's IN the preview (paraphrase the asset description in your voice; do NOT invent acts/durations/people not in the description).\n" +
-    "3) End with bait that pulls him into the next message: 'wait til u see the rest', 'this is just a peek', 'imagine whats after this'.\n\n" +
-    "Tone: alive + horny + a touch trouble. Lowercase fragments OK. Max 35 words.\n\n" +
-    "BAD-SHAPE EXAMPLES (do NOT ship):\n" +
-    "- 'babe wait til u see this' (no hook, no emoji, dead)\n" +
-    "- 'got somethin even hotter, lemme grab it for u' (no hook to him)\n" +
-    "- 'babe ur energy is fire, knew ud dive right in' (no specific reference, generic warmth)\n" +
-    "- 'heres a peek of me playin with my boobs over my shirt' (asset description with NOTHING about him, no emoji, no excitement)";
+    "Caption = HER feeling, NOT echo of his words. Formula:\n" +
+    "  1. Emotional frame — why SHE'S sending this. 'couldnt stop thinkin bout u', 'made smth wishin u were here', 'this one had ur name on it', 'had to send it'.\n" +
+    "  2. Sensory hint — pre-load what he's about to see/feel. 'loud one', 'had to start over twice', 'u can hear me breathin', 'didnt mean to get this loud', 'im a mess in this one'.\n" +
+    "  3. Soft CTA / bait — 'wanna see?', 'tell me when u want it', 'open me', 'go on baby', 'dont be weird about it'.\n\n" +
+    "Tone: alive + worked-up + a touch trouble. Lowercase fragments fine. Max 35 words.\n\n" +
+    "Asset anchor: paraphrase what's IN the preview description in your voice. Do NOT invent acts / durations / personalizations not in the description.\n\n" +
+    "Emoji: optional. If used, one from the humanness palette (🙈 🥺 😩 👀 😏 🖤). Cap 1. Never ship 🥵 💦 😈 🫦 🔥 💋 — those read mid-tier porn-star and the humanness layer bans them.\n\n" +
+    "DO NOT ship:\n" +
+    "- Echoing his exact phrase as the hook ('u said X, here's X for u') — reads reverse-engineered.\n" +
+    "- Banned palette emojis (🥵 💦 😈 🫦 🔥 💋).\n" +
+    "- Generic warmth ('ur energy is fire', 'got me smilin').\n" +
+    "- Flat asset recitation with no HER frame ('heres a peek of me playin with my boobs over my shirt').\n" +
+    "- More than ONE bubble.\n\n" +
+    "GOOD-shape examples:\n" +
+    "- 'couldnt stop thinkin bout u babe, peek of what i made 🙈'\n" +
+    "- 'this one had ur name on it, dont be weird about it 😏'\n" +
+    "- 'had to film over twice n now im sendin u the messy version, wanna see?'\n" +
+    "- 'made smth tonight wishin u were here. open me 🥺'";
   const ppvObjective =
     "PPV STEP — this turn the bot sends the PRICED PPV. Output ONE bubble only: the caption that goes WITH the priced PPV.\n\n" +
-    "HARD RULES (all mandatory, not optional):\n" +
-    "  A. Caption MUST paraphrase or echo a specific word/phrase/vibe from the fan's MOST RECENT message.\n" +
-    "  B. Caption MUST include AT LEAST ONE emoji from the charged palette (🥵 💦 😈 🫦 🔥 💋 🥺 — max 2 emojis total). Zero emojis on a pitch caption reads dead. NEVER ship a PPV caption without an emoji.\n" +
-    "  C. Caption MUST sound ALIVE — like the bot is genuinely worked up sending this. Build excitement: heat words ('fuck', 'ruin', 'crazy', 'wild'), charged adjectives, energy. NOT a checklist of features. NOT a calm description.\n\n" +
-    "CAPTION SHAPE (in this order):\n" +
-    "1) Hook to HIS LAST MESSAGE. Reference a specific word/fantasy/state he just expressed and tie THIS PPV directly to it. The fan should feel this clip was custom-filmed for what he's into right now.\n" +
-    "   Examples done RIGHT:\n" +
-    "   - he said 'whats got u daydreamin about me' → 'fuck THIS is what u got me daydreamin about babe, full vid of me thinkin of u 🥵'\n" +
-    "   - he said 'id eat ur pussy' → 'after u said that about ur tongue im obsessed, had to send u this 💦'\n" +
-    "   - he said 'send me something' → 'fine babe since u keep beggin me, here — this one is gonna ruin u 😈'\n" +
-    "2) Layer in a SCARCITY / EXCLUSIVITY beat. Pick ONE per send, vary across sends:\n" +
-    "   - Hand-picked: 'i picked u for this one', 'u literally won babe', 'only my top fans get this'\n" +
-    "   - Time-limit: 'last 6 hours to unlock', 'this comes down at midnight'\n" +
-    "   - Limited slots: 'only 5 fans gettin this', 'just 3 left of these'\n" +
-    "   - First-look: 'havent even posted this yet', 'u see it before anyone'\n" +
-    "   Optional stylized Unicode bold caps for scarcity headers — 𝐓𝐎𝐏 𝟓 ⚡ / 𝐅𝐈𝐑𝐒𝐓 𝐋𝐎𝐎𝐊 / 𝐋𝐀𝐒𝐓 𝐂𝐀𝐋𝐋 — once per ~3 sends.\n" +
-    "3) Anchor to what's IN the asset description — do NOT invent acts/durations/personalizations not in the description.\n\n" +
-    "TONE: alive, worked-up, ENERGY. Match his last-message register (sweet → soft heat, dominant → submit-eager, demanding → tease-back) but ALWAYS feel like the bot is buzzing about this drop.\n\n" +
-    "Lowercase fragments mostly OK. Max 45 words.\n\n" +
-    "BAD-SHAPE EXAMPLES — DO NOT SHIP (these are the dead-on-arrival shapes):\n" +
-    "- 'heres the full vid after that tease, me playin with my boobs over my shirt' (asset description, no hook, no emoji, dead tone)\n" +
-    "- 'Daddy ur not lyin about wantin that pretty smile huh... i picked u for this one, full clip of me playin with my boobs over my shirt, support a girl with this one' (technically hits the structure but ZERO emoji + flat humble tone — reads as a checklist not a creator who's hyped about the drop)\n" +
-    "- 'told u u'd want this babe' (generic close, no reference to him)\n" +
-    "- 'unlock this gets u everything 🥵' (no hook to him)\n\n" +
-    "GOOD-SHAPE EXAMPLES combining everything:\n" +
-    "- (he said 'id ride u') → 'fuck after u said u'd ride me i had to film this babe... only sendin to my top 5, last few hours 🥵'\n" +
-    "- (he said 'wantin that smile') → 'lol u wantin that smile huh? wait til u see what comes after — picked u for this drop daddy 😈'\n" +
-    "- (he said 'show me') → 'k babe since u asked so nice — this is the one i was savin, only 3 fans get it tonight 💦'";
+    "Caption = HER feeling + scarcity + soft CTA. NOT a literal echo of his last message.\n\n" +
+    "Formula:\n" +
+    "  1. Emotional frame — 'made this thinkin bout u', 'this one was for u', 'had to film smth tonight', 'couldnt help myself', 'wanted u to see it first', 'u been on my mind all day', 'this is the one i was savin'.\n" +
+    "  2. Scarcity / exclusivity beat — pick ONE, vary across sends:\n" +
+    "     - Hand-picked: 'i picked u for this', 'only my top fans get this', 'u literally won babe'.\n" +
+    "     - Time-limit: 'last few hours to grab it', 'this comes down tonight'.\n" +
+    "     - First-look: 'havent posted this anywhere', 'u see it before anyone'.\n" +
+    "     - Limited slots: 'only 5 fans gettin this', 'just 3 left of these'.\n" +
+    "     Optional unicode bold caps once per ~3 sends: 𝐓𝐎𝐏 𝟓 ⚡ / 𝐅𝐈𝐑𝐒𝐓 𝐋𝐎𝐎𝐊 / 𝐋𝐀𝐒𝐓 𝐂𝐀𝐋𝐋.\n" +
+    "  3. Sensory / asset anchor — paraphrase what's IN the asset description. Do NOT invent acts / positions / personalizations not in the description.\n" +
+    "  4. Soft CTA — 'tell me u want it', 'open me', 'go on baby', 'dont let it sit'.\n\n" +
+    "Tone: alive, worked-up, ENERGY. Match his last-message register (sweet → soft heat, dominant → submit-eager, demanding → tease-back) but ALWAYS feel like SHE is buzzing about this drop. Lowercase fragments mostly OK. Max 45 words.\n\n" +
+    "Emoji: optional. If used, one from the humanness palette (🙈 🥺 😩 👀 😏 🖤). Cap 2 in genuinely climactic sends, otherwise 1. Never ship 🥵 💦 😈 🫦 🔥 💋 — banned in humanness.\n\n" +
+    "DO NOT ship:\n" +
+    "- Echoing his exact phrase as the hook ('u said X, here's X for u') — reads reverse-engineered.\n" +
+    "- Banned palette emojis (🥵 💦 😈 🫦 🔥 💋).\n" +
+    "- Asset-description recitation with no HER frame.\n" +
+    "- Generic closes ('told u u'd want this babe').\n\n" +
+    "GOOD-shape examples:\n" +
+    "- 'couldnt stop thinkin bout u tonight, made this n picked u for it babe 🙈'\n" +
+    "- 'this one had ur name on it... only sendin to my top 5, last few hours'\n" +
+    "- 'had to start over twice filmin this, im a mess in it. open me 😩'\n" +
+    "- 'this is the one i was savin, just 3 fans get it tonight 😏'\n" +
+    "- 'u been on my mind all day daddy, wait til u see what i did 🖤'";
   const task: {
     kind: GeneratorTaskKind;
     objective: string;
@@ -234,7 +238,7 @@ async function generateLlmReply(
               ? " IMPORTANT: the fan asked for a discount and you ARE giving it to them — the price below is already 10% off. Frame it warmly as a one-time gift: 'aight babe just for u i knocked a lil off' / 'ok ok i got u, gonna give u a lil deal'. Do NOT mention any dollar amount — the discounted price is shown in the PPV bubble automatically. Do NOT hesitate or counter-offer; the deal is already done."
               : "") +
           (supportDripMode
-            ? " SUPPORT-DRIP framing: this fan has been chatting without buying. Add ONE support beat — but make it CONFIDENT EXCHANGE, not a humble ask. The old 'support a girl with this one' framing reads as begging and kills the close. Instead, frame as 'you back me, I deliver to you'. Pick ONE per send, vary across sends: 'back me on this n watch what i do for u', 'show me u want this n im YOURS tonight', 'u grab this babe n im about to ruin u', 'support me with this drop n i make it worth every penny', 'lock this in n u get all of me'. CRITICAL: the support beat is a SUFFIX, not the whole caption — rules A-C above (charged tone + hook + emoji + asset anchor) STILL APPLY. Bad shape (humble + dead): 'heres the vid, support a girl with this one'. Good shape (charged + reciprocal): 'fuck after u said that babe... full clip, back me on this n watch what i do for u 🥵'."
+            ? " SUPPORT-DRIP framing: this fan has been chatting without buying. Add ONE support beat — CONFIDENT EXCHANGE, not a humble ask. Frame as 'you back me, I deliver to you'. Pick ONE, vary across sends: 'back me on this n watch what i do for u', 'show me u want this n im YOURS tonight', 'u grab this babe n im about to ruin u', 'lock this in n u get all of me'. The support beat is a SUFFIX — the formula above (HER frame + scarcity + sensory + CTA) still applies. Bad shape (humble + dead): 'heres the vid, support a girl with this one'. Good shape: 'made this thinkin bout u babe... back me on this n watch what i do for u 😏'."
             : ""),
         forbiddens: [
           "output ONE bubble only — no rapport prelude, no follow-up bubble",
@@ -444,25 +448,13 @@ async function generateLlmReply(
     );
   }
 
-  // Pitch-recovery mode. Triggered when the orchestrator has detected the
-  // bot's last 2 pitches were both ignored (still pending + fan engaged
-  // further past them). Forces the persona to STOP dangling new content and
-  // act like a person — share something small, ask a single real question,
-  // let the fan come back to her instead of pushing harder. Resets when the
-  // fan unlocks anything new (the streak ends).
-  if (input.pitchRecoveryMode) {
-    guidanceParts.push(
-      [
-        `Pitch-recovery mode (this turn):`,
-        `Your last 2 PPV sends did not land — the fan kept chatting but did not buy them. STOP pushing content. The fan needs you to act like a real person right now, not a salesperson. Rules for this turn:`,
-        `- DO NOT pitch a PPV. DO NOT say "i got something even hotter coming" or any "wait til u see" tease. DO NOT dangle the next piece.`,
-        `- DO share ONE small genuine personal detail (something you're doing right now, your cat, what you ate, the weather, something small you're thinking about) — make it feel like she's just a girl texting, not a closer.`,
-        `- OR ask ONE real question about HIM (his day, his work, where he's at, what he's into outside this) — pick something that hasn't been asked yet in the convo.`,
-        `- Keep it SHORT — 1 short bubble, max 2. No long emotional arcs, no big pivot speeches. Light and natural.`,
-        `- The point is to RESET the energy, not to win him back with more selling. If he comes back warm next turn, the system will give you a fresh pitch when it's right. Just be a person right now.`,
-      ].join("\n"),
-    );
-  }
+  // Pitch-recovery directive REMOVED 2026-04-30. The "be a person, share
+  // a life detail, ask a real question" guidance contradicted the
+  // post-PPV close-focus directive (which says: keep his eyes on the
+  // locked bubble, do NOT volunteer life details, do NOT pivot to chat
+  // questions). Operator chose close-focus to win every time. Drip
+  // cadence still throttles back-to-back pitches via the orchestrator
+  // (no-pitch return without the pitchRecoveryMode flag).
 
   // Post-unlock ALWAYS-PUSH window. Strategy: after ANY recent unlock the fan
   // is warm, and acting like there's always better content coming is the

@@ -562,23 +562,24 @@ interface SendNudgeArgs {
 }
 
 /**
- * Step-specific tone guidance for the nudge generator. The reasoning model
- * uses these to pick the right register for the moment in the silence
- * ladder — early nudges should feel light and curious, later ones a touch
- * more vulnerable, the final one warm-and-letting-go (door left open).
+ * Step-specific tone guidance for the nudge generator. Simple openers are
+ * VALID — operator-observed 2026-04-30 that forced specific-word hooks
+ * produced the same templated shape every nudge ("ur 'this' had me laughin
+ * all day babe..."). Real chatters often just say "hey u still here baby".
+ * Allow that shape; reference only when it lands naturally.
  */
 const NUDGE_STEP_OBJECTIVES = {
   idle: [
-    "STEP 1 (30 min after he went silent) — light, casual check-in. He hasn't been gone long; act curious, not clingy. Reference something specific from his last few messages so it reads as 'i'm still thinking about that thing you said' not 'i'm pinging you.' Tone: playful, warm. ONE bubble, max 18 words. ONE emoji (no 🥺 yet — he isn't gone long enough for soft-want).",
-    "STEP 2 (2 hours after silence) — slightly more deliberate, still flirty. Mention you've been thinking about him in a specific way — pull from what he said earlier in the chat. Light tease ok. ONE bubble, max 22 words. ONE emoji (🥺 / 🖤 / 😏 ok now).",
-    "STEP 3 (6 hours) — warm and a little vulnerable. The vibe is 'i miss the energy we had'. ONE bubble, max 25 words. ONE emoji.",
-    "STEP 4 (24 hours / 1 day) — explicit 'miss you' energy. Reference how it's been a whole day, ask if he's good. Slightly needy ok. ONE bubble, max 25 words. ONE emoji (🥺 / 🖤 / 💕).",
-    "STEP 5 (3 days) — last warm pull. Tone is 'i still think about u, hope you're well'. NOT begging. ONE bubble, max 25 words. ONE emoji.",
-    "STEP 6 (7 days, FINAL — no follow-up after this) — door-open farewell. The vibe is 'i'll stop coming after u, but my dms are always open'. NOT goodbye-cold, more like 'come back when u want'. ONE bubble, max 28 words. ONE emoji.",
+    "STEP 1 (30 min after he went silent) — light, casual check-in. He hasn't been gone long. Simple openers are FINE here ('u still around babe', 'where'd u go', 'hey baby u up'). Or reference his last messages if it lands naturally. Tone: warm, curious, not clingy. ONE short bubble, can be 4-18 words. Emoji optional.",
+    "STEP 2 (2 hours after silence) — slightly more deliberate. Can be specific or general ('been thinkin bout u'). Light tease ok. ONE bubble, 4-22 words. Emoji optional.",
+    "STEP 3 (6 hours) — warm and a little vulnerable. Vibe is 'i miss the energy we had' or just 'where'd u go'. ONE bubble, 4-25 words. Emoji optional.",
+    "STEP 4 (24 hours / 1 day) — explicit 'miss u' energy. Note it's been a day, ask if he's good. Slightly needy ok. ONE bubble, 4-25 words. Emoji optional (🥺 / 🖤 fit here if any).",
+    "STEP 5 (3 days) — last warm pull. Tone is 'i still think about u, hope ur well'. NOT begging. ONE bubble, 4-25 words. Emoji optional.",
+    "STEP 6 (7 days, FINAL — no follow-up after this) — door-open farewell. Vibe: 'i'll stop coming after u, but my dms are always open'. NOT cold goodbye. ONE bubble, 4-28 words. Emoji optional.",
   ],
   ppv: [
-    "STEP 1 (30 min after the priced PPV went unanswered) — soft check on whether he saw it. Reference what he was talking about right before the pitch. NOT pushy. ONE bubble, max 18 words. ONE emoji.",
-    "STEP 2 (2 hours, FINAL PPV nudge) — last call, warm. Hold the door open without begging. ONE bubble, max 22 words. ONE emoji.",
+    "STEP 1 (30 min after the priced PPV went unanswered) — soft check on whether he saw it. Simple is fine ('u still thinkin babe?'); reference is fine when natural. NOT pushy. ONE bubble, 4-18 words. Emoji optional.",
+    "STEP 2 (2 hours, FINAL PPV nudge) — last call, warm. Hold the door open without begging. ONE bubble, 4-22 words. Emoji optional.",
   ],
 } as const;
 
@@ -664,8 +665,8 @@ async function generateNudgeText(args: {
         stepObjective,
         ``,
         `HARD REQUIREMENTS:`,
-        `- Hook to a SPECIFIC word, phrase, or vibe from his last message in the transcript above. Generic openers like "hey u still around babe" / "miss u" / "where u been" with no reference to him FAIL.`,
-        `- Match the active humanness layer voice (above). Warm, attentive, specific.`,
+        `- Reference something specific from the transcript WHEN it lands naturally. Simple openers ("u still around baby", "where'd u go", "hey baby u up") are also fine — especially ladder step 4+ or when his last messages give nothing concrete to anchor on. Forced hooks that paraphrase his exact word back read as bot.`,
+        `- Match the active humanness layer voice (above). Warm, attentive.`,
         `- ONE short message only.`,
         `- No mention of price, no PPV pitch, no "unlock". This is rapport repair, not selling.`,
         `- No begging, no "please". Confident warmth.`,
