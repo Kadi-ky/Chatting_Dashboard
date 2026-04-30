@@ -755,8 +755,13 @@ function extractFanList(resp: unknown): unknown[] {
   const r = resp as Record<string, unknown>;
   if (Array.isArray(r.data)) return r.data;
   if (Array.isArray(r.fans)) return r.fans;
+  if (Array.isArray(r.list)) return r.list;
   if (typeof r.data === "object" && r.data !== null) {
     const d = r.data as Record<string, unknown>;
+    // OFAPI's actual shape (confirmed via /admin/debug/ofapi-fans 2026-04-30):
+    //   { data: { list: [...fans...] }, _pagination, _meta }
+    // Older d.fans / d.data branches kept for tier compatibility.
+    if (Array.isArray(d.list)) return d.list;
     if (Array.isArray(d.fans)) return d.fans;
     if (Array.isArray(d.data)) return d.data;
   }

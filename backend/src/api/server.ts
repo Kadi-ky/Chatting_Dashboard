@@ -855,9 +855,15 @@ async function handle(
           } else if (Array.isArray(r.fans)) {
             listSource = "fans";
             list = r.fans;
+          } else if (Array.isArray(r.list)) {
+            listSource = "list";
+            list = r.list;
           } else if (typeof r.data === "object" && r.data !== null) {
             const d = r.data as Record<string, unknown>;
-            if (Array.isArray(d.fans)) {
+            if (Array.isArray(d.list)) {
+              listSource = "data.list";
+              list = d.list;
+            } else if (Array.isArray(d.fans)) {
               listSource = "data.fans";
               list = d.fans;
             } else if (Array.isArray(d.data)) {
