@@ -294,18 +294,33 @@ export class HttpPlatformAdapter implements PlatformAdapter {
   }
 
   // ─── lifecycle ────────────────────────────────────────────────────────
-  async *listSubscribers(ctx: AccountContext, cursor?: string): AsyncIterable<SubscriberSnapshot> {
-    let next = cursor ?? null;
+  // OFAPI: GET /api/{account}/fans/all — offset-based pagination, limit
+  // capped at 20 per page (NOT 100 like our prior cursor-based assumption).
+  // Response shape: { data: [...fan...], _meta: {...} } — `data` may be
+  // a flat array OR { fans: [...], total }. Defensive parser handles
+  // both. The `cursor` arg is ignored (kept for the interface);
+  // paginates internally until OFAPI returns an empty page.
+  async *listSubscribers(ctx: AccountContext, _cursor?: string): AsyncIterable<SubscriberSnapshot> {
+    const PAGE_LIMIT = 20;
+    let offset = 0;
     while (true) {
-      const resp = await this.http.request<PlatformSubscribersResponse>(
-        `/api/${ctx.platformAccountId}/fans`,
-        { query: { cursor: next ?? undefined, limit: 100 } },
+      const resp = await this.http.request<unknown>(
+        `/api/${ctx.platformAccountId}/fans/all`,
+        { query: { limit: PAGE_LIMIT, offset, type: "active" } },
       );
-      for (const s of resp.items) {
-        yield normalizeSubscriber(s);
+      const fans = extractFanList(resp);
+      if (fans.length === 0) break;
+      for (const f of fans) {
+        const snap = normalizeOfapiFan(f);
+        if (snap) yield snap;
       }
-      if (!resp.has_more) break;
-      next = resp.next_cursor;
+      // OFAPI returns FEWER than `limit` rows on the last page; we stop
+      // when a page is short OR empty.
+      if (fans.length < PAGE_LIMIT) break;
+      offset += PAGE_LIMIT;
+      // Defensive ceiling — operators shouldn't have >50K fans on one
+      // creator. Stops a runaway loop if pagination gets confused.
+      if (offset >= 50_000) break;
     }
   }
 
@@ -700,6 +715,66 @@ function normalizeSubscriber(s: PlatformSubscriberItem): SubscriberSnapshot {
     ...(s.expires_at !== undefined ? { expiresAt: new Date(s.expires_at) } : {}),
     isActive: s.is_active,
     metadata: s as Record<string, unknown>,
+  };
+}
+
+/**
+ * OFAPI's /fans/all response is wrapped in different shapes depending
+ * on tier — sometimes { data: [...] }, sometimes { data: { fans: [...] } },
+ * sometimes a bare array. This handles all three.
+ */
+function extractFanList(resp: unknown): unknown[] {
+  if (Array.isArray(resp)) return resp;
+  if (typeof resp !== "object" || resp === null) return [];
+  const r = resp as Record<string, unknown>;
+  if (Array.isArray(r.data)) return r.data;
+  if (Array.isArray(r.fans)) return r.fans;
+  if (typeof r.data === "object" && r.data !== null) {
+    const d = r.data as Record<string, unknown>;
+    if (Array.isArray(d.fans)) return d.fans;
+    if (Array.isArray(d.data)) return d.data;
+  }
+  return [];
+}
+
+/**
+ * OFAPI fan shape uses camelCase + numeric ids, different from our
+ * snake_case PlatformSubscriberItem normalization. Common fields seen
+ * across OFAPI tiers:
+ *   { id: <number>, name?: string, username?: string, isActive?: bool,
+ *     subscribedBy?: ISO, subscribedByExpireDate?: ISO, ... }
+ * Coerces id to string for our internal model. Returns null if no id.
+ */
+function normalizeOfapiFan(f: unknown): SubscriberSnapshot | null {
+  if (typeof f !== "object" || f === null) return null;
+  const r = f as Record<string, unknown>;
+  const rawId = r.id ?? r.userId ?? r.user_id;
+  if (rawId == null) return null;
+  const externalId = String(rawId);
+  // Display name: prefer `name`, then `username`, then null.
+  let displayName: string | undefined;
+  if (typeof r.name === "string" && r.name.trim().length > 0) displayName = r.name.trim();
+  else if (typeof r.username === "string" && r.username.trim().length > 0) displayName = r.username.trim();
+  // Subscription dates — OFAPI uses subscribedBy / subscribedByExpireDate.
+  const subscribedAt =
+    typeof r.subscribedBy === "string" ? new Date(r.subscribedBy)
+    : typeof r.subscribed_at === "string" ? new Date(r.subscribed_at)
+    : undefined;
+  const expiresAt =
+    typeof r.subscribedByExpireDate === "string" ? new Date(r.subscribedByExpireDate)
+    : typeof r.expires_at === "string" ? new Date(r.expires_at)
+    : undefined;
+  const isActive =
+    typeof r.isActive === "boolean" ? r.isActive
+    : typeof r.is_active === "boolean" ? r.is_active
+    : true; // default to active when filter=active is the query
+  return {
+    externalId,
+    ...(displayName ? { displayName } : {}),
+    ...(subscribedAt && !Number.isNaN(subscribedAt.getTime()) ? { subscribedAt } : {}),
+    ...(expiresAt && !Number.isNaN(expiresAt.getTime()) ? { expiresAt } : {}),
+    isActive,
+    metadata: r,
   };
 }
 
