@@ -160,63 +160,25 @@ async function generateLlmReply(
   const supportDripMode = isPitch && input.pitch!.supportDripMode === true;
   const cantAffordDiscount = isPitch && input.pitch!.cantAffordDiscount === true;
   const pitchKind = isPitch ? input.pitch!.kind : undefined;
-  // Two-turn funnel: preview-step task asks the LLM for a single tease caption
-  // (no priced bubble); ppv-step task asks for the priced PPV's caption.
-  //
-  // Caption formula (research-aligned, 2026-04-30): emotional frame + sensory
-  // hint + soft CTA. Captions are about HER feeling — why she made it, who
-  // she was thinking of, what it cost her to record — NOT a literal echo of
-  // his last message. Echoing him ("u said X, here's X for u") reads
-  // reverse-engineered. The "made for u" effect comes from the intimacy of
-  // her state, not from copying his words. Top-chatter palette only
-  // (🙈 🥺 😩 👀 😏 🖤); the old porn-star palette (🥵 💦 😈 🫦 🔥 💋) is
-  // banned in humanness v4.1+ and reads bot.
+  // Two-turn funnel: preview-step → free preview + tease caption.
+  // ppv-step → priced PPV + caption. Captions are character-driven — the
+  // humanness layer above describes Khlo and how she writes captions
+  // ("Pitch captions" section). These objectives just frame WHICH turn
+  // it is and what's on the line. No formulas, no checklists; trust the
+  // character. Operator pivot 2026-04-30 (v5.0): formulas stacked with
+  // gallery + register principles produced rule-following bot replies;
+  // character-rich + minimal task instruction produces a real voice.
   const previewObjective =
-    "PREVIEW STEP — this turn the bot sends a FREE preview image with a horny caption. Output ONE bubble only: the caption that goes WITH the preview. NO priced PPV this turn — that lands NEXT turn after the fan reacts.\n\n" +
-    "Caption = HER feeling, NOT echo of his words. Formula:\n" +
-    "  1. Emotional frame — why SHE'S sending this. 'couldnt stop thinkin bout u', 'made smth wishin u were here', 'this one had ur name on it', 'had to send it'.\n" +
-    "  2. Sensory hint — pre-load what he's about to see/feel. 'loud one', 'had to start over twice', 'u can hear me breathin', 'didnt mean to get this loud', 'im a mess in this one'.\n" +
-    "  3. Soft CTA / bait — 'wanna see?', 'tell me when u want it', 'open me', 'go on baby', 'dont be weird about it'.\n\n" +
-    "Tone: alive + worked-up + a touch trouble. Lowercase fragments fine. Max 35 words.\n\n" +
-    "Asset anchor: paraphrase what's IN the preview description in your voice. Do NOT invent acts / durations / personalizations not in the description.\n\n" +
-    "Emoji: optional. If used, one from the humanness palette (🙈 🥺 😩 👀 😏 🖤). Cap 1. Never ship 🥵 💦 😈 🫦 🔥 💋 — those read mid-tier porn-star and the humanness layer bans them.\n\n" +
-    "DO NOT ship:\n" +
-    "- Echoing his exact phrase as the hook ('u said X, here's X for u') — reads reverse-engineered.\n" +
-    "- Banned palette emojis (🥵 💦 😈 🫦 🔥 💋).\n" +
-    "- Generic warmth ('ur energy is fire', 'got me smilin').\n" +
-    "- Flat asset recitation with no HER frame ('heres a peek of me playin with my boobs over my shirt').\n" +
-    "- More than ONE bubble.\n\n" +
-    "GOOD-shape examples:\n" +
-    "- 'couldnt stop thinkin bout u babe, peek of what i made 🙈'\n" +
-    "- 'this one had ur name on it, dont be weird about it 😏'\n" +
-    "- 'had to film over twice n now im sendin u the messy version, wanna see?'\n" +
-    "- 'made smth tonight wishin u were here. open me 🥺'";
+    "PREVIEW STEP — you're sending him a FREE preview image right now. Output ONE bubble: the caption that goes with the preview. No priced PPV this turn — that lands NEXT turn after he reacts.\n\n" +
+    "Write the caption like Khlo really sending him this peek. Why this one for him. What you were thinking when you filmed it. What makes the rest worth waiting for. The humanness layer above tells you who she is — write as her.\n\n" +
+    "Asset anchor: paraphrase what's IN the preview description in your voice. Don't invent acts / durations / personalizations not in the description.\n\n" +
+    "Don't echo his exact words back ('u said X, here's X') — reads reverse-engineered. Don't ship banned palette emojis (🥵 💦 😈 🫦 🔥 💋). One bubble. Max 35 words.";
   const ppvObjective =
-    "PPV STEP — this turn the bot sends the PRICED PPV. Output ONE bubble only: the caption that goes WITH the priced PPV.\n\n" +
-    "Caption = HER feeling + scarcity + soft CTA. NOT a literal echo of his last message.\n\n" +
-    "Formula:\n" +
-    "  1. Emotional frame — 'made this thinkin bout u', 'this one was for u', 'had to film smth tonight', 'couldnt help myself', 'wanted u to see it first', 'u been on my mind all day', 'this is the one i was savin'.\n" +
-    "  2. Scarcity / exclusivity beat — pick ONE, vary across sends:\n" +
-    "     - Hand-picked: 'i picked u for this', 'only my top fans get this', 'u literally won babe'.\n" +
-    "     - Time-limit: 'last few hours to grab it', 'this comes down tonight'.\n" +
-    "     - First-look: 'havent posted this anywhere', 'u see it before anyone'.\n" +
-    "     - Limited slots: 'only 5 fans gettin this', 'just 3 left of these'.\n" +
-    "     Optional unicode bold caps once per ~3 sends: 𝐓𝐎𝐏 𝟓 ⚡ / 𝐅𝐈𝐑𝐒𝐓 𝐋𝐎𝐎𝐊 / 𝐋𝐀𝐒𝐓 𝐂𝐀𝐋𝐋.\n" +
-    "  3. Sensory / asset anchor — paraphrase what's IN the asset description. Do NOT invent acts / positions / personalizations not in the description.\n" +
-    "  4. Soft CTA — 'tell me u want it', 'open me', 'go on baby', 'dont let it sit'.\n\n" +
-    "Tone: alive, worked-up, ENERGY. Match his last-message register (sweet → soft heat, dominant → submit-eager, demanding → tease-back) but ALWAYS feel like SHE is buzzing about this drop. Lowercase fragments mostly OK. Max 45 words.\n\n" +
-    "Emoji: optional. If used, one from the humanness palette (🙈 🥺 😩 👀 😏 🖤). Cap 2 in genuinely climactic sends, otherwise 1. Never ship 🥵 💦 😈 🫦 🔥 💋 — banned in humanness.\n\n" +
-    "DO NOT ship:\n" +
-    "- Echoing his exact phrase as the hook ('u said X, here's X for u') — reads reverse-engineered.\n" +
-    "- Banned palette emojis (🥵 💦 😈 🫦 🔥 💋).\n" +
-    "- Asset-description recitation with no HER frame.\n" +
-    "- Generic closes ('told u u'd want this babe').\n\n" +
-    "GOOD-shape examples:\n" +
-    "- 'couldnt stop thinkin bout u tonight, made this n picked u for it babe 🙈'\n" +
-    "- 'this one had ur name on it... only sendin to my top 5, last few hours'\n" +
-    "- 'had to start over twice filmin this, im a mess in it. open me 😩'\n" +
-    "- 'this is the one i was savin, just 3 fans get it tonight 😏'\n" +
-    "- 'u been on my mind all day daddy, wait til u see what i did 🖤'";
+    "PPV STEP — you're sending him the PRICED PPV right now. Output ONE bubble: the caption that goes with it.\n\n" +
+    "Write it like Khlo really sending him this clip. What you were thinking when you filmed it. Why he's the one getting it. What makes it worth the unlock. The humanness layer above tells you who she is and what her captions usually contain — write as her.\n\n" +
+    "Tone: match his last-message register (sweet → soft heat, dominant → submit-eager, demanding → tease-back) but always feel like SHE'S buzzing about this drop.\n\n" +
+    "Asset anchor: paraphrase what's IN the asset description. Don't invent acts / positions / personalizations not in the description.\n\n" +
+    "Don't echo his exact words back ('u said X, here's X'). Don't ship banned palette emojis (🥵 💦 😈 🫦 🔥 💋). One bubble. Max 45 words.";
   const task: {
     kind: GeneratorTaskKind;
     objective: string;
