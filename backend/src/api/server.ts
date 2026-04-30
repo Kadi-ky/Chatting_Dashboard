@@ -190,8 +190,12 @@ async function handle(
           .executeTakeFirst(),
       ]);
 
-      // Window-scoped pitch + message counts
-      const [windowMessages, windowPitches] = await Promise.all([
+      // Window-scoped pitch + message counts. Pitches are filtered to
+      // EXCLUDE synthetic test fans (loop-* / longtime-* / *-probe-*) so
+      // the conversion rate + revenue numbers reflect real customers
+      // only — operator caught this 2026-04-30 ("are you sure the $60 is
+      // not from test?").
+      const [windowMessages, windowPitches, windowPitchesAll] = await Promise.all([
         db
           .selectFrom("v3.messages")
           .select([
@@ -201,13 +205,30 @@ async function handle(
           ])
           .where(sql<SqlBool>`created_at >= ${cutoff}`)
           .executeTakeFirst(),
+        // Real-fan-only pitches (test fans excluded via subscriber join).
+        db
+          .selectFrom("v3.ppv_attempts as a")
+          .innerJoin("v3.conversations as c", "c.id", "a.conversation_id")
+          .innerJoin("v3.subscribers as s", "s.id", "c.subscriber_id")
+          .select([
+            sql<string>`count(*)`.as("total"),
+            sql<string>`count(*) filter (where a.outcome='unlocked')`.as("unlocked"),
+            sql<string>`count(*) filter (where a.outcome='pending')`.as("pending"),
+            sql<string>`count(*) filter (where a.outcome='expired')`.as("expired"),
+            sql<string>`coalesce(sum(a.price_cents) filter (where a.outcome='unlocked'), 0)`.as("revenue_window_cents"),
+          ])
+          .where(sql<SqlBool>`a.pitched_at >= ${cutoff}`)
+          .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
+          .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
+          .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
+          .executeTakeFirst(),
+        // ALL pitches (including test) — surfaced as a separate field so
+        // the operator can see how much of the gross is test-fan noise.
         db
           .selectFrom("v3.ppv_attempts")
           .select([
             sql<string>`count(*)`.as("total"),
             sql<string>`count(*) filter (where outcome='unlocked')`.as("unlocked"),
-            sql<string>`count(*) filter (where outcome='pending')`.as("pending"),
-            sql<string>`count(*) filter (where outcome='expired')`.as("expired"),
             sql<string>`coalesce(sum(price_cents) filter (where outcome='unlocked'), 0)`.as("revenue_window_cents"),
           ])
           .where(sql<SqlBool>`pitched_at >= ${cutoff}`)
@@ -239,6 +260,13 @@ async function handle(
           conversionRate: windowPitches && Number(windowPitches.total) > 0
             ? Number(((Number(windowPitches.unlocked) / Number(windowPitches.total)) * 100).toFixed(1))
             : 0,
+          note: "real fans only — synthetic test fans excluded",
+        },
+        windowPitchesIncludingTest: {
+          total: Number(windowPitchesAll?.total ?? 0),
+          unlocked: Number(windowPitchesAll?.unlocked ?? 0),
+          revenueCents: Number(windowPitchesAll?.revenue_window_cents ?? 0),
+          note: "ALL pitches (test fans included). Compare to windowPitches above to see how much is synthetic.",
         },
         phaseDistribution: phases.map((p) => ({
           phase: p.phase,
