@@ -114,7 +114,13 @@ interface NudgeState {
  * errors: if we can't acquire the lock, we don't fire (better silent than
  * spamming).
  */
-const NUDGE_LOCK_TTL_SEC = 25 * 60;
+// Lock TTL must cover the LARGEST gap in the ladder + a safety margin so
+// state_ctx write failures can't allow a re-fire within an earlier step's
+// window. With 30m / 2h / 6h ladder, max gap is 6h. Setting TTL to 6h+30min
+// means even if state_ctx is corrupt, no conv can fire more than once per
+// 6.5h. The lock is also cleared on fan inbound (clearIdleNudgeState),
+// so legitimate re-engagement after the fan replies still works.
+const NUDGE_LOCK_TTL_SEC = 6 * 3600 + 30 * 60; // 6h 30min
 const nudgeLockKey = (convId: string): string => `peach:nudge:lock:any:${convId}`;
 
 async function tryAcquireNudgeLock(convId: string): Promise<boolean> {
@@ -474,25 +480,33 @@ async function writeNudgeState(convId: string, next: NudgeState): Promise<void> 
  * ppvNudges (those are keyed per ppv_attempt and naturally retire when
  * the attempt resolves).
  *
- * Implementation: jsonb_set the {nudge,idleCount} key to 0 and
- * {nudge,lastIdleAt} to null. Other keys under "nudge" are preserved.
+ * Two operations:
+ *   1. jsonb_set state_ctx.nudge.idleCount to 0 + lastIdleAt to null.
+ *   2. DELETE the Redis lock key (peach:nudge:lock:any:<convId>) so
+ *      legitimate post-reply nudge cycles aren't blocked by the long
+ *      lock TTL (6h30m — sized for ladder gap, not state-reset).
  */
 export async function clearIdleNudgeState(convId: string): Promise<void> {
-  await sql`
-    UPDATE v3.conversations
-    SET state_ctx = jsonb_set(
-      jsonb_set(
-        coalesce(state_ctx, '{}'::jsonb),
-        '{nudge,idleCount}',
-        '0'::jsonb,
+  await Promise.all([
+    sql`
+      UPDATE v3.conversations
+      SET state_ctx = jsonb_set(
+        jsonb_set(
+          coalesce(state_ctx, '{}'::jsonb),
+          '{nudge,idleCount}',
+          '0'::jsonb,
+          true
+        ),
+        '{nudge,lastIdleAt}',
+        'null'::jsonb,
         true
-      ),
-      '{nudge,lastIdleAt}',
-      'null'::jsonb,
-      true
-    )
-    WHERE id = ${convId}
-  `.execute(db);
+      )
+      WHERE id = ${convId}
+    `.execute(db),
+    // Drop the conv-wide nudge lock; if the fan went silent again, the
+    // ladder starts fresh from step 1 instead of being blocked for 6+ hours.
+    sharedRedis().del(nudgeLockKey(convId)).catch(() => undefined),
+  ]);
 }
 
 async function getLastInboundAt(convId: string): Promise<Date | null> {

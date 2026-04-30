@@ -195,25 +195,29 @@ async function writeOutreachState(convId: string, next: OutreachState): Promise<
  * Reset outreach counters when a fan finally replies. Called from
  * conversationWorker on every inbound webhook so a fan who ghosted but came
  * back gets a fresh outreach ladder if they go silent again.
+ * Also drops the conv-wide outreach Redis lock for the same reason.
  */
 export async function clearOutreachState(convId: string): Promise<void> {
-  await sql`
-    UPDATE v3.conversations
-    SET state_ctx = jsonb_set(
-      jsonb_set(
+  await Promise.all([
+    sql`
+      UPDATE v3.conversations
+      SET state_ctx = jsonb_set(
         jsonb_set(
           jsonb_set(
-            coalesce(state_ctx, '{}'::jsonb),
-            '{outreach,coldCount}', '0'::jsonb, true
+            jsonb_set(
+              coalesce(state_ctx, '{}'::jsonb),
+              '{outreach,coldCount}', '0'::jsonb, true
+            ),
+            '{outreach,lastColdAt}', 'null'::jsonb, true
           ),
-          '{outreach,lastColdAt}', 'null'::jsonb, true
+          '{outreach,reactCount}', '0'::jsonb, true
         ),
-        '{outreach,reactCount}', '0'::jsonb, true
-      ),
-      '{outreach,lastReactAt}', 'null'::jsonb, true
-    )
-    WHERE id = ${convId}
-  `.execute(db);
+        '{outreach,lastReactAt}', 'null'::jsonb, true
+      )
+      WHERE id = ${convId}
+    `.execute(db),
+    sharedRedis().del(lockKey(convId)).catch(() => undefined),
+  ]);
 }
 
 // ─── Recent-fires diag ring ──────────────────────────────────────────────
