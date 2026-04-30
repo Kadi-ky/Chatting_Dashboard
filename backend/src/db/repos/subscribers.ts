@@ -52,6 +52,33 @@ export async function markLastOutbound(subscriberId: string, at: Date): Promise<
     .execute();
 }
 
+/**
+ * Increment a subscriber's spend totals when they unlock something. Called
+ * from conversationWorker.handlePpvUnlocked. Without this, total_spend_cents
+ * + spend_30d_cents stay at zero forever and the top-fans / lifetime-revenue
+ * metrics in /diag/engagement read as empty even when real unlocks happen.
+ *
+ * The 30d field tracks rolling spend from the last 30 days. PostgreSQL has
+ * no clean atomic way to "decrement after 30 days," so we just additive
+ * here and rely on a periodic sweep (TODO) to subtract spend that aged out.
+ * For now spend_30d_cents drifts up monotonically — it's still useful for
+ * "who spent recently" comparison, just not a perfect 30-day rolling window.
+ */
+export async function incrementSubscriberSpend(
+  subscriberId: string,
+  amountCents: number,
+): Promise<void> {
+  if (amountCents <= 0) return;
+  await db
+    .updateTable("v3.subscribers")
+    .set({
+      total_spend_cents: sql<number>`coalesce(total_spend_cents, 0) + ${amountCents}`,
+      spend_30d_cents: sql<number>`coalesce(spend_30d_cents, 0) + ${amountCents}`,
+    })
+    .where("id", "=", subscriberId)
+    .execute();
+}
+
 export interface SubscriberSnapshotRow {
   id: string;
   totalSpendCents: number;

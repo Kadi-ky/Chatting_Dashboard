@@ -2,7 +2,7 @@ import type { Worker } from "bullmq";
 import { logger } from "../observability/logger.js";
 import { deserializeEvent, inboundWorker, type InboundJobData } from "../queue/inbound.js";
 import { recordEvent, markEventProcessed } from "../db/repos/events.js";
-import { upsertSubscriber, markLastInbound } from "../db/repos/subscribers.js";
+import { upsertSubscriber, markLastInbound, incrementSubscriberSpend } from "../db/repos/subscribers.js";
 import { ensureConversation, touchConversation } from "../db/repos/conversations.js";
 import { insertMessage } from "../db/repos/messages.js";
 import {
@@ -228,6 +228,11 @@ async function handlePpvUnlocked(accountId: string, event: PlatformEvent): Promi
     await Promise.all([
       incrementUnlockCounter(attempt.assetId, priceCents),
       bumpUnlock(attempt.assetId, archetypeSlice(archetype), priceCents),
+      // Update the subscriber's spend rollup so /diag/engagement
+      // top-fans + lifetime-revenue reflect real unlocks. Was missing —
+      // operator caught it 2026-04-30 (topFans empty despite $60 in
+      // window pitches because total_spend_cents wasn't being maintained).
+      incrementSubscriberSpend(subscriberId, priceCents),
     ]);
   }
   const pacingBucket = pickPacingVariant(conversationId).id;
