@@ -35,7 +35,6 @@ import {
 } from 'lucide-react'
 import html2canvas from 'html2canvas'
 import { supabase } from './lib/supabase'
-import ConversationsTab from './components/ConversationsTab'
 import V3TestingGroundTab from './components/V3TestingGroundTab'
 
 // Creator UUIDs that belong to the V3 test loop / sandbox accounts. These
@@ -908,11 +907,11 @@ function Navbar({ creators, creatorUuid, onCreatorChange, activeTab, onTabChange
           </div>
         </div>
         <div className="hidden md:flex items-center gap-6">
-          {['Home', 'Messages', 'Conversations', 'Testing Ground Chatbot'].map(
+          {['Home', 'Metrics', 'Conversations'].map(
             (item) => {
               const tabKey = item.toLowerCase()
               const isActive = tabKey === activeTab
-              const clickable = tabKey === 'home' || tabKey === 'messages' || tabKey === 'conversations' || tabKey === 'testing ground chatbot'
+              const clickable = tabKey === 'home' || tabKey === 'metrics' || tabKey === 'conversations'
               return (
                 <button
                   key={item}
@@ -2002,7 +2001,7 @@ function MessagesTab({ creatorUuid }) {
     <div className="mt-3 sm:mt-5 space-y-3 sm:space-y-5">
       {/* Range Preset Dropdown */}
       <div className="flex items-center gap-3">
-        <h2 className="text-lg font-bold text-white">Messages</h2>
+        <h2 className="text-lg font-bold text-white">Metrics</h2>
         <div className="flex items-center gap-1.5 bg-white/10 border border-white/10 rounded-xl px-3 py-1.5">
           <Calendar className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
           <select
@@ -2190,7 +2189,7 @@ export default function App() {
 
         {/* Mobile tab switcher */}
         <div className="flex md:hidden mt-3 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-1 gap-1">
-          {['Home', 'Messages', 'Conversations', 'Testing Ground Chatbot'].map((item) => {
+          {['Home', 'Metrics', 'Conversations'].map((item) => {
             const tabKey = item.toLowerCase()
             return (
               <button
@@ -2236,15 +2235,11 @@ export default function App() {
           </>
         )}
 
-        {activeTab === 'messages' && (
+        {activeTab === 'metrics' && (
           <MessagesTab creatorUuid={creatorUuid} />
         )}
 
         {activeTab === 'conversations' && (
-          <ConversationsTab creatorUuid={creatorUuid} />
-        )}
-
-        {activeTab === 'testing ground chatbot' && (
           <V3TestingGroundTab />
         )}
       </div>
