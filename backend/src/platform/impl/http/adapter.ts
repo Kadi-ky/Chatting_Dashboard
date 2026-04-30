@@ -303,23 +303,49 @@ export class HttpPlatformAdapter implements PlatformAdapter {
   async *listSubscribers(ctx: AccountContext, _cursor?: string): AsyncIterable<SubscriberSnapshot> {
     const PAGE_LIMIT = 20;
     let offset = 0;
+    let firstPageLogged = false;
     while (true) {
       const resp = await this.http.request<unknown>(
         `/api/${ctx.platformAccountId}/fans/all`,
         { query: { limit: PAGE_LIMIT, offset, type: "active" } },
       );
+      // Log the first page's raw response shape so we can adjust the
+      // parser if OFAPI returns something we didn't anticipate. Logged
+      // once per sync run; structured (top-level keys + sample row).
+      if (!firstPageLogged) {
+        firstPageLogged = true;
+        const sampleKeys =
+          typeof resp === "object" && resp !== null
+            ? Object.keys(resp as Record<string, unknown>).slice(0, 10)
+            : [];
+        const sampleFan = extractFanList(resp)[0] ?? null;
+        const sampleFanKeys =
+          typeof sampleFan === "object" && sampleFan !== null
+            ? Object.keys(sampleFan as Record<string, unknown>).slice(0, 15)
+            : [];
+        logger.info(
+          {
+            platformAccountId: ctx.platformAccountId,
+            topLevelKeys: sampleKeys,
+            extractedListLength: extractFanList(resp).length,
+            firstFanKeys: sampleFanKeys,
+            firstFanPreview:
+              typeof sampleFan === "object" && sampleFan !== null
+                ? JSON.stringify(sampleFan).slice(0, 300)
+                : null,
+            isArray: Array.isArray(resp),
+          },
+          "subsync first-page response shape",
+        );
+      }
       const fans = extractFanList(resp);
       if (fans.length === 0) break;
       for (const f of fans) {
         const snap = normalizeOfapiFan(f);
         if (snap) yield snap;
       }
-      // OFAPI returns FEWER than `limit` rows on the last page; we stop
-      // when a page is short OR empty.
       if (fans.length < PAGE_LIMIT) break;
       offset += PAGE_LIMIT;
-      // Defensive ceiling — operators shouldn't have >50K fans on one
-      // creator. Stops a runaway loop if pagination gets confused.
       if (offset >= 50_000) break;
     }
   }
