@@ -344,7 +344,11 @@ export class HttpPlatformAdapter implements PlatformAdapter {
         const snap = normalizeOfapiFan(f);
         if (snap) yield snap;
       }
-      if (fans.length < PAGE_LIMIT) break;
+      // OFAPI returns partial pages (e.g., 19 instead of 20) even when
+      // more data remains — confirmed via /admin/debug/ofapi-fans at
+      // offsets 40 and 60 both returning 19. Don't break on partial; only
+      // break on empty. The 50_000 offset cap below guards against an
+      // infinite loop if OFAPI ever stops returning empty at the tail.
       offset += PAGE_LIMIT;
       if (offset >= 50_000) break;
     }
