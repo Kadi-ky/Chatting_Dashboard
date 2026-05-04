@@ -44,8 +44,16 @@ const envSchema = z.object({
 
   GROK_API_KEY: z.string().min(1),
   GROK_API_BASE: z.string().url().default("https://api.x.ai/v1"),
-  GROK_MODEL_GENERATOR: z.string().default("grok-4"),
-  GROK_MODEL_CLASSIFIER: z.string().default("grok-4-1-fast-reasoning"),
+  // Operator decision 2026-05-04: drop premium grok-4 + reasoning models.
+  // grok-4 was ~$3/M in / $15/M out and was burning ~$20/day on chat replies
+  // alone (humanness ~5K input tokens × every turn). grok-4-1-fast-reasoning
+  // billed hidden chain-of-thought as output tokens. Switched all three
+  // (generator / classifier / nudge) to grok-4-1-fast (non-reasoning) for
+  // a substantial cost cut. Voice quality with v5.0 humanness should hold
+  // since the character is rich enough that even the non-reasoning model
+  // can stay in voice.
+  GROK_MODEL_GENERATOR: z.string().default("grok-4-1-fast"),
+  GROK_MODEL_CLASSIFIER: z.string().default("grok-4-1-fast"),
   // Humanness voice mode. "model" = professional OF chatter (always-on
   // sexual undertone, body-talk in foreground, what real top-tier creators
   // write). "gfe" = original girlfriend-experience voice (v1.8 — pick-me /
@@ -53,11 +61,10 @@ const envSchema = z.object({
   // per operator request to "talk like an onlyfans model not a normal
   // chatter." Flip to "gfe" via Railway env to fall back without redeploy.
   HUMANNESS_VOICE: z.enum(["model", "gfe"]).default("model"),
-  // Nudge generator — operator chose grok-4.1 reasoning so the re-engagement
-  // line has access to the conversation context and reasons about the right
-  // tone (sweet vs flirty vs apologetic) for each step. Independent of the
-  // chat generator so we can tune separately.
-  GROK_MODEL_NUDGE: z.string().default("grok-4-1-fast-reasoning"),
+  // Nudge generator. Switched 2026-05-04 from grok-4-1-fast-reasoning to
+  // grok-4-1-fast (non-reasoning) along with the other two. Independent
+  // env so we can tune separately if nudge quality drops.
+  GROK_MODEL_NUDGE: z.string().default("grok-4-1-fast"),
 
   OPENROUTER_API_KEY: z.string().optional(),
   OPENROUTER_API_BASE: z.string().url().default("https://openrouter.ai/api/v1"),
