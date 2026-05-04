@@ -416,14 +416,27 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     await clearFunnel(args.conversationId, picked.asset.id);
   }
 
+  // Operator directive 2026-04-30: preview is the funnel INTRODUCTION
+  // only. Once the fan has unlocked anything in this conversation, every
+  // subsequent rung goes straight to priced PPV — no second preview, no
+  // third preview, etc. Previously the rule was "new asset + preview
+  // configured → preview", which made each new rung re-fire the preview
+  // step (operator-observed: "after PPV1 bought it resends the preview
+  // and doesn't send PPV2"). Lookback is generous (50) so even chat-heavy
+  // post-unlock conversations correctly remember the fan has bought.
+  const recentAttemptsForFunnel = await listRecentAttempts(args.conversationId, 50);
+  const hasPriorUnlockInConversation = recentAttemptsForFunnel.some(
+    (a) => a.outcome === "unlocked",
+  );
+
   let kind: "preview" | "ppv";
-  if (picked.previewMediaRef && funnelStep === "none") {
-    // New asset + preview is configured → ALWAYS start with the teaser,
-    // regardless of what AI decided. The AI can still gate "rapport" /
-    // "sext_more" above to defer pitching at all. But once we're pitching
-    // a new asset, the structural rule is teaser → wait → priced PPV.
+  if (picked.previewMediaRef && funnelStep === "none" && !hasPriorUnlockInConversation) {
+    // FIRST pitch in this conversation + asset has preview → start with
+    // the teaser. The AI can still gate "rapport" / "sext_more" above to
+    // defer pitching at all. But once we're pitching the first asset,
+    // the structural rule is teaser → wait → priced PPV.
     kind = "preview";
-  } else if (readiness.decision === "preview") {
+  } else if (readiness.decision === "preview" && !hasPriorUnlockInConversation) {
     // AI wanted preview but either preview already sent (funnelStep) or
     // no preview asset configured. Step back to rapport.
     return {
@@ -435,6 +448,7 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   } else {
     // funnelStep === "preview_sent" → fan saw the teaser, now the priced PPV.
     // OR: asset has no preview configured → straight to priced.
+    // OR: hasPriorUnlockInConversation → skip preview entirely (post-first-unlock).
     kind = "ppv";
   }
 
