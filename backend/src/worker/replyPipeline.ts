@@ -63,6 +63,8 @@ export interface GenerateReplyInput {
     cantAffordDiscount?: boolean;
     /** True when this is a "support-drip" pitch — fan has been ignoring pitches; bot is doing a periodic re-ask with explicit "support me" framing. */
     supportDripMode?: boolean;
+    /** True when this is a periodic loyalty-bundle pitch — fan has 2+ unlocks in convo, fires every ~7d, 25% off, framed as thank-you bundle. */
+    loyaltyBundle?: boolean;
     /** Free preview media ref. Required when kind="preview". */
     previewMediaRef?: string;
   };
@@ -159,6 +161,7 @@ async function generateLlmReply(
   const discountApplied = isPitch && input.pitch!.discountApplied === true;
   const supportDripMode = isPitch && input.pitch!.supportDripMode === true;
   const cantAffordDiscount = isPitch && input.pitch!.cantAffordDiscount === true;
+  const loyaltyBundle = isPitch && input.pitch!.loyaltyBundle === true;
   const pitchKind = isPitch ? input.pitch!.kind : undefined;
   // Two-turn funnel: preview-step → free preview + tease caption.
   // ppv-step → priced PPV + caption. Captions are character-driven — the
@@ -201,6 +204,9 @@ async function generateLlmReply(
               : "") +
           (supportDripMode
             ? " SUPPORT-DRIP framing: this fan has been chatting without buying. Add ONE support beat — CONFIDENT EXCHANGE, not a humble ask. Frame as 'you back me, I deliver to you'. Pick ONE, vary across sends: 'back me on this n watch what i do for u', 'show me u want this n im YOURS tonight', 'u grab this babe n im about to ruin u', 'lock this in n u get all of me'. The support beat is a SUFFIX — the formula above (HER frame + scarcity + sensory + CTA) still applies. Bad shape (humble + dead): 'heres the vid, support a girl with this one'. Good shape: 'made this thinkin bout u babe... back me on this n watch what i do for u 😏'."
+            : "") +
+          (loyaltyBundle
+            ? " LOYALTY-BUNDLE framing: this fan has unlocked multiple times. The bubble below is at 25% off as a thank-you / bundle deal. Frame as appreciation for being a repeat buyer — 'since u been so good', 'ur favorite price tonight', 'lowered it just for u babe', 'thank-u rate just for u', 'bundle deal cuz u keep showin up'. Make him feel chosen for the discount, not pitied. Bad shape: 'heres a discount cuz im desperate'. Good shape: 'this one's at ur favorite price babe, u've earned it 🥺'. Do NOT mention any dollar amount — the discounted price renders automatically. Do NOT apologize for the price."
             : ""),
         forbiddens: [
           "output ONE bubble only — no rapport prelude, no follow-up bubble",

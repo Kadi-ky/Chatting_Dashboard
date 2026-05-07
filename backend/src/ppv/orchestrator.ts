@@ -12,6 +12,7 @@ import { analyzePitchReadiness } from "./pitchReadiness.js";
 import type { IntentFlags } from "../classify/intent.js";
 import { sql, type SqlBool } from "kysely";
 import { db } from "../db/client.js";
+import { sharedRedis } from "../queue/redis.js";
 
 // Asset cooldown was REMOVED 2026-04-29. Old behavior: don't pitch the same
 // asset_id (per-rung paywalled bubble) to a fan within 14 days. Reasoning at
@@ -119,6 +120,14 @@ export interface PitchDecision {
    * script has no preview configured.
    */
   previewMediaRef?: string;
+  /**
+   * Loyalty bundle discount path. Fires periodically for fans who have
+   * unlocked 2+ times in this conversation. Reply pipeline reads this to
+   * frame the caption as a thank-you bundle ("since u been so good, ur
+   * favorite price tonight 🥺"). Acts as a real bundle psychologically
+   * without needing OFAPI multi-media PPV support.
+   */
+  loyaltyBundle?: boolean;
 }
 
 export interface DecidePitchArgs {
@@ -152,6 +161,18 @@ export interface DecidePitchArgs {
 
 /** Fixed discount fans get when they ask. Configurable; bot frames as one-time gift. */
 const DISCOUNT_RATE = 0.10;
+
+/**
+ * "Bundle" / loyalty discount applied periodically to repeat buyers (>=2
+ * unlocks in conversation). Fires once per LOYALTY_BUNDLE_COOLDOWN_HOURS
+ * window so fans see it as a moment, not a constant sale. Caption layer
+ * frames as "since u been so good" / "favorite-price drop" — gives the
+ * thank-you-bundle psychological pull without needing real multi-media
+ * PPV support from OFAPI.
+ */
+const LOYALTY_BUNDLE_DISCOUNT_RATE = 0.25;
+const LOYALTY_BUNDLE_COOLDOWN_HOURS = 168; // one week
+const LOYALTY_BUNDLE_MIN_UNLOCKS = 2;
 
 /**
  * Bigger discount when fan explicitly says they CAN'T AFFORD the pitch.
@@ -343,14 +364,42 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   // Asset cooldown removed (see file header). Funnel state below handles
   // intra-session spacing; drip mode handles cross-session re-engagement.
 
+  // Loyalty bundle discount — fires on repeat buyers periodically. Need
+  // unlock count + cooldown check. Cooldown stored in Redis per-conversation
+  // so it survives restarts; one-week TTL means bundle pitches are a real
+  // moment, not a constant sale. Picker output is unchanged; we just adjust
+  // price + flag for caption framing.
+  let loyaltyBundleApplied = false;
+  if (!args.discountRequest && !args.cantAfford) {
+    const recentForLoyalty = await listRecentAttempts(args.conversationId, 50);
+    const unlockCount = recentForLoyalty.filter((a) => a.outcome === "unlocked").length;
+    if (unlockCount >= LOYALTY_BUNDLE_MIN_UNLOCKS) {
+      const r = sharedRedis();
+      const lastBundleKey = `peach:bundle:last:${args.conversationId}`;
+      const lastBundleAt = await r.get(lastBundleKey).catch(() => null);
+      const cooldownMs = LOYALTY_BUNDLE_COOLDOWN_HOURS * 3600_000;
+      const eligible = !lastBundleAt || (Date.now() - Number(lastBundleAt)) >= cooldownMs;
+      if (eligible) {
+        loyaltyBundleApplied = true;
+        await r.set(lastBundleKey, String(Date.now()), "EX", LOYALTY_BUNDLE_COOLDOWN_HOURS * 3600).catch(() => undefined);
+        logger.info(
+          { conversationId: args.conversationId, unlockCount, cooldownHours: LOYALTY_BUNDLE_COOLDOWN_HOURS },
+          "loyalty bundle discount fired",
+        );
+      }
+    }
+  }
+
   // Apply fan-requested discount AFTER picker has committed to an asset. We
   // never re-pick based on discount — discount is purely a price cut on the
   // already-selected pitch, framed as a one-time goodwill gesture by the bot.
   // The reply pipeline reads discountApplied to add a "knocked a lil off"
   // caption hint; the actual PPV bubble price comes from priceCents directly.
-  const finalPriceCents = args.discountRequest
-    ? Math.max(1, Math.round(picked.priceCents * (1 - DISCOUNT_RATE)))
-    : picked.priceCents;
+  const finalPriceCents = loyaltyBundleApplied
+    ? Math.max(1, Math.round(picked.priceCents * (1 - LOYALTY_BUNDLE_DISCOUNT_RATE)))
+    : args.discountRequest
+      ? Math.max(1, Math.round(picked.priceCents * (1 - DISCOUNT_RATE)))
+      : picked.priceCents;
 
   // Pitch-readiness analyzer — LLM reads the conversation in full and
   // decides whether this turn should pitch (and what kind), instead of the
@@ -454,11 +503,13 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
 
   return {
     shouldPitch: true,
-    reason: dripPitch
-      ? `support_drip (every ${SUPPORT_DRIP_INTERVAL_TURNS} msgs after ${UNBOUGHT_LOOKBACK} unbought) [${kind}]`
-      : picked.reason === "continue"
-        ? `continue_script [${kind}]`
-        : `new_script [${kind}]`,
+    reason: loyaltyBundleApplied
+      ? `loyalty_bundle (${Math.round(LOYALTY_BUNDLE_DISCOUNT_RATE * 100)}% off, repeat buyer) [${kind}]`
+      : dripPitch
+        ? `support_drip (every ${SUPPORT_DRIP_INTERVAL_TURNS} msgs after ${UNBOUGHT_LOOKBACK} unbought) [${kind}]`
+        : picked.reason === "continue"
+          ? `continue_script [${kind}]`
+          : `new_script [${kind}]`,
     kind,
     asset: picked.asset,
     priceCents: finalPriceCents,
@@ -466,6 +517,7 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     rung: picked.rung,
     ...(args.discountRequest ? { discountApplied: true } : {}),
     ...(dripPitch ? { supportDripMode: true } : {}),
+    ...(loyaltyBundleApplied ? { loyaltyBundle: true } : {}),
     ...(picked.previewMediaRef ? { previewMediaRef: picked.previewMediaRef } : {}),
   };
 }

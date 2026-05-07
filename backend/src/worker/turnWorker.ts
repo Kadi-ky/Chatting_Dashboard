@@ -227,6 +227,7 @@ async function processTurn(jobData: TurnJobData): Promise<void> {
                 ...(pitchDecision.discountApplied ? { discountApplied: true } : {}),
                 ...(pitchDecision.cantAffordDiscount ? { cantAffordDiscount: true } : {}),
                 ...(pitchDecision.supportDripMode ? { supportDripMode: true } : {}),
+                ...(pitchDecision.loyaltyBundle ? { loyaltyBundle: true } : {}),
                 ...(pitchDecision.previewMediaRef ? { previewMediaRef: pitchDecision.previewMediaRef } : {}),
               },
             }

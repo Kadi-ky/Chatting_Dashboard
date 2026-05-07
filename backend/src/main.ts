@@ -13,6 +13,7 @@ import { startBroadcastRunner, type BroadcastRunnerHandle } from "./worker/broad
 import { startNudgeWorker, type NudgeWorkerHandle } from "./worker/nudgeWorker.js";
 import { startOutreachWorker, type OutreachWorkerHandle } from "./worker/outreachWorker.js";
 import { startSubSyncWorker, type SubSyncWorkerHandle } from "./worker/subSyncWorker.js";
+import { expireStaleAttempts } from "./db/repos/ppv_attempts.js";
 import { startAdminServer, type AdminServerHandle } from "./api/server.js";
 import { getPlatformAdapter } from "./platform/index.js";
 import type { Worker } from "bullmq";
@@ -28,6 +29,7 @@ let broadcastRunner: BroadcastRunnerHandle | null = null;
 let nudgeWorker: NudgeWorkerHandle | null = null;
 let outreachWorker: OutreachWorkerHandle | null = null;
 let subSyncWorker: SubSyncWorkerHandle | null = null;
+let attemptExpirySweep: NodeJS.Timeout | null = null;
 let adminServer: AdminServerHandle | null = null;
 
 async function preflight(): Promise<void> {
@@ -56,6 +58,7 @@ async function shutdown(signal: string): Promise<void> {
     if (nudgeWorker) await nudgeWorker.stop();
     if (outreachWorker) await outreachWorker.stop();
     if (subSyncWorker) await subSyncWorker.stop();
+    if (attemptExpirySweep) clearInterval(attemptExpirySweep);
     if (adminServer) await adminServer.stop();
     if (worker) await worker.close();
     if (turnWorkerRef) await turnWorkerRef.close();
@@ -85,6 +88,20 @@ async function boot(): Promise<void> {
   nudgeWorker = startNudgeWorker();
   outreachWorker = startOutreachWorker();
   subSyncWorker = startSubSyncWorker();
+  // PPV attempt expiry sweeper. Marks pending attempts older than 72h as
+  // 'expired' so cant_afford detection (finds last pending) doesn't latch
+  // onto ancient pitches and discount-recover them, and so analytics show
+  // accurate funnel state. Runs hourly. expireStaleAttempts() exists in
+  // ppv_attempts.ts but was never called until now.
+  const ATTEMPT_EXPIRY_INTERVAL_MS = 60 * 60_000; // 1h
+  const ATTEMPT_EXPIRY_HOURS = 72;
+  attemptExpirySweep = setInterval(() => {
+    void expireStaleAttempts(ATTEMPT_EXPIRY_HOURS)
+      .then((n) => {
+        if (n > 0) logger.info({ count: n }, "ppv attempts expired by sweeper");
+      })
+      .catch((err) => logger.warn({ err: err instanceof Error ? err.message : err }, "attempt-expiry sweep failed"));
+  }, ATTEMPT_EXPIRY_INTERVAL_MS);
   adminServer = startAdminServer();
   // Poller is opt-in (POLLING_ENABLED=true). OnlyFansAPI delivers webhooks
   // reliably and doesn't expose an /inbox/events endpoint, so polling just

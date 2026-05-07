@@ -72,6 +72,28 @@ const REACT_MAX_ATTEMPTS = 2;
 const LOCK_TTL_SEC = 24 * 3600;          // 24h lock per conv (outreach is far rarer than nudges)
 const RECENT_TTL_SEC = 30 * 24 * 3600;   // 30 day text-dedup retention
 
+/**
+ * Active-hours window for reactivation outreach. We don't know the fan's
+ * timezone, but we know the hour-of-day they last messaged us — that's a
+ * usable proxy for "their active window." Send within ±5h of their typical
+ * hour. Skip outside that — saves the contact attempt for a moment when
+ * they're more likely to see and reply, instead of pinging at 4am their time
+ * and burning a one-shot reactivation card.
+ *
+ * Cold pass has no per-fan timing data, so it skips this filter (sends
+ * whenever the tick fires; tick rate already throttles to 30min).
+ */
+const ACTIVE_HOURS_WINDOW = 5;
+function isWithinActiveHours(referenceUtc: Date, nowUtc: Date, windowHours: number): boolean {
+  const refHour = referenceUtc.getUTCHours();
+  const nowHour = nowUtc.getUTCHours();
+  const diff = Math.min(
+    Math.abs(nowHour - refHour),
+    24 - Math.abs(nowHour - refHour), // wrap around midnight
+  );
+  return diff <= windowHours;
+}
+
 // Disengagement keywords — never outreach a fan whose recent inbound
 // indicates they want to be left alone.
 const DISENGAGE_PATTERNS = [
@@ -444,6 +466,11 @@ async function fireOutreach(args: FireArgs): Promise<boolean> {
   const variants = (args.kind === "cold" ? COLD_TEMPLATES : REACT_TEMPLATES)[args.step]!;
   const text = llmText ?? variants[Math.floor(Math.random() * variants.length)]!;
 
+  // Operator directive 2026-05-04: ignore env, always live. Cold outreach to
+  // 423 never-chatted fans is the single biggest unused inventory and was
+  // sitting in dry-run on Railway. Hardcoded false here so the env can't
+  // accidentally re-pause it. Re-enable dry-run only by editing this file.
+  const dryRunEffective = false;
   const entry: RecentOutreach = {
     at: new Date().toISOString(),
     conversationId: args.conversationId,
@@ -451,12 +478,12 @@ async function fireOutreach(args: FireArgs): Promise<boolean> {
     kind: args.kind,
     step: args.step + 1,
     text,
-    dryRun: env.OUTREACH_DRY_RUN,
+    dryRun: dryRunEffective,
   };
   RECENT_OUTREACH.unshift(entry);
   if (RECENT_OUTREACH.length > RECENT_OUTREACH_MAX) RECENT_OUTREACH.length = RECENT_OUTREACH_MAX;
 
-  if (env.OUTREACH_DRY_RUN) {
+  if (dryRunEffective) {
     logger.info(entry, "outreach dry-run (no send)");
     return true;
   }
@@ -583,6 +610,7 @@ async function runReactivationPass(): Promise<{ candidates: number; sent: number
     .execute();
 
   let sent = 0;
+  const now = new Date();
   for (const row of rows) {
     try {
       const state = readOutreachState(row.state_ctx);
@@ -591,6 +619,15 @@ async function runReactivationPass(): Promise<{ candidates: number; sent: number
       if (state.lastReactAt) {
         const sinceLast = Date.now() - new Date(state.lastReactAt).getTime();
         if (sinceLast < REACT_INTERVAL_MS) continue;
+      }
+      // Active-hours filter — only fire reactivation if current hour is
+      // within ±5h of fan's last-inbound hour-of-day. Saves the one-shot
+      // reactivation pitch for when fan is likely awake/active.
+      if (row.last_inbound_at) {
+        const lastHour = new Date(row.last_inbound_at as unknown as Date);
+        if (!isWithinActiveHours(lastHour, now, ACTIVE_HOURS_WINDOW)) {
+          continue;
+        }
       }
       const fired = await fireOutreach({
         conversationId: row.conv_id,
