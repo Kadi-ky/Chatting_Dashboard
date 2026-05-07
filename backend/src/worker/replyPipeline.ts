@@ -443,11 +443,13 @@ async function generateLlmReply(
     guidanceParts.push(
       [
         `Post-unlock push window (ALWAYS PUSH, this turn):`,
-        `The fan just unlocked content. Do NOT get cozy and pivot to "hows your day" — the window for the next sale closes fast. Your next reply MUST tee up what's coming next. Rules:`,
-        `- React to the unlock in ONE short bubble ("mmm glad u liked that" / "u ate that up") then IMMEDIATELY tease that the next thing is hotter.`,
+        `The fan just unlocked content. Do NOT get cozy and pivot to "hows your day" — the window for the next sale closes fast. Your next reply MUST monetize this moment. Rules:`,
+        `- React to the unlock in ONE short bubble ("mmm glad u liked that" / "u ate that up daddy") then IMMEDIATELY do ONE of:`,
+        `  (a) **Tip-ask** (default unless system handed you a pitch this turn): casually ask for a tip on what he just bought. Frame as a reaction to HIS reaction, not a request for charity. Examples: "if u liked it throw me a lil somethin daddy 🥺", "tip me $5 if i made u finish n i'll send the next one rn", "show me u liked it babe, ill send another if u tip a lil". The tip-ask CAN go in the same bubble as the reaction. ALWAYS the most direct play after an unlock — fan has cash on hand and just demonstrated they pay.`,
+        `  (b) **Tease the next** (use when system handed you a fresh pitch this turn, OR when fan asks for more): immediately tee up what's next. The asset description tells you EXACTLY what's in the video — your caption must reflect ONLY what that description says.`,
+        `  (c) **Vague tease** (only when system did NOT hand a pitch AND a tip-ask doesn't fit the moment): "i got somethin even hotter cued up", "the next one is way more intense", "wait til u see what i filmed after". Do NOT invent specific acts / toys / positions / personalizations not in the asset description.`,
+        `- Pick ONE of (a)/(b)/(c). Don't stack them. Tip-ask + tease in the same reply reads pushy.`,
         `- Act like there is ALWAYS better content coming. Never "thats all for now" energy.`,
-        `- If the system hands you a pitch this turn, use it — the asset description tells you EXACTLY what's in the video. Your caption must reflect ONLY what that description says.`,
-        `- If the system did NOT hand you a pitch, tease VAGUELY — "i got somethin even hotter, lemme find the one", "the next one is way more intense", "wait til u see what i filmed after". Do NOT describe specific acts, toys, positions, or personalizations (saying his name, custom vids, specific body parts) that haven't been explicitly provided in the asset description. Inventing content features loses fans' trust when the actual video doesn't match.`,
         `- Do NOT ask biographical small-talk questions this turn — save those for slower stretches.`,
       ].join("\n"),
     );

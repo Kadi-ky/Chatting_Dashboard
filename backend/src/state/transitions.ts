@@ -63,42 +63,54 @@ export const TRANSITIONS: Transition[] = [
   //
   // Slow / cold fans naturally stall in RAPPORT — they never trip the
   // temperature gate, so they never get force-pitched. That's the whole point.
+  // WARMUP → RAPPORT. Hot fans advance after 1 turn (they came in flirty,
+  // don't make them wait); everyone else after 2.
   {
     from: "WARMUP",
     to: "RAPPORT",
     trigger: "warmup_complete",
-    when: (s) => s.turnsInPhase >= 2,
+    when: (s) =>
+      (s.turnsInPhase >= 1 && s.temperature === "hot") ||
+      s.turnsInPhase >= 2,
+  },
+  // RAPPORT → QUALIFYING (skip SEXTING) for HOT fans at 3+ turns. Operator
+  // directive 2026-05-04: 75% of chatted fans were stuck pre-pitch because
+  // the funnel required RAPPORT → SEXTING → QUALIFYING (~9 turns minimum
+  // for hot fans, more for warm). Hot fans get pitched faster now —
+  // QUALIFYING's heat ceiling allows graphic in captions anyway. Fan can
+  // still bounce back to SEXTING via LLM hint if needed.
+  {
+    from: "RAPPORT",
+    to: "QUALIFYING",
+    trigger: "rapport_hot_skip_sexting",
+    when: (s) => s.turnsInPhase >= 3 && s.temperature === "hot",
   },
   // RAPPORT → SEXTING. Three triggers, fastest wins:
-  //   1. Hot fan + 3 turns — fan is clearly horny, advance immediately.
-  //   2. Warm fan + 4 turns — fan is responsive, push the heat.
-  //   3. Bot-driven + 5 turns ANY temp — fan isn't escalating but bot has
-  //      been flirting for 5 turns. Time for the bot to take the lead and
-  //      shift into sexting register. (Lowered from 8 → 5 because the
-  //      slow-build test showed the bot mirroring the fan's chatty register
-  //      indefinitely instead of driving heat up.)
+  //   1. Warm fan + 3 turns — fan is responsive, push the heat (lowered
+  //      from 4 since hot is now handled separately above).
+  //   2. Bot-driven + 4 turns ANY temp — fan isn't escalating but bot has
+  //      been flirting for 4 turns. Time for the bot to take the lead.
   {
     from: "RAPPORT",
     to: "SEXTING",
     trigger: "rapport_warm",
     when: (s) =>
-      (s.turnsInPhase >= 3 && s.temperature === "hot") ||
-      (s.turnsInPhase >= 4 && (s.temperature === "warm" || s.temperature === "hot")) ||
-      s.turnsInPhase >= 5,
+      (s.turnsInPhase >= 3 && s.temperature === "warm") ||
+      s.turnsInPhase >= 4,
   },
-  // SEXTING → QUALIFYING. Same logic:
-  //   1. Hot fan + 3 turns — close window open.
-  //   2. Warm fan + 4 turns — bot has done sexting work, time to ask.
-  //   3. Bot-driven + 5 turns ANY temp — fan hasn't heated up, try the
+  // SEXTING → QUALIFYING. Lowered thresholds (was hot+3 / warm+4 / any+5).
+  //   1. Hot fan + 2 turns — close window open fast.
+  //   2. Warm fan + 3 turns — bot has done sexting work, time to ask.
+  //   3. Bot-driven + 4 turns ANY temp — fan hasn't heated up, try the
   //      close anyway. The drip/recovery cadence handles rejection.
   {
     from: "SEXTING",
     to: "QUALIFYING",
     trigger: "sexting_hot",
     when: (s) =>
-      (s.turnsInPhase >= 3 && s.temperature === "hot") ||
-      (s.turnsInPhase >= 4 && (s.temperature === "warm" || s.temperature === "hot")) ||
-      s.turnsInPhase >= 5,
+      (s.turnsInPhase >= 2 && s.temperature === "hot") ||
+      (s.turnsInPhase >= 3 && (s.temperature === "warm" || s.temperature === "hot")) ||
+      s.turnsInPhase >= 4,
   },
   {
     from: "QUALIFYING",

@@ -15,7 +15,7 @@ import type {
   SendResult,
   SubscriberSnapshot,
 } from "../../PlatformAdapter.js";
-import { PlatformHttpClient } from "./client.js";
+import { PlatformHttpClient, PlatformHttpError } from "./client.js";
 import { env } from "../../../config/index.js";
 import { logger } from "../../../observability/logger.js";
 
@@ -304,11 +304,40 @@ export class HttpPlatformAdapter implements PlatformAdapter {
     const PAGE_LIMIT = 20;
     let offset = 0;
     let firstPageLogged = false;
+    // Per-page 429 retry. OFAPI's CF 1015 lockouts return retry_after=30 in
+    // the response BODY but a "0" in the Retry-After header (so the http
+    // client's retryAfterMs is 0 and useless). Fall back to a fixed
+    // exponential schedule: 30s, 60s, 120s. After 3 retries on the same
+    // page give up and let the iterator end. Operator paused subsync
+    // 2026-04-30 because of these; this re-enables safely.
+    const RATE_LIMIT_BACKOFFS_MS = [30_000, 60_000, 120_000];
+    const fetchPageWithRetry = async (): Promise<unknown> => {
+      let lastErr: unknown = null;
+      for (let attempt = 0; attempt <= RATE_LIMIT_BACKOFFS_MS.length; attempt++) {
+        try {
+          return await this.http.request<unknown>(
+            `/api/${ctx.platformAccountId}/fans/all`,
+            { query: { limit: PAGE_LIMIT, offset, type: "active" } },
+          );
+        } catch (err) {
+          lastErr = err;
+          const isPlatformErr = err instanceof PlatformHttpError;
+          const isRateLimit = isPlatformErr && err.status === 429;
+          if (!isRateLimit || attempt === RATE_LIMIT_BACKOFFS_MS.length) throw err;
+          const waitMs = err.retryAfterMs && err.retryAfterMs > 0
+            ? err.retryAfterMs
+            : RATE_LIMIT_BACKOFFS_MS[attempt]!;
+          logger.warn(
+            { offset, attempt, waitMs, status: err.status },
+            "subsync 429 — sleeping then retrying",
+          );
+          await new Promise((r) => setTimeout(r, waitMs));
+        }
+      }
+      throw lastErr ?? new Error("listSubscribers retry loop exhausted");
+    };
     while (true) {
-      const resp = await this.http.request<unknown>(
-        `/api/${ctx.platformAccountId}/fans/all`,
-        { query: { limit: PAGE_LIMIT, offset, type: "active" } },
-      );
+      const resp = await fetchPageWithRetry();
       // Log the first page's raw response shape so we can adjust the
       // parser if OFAPI returns something we didn't anticipate. Logged
       // once per sync run; structured (top-level keys + sample row).

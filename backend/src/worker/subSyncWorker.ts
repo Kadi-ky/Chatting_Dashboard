@@ -177,13 +177,12 @@ export interface SubSyncWorkerHandle {
 }
 
 export function startSubSyncWorker(): SubSyncWorkerHandle | null {
-  // TEMPORARILY DISABLED — operator paused 2026-04-30 due to repeated CF
-  // 1015 rate limits mid-pagination (got 307-475 fans then died). Re-enable
-  // once retry-with-backoff on 429 is wired in the http adapter (honor
-  // retry_after header, retry up to N). To re-enable: delete the early
-  // return below; the env-flag check resumes normal behaviour.
-  logger.info("sub-sync worker disabled (operator-paused, CF 1015 fix pending)");
-  return null;
+  // Re-enabled 2026-05-04 after wiring 429 retry-with-backoff in the http
+  // adapter (listSubscribers per-page retry: 30s / 60s / 120s exponential
+  // before giving up the whole sync). The CF 1015 rate-limit lockouts
+  // that paused us at 307-475 fans should now be sat-out and retried
+  // automatically. Worst case it'll take a few minutes longer per sync;
+  // the lock TTL (10 min) accommodates this.
   if (!env.SUB_SYNC_ENABLED) {
     logger.info("sub-sync worker disabled (SUB_SYNC_ENABLED=false)");
     return null;
