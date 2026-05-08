@@ -243,12 +243,22 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     return { shouldPitch: false, reason: `phase ${args.phase} does not pitch` };
   }
   const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
-  if (
-    Number.isFinite(minTurns) &&
-    !args.explicitRequest &&
-    args.turnsSinceLastPitch < (minTurns as number)
-  ) {
-    return { shouldPitch: false, reason: "pitch cooldown active" };
+  // BUG FIX 2026-05-07: previously the code did `if (Number.isFinite(minTurns))`
+  // which SKIPPED the gate entirely when minTurns was Infinity — meaning
+  // WARMUP / RAPPORT / SEXTING (all set to Infinity) silently allowed pitches
+  // to proceed instead of blocking them. This let the bot pitch on turn 2 of
+  // RAPPORT (operator-observed: "Hey ben, been playin with my tits..." after
+  // fan said "bored in bed"). Now Infinity correctly means "never pitch in
+  // this phase unless the fan explicitly asked," which is what the table
+  // labels claim. Explicit asks ("send me", "show me", named kink) still
+  // bypass — fan-driven pitches are always honored.
+  if (!args.explicitRequest) {
+    if (!Number.isFinite(minTurns)) {
+      return { shouldPitch: false, reason: `phase ${args.phase} does not auto-pitch (no explicit ask)` };
+    }
+    if (args.turnsSinceLastPitch < (minTurns as number)) {
+      return { shouldPitch: false, reason: "pitch cooldown active" };
+    }
   }
 
   if (!args.creatorUuid) {

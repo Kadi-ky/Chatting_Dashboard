@@ -532,7 +532,14 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
   // it's been long enough since the last cold attempt. Conversation must
   // exist (created when the welcome DM fired or first webhook). Filter
   // out loop-test fans.
-  const cutoff = new Date(Date.now() - COLD_INTERVAL_MS);
+  //
+  // SQL gate intentionally does NOT check s.last_outbound_at — operator
+  // diagnosis 2026-05-07: n8n's hourly mass-messaging updates that field
+  // on every sub it touches, so a 5-day "since last outbound" filter
+  // excluded 100% of fans even though our own last cold attempt was much
+  // older (or never). The per-attempt cooldown is now enforced ONLY in the
+  // loop body via state.lastColdAt (our own outreach state), which is
+  // independent of n8n / mass-message activity.
   const firstAllowedAge = new Date(Date.now() - COLD_FIRST_DELAY_MS);
 
   const rows = await db
@@ -556,7 +563,6 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
-    .where(sql<SqlBool>`(s.last_outbound_at IS NULL OR s.last_outbound_at < ${cutoff})`)
     .orderBy("s.created_at", "asc")
     .limit(50)
     .execute();
