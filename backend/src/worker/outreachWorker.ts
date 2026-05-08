@@ -557,8 +557,13 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
-    .orderBy("s.created_at", "asc")
-    .limit(50)
+    // Order DESC (newest first). Subsync just imported ~1,300 fresh subs;
+    // they have empty state_ctx and are immediately eligible. The OLDER
+    // never-chatted subs were attempted during the long dry-run period
+    // and have state_ctx.coldCount=3 (max), so they bounce in the loop
+    // anyway. Sending to fresh imports first maximizes effective send rate.
+    .orderBy("s.created_at", "desc")
+    .limit(100)
     .execute();
 
   let sent = 0;
