@@ -528,29 +528,24 @@ export async function triggerOutreachNow(): Promise<{
 }
 
 async function runColdPass(): Promise<{ candidates: number; sent: number }> {
-  // Subs with no inbound ever, where we either haven't outreached at all OR
-  // it's been long enough since the last cold attempt. Conversation must
-  // exist (created when the welcome DM fired or first webhook). Filter
-  // out loop-test fans.
-  //
-  // SQL gate intentionally does NOT check s.last_outbound_at — operator
-  // diagnosis 2026-05-07: n8n's hourly mass-messaging updates that field
-  // on every sub it touches, so a 5-day "since last outbound" filter
-  // excluded 100% of fans even though our own last cold attempt was much
-  // older (or never). The per-attempt cooldown is now enforced ONLY in the
-  // loop body via state.lastColdAt (our own outreach state), which is
-  // independent of n8n / mass-message activity.
-  const firstAllowedAge = new Date(Date.now() - COLD_FIRST_DELAY_MS);
+  // Subs with no inbound ever. Operator diagnosis 2026-05-07 (round 2):
+  // the previous query INNER-JOINed v3.conversations, but subsync-imported
+  // fans (the bulk of the 1,311 newly-imported subscribers) have no
+  // conversation row yet — conversations are only created when a real
+  // inbound message is processed. Bypassing INNER JOIN: now we query
+  // subscribers directly, ensure the conversation row on-the-fly per
+  // candidate via ensureConversation. Also dropped the 24h created_at
+  // gate — subsync-imported fans have created_at = NOW (when the row
+  // landed in our DB), but they may be MUCH older OF subscribers in
+  // reality. The 24h gate was filtering everything subsync brought in.
+  // Per-attempt cooldown still enforced in loop body via state.lastColdAt.
 
   const rows = await db
-    .selectFrom("v3.conversations as c")
-    .innerJoin("v3.subscribers as s", "s.id", "c.subscriber_id")
-    .innerJoin("v3.accounts as a", "a.id", "c.account_id")
+    .selectFrom("v3.subscribers as s")
+    .innerJoin("v3.accounts as a", "a.id", "s.account_id")
     .select([
-      "c.id as conv_id",
-      "c.account_id as account_id",
-      "c.state_ctx as state_ctx",
       "s.id as subscriber_id",
+      "s.account_id as account_id",
       "s.external_id as fan_external_id",
       "s.display_name as display_name",
       "s.last_inbound_at as last_inbound_at",
@@ -559,7 +554,6 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
     ])
     .where("a.platform_account_id", "is not", null)
     .where("s.last_inbound_at", "is", null)               // never replied
-    .where(sql<SqlBool>`s.created_at < ${firstAllowedAge}`) // 24h+ old sub
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
@@ -570,7 +564,19 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
   let sent = 0;
   for (const row of rows) {
     try {
-      const state = readOutreachState(row.state_ctx);
+      // Ensure conversation row — may need creation for subsync-imported
+      // fans that have never received a message webhook. Idempotent.
+      const { id: convId } = await ensureConversation({
+        subscriberId: row.subscriber_id,
+        accountId: row.account_id,
+      });
+      // Re-read state_ctx after ensure (might be a fresh row).
+      const convRow = await db
+        .selectFrom("v3.conversations")
+        .select("state_ctx")
+        .where("id", "=", convId)
+        .executeTakeFirst();
+      const state = readOutreachState(convRow?.state_ctx ?? null);
       const coldCount = state.coldCount ?? 0;
       if (coldCount >= COLD_MAX_ATTEMPTS) continue;
       if (state.lastColdAt) {
@@ -578,7 +584,7 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
         if (sinceLast < COLD_INTERVAL_MS) continue;
       }
       const fired = await fireOutreach({
-        conversationId: row.conv_id,
+        conversationId: convId,
         accountId: row.account_id,
         subscriberId: row.subscriber_id,
         fanExternalId: row.fan_external_id,
@@ -587,7 +593,7 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
         step: coldCount,
       });
       if (!fired) continue;
-      await writeOutreachState(row.conv_id, {
+      await writeOutreachState(convId, {
         ...state,
         coldCount: coldCount + 1,
         lastColdAt: new Date().toISOString(),
@@ -595,8 +601,8 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
       sent++;
     } catch (err) {
       logger.warn(
-        { err: err instanceof Error ? err.message : err, convId: row.conv_id },
-        "cold outreach failed for one conv",
+        { err: err instanceof Error ? err.message : err, subscriberId: row.subscriber_id },
+        "cold outreach failed for one sub",
       );
     }
   }
