@@ -512,6 +512,21 @@ async function fireOutreach(args: FireArgs): Promise<boolean> {
   return true;
 }
 
+/**
+ * Manual trigger — runs one cold + reactivation pass right now and returns
+ * the candidate / sent counts. Used by /admin/outreach-now to diagnose
+ * silence (when /diag/recent-outreach is empty post-deploy). Safe to call
+ * anytime; same locks/dedup as scheduled ticks.
+ */
+export async function triggerOutreachNow(): Promise<{
+  cold: { candidates: number; sent: number };
+  react: { candidates: number; sent: number };
+}> {
+  const cold = await runColdPass();
+  const react = await runReactivationPass();
+  return { cold, react };
+}
+
 async function runColdPass(): Promise<{ candidates: number; sent: number }> {
   // Subs with no inbound ever, where we either haven't outreached at all OR
   // it's been long enough since the last cold attempt. Conversation must

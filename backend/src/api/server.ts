@@ -26,6 +26,7 @@ import { outboundQueue } from "../queue/outbound.js";
 import { getRecentNudges } from "../worker/nudgeWorker.js";
 import { getRecentOutreach } from "../worker/outreachWorker.js";
 import { getRecentSubSyncs, triggerSubSyncNow } from "../worker/subSyncWorker.js";
+import { triggerOutreachNow } from "../worker/outreachWorker.js";
 import { getRecentPitchDecisions, turnsSinceLastPitch as ppvTurnsSinceLastPitch } from "../ppv/orchestrator.js";
 import { listRecentAttempts, countUnboughtRecentPitches } from "../db/repos/ppv_attempts.js";
 import { listPurchasesByFan, parseLegacySourceRef } from "../db/repos/purchases.js";
@@ -793,6 +794,24 @@ async function handle(
       } catch (err) {
         return json(res, 500, {
           error: err instanceof Error ? err.message : String(err),
+        });
+      }
+    }
+
+    // POST /admin/outreach-now — force an immediate outreach pass (cold +
+    // reactivation). Returns candidate/sent counts. Use to diagnose when
+    // /diag/recent-outreach is empty post-deploy: zero candidates means
+    // the candidate query filters everyone out (state_ctx stale lastColdAt,
+    // active-hours filter too tight, etc); non-zero candidates with zero
+    // sends means the fireOutreach path is broken.
+    if (method === "POST" && path === "/admin/outreach-now") {
+      try {
+        const result = await triggerOutreachNow();
+        return json(res, 200, result);
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+          stack: err instanceof Error ? err.stack?.slice(0, 1000) : undefined,
         });
       }
     }
