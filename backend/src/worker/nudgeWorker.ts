@@ -706,7 +706,7 @@ async function generateNudgeText(args: {
         ``,
         ...(recentTexts.length > 0
           ? [
-              `RECENT SENDS to this same fan — DO NOT repeat the angle, opener, or phrasing of any of these:`,
+              `RECENT SENDS to this same fan — DO NOT repeat the angle, opener, or phrasing of any of these. CRITICAL: also rotate the THEME/topic. If 2+ of the recent sends mention the same callback (e.g. his job, a pet, a content asset he hasn't bought), STOP using that callback and pick a different angle (a different memory from earlier in the convo, an observation about the time of day, a genuine "thinkin bout u" with no topic anchor). Operator audit 2026-05-08: same-theme nudges 5+ times in a row read as bot lock-in.`,
               ...recentTexts.slice(0, 6).map((t, i) => `  ${i + 1}. ${t}`),
               ``,
             ]

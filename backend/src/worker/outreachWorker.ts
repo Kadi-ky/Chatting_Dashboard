@@ -156,11 +156,21 @@ const REACT_TEMPLATES: string[][] = [
   ],
 ];
 
-// ─── Recent text dedup ring (per fan) ────────────────────────────────────
+// ─── Recent text dedup rings ─────────────────────────────────────────────
+// Per-fan ring: catches repeated openers in the same conversation across
+// nudge ladder steps.
+// Account-wide cold ring: catches the "every cold outreach across DIFFERENT
+// fans uses the same opener" pattern (operator-observed 2026-05-08: 18
+// fresh cold sends all followed "hey [name], i see u lurkin 👀" template).
+// The per-fan ring couldn't catch this because each cold conversation is
+// brand new with an empty per-fan history.
 
 const recentTextKey = (accountId: string, conversationId: string): string =>
   `peach:outreach:recent:${accountId}:${conversationId}`;
+const recentAccountColdKey = (accountId: string): string =>
+  `peach:outreach:recent_cold_account:${accountId}`;
 const RECENT_TEXTS_MAX = 8;
+const RECENT_ACCOUNT_COLD_MAX = 20;
 
 async function loadRecentOutreachTexts(accountId: string, conversationId: string): Promise<string[]> {
   try {
@@ -170,10 +180,19 @@ async function loadRecentOutreachTexts(accountId: string, conversationId: string
   }
 }
 
+async function loadRecentAccountColdTexts(accountId: string): Promise<string[]> {
+  try {
+    return await sharedRedis().lrange(recentAccountColdKey(accountId), 0, RECENT_ACCOUNT_COLD_MAX - 1);
+  } catch {
+    return [];
+  }
+}
+
 async function recordRecentOutreachText(
   accountId: string,
   conversationId: string,
   text: string,
+  kind: "cold" | "react",
 ): Promise<void> {
   try {
     const r = sharedRedis();
@@ -181,6 +200,12 @@ async function recordRecentOutreachText(
     await r.lpush(k, text);
     await r.ltrim(k, 0, RECENT_TEXTS_MAX - 1);
     await r.expire(k, RECENT_TTL_SEC);
+    if (kind === "cold") {
+      const ak = recentAccountColdKey(accountId);
+      await r.lpush(ak, text);
+      await r.ltrim(ak, 0, RECENT_ACCOUNT_COLD_MAX - 1);
+      await r.expire(ak, RECENT_TTL_SEC);
+    }
   } catch (err) {
     logger.warn(
       { err: err instanceof Error ? err.message : err, accountId, conversationId },
@@ -292,6 +317,13 @@ async function generateOutreachText(args: {
       ? await loadRecentMessages(args.conversationId, 8).catch(() => [])
       : [];
     const recentTexts = await loadRecentOutreachTexts(args.accountId, args.conversationId);
+    // Account-wide cold dedup — for cold outreach, the per-fan ring is
+    // always empty (brand-new conversation). Pull the last 20 cold sends
+    // across ALL fans on this account so the LLM is told "you keep
+    // shipping 'i see u lurkin 👀' on every cold send — vary it."
+    const recentAccountCold = args.kind === "cold"
+      ? await loadRecentAccountColdTexts(args.accountId)
+      : [];
     const identity = loadIdentityLayer(args.accountId);
 
     const prefix = [
@@ -359,6 +391,13 @@ async function generateOutreachText(args: {
               ``,
             ]
           : []),
+        ...(recentAccountCold.length > 0
+          ? [
+              `RECENT COLD OPENERS YOU'VE SENT TO OTHER FANS (last ~20) — DO NOT repeat the shape, opener, or emoji placement of these. Vary the angle: curiosity, compliment, observation about their sub, a question, a tease, a casual hi. Avoid the "i see u lurkin 👀 / what brought u here" template if it appears below:`,
+              ...recentAccountCold.slice(0, 12).map((t, i) => `  ${i + 1}. ${t}`),
+              ``,
+            ]
+          : []),
         `OUTPUT FORMAT — STRICT JSON. Return a single JSON object exactly like:`,
         `  {"text": "the actual message"}`,
         `Rules: no markdown fences, no prose around the JSON, no placeholder values like "text here" / "<...>" / "[...]".`,
@@ -393,7 +432,7 @@ async function generateOutreachText(args: {
       );
       return null;
     }
-    await recordRecentOutreachText(args.accountId, args.conversationId, text);
+    await recordRecentOutreachText(args.accountId, args.conversationId, text, args.kind);
     return text;
   } catch (err) {
     logger.warn(
