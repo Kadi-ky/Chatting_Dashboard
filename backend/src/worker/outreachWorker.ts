@@ -95,8 +95,11 @@ function isWithinActiveHours(referenceUtc: Date, nowUtc: Date, windowHours: numb
 }
 
 // Disengagement keywords — never outreach a fan whose recent inbound
-// indicates they want to be left alone.
+// indicates they want to be left alone. Same scope as nudgeWorker's
+// patterns (which see the operator audit comment for the 3-bucket
+// rationale) — kept duplicated to avoid module coupling.
 const DISENGAGE_PATTERNS = [
+  // Explicit refusal
   /\bstop\b/i,
   /\bleave me alone\b/i,
   /\bunsub/i,
@@ -104,6 +107,21 @@ const DISENGAGE_PATTERNS = [
   /\bgoodbye\b/i,
   /\bnot interested\b/i,
   /\bdo not (?:contact|message|dm)\b/i,
+  // Economic disengagement
+  /\b(?:out of|no|low on|short on) (?:money|cash|funds)\b/i,
+  /\b(?:cant?|can'?t|cannot)\s+afford\b/i,
+  /\b(?:im|i am|i'?m)\s+broke\b/i,
+  /\b(?:money|funds?|cash)\s+(?:so|too|are|is)?\s*low\b/i,
+  /\bnext (?:paycheck|payday|paydate|check)\b/i,
+  /\bsave\s+up\b/i,
+  /\bbroke\s+(?:rn|right now|atm|af)\b/i,
+  // Polite blow-offs
+  /\b(?:maybe|talk)\s+later\b/i,
+  /\bi(?:'?ll|ll)\s+(?:think|let u know|get back|see)\b/i,
+  /\b(?:ill|i will)\s+see\b/i,
+  /\bgotta (?:go|run|head)\b/i,
+  /\b(?:gtg|brb)\b/i,
+  /\bbusy (?:rn|right now|atm)\b/i,
 ];
 
 // Static fallback templates if LLM call fails. Cold templates are

@@ -180,7 +180,7 @@ async function generateLlmReply(
     "PPV STEP — you're sending him the PRICED PPV right now. Output ONE bubble: the caption that goes with it.\n\n" +
     "Write it like Khlo really sending him this clip. What you were thinking when you filmed it. Why he's the one getting it. What makes it worth the unlock. The humanness layer above tells you who she is and what her captions usually contain — write as her.\n\n" +
     "Tone: match his last-message register (sweet → soft heat, dominant → submit-eager, demanding → tease-back) but always feel like SHE'S buzzing about this drop.\n\n" +
-    "Asset anchor: paraphrase what's IN the asset description. Don't invent acts / positions / personalizations not in the description.\n\n" +
+    "Asset anchor (HARD RULE — operator-observed lying 2026-05-08): paraphrase what's IN the asset description. Do NOT invent acts / positions / personalizations / body-attribute claims not in the description. If the fan ASKED a specific question in his last message about what's in the content (e.g. 'is that with bigger tits?', 'do u have feet stuff?', 'is it solo or with a guy?'), the caption MUST answer TRUTHFULLY based ONLY on the asset description. If the answer is NO or unclear, write a chat-reply not a PPV caption — i.e. acknowledge honestly and tease ALTERNATIVE content the catalog actually has. Lying about content to push a sale destroys trust on unlock and is the single most expensive AI-tell.\n\n" +
     "Don't echo his exact words back ('u said X, here's X'). Don't ship banned palette emojis (🥵 💦 😈 🫦 🔥 💋). One bubble. Max 45 words.";
   const task: {
     kind: GeneratorTaskKind;

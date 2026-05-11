@@ -95,7 +95,25 @@ const PPV_TEMPLATES: string[][] = [
 
 // Cheap unsubscribe / disengagement detection — never nudge fans whose recent
 // inbound contains any of these. Cuts ~all of the bad-vibe nudge cases.
+/**
+ * Disengagement signals — if any of these match the fan's last 3 inbound
+ * messages, skip nudging. Operator audit 2026-05-08: hessu was getting
+ * spam-nudged across all 6 ladder steps after saying "Sorry but really
+ * i am out of money" + "Yeah i will" because none of the explicit
+ * patterns ("stop", "leave me alone", "unsub") matched. Real fans almost
+ * never say those things — they politely deflect or admit money issues.
+ *
+ * Three buckets:
+ *   1. Explicit refusal — the original list (stop / leave me alone / etc).
+ *   2. Economic disengagement — fan said they can't pay. Continuing to
+ *      nudge after this reads as guilt-trip / harassment and burns a fan
+ *      who would have come back later on their own.
+ *   3. Polite blow-offs — "ill think about it" / "maybe later" / "save up".
+ *      Often a soft no the fan won't escalate to a hard no but bot pinging
+ *      every few hours pushes them to it.
+ */
 const DISENGAGE_PATTERNS = [
+  // (1) Explicit refusal
   /\bstop\b/i,
   /\bleave me alone\b/i,
   /\bunsub/i,
@@ -104,6 +122,21 @@ const DISENGAGE_PATTERNS = [
   /\bgoodbye\b/i,
   /\bbye for good\b/i,
   /\bnot interested\b/i,
+  // (2) Economic disengagement
+  /\b(?:out of|no|low on|short on) (?:money|cash|funds)\b/i,
+  /\b(?:cant?|can'?t|cannot)\s+afford\b/i,
+  /\b(?:im|i am|i'?m)\s+broke\b/i,
+  /\b(?:money|funds?|cash)\s+(?:so|too|are|is)?\s*low\b/i,
+  /\bnext (?:paycheck|payday|paydate|check)\b/i,
+  /\bsave\s+up\b/i,
+  /\bbroke\s+(?:rn|right now|atm|af)\b/i,
+  // (3) Polite blow-offs — calibrated tight to avoid false positives
+  /\b(?:maybe|talk)\s+later\b/i,
+  /\bi(?:'?ll|ll)\s+(?:think|let u know|get back|see)\b/i,
+  /\b(?:ill|i will)\s+see\b/i,
+  /\bgotta (?:go|run|head)\b/i,
+  /\b(?:gtg|brb)\b/i,
+  /\bbusy (?:rn|right now|atm)\b/i,
 ];
 
 interface NudgeState {
