@@ -614,17 +614,25 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
-    // Order DESC (newest first). Subsync just imported ~1,300 fresh subs;
-    // they have empty state_ctx and are immediately eligible. The OLDER
-    // never-chatted subs were attempted during the long dry-run period
-    // and have state_ctx.coldCount=3 (max), so they bounce in the loop
-    // anyway. Sending to fresh imports first maximizes effective send rate.
-    .orderBy("s.created_at", "desc")
-    .limit(100)
+    // Random sample of the never-chatted pool. Previously ordered DESC
+    // LIMIT 100, same 100 newest subs came back every tick; after one
+    // round all entered 5-day cooldown and the worker stalled — the
+    // ~1,500 older never-chatted subs were never reached. Random sample
+    // of 200 per tick + max-sends cap below keeps OFAPI load bounded
+    // while rotating through the full pool over time.
+    .orderBy(sql`random()`)
+    .limit(200)
     .execute();
 
   let sent = 0;
+  // Per-tick send cap. With LIMIT 200 candidates + most eligible, we could
+  // fire 200 cold sends in one tick which would hammer OFAPI's rate
+  // limits (5K msgs/min cap shared with everything else). Capping at 40
+  // per tick spreads sends across 30-min ticks at ~80/hour, which is
+  // well within OFAPI's per-account rate envelope.
+  const MAX_COLD_SENDS_PER_TICK = 40;
   for (const row of rows) {
+    if (sent >= MAX_COLD_SENDS_PER_TICK) break;
     try {
       // Ensure conversation row — may need creation for subsync-imported
       // fans that have never received a message webhook. Idempotent.
