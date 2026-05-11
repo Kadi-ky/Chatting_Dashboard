@@ -11,6 +11,7 @@ import { HUMANNESS_LAYER, HUMANNESS_VERSION } from "../prompt/layers/humanness.j
 import { CONTRACT_LAYER, CONTRACT_VERSION } from "../prompt/layers/contract.js";
 import { routeLlmCall } from "../llm/router.js";
 import type { LlmMessage } from "../llm/types.js";
+import { isFanUnreachable } from "../platform/impl/http/unreachable.js";
 
 /**
  * Outreach worker — proactive DMs to subs the chat-reply pipeline can't reach.
@@ -625,15 +626,32 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
     .execute();
 
   let sent = 0;
+  // Resolve platform account id for unreachable-fan lookup.
+  const account = await db
+    .selectFrom("v3.accounts")
+    .select(["platform_account_id"])
+    .where("id", "=", rows[0]?.account_id ?? "")
+    .executeTakeFirst();
+  const platformAccountId = (account?.platform_account_id ?? null) as string | null;
+
   // Per-tick send cap. With LIMIT 200 candidates + most eligible, we could
   // fire 200 cold sends in one tick which would hammer OFAPI's rate
   // limits (5K msgs/min cap shared with everything else). Capping at 40
   // per tick spreads sends across 30-min ticks at ~80/hour, which is
   // well within OFAPI's per-account rate envelope.
   const MAX_COLD_SENDS_PER_TICK = 40;
+  let unreachableSkipped = 0;
   for (const row of rows) {
     if (sent >= MAX_COLD_SENDS_PER_TICK) break;
     try {
+      // Skip fans OFAPI already told us are unreachable (blocked / unsubbed /
+      // DM-disabled). Saves the LLM-generate + send round trip on dead fans.
+      if (platformAccountId) {
+        if (await isFanUnreachable(platformAccountId, row.fan_external_id)) {
+          unreachableSkipped++;
+          continue;
+        }
+      }
       // Ensure conversation row — may need creation for subsync-imported
       // fans that have never received a message webhook. Idempotent.
       const { id: convId } = await ensureConversation({
@@ -675,6 +693,9 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
         "cold outreach failed for one sub",
       );
     }
+  }
+  if (unreachableSkipped > 0) {
+    logger.info({ unreachableSkipped }, "cold pass skipped unreachable fans");
   }
   return { candidates: rows.length, sent };
 }

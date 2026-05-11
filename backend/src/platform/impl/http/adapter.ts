@@ -16,6 +16,7 @@ import type {
   SubscriberSnapshot,
 } from "../../PlatformAdapter.js";
 import { PlatformHttpClient, PlatformHttpError } from "./client.js";
+import { markFanUnreachable } from "./unreachable.js";
 import { env } from "../../../config/index.js";
 import { logger } from "../../../observability/logger.js";
 
@@ -158,15 +159,28 @@ export class HttpPlatformAdapter implements PlatformAdapter {
     // OnlyFansAPI returns { data: { id, createdAt, ... }, _meta: {...} }.
     // id comes back as a NUMBER (not string), so we coerce. createdAt is the
     // server timestamp; there is no separate `sent_at` field.
-    const resp = await this.http.request<OFAPIResponse<OFAPISentMessage>>(
-      `/api/${ctx.platformAccountId}/chats/${req.subscriberExternalId}/messages`,
-      {
-        method: "POST",
-        idempotencyKey: req.idempotencyKey,
-        body: { text: req.text },
-      },
-    );
-    return { externalId: String(resp.data.id), sentAt: new Date(resp.data.createdAt) };
+    try {
+      const resp = await this.http.request<OFAPIResponse<OFAPISentMessage>>(
+        `/api/${ctx.platformAccountId}/chats/${req.subscriberExternalId}/messages`,
+        {
+          method: "POST",
+          idempotencyKey: req.idempotencyKey,
+          body: { text: req.text },
+        },
+      );
+      return { externalId: String(resp.data.id), sentAt: new Date(resp.data.createdAt) };
+    } catch (err) {
+      // OFAPI 400 "Cannot send message to this user" — fan blocked us /
+      // unsubscribed / disabled DMs / account suspended. Flag in Redis so
+      // outreach + nudge workers skip future attempts. Operator audit
+      // 2026-05-11: ~10% of cold outreach was burning sends on these
+      // dead fans before we filtered. Re-throw so the rest of the
+      // pipeline still records the failure normally.
+      if (err instanceof PlatformHttpError && err.status === 400 && err.body.includes("Cannot send message to this user")) {
+        await markFanUnreachable(ctx.platformAccountId, req.subscriberExternalId).catch(() => undefined);
+      }
+      throw err;
+    }
   }
 
   async sendPPV(ctx: AccountContext, req: SendPPVRequest): Promise<SendResult> {
