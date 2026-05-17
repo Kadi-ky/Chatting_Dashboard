@@ -263,13 +263,12 @@ async function runForAccount(account: {
         continue;
       }
 
-      // Set lock + diag ring BEFORE send so concurrent ticks can't double-fire
-      await sharedRedis().set(
-        voucherLockKey(account.id, row.fan_external_id),
-        "1",
-        "EX",
-        VOUCHER_LOCK_TTL_SEC,
-      );
+      // Set lock BEFORE send for race protection (concurrent ticks won't
+      // double-fire on the same fan). If the send below fails, we ROLL BACK
+      // the lock so the fan isn't silently skipped for 2 days over a
+      // transient error. QA-flagged bug fix 2026-05-14.
+      const lockKey = voucherLockKey(account.id, row.fan_external_id);
+      await sharedRedis().set(lockKey, "1", "EX", VOUCHER_LOCK_TTL_SEC);
 
       const dryRunEffective = env.VOUCHER_DRY_RUN;
       const entry: RecentVoucher = {
@@ -286,44 +285,62 @@ async function runForAccount(account: {
       RECENT_VOUCHERS.unshift(entry);
       if (RECENT_VOUCHERS.length > RECENT_VOUCHERS_MAX) RECENT_VOUCHERS.length = RECENT_VOUCHERS_MAX;
 
-      await recordRecentVoucherText(account.id, caption);
-
       if (dryRunEffective) {
-        logger.info(entry, "voucher dry-run (no send)");
+        // Dry-run: log the would-send entry, do NOT poison the per-account
+        // dedup ring (the LLM should only learn to rotate against captions
+        // real fans actually saw). Also do NOT touch insert/enqueue.
+        logger.info(entry, "voucher dry-run (no send, no ring-record)");
         result.sent++;
         continue;
       }
 
-      // Insert message + enqueue PPV send
-      const { id: messageId } = await insertOutboundDraft({
-        conversationId: convId,
-        text: caption,
-        kind: "ppv",
-        attachments: [{ assetRef: pick.mediaId, priceCents: voucherPriceCents }],
-      });
-      await outboundQueue().add(
-        "voucher",
-        {
-          accountId: account.id,
+      // Live: insert message + enqueue PPV send. Wrap in try so we can
+      // roll back the cooldown lock if enqueue fails — otherwise the fan
+      // gets a 2-day silent skip over a Redis/DB blip.
+      try {
+        const { id: messageId } = await insertOutboundDraft({
           conversationId: convId,
-          subscriberId: row.subscriber_id,
-          subscriberExternalId: row.fan_external_id,
-          kind: "ppv",
-          messageId,
           text: caption,
-          ppv: {
-            assetId: pick.scriptId,
-            assetRef: pick.mediaId,
-            priceCents: voucherPriceCents,
+          kind: "ppv",
+          attachments: [{ assetRef: pick.mediaId, priceCents: voucherPriceCents }],
+        });
+        await outboundQueue().add(
+          "voucher",
+          {
+            accountId: account.id,
+            conversationId: convId,
+            subscriberId: row.subscriber_id,
+            subscriberExternalId: row.fan_external_id,
+            kind: "ppv",
+            messageId,
+            text: caption,
+            ppv: {
+              assetId: pick.scriptId,
+              assetRef: pick.mediaId,
+              priceCents: voucherPriceCents,
+            },
+            bubbleIndex: 0,
+            bubbleCount: 1,
           },
-          bubbleIndex: 0,
-          bubbleCount: 1,
-        },
-        { jobId: `voucher-${messageId}` },
-      );
-
-      logger.info(entry, "voucher enqueued");
-      result.sent++;
+          { jobId: `voucher-${messageId}` },
+        );
+        // Only record the caption in the dedup ring AFTER successful
+        // enqueue — failed sends don't poison rotation for next send.
+        await recordRecentVoucherText(account.id, caption);
+        logger.info(entry, "voucher enqueued");
+        result.sent++;
+      } catch (enqErr) {
+        // Rollback the lock so this fan is re-eligible on the next tick.
+        await sharedRedis().del(lockKey).catch(() => undefined);
+        logger.warn(
+          {
+            err: enqErr instanceof Error ? enqErr.message : enqErr,
+            subscriberId: row.subscriber_id,
+            fanExternalId: row.fan_external_id,
+          },
+          "voucher enqueue failed — cooldown lock rolled back",
+        );
+      }
     } catch (err) {
       logger.warn(
         { err: err instanceof Error ? err.message : err, subscriberId: row.subscriber_id },
