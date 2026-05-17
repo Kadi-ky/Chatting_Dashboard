@@ -13,6 +13,7 @@ import { startBroadcastRunner, type BroadcastRunnerHandle } from "./worker/broad
 import { startNudgeWorker, type NudgeWorkerHandle } from "./worker/nudgeWorker.js";
 import { startOutreachWorker, type OutreachWorkerHandle } from "./worker/outreachWorker.js";
 import { startSubSyncWorker, type SubSyncWorkerHandle } from "./worker/subSyncWorker.js";
+import { startVoucherWorker, type VoucherWorkerHandle } from "./worker/voucherWorker.js";
 import { expireStaleAttempts } from "./db/repos/ppv_attempts.js";
 import { startAdminServer, type AdminServerHandle } from "./api/server.js";
 import { getPlatformAdapter } from "./platform/index.js";
@@ -29,6 +30,7 @@ let broadcastRunner: BroadcastRunnerHandle | null = null;
 let nudgeWorker: NudgeWorkerHandle | null = null;
 let outreachWorker: OutreachWorkerHandle | null = null;
 let subSyncWorker: SubSyncWorkerHandle | null = null;
+let voucherWorker: VoucherWorkerHandle | null = null;
 let attemptExpirySweep: NodeJS.Timeout | null = null;
 let adminServer: AdminServerHandle | null = null;
 
@@ -58,6 +60,7 @@ async function shutdown(signal: string): Promise<void> {
     if (nudgeWorker) await nudgeWorker.stop();
     if (outreachWorker) await outreachWorker.stop();
     if (subSyncWorker) await subSyncWorker.stop();
+    if (voucherWorker) await voucherWorker.stop();
     if (attemptExpirySweep) clearInterval(attemptExpirySweep);
     if (adminServer) await adminServer.stop();
     if (worker) await worker.close();
@@ -88,6 +91,7 @@ async function boot(): Promise<void> {
   nudgeWorker = startNudgeWorker();
   outreachWorker = startOutreachWorker();
   subSyncWorker = startSubSyncWorker();
+  voucherWorker = startVoucherWorker();
   // PPV attempt expiry sweeper. Marks pending attempts older than 72h as
   // 'expired' so cant_afford detection (finds last pending) doesn't latch
   // onto ancient pitches and discount-recover them, and so analytics show

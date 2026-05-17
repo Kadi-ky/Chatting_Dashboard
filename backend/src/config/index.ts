@@ -121,6 +121,14 @@ const envSchema = z.object({
   // into v3.subscribers so cold outreach can target lurkers. Default OFF.
   // Calls /api/{account}/fans via adapter.listSubscribers.
   SUB_SYNC_ENABLED: stringBool(false),
+  // VOUCHER worker — scheduled priced PPV sends to silent fans, framed
+  // as "50% off voucher" but actually selling at $50-99 (premium tier).
+  // Different from outreach (text rapport) — these are paid pitches.
+  // Default OFF — operator brief 2026-05-14 spec. Per-fan cap: once
+  // every 2 days. Asset picker excludes anything the fan has already
+  // bought so each send is fresh.
+  VOUCHER_ENABLED: stringBool(false),
+  VOUCHER_DRY_RUN: stringBool(true),
   // Soft-resume ramp-up. When set to an ISO timestamp in the future, the
   // per-account token bucket runs at HALF its normal refill rate until that
   // time passes. Use this when un-pausing after a long 429 cooldown to

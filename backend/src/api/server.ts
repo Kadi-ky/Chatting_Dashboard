@@ -27,6 +27,7 @@ import { getRecentNudges } from "../worker/nudgeWorker.js";
 import { getRecentOutreach } from "../worker/outreachWorker.js";
 import { getRecentSubSyncs, triggerSubSyncNow } from "../worker/subSyncWorker.js";
 import { triggerOutreachNow } from "../worker/outreachWorker.js";
+import { getRecentVouchers, triggerVoucherNow } from "../worker/voucherWorker.js";
 import { getRecentPitchDecisions, turnsSinceLastPitch as ppvTurnsSinceLastPitch } from "../ppv/orchestrator.js";
 import { listRecentAttempts, countUnboughtRecentPitches } from "../db/repos/ppv_attempts.js";
 import { listPurchasesByFan, parseLegacySourceRef } from "../db/repos/purchases.js";
@@ -133,6 +134,14 @@ async function handle(
   // Recent sub-sync stats (per-account fan-count snapshots).
   if (method === "GET" && path === "/diag/recent-subsyncs") {
     return json(res, 200, { syncs: getRecentSubSyncs() });
+  }
+
+  // Recent voucher mass-sends — the scheduled priced PPV blasts. Shows
+  // caption + asset pick + price for each fire. Use to verify that the
+  // voucher caption quality is landing and that the picker is correctly
+  // skipping already-bought assets per fan.
+  if (method === "GET" && path === "/diag/recent-vouchers") {
+    return json(res, 200, { vouchers: getRecentVouchers() });
   }
 
   // Engagement dashboard — aggregate funnel metrics for the last N hours.
@@ -794,6 +803,25 @@ async function handle(
       } catch (err) {
         return json(res, 500, {
           error: err instanceof Error ? err.message : String(err),
+        });
+      }
+    }
+
+    // POST /admin/voucher-now — force an immediate voucher mass-send pass
+    // across all allowlisted accounts. Returns per-account candidate/sent
+    // counts plus the skip-reason breakdown. Use to test the feature
+    // without waiting for the 30-min tick, especially when verifying
+    // caption quality on first deploy (set VOUCHER_DRY_RUN=true on
+    // Railway first, hit this endpoint, inspect /diag/recent-vouchers,
+    // then flip dry-run off when satisfied).
+    if (method === "POST" && path === "/admin/voucher-now") {
+      try {
+        const result = await triggerVoucherNow();
+        return json(res, 200, result);
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+          stack: err instanceof Error ? err.stack?.slice(0, 1000) : undefined,
         });
       }
     }
