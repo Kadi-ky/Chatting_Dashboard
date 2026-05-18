@@ -80,13 +80,16 @@ export async function pickVoucherAsset(args: {
   const untouched = all.filter((p) => !ownedScripts.has(p.script.scriptNumber));
   const candidates = untouched.length > 0 ? untouched : all;
 
-  // Within candidates, prefer LOWER rungs first (cheaper base, but voucher
-  // pricing bumps anyway, so the lower rungs become the highest-margin sends).
-  candidates.sort((a, b) => a.rung.rung - b.rung.rung);
-  // Take the bottom third (lowest rungs) and random-pick from there for variety.
-  const cutoff = Math.max(1, Math.floor(candidates.length / 3));
-  const pool = candidates.slice(0, cutoff);
-  const pick = pool[Math.floor(Math.random() * pool.length)]!;
+  // Random pick across ALL unbought pickables — operator-observed 2026-05-17:
+  // the prior "bottom third by rung" formula collapsed on small catalogs.
+  // When a creator has only 1-2 scripts and fans have empty purchase history,
+  // bottom-third floor(N/3) returned 1 pickable → every fan got the SAME
+  // asset → identical caption descriptions → mass-send template lock at
+  // the asset level. Random across all unbought maximizes diversity given
+  // whatever catalog depth the creator has. Voucher pricing already
+  // bumps to the $50-$99 tier regardless of base rung, so picking higher
+  // rungs doesn't change the fan's voucher price — they all feel the same.
+  const pick = candidates[Math.floor(Math.random() * candidates.length)]!;
 
   return {
     scriptId: pick.script.id,

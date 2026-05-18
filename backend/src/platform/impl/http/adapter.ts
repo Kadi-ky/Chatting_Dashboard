@@ -170,14 +170,22 @@ export class HttpPlatformAdapter implements PlatformAdapter {
       );
       return { externalId: String(resp.data.id), sentAt: new Date(resp.data.createdAt) };
     } catch (err) {
-      // OFAPI 400 "Cannot send message to this user" — fan blocked us /
-      // unsubscribed / disabled DMs / account suspended. Flag in Redis so
-      // outreach + nudge workers skip future attempts. Operator audit
-      // 2026-05-11: ~10% of cold outreach was burning sends on these
-      // dead fans before we filtered. Re-throw so the rest of the
-      // pipeline still records the failure normally.
-      if (err instanceof PlatformHttpError && err.status === 400 && err.body.includes("Cannot send message to this user")) {
-        await markFanUnreachable(ctx.platformAccountId, req.subscriberExternalId).catch(() => undefined);
+      // Flag fans OFAPI rejects so outreach + nudge + voucher workers
+      // skip future attempts (Redis flag w/ 30d TTL).
+      //
+      // Recognised dead-fan signals (2026-05-17 expanded after voucher
+      // live-fire surfaced 17× HTTP 404 in a single tick):
+      //   - 400 "Cannot send message to this user" — fan blocked / DMs off
+      //   - 404 — fan account deleted / banned / id no longer valid
+      //   - 404 with "not found" in body — same
+      // Re-throw so the rest of the pipeline still records the failure normally.
+      if (err instanceof PlatformHttpError) {
+        const deadFan =
+          (err.status === 400 && err.body.includes("Cannot send message to this user")) ||
+          err.status === 404;
+        if (deadFan) {
+          await markFanUnreachable(ctx.platformAccountId, req.subscriberExternalId).catch(() => undefined);
+        }
       }
       throw err;
     }
@@ -192,19 +200,34 @@ export class HttpPlatformAdapter implements PlatformAdapter {
     //   - field is `mediaFiles` (camelCase, NOT `media_ids`)
     //   - field is `price` in DOLLARS as a number (NOT `price_cents` in cents)
     //   - no `is_ppv` flag — its presence is implied by `price > 0` + media
-    const resp = await this.http.request<OFAPIResponse<OFAPISentMessage>>(
-      `/api/${ctx.platformAccountId}/chats/${req.subscriberExternalId}/messages`,
-      {
-        method: "POST",
-        idempotencyKey: req.idempotencyKey,
-        body: {
-          text: req.caption ?? "",
-          price: centsToDollars(req.priceCents),
-          mediaFiles: [req.assetRef],
+    try {
+      const resp = await this.http.request<OFAPIResponse<OFAPISentMessage>>(
+        `/api/${ctx.platformAccountId}/chats/${req.subscriberExternalId}/messages`,
+        {
+          method: "POST",
+          idempotencyKey: req.idempotencyKey,
+          body: {
+            text: req.caption ?? "",
+            price: centsToDollars(req.priceCents),
+            mediaFiles: [req.assetRef],
+          },
         },
-      },
-    );
-    return { externalId: String(resp.data.id), sentAt: new Date(resp.data.createdAt) };
+      );
+      return { externalId: String(resp.data.id), sentAt: new Date(resp.data.createdAt) };
+    } catch (err) {
+      // Same dead-fan flagging as sendMessage. Critical for voucher worker
+      // (PPV kind) which targets silent/unreachable fans at scale — without
+      // this, every voucher tick re-attempts the same dead accounts.
+      if (err instanceof PlatformHttpError) {
+        const deadFan =
+          (err.status === 400 && err.body.includes("Cannot send message to this user")) ||
+          err.status === 404;
+        if (deadFan) {
+          await markFanUnreachable(ctx.platformAccountId, req.subscriberExternalId).catch(() => undefined);
+        }
+      }
+      throw err;
+    }
   }
 
   async sendFreeMedia(ctx: AccountContext, req: SendFreeMediaRequest): Promise<SendResult> {
