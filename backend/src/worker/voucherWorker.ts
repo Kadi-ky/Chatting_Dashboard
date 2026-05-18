@@ -187,7 +187,17 @@ async function runForAccount(account: {
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
-    .where(sql<SqlBool>`(s.last_inbound_at IS NULL OR s.last_inbound_at < ${inboundCutoff})`)
+    // CRITICAL — fan must have replied at least once. Operator audit
+    // 2026-05-18: prior filter `(NULL OR < 24h)` was letting NEVER-CHATTED
+    // fans through, so the voucher worker fired $50-$99 priced PPVs at
+    // strangers who had never even said hi. 12 of 15 sampled voucher
+    // convos had ZERO inbound messages ever — straight spam.
+    //
+    // Right semantics: voucher = warm-but-quiet (chatted before, idle now).
+    // Cold-cold fans (never engaged) belong to the cold outreach worker
+    // which fires unpriced text rapport-builders, not priced PPVs.
+    .where("s.last_inbound_at", "is not", null)
+    .where(sql<SqlBool>`s.last_inbound_at < ${inboundCutoff}`)
     .orderBy(sql`random()`)
     .limit(150)
     .execute();
