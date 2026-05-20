@@ -12,6 +12,7 @@ import { CONTRACT_LAYER, CONTRACT_VERSION } from "../prompt/layers/contract.js";
 import { routeLlmCall } from "../llm/router.js";
 import type { LlmMessage } from "../llm/types.js";
 import { isFanUnreachable } from "../platform/impl/http/unreachable.js";
+import { isConversationDisengaged } from "./disengagement.js";
 
 /**
  * Outreach worker — proactive DMs to subs the chat-reply pipeline can't reach.
@@ -507,6 +508,12 @@ interface FireArgs {
 }
 
 async function fireOutreach(args: FireArgs): Promise<boolean> {
+  // Sticky disengagement flag (set by conversationWorker on explicit refusal).
+  // Survives past the 3-inbound window of the keyword scan below.
+  if (await isConversationDisengaged(args.conversationId)) {
+    logger.info({ convId: args.conversationId }, "outreach skipped — sticky disengagement flag set");
+    return false;
+  }
   // Disengagement guard
   const recentInbounds = await db
     .selectFrom("v3.messages")

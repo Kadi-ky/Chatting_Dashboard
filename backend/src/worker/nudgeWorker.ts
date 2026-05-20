@@ -6,6 +6,7 @@ import { outboundQueue } from "../queue/outbound.js";
 import { sharedRedis } from "../queue/redis.js";
 import { insertOutboundDraft, loadRecentMessages } from "../db/repos/messages.js";
 import { loadLatestArchetype } from "../db/repos/archetypes.js";
+import { isConversationDisengaged } from "./disengagement.js";
 import { loadIdentityLayer } from "../prompt/layers/identity.js";
 import { HUMANNESS_LAYER, HUMANNESS_VERSION } from "../prompt/layers/humanness.js";
 import { CONTRACT_LAYER, CONTRACT_VERSION } from "../prompt/layers/contract.js";
@@ -363,6 +364,10 @@ async function runIdlePass(): Promise<{ candidates: number; sent: number }> {
         if (sinceLastNudge < requiredMs) continue;
       }
 
+      // Sticky disengagement flag (set by conversationWorker on explicit
+      // refusal). Survives past the 3-inbound window of fanIsDisengaging
+      // — checked first because it's the cheapest gate.
+      if (await isConversationDisengaged(row.conv_id)) continue;
       // Skip if the most recent inbound text contains disengagement signals.
       if (await fanIsDisengaging(row.conv_id)) continue;
 
@@ -456,6 +461,8 @@ async function runPpvPass(): Promise<{ candidates: number; sent: number }> {
       const requiredMs = PPV_NUDGE_THRESHOLDS_MS[attemptCount]!;
       if (sincePitch < requiredMs) continue;
 
+      // Sticky disengagement flag — set by conversationWorker on explicit "no".
+      if (await isConversationDisengaged(row.conv_id)) continue;
       // Skip if disengaged
       if (await fanIsDisengaging(row.conv_id)) continue;
 

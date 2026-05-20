@@ -23,6 +23,7 @@ import { env } from "../config/index.js";
 import { clearIdleNudgeState } from "./nudgeWorker.js";
 import { clearOutreachState } from "./outreachWorker.js";
 import { isBotInbound, flagConversationAsBot, isConversationBotFlagged } from "./botDetection.js";
+import { isExplicitDisengagement, markConversationDisengaged, maybeClearDisengageOnRetEngage } from "./disengagement.js";
 import type { PlatformEvent } from "../platform/PlatformAdapter.js";
 
 /**
@@ -140,6 +141,27 @@ async function handleMessageReceived(
   if (await isConversationBotFlagged(conversationId)) {
     logger.debug({ conversationId }, "conversation previously bot-flagged — skipping turn");
     return;
+  }
+
+  // Explicit disengagement detection — fan said "not interested" /
+  // "too expensive" / "stop messaging" etc. Sets a 14-day Redis flag that
+  // suppresses outbound automation (vouchers, nudges, outreach, pitches)
+  // for that conversation. Real chat replies STILL fire if the fan
+  // messages again — flag only suppresses bot-initiated pushes.
+  if (isExplicitDisengagement(text)) {
+    await markConversationDisengaged(conversationId).catch(() => undefined);
+    logger.info(
+      { conversationId, textPreview: text.slice(0, 100) },
+      "explicit disengagement detected — automation frozen for 14d",
+    );
+    // Fan still gets a reply — they messaged us, the reply pipeline
+    // should respond warmly (humanness layer handles tone). We just
+    // don't pitch / nudge / voucher them automatically anymore.
+  } else {
+    // Fan said something substantive that isn't a refusal — if they
+    // were previously flagged, the conversation has re-warmed and we
+    // can clear the flag.
+    await maybeClearDisengageOnRetEngage(conversationId, text).catch(() => undefined);
   }
 
   // Debounced turn enqueue. BullMQ dedupes on jobId, so N rapid-fire messages

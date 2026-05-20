@@ -13,6 +13,7 @@ import type { IntentFlags } from "../classify/intent.js";
 import { sql, type SqlBool } from "kysely";
 import { db } from "../db/client.js";
 import { sharedRedis } from "../queue/redis.js";
+import { isConversationDisengaged } from "../worker/disengagement.js";
 
 // Asset cooldown was REMOVED 2026-04-29. Old behavior: don't pitch the same
 // asset_id (per-rung paywalled bubble) to a fan within 14 days. Reasoning at
@@ -241,6 +242,17 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   // that the regex/LLM classifier flagged as buying signals.
   if (args.phase === "COLD" || args.phase === "REACTIVATION") {
     return { shouldPitch: false, reason: `phase ${args.phase} does not pitch` };
+  }
+  // Sticky disengagement flag — set by conversationWorker when the fan
+  // sends an explicit "no" / "not interested" / "too expensive" / "stop".
+  // Even if the fan keeps chatting (so chat-reply path still fires), the
+  // bot must NOT pitch them. Operator audit 2026-05-20: 8 fans were
+  // pitched 2-30 minutes after explicit refusal because the nudge/outreach
+  // 3-inbound-window check missed older refusals and the chat-reply path
+  // never checked at all. Flag is reversible via fan re-engagement
+  // (maybeClearDisengageOnRetEngage) or 14d TTL.
+  if (await isConversationDisengaged(args.conversationId)) {
+    return { shouldPitch: false, reason: "sticky_disengagement_flag" };
   }
   const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
   // BUG FIX 2026-05-07: previously the code did `if (Number.isFinite(minTurns))`
