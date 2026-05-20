@@ -201,6 +201,13 @@ const RECENT_NUDGE_TEXT_TTL_SEC = 14 * 24 * 3600; // 14 days
 const RECENT_NUDGE_TEXT_MAX = 10;
 const recentNudgeTextsKey = (accountId: string, conversationId: string): string =>
   `peach:nudge:recent:${accountId}:${conversationId}`;
+// Account-wide ring catches the cross-fan "whats holdin u back" repeat:
+// QA audit 2026-05-20 found the LLM emitted the same phrase to 6 different
+// fans in ~30min on one account because the per-conv ring was always empty
+// on the OTHER fans. Same fix shape as outreachWorker.recentAccountColdKey.
+const RECENT_NUDGE_ACCOUNT_MAX = 20;
+const recentNudgeAccountKey = (accountId: string): string =>
+  `peach:nudge:recent_account:${accountId}`;
 
 async function loadRecentNudgeTexts(accountId: string, conversationId: string): Promise<string[]> {
   try {
@@ -214,6 +221,30 @@ async function loadRecentNudgeTexts(accountId: string, conversationId: string): 
   }
 }
 
+async function loadRecentNudgeAccountTexts(accountId: string): Promise<string[]> {
+  try {
+    return await sharedRedis().lrange(
+      recentNudgeAccountKey(accountId),
+      0,
+      RECENT_NUDGE_ACCOUNT_MAX - 1,
+    );
+  } catch {
+    return [];
+  }
+}
+
+// Loose normalization for near-duplicate detection. Lowercase, strip emoji,
+// strip punctuation, collapse whitespace. Two texts whose normalized form
+// matches are treated as duplicates for the hard-reject gate.
+function normalizeForDedup(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "")
+    .replace(/[^a-z0-9\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 async function recordRecentNudgeText(
   accountId: string,
   conversationId: string,
@@ -225,6 +256,11 @@ async function recordRecentNudgeText(
     await r.lpush(k, text);
     await r.ltrim(k, 0, RECENT_NUDGE_TEXT_MAX - 1);
     await r.expire(k, RECENT_NUDGE_TEXT_TTL_SEC);
+    // Also push to account-wide ring (same TTL).
+    const ak = recentNudgeAccountKey(accountId);
+    await r.lpush(ak, text);
+    await r.ltrim(ak, 0, RECENT_NUDGE_ACCOUNT_MAX - 1);
+    await r.expire(ak, RECENT_NUDGE_TEXT_TTL_SEC);
   } catch (err) {
     logger.warn(
       { err: err instanceof Error ? err.message : err, accountId, conversationId },
@@ -695,6 +731,11 @@ async function generateNudgeText(args: {
     // seeded with the same context. Feeding the last 10 sent texts as a
     // "do-not-repeat" list breaks the loop.
     const recentTexts = await loadRecentNudgeTexts(args.accountId, args.conversationId);
+    // Account-wide ring catches cross-fan repeats. QA 2026-05-20: same
+    // "whats holdin u back" emitted to 6 different fans in 30min on one
+    // account because the per-conv ring was always empty for the other
+    // 5 conversations. Feed last 20 account-wide sends so the LLM rotates.
+    const recentAccountTexts = await loadRecentNudgeAccountTexts(args.accountId);
 
     messages.push({
       role: "system",
@@ -715,6 +756,13 @@ async function generateNudgeText(args: {
           ? [
               `RECENT SENDS to this same fan — DO NOT repeat the angle, opener, or phrasing of any of these. CRITICAL: also rotate the THEME/topic. If 2+ of the recent sends mention the same callback (e.g. his job, a pet, a content asset he hasn't bought), STOP using that callback and pick a different angle (a different memory from earlier in the convo, an observation about the time of day, a genuine "thinkin bout u" with no topic anchor). Operator audit 2026-05-08: same-theme nudges 5+ times in a row read as bot lock-in.`,
               ...recentTexts.slice(0, 6).map((t, i) => `  ${i + 1}. ${t}`),
+              ``,
+            ]
+          : []),
+        ...(recentAccountTexts.length > 0
+          ? [
+              `RECENT NUDGES YOU SENT TO OTHER FANS ON THIS ACCOUNT (last ~20) — DO NOT repeat any exact phrase, opener, or rhetorical question from this list. Each fan must get a UNIQUE-feeling message; do not lock onto a single phrase ("whats holdin u back", "u still around babe", etc.) across many fans.`,
+              ...recentAccountTexts.slice(0, 12).map((t, i) => `  ${i + 1}. ${t}`),
               ``,
             ]
           : []),
@@ -757,6 +805,20 @@ async function generateNudgeText(args: {
           rawPreview: result.content.slice(0, 200),
         },
         "nudge LLM output rejected (empty / too long / placeholder)",
+      );
+      return null;
+    }
+    // Hard near-duplicate reject — even with the "don't repeat" prompt,
+    // grok-4 occasionally locks onto a phrase across many fans. If the
+    // normalized form of this text already appears in the account ring,
+    // null-out so caller falls through to the static template pool
+    // (which IS varied). Better one cycle of templates than a 6-fan
+    // identical-phrase blast.
+    const norm = normalizeForDedup(text);
+    if (norm.length >= 6 && recentAccountTexts.some((t) => normalizeForDedup(t) === norm)) {
+      logger.warn(
+        { conversationId: args.conversationId, text, accountId: args.accountId },
+        "nudge LLM output rejected — near-duplicate of recent account send",
       );
       return null;
     }
