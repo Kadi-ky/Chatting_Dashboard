@@ -22,6 +22,7 @@ import { turnQueue } from "../queue/turns.js";
 import { env } from "../config/index.js";
 import { clearIdleNudgeState } from "./nudgeWorker.js";
 import { clearOutreachState } from "./outreachWorker.js";
+import { isBotInbound, flagConversationAsBot, isConversationBotFlagged } from "./botDetection.js";
 import type { PlatformEvent } from "../platform/PlatformAdapter.js";
 
 /**
@@ -118,6 +119,28 @@ async function handleMessageReceived(
 
   if (msg === null) return;
   if (!text || text.trim().length === 0) return;
+
+  // Bot-on-bot detection — operator audit 2026-05-20 found one fan
+  // (conv c59fd276) was actually a chatter-bot sending promo for OTHER
+  // creators with patterns like:
+  //   "Petite and spicy—Cecilia is waiting for you! https://onlyfans.com/cecilia.suarez/c80 #ad"
+  //   "Enter her realm… real men know the rules https://onlyfans.com/mariamzaid/c1 #ad"
+  // Our bot replied to ALL of them, fired 12 PPVs + 95 outbound messages.
+  // Pure wasted LLM compute. If we see these patterns, mark the
+  // conversation bot-flagged and skip the turn job entirely.
+  if (isBotInbound(text)) {
+    await flagConversationAsBot(conversationId).catch(() => undefined);
+    logger.warn(
+      { conversationId, textPreview: text.slice(0, 100) },
+      "inbound looks like a chatter-bot — skipping turn",
+    );
+    return;
+  }
+  // Also skip if conversation was previously flagged (covers multi-msg bots).
+  if (await isConversationBotFlagged(conversationId)) {
+    logger.debug({ conversationId }, "conversation previously bot-flagged — skipping turn");
+    return;
+  }
 
   // Debounced turn enqueue. BullMQ dedupes on jobId, so N rapid-fire messages
   // for the same conversation collapse to one turn job. The delay gives the

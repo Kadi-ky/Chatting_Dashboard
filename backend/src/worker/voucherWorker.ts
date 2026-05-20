@@ -55,6 +55,7 @@ const STARTUP_DELAY_MS = 90_000; // 90s — let DB pools settle + give other wor
 const VOUCHER_LOCK_TTL_SEC = 2 * 24 * 3600; // 2 days, operator-specified
 const MAX_PER_TICK_PER_ACCOUNT = 25;
 const MIN_HOURS_SINCE_INBOUND = 24; // skip actively-chatting fans
+const MAX_DAYS_SINCE_INBOUND = 14; // skip fully-dormant fans (QA 2026-05-20: 0/10 voucher unlocks on 21d+-silent pool)
 
 // Same disengagement patterns as nudge/outreach workers — economic signals,
 // polite blow-offs, and explicit refusal. Fans who've signalled these
@@ -171,6 +172,7 @@ async function runForAccount(account: {
   creatorUuid: string;
 }): Promise<VoucherPassResult> {
   const inboundCutoff = new Date(Date.now() - MIN_HOURS_SINCE_INBOUND * 3600_000);
+  const dormantCutoff = new Date(Date.now() - MAX_DAYS_SINCE_INBOUND * 24 * 3600_000);
 
   const rows = await db
     .selectFrom("v3.subscribers as s")
@@ -187,17 +189,20 @@ async function runForAccount(account: {
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
-    // CRITICAL — fan must have replied at least once. Operator audit
-    // 2026-05-18: prior filter `(NULL OR < 24h)` was letting NEVER-CHATTED
-    // fans through, so the voucher worker fired $50-$99 priced PPVs at
-    // strangers who had never even said hi. 12 of 15 sampled voucher
-    // convos had ZERO inbound messages ever — straight spam.
+    // CRITICAL — fan must be in the "warm but quiet" window:
+    //   - Has chatted at least once (NOT NULL)
+    //   - Most recent inbound 24h+ ago (not actively chatting right now)
+    //   - Most recent inbound within last 14 days (still warm, not dormant)
     //
-    // Right semantics: voucher = warm-but-quiet (chatted before, idle now).
-    // Cold-cold fans (never engaged) belong to the cold outreach worker
-    // which fires unpriced text rapport-builders, not priced PPVs.
+    // Operator audit 2026-05-20: prior filter only excluded actively-
+    // chatting fans (last_inbound < 24h ago) but had no upper bound, so
+    // vouchers were firing into 21-day-silent fans = corpses. Agent
+    // sampled 10 vouchers, all landed on dormant fans, 0 reactions, 0
+    // unlocks. Adding the 14-day upper bound targets the "warm but
+    // resting" cohort that's most likely to wake up to a paid tripwire.
     .where("s.last_inbound_at", "is not", null)
     .where(sql<SqlBool>`s.last_inbound_at < ${inboundCutoff}`)
+    .where(sql<SqlBool>`s.last_inbound_at > ${dormantCutoff}`)
     .orderBy(sql`random()`)
     .limit(150)
     .execute();
