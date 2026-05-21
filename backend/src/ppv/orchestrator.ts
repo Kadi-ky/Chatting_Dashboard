@@ -389,6 +389,15 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     }
   }
 
+  // Build the picker's exclusion set: source-refs that have expired 3+
+  // times in this conversation without an unlock. QA 2026-05-20 found
+  // Dan (conv 16c89f48) hit 10 expires on the same naked-PPV because
+  // the picker blindly returned `maxRungUnlocked + 1` even when that
+  // rung had been rejected 9 times prior. Same shape on facial-fan +
+  // Sam Kraft. Threshold = 3 expires (give the rung a couple chances
+  // for a slow fan, then move on).
+  const excludedSourceRefs = await buildExcludedSourceRefs(args.conversationId);
+
   const picked = await pickNextForFan({
     accountId: args.accountId,
     creatorUuid: args.creatorUuid,
@@ -396,6 +405,7 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     archetype: args.archetype,
     phase: args.phase,
     requestedTopic: args.requestedTopic ?? null,
+    excludedSourceRefs,
   });
   if (!picked) {
     // If the fan asked for something specific and we have no match, signal
@@ -583,6 +593,49 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
  * mean "messages between pitches" — e.g. MONETIZING=3 → bot can re-pitch
  * after 3 messages, naturally landing within the same session.
  */
+/**
+ * Picker exclusion threshold: how many EXPIRED attempts on a single
+ * source-ref before that rung is treated as poisoned and skipped. 3 gives
+ * a slow fan a couple chances; past that the bot is just yelling into a
+ * void. Operator-observed 2026-05-20: Dan 16c89f48 hit 10 expires on
+ * the same naked-PPV when fan wanted romance/meetup — picker had no
+ * notion the rung was rejected.
+ */
+const EXCLUDE_AFTER_EXPIRES = 3;
+
+/**
+ * Pull this conversation's recent attempts, count expires per asset, and
+ * resolve to source_ref strings (`of:<creator>:<scriptN>:<rung>`) for the
+ * subset that has crossed EXCLUDE_AFTER_EXPIRES. Cheap: one ppv_attempts
+ * query + one catalog query per offending asset (usually 0-2).
+ */
+async function buildExcludedSourceRefs(conversationId: string): Promise<Set<string>> {
+  const recent = await listRecentAttempts(conversationId, 50);
+  const expiresPerAsset = new Map<string, number>();
+  for (const a of recent) {
+    if (a.outcome !== "expired") continue;
+    expiresPerAsset.set(a.assetId, (expiresPerAsset.get(a.assetId) ?? 0) + 1);
+  }
+  const offenders = [...expiresPerAsset.entries()]
+    .filter(([, count]) => count >= EXCLUDE_AFTER_EXPIRES)
+    .map(([assetId]) => assetId);
+  if (offenders.length === 0) return new Set();
+
+  const { loadCatalogItem } = await import("../db/repos/ppv_catalog.js");
+  const sourceRefs = new Set<string>();
+  for (const assetId of offenders) {
+    const asset = await loadCatalogItem(assetId);
+    if (asset?.sourceRef) sourceRefs.add(asset.sourceRef);
+  }
+  if (sourceRefs.size > 0) {
+    logger.info(
+      { conversationId, excludedCount: sourceRefs.size, offenders },
+      "picker exclusion: source-refs poisoned by 3+ expires in this conv",
+    );
+  }
+  return sourceRefs;
+}
+
 export async function turnsSinceLastPitch(conversationId: string): Promise<number> {
   const attempts = await listRecentAttempts(conversationId, 1);
   if (attempts.length === 0) return Infinity;

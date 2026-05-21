@@ -37,6 +37,16 @@ export interface PickArgs {
    * the requested topic, so the caller can surface a graceful decline.
    */
   requestedTopic?: string | null;
+  /**
+   * Source-refs the orchestrator has marked as poisoned for this conversation
+   * (3+ expires without unlock = fan saw it multiple times and ignored).
+   * The picker SKIPS these rungs in the continuing/topic/fresh paths so the
+   * bot stops re-pitching the same naked-PPV at a romance-seeking fan
+   * (Dan 16c89f48 / Sam Kraft cases, QA 2026-05-20).
+   *
+   * Format: `of:<creatorUuid>:<scriptNumber>:<rung>` — see materialise().
+   */
+  excludedSourceRefs?: ReadonlySet<string>;
 }
 
 export interface PickResult {
@@ -66,6 +76,11 @@ export interface PickResult {
  * Once picked, lazy-upsert a shadow row into v3.ppv_catalog keyed by
  * source_ref so the V3 ppv_attempts + asset_performance FKs resolve cleanly.
  */
+/** Build the canonical source-ref for a script×rung pair (mirrors materialise). */
+function sourceRefFor(creatorUuid: string, scriptNumber: number, rung: number): string {
+  return `of:${creatorUuid}:${scriptNumber}:${rung}`;
+}
+
 export async function pickNextForFan(args: PickArgs): Promise<PickResult | null> {
   const [scripts, purchases] = await Promise.all([
     listScriptsForCreator(args.creatorUuid),
@@ -76,6 +91,10 @@ export async function pickNextForFan(args: PickArgs): Promise<PickResult | null>
     logger.debug({ creatorUuid: args.creatorUuid }, "scriptPicker: no content scripts");
     return null;
   }
+
+  const excluded = args.excludedSourceRefs ?? new Set<string>();
+  const isExcluded = (scriptNumber: number, rung: number): boolean =>
+    excluded.has(sourceRefFor(args.creatorUuid, scriptNumber, rung));
 
   // Index scripts by number for the progress join.
   const byNumber = new Map<number, ContentScript>(scripts.map((s) => [s.scriptNumber, s]));
@@ -111,14 +130,14 @@ export async function pickNextForFan(args: PickArgs): Promise<PickResult | null>
   // No VIP-tier behavior anywhere — all fans walk the same ladder.
 
   // 1. CONTINUE IN-PROGRESS LADDER — always wins.
-  const continuing = pickContinuingScript(scripts, progress);
+  const continuing = pickContinuingScript(scripts, progress, isExcluded);
   if (continuing) {
     return await materialise(args.accountId, args.creatorUuid, continuing.script, continuing.rung, "continue");
   }
 
   // 2. TOPIC OVERRIDE (only when fan has no in-progress script).
   if (args.requestedTopic && !isGenericTopic(args.requestedTopic)) {
-    const topicMatch = pickByTopic(scripts, progress, args.requestedTopic);
+    const topicMatch = pickByTopic(scripts, progress, args.requestedTopic, isExcluded);
     if (topicMatch) {
       logger.info(
         { fanUuid: args.fanUuid, topic: args.requestedTopic, scriptNumber: topicMatch.script.scriptNumber, rung: topicMatch.rung.rung },
@@ -141,6 +160,10 @@ export async function pickNextForFan(args: PickArgs): Promise<PickResult | null>
     const prog = progress.get(s.scriptNumber);
     if (prog) return false; // already started — handled by pickContinuingScript above
     if (s.rungs.length === 0) return false;
+    // Skip scripts where rung 1 is poisoned. Fresh-start fans see rung 1
+    // first; if that's already been pitched-and-expired 3+ times in this
+    // conv, move to the next script.
+    if (isExcluded(s.scriptNumber, 1)) return false;
     return true;
   });
   if (candidates.length === 0) {
@@ -217,6 +240,7 @@ function pickByTopic(
   scripts: ContentScript[],
   progress: Map<number, FanScriptProgress>,
   topic: string,
+  isExcluded: (scriptNumber: number, rung: number) => boolean,
 ): { script: ContentScript; rung: ContentRung } | null {
   const t = topic.toLowerCase().trim();
   if (!t) return null;
@@ -241,6 +265,7 @@ function pickByTopic(
     const nameText = (script.scriptName ?? '').toLowerCase();
     for (const rung of script.rungs) {
       if (rung.rung <= maxUnlocked) continue;        // already unlocked
+      if (isExcluded(script.scriptNumber, rung.rung)) continue; // poisoned
       const descText = (rung.description ?? '').toLowerCase();
       // Haystack: rung's own description PLUS script-level tags/name (so a
       // script-level tag like "bj" still matches even if the description is
@@ -276,6 +301,7 @@ function pickByTopic(
 function pickContinuingScript(
   scripts: ContentScript[],
   progress: Map<number, FanScriptProgress>,
+  isExcluded: (scriptNumber: number, rung: number) => boolean,
 ): { script: ContentScript; rung: ContentRung } | null {
   const inProgress: Array<{ script: ContentScript; progress: FanScriptProgress }> = [];
   for (const s of scripts) {
@@ -289,13 +315,21 @@ function pickContinuingScript(
   // (rare, but possible from manual catalog reseeds), keep the freshest one
   // moving rather than reviving an older one.
   inProgress.sort((a, b) => b.progress.lastUnlockAt.getTime() - a.progress.lastUnlockAt.getTime());
-  const pick = inProgress[0]!;
-  // Pick the very next rung — no filtering, no skipping. The ladder runs
-  // in order start to finish.
-  const nextRungNum = pick.progress.maxRungUnlocked + 1;
-  const rung = pick.script.rungs.find((r) => r.rung === nextRungNum);
-  if (!rung) return null;
-  return { script: pick.script, rung };
+  // Walk in-progress scripts; for each, advance past any poisoned rungs
+  // (3+ expires without unlock). If the script has nothing left, fall
+  // through to the next in-progress script. Without this, the picker
+  // returned `maxRungUnlocked + 1` blindly and the bot re-pitched the
+  // same rejected asset 10× to fans like Dan (conv 16c89f48).
+  for (const pick of inProgress) {
+    const totalRungs = pick.script.rungs.length;
+    for (let next = pick.progress.maxRungUnlocked + 1; next <= totalRungs; next++) {
+      if (isExcluded(pick.script.scriptNumber, next)) continue;
+      const rung = pick.script.rungs.find((r) => r.rung === next);
+      if (!rung) continue;
+      return { script: pick.script, rung };
+    }
+  }
+  return null;
 }
 
 function rankFreshScripts(
