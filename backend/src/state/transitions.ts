@@ -63,19 +63,20 @@ export const TRANSITIONS: Transition[] = [
   //
   // Slow / cold fans naturally stall in RAPPORT — they never trip the
   // temperature gate, so they never get force-pitched. That's the whole point.
-  // WARMUP → RAPPORT. Aggressive: warm/hot fans advance after 1 turn so
-  // they don't sit in the no-pitch WARMUP gate when they could already be
-  // pitched. Cold fans still need 2 turns of warm-up before advancing.
-  // Operator data 2026-05-07: 59% of chatted fans were stuck in WARMUP
-  // because they reply once and ghost; this catches them in the funnel
-  // earlier so they at least get a RAPPORT-tier reply that may re-engage.
+  // WARMUP → RAPPORT. Loosened 2026-05-21: ANY first inbound advances
+  // the fan (was: cold-tempered fans needed 2 inbounds, which permanently
+  // stranded one-reply-ghosters because turnsInPhase only bumps on
+  // inbounds — fan replies once cold, never again, stuck in WARMUP
+  // forever). QA found ~314 fans (38% of ever-chatted) in exactly this
+  // state. Now first inbound → RAPPORT regardless of temperature. Even
+  // ghosters at least benefit from the RAPPORT-tier reply on that one
+  // message; fans who DO reply a second time can now hit the analyzer-
+  // gated soft pitch.
   {
     from: "WARMUP",
     to: "RAPPORT",
     trigger: "warmup_complete",
-    when: (s) =>
-      (s.turnsInPhase >= 1 && (s.temperature === "warm" || s.temperature === "hot")) ||
-      s.turnsInPhase >= 2,
+    when: (s) => s.turnsInPhase >= 1,
   },
   // RAPPORT → QUALIFYING (skip SEXTING) for HOT fans at 3+ turns. Operator
   // directive 2026-05-04: 75% of chatted fans were stuck pre-pitch because

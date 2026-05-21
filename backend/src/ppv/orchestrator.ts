@@ -39,9 +39,21 @@ import { isConversationDisengaged } from "../worker/disengagement.js";
  * behaviour anymore.
  */
 const MIN_TURNS_BETWEEN_PITCHES: Record<Phase, number> = {
-  WARMUP: Infinity,
-  RAPPORT: Infinity,    // No pitching in rapport — bot is gathering signal.
-  SEXTING: Infinity,    // No pitching in sexting either — bot is heating fan up.
+  WARMUP: Infinity,     // Still no pitching in raw warmup — fan hasn't shown
+                        //   enough signal yet. Transition gate loosened
+                        //   separately so cold-temp single-reply fans now
+                        //   advance to RAPPORT and become pitchable.
+  // OPENED 2026-05-21: was Infinity. QA found 3,316 WARMUP + 192 RAPPORT +
+  // 55 SEXTING fans (93% of base) where MIN_TURNS_BETWEEN_PITCHES blocked
+  // every auto-pitch — the pitch-readiness LLM (biased toward pitching)
+  // never got to run because the hard cooldown short-circuited above it.
+  // Now RAPPORT/SEXTING get a turn-cooldown floor and the analyzer
+  // actually owns the decision. Funnel state still enforces preview→ppv
+  // ordering so the first thing they see is a free preview, not a priced
+  // bubble.
+  RAPPORT: 4,           // Once in rapport, allow analyzer-gated soft pitch
+                        //   every 4 messages. Preview-first via funnel.
+  SEXTING: 2,           // Sexting fans are already hot — pitch fast.
   QUALIFYING: 1,        // First pitch lands here. After that, 1 msg between pitches
                         //   (preview turn → wait → ppv turn = naturally spaced).
   MONETIZING: 2,        // Repeat-buy cycle.
