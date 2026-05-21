@@ -304,5 +304,51 @@ async function handleTipReceived(accountId: string, event: PlatformEvent): Promi
     occurredAt: event.occurredAt,
     externalId: event.externalId,
   });
-  logger.info({ subscriberId, amountCents }, "tip recorded");
+
+  // Tip-response loop (added 2026-05-21). Tips fired silently before this:
+  // recordTransaction + log only, no reply, no upsell. Real OF chatters
+  // ALWAYS acknowledge a tip and use it as a soft-upsell moment — it's the
+  // highest-leverage retention beat in the funnel. We synthesize a tip-
+  // marker inbound message so the existing turn pipeline picks it up;
+  // replyPipeline detects the `[FAN TIPPED $X]` text + the kind="tip"
+  // direction=inbound and applies a stronger thank+upsell directive than
+  // the existing tipping_intent path (which only fires on typed intent).
+  if (amountCents > 0) {
+    try {
+      const { id: conversationId } = await ensureConversation({
+        subscriberId,
+        accountId,
+      });
+      const tipDollars = (amountCents / 100).toFixed(2);
+      await insertMessage({
+        conversationId,
+        direction: "inbound",
+        kind: "tip",
+        text: `[FAN TIPPED $${tipDollars}]`,
+        externalId: event.externalId ? `tip:${event.externalId}` : null,
+      });
+      await touchConversation(conversationId);
+      await turnQueue().add(
+        "turn",
+        {
+          accountId,
+          conversationId,
+          subscriberId,
+          subscriberExternalId: event.subscriberExternalId,
+        },
+        { jobId: `turn-${conversationId}`, delay: env.BURST_WINDOW_MS },
+      );
+      logger.info(
+        { subscriberId, conversationId, amountCents },
+        "tip recorded + thank-you turn enqueued",
+      );
+    } catch (err) {
+      logger.warn(
+        { err: err instanceof Error ? err.message : err, subscriberId },
+        "tip recorded but turn enqueue failed — fan will not get thank-you",
+      );
+    }
+  } else {
+    logger.info({ subscriberId, amountCents }, "tip recorded (zero amount, no thank-you)");
+  }
 }

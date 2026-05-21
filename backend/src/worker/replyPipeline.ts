@@ -289,6 +289,27 @@ async function generateLlmReply(
       ].join("\n"),
     );
   }
+  // Tip-event response (added 2026-05-21). Fires when the inbound that
+  // triggered this turn is a synthesized [FAN TIPPED $X] marker (kind=tip)
+  // from conversationWorker.handleTipReceived. Distinct from tipping_intent
+  // above: tipping_intent fires on the fan TYPING about tipping; this
+  // fires on a real tip event from the OFAPI webhook. Stronger directive
+  // because the money already landed — we owe an actual thank-you.
+  const tipMatch = input.incomingText.match(/\[FAN TIPPED \$([0-9]+(?:\.[0-9]{1,2})?)\]/);
+  if (tipMatch && !isPitch) {
+    const amountStr = tipMatch[1]!;
+    guidanceParts.push(
+      [
+        `TIP RECEIVED (real money landed — $${amountStr}):`,
+        `Fan just sent you a $${amountStr} tip via the OF tip jar. This is NOT a typed message — it's an event. Your reply is the FIRST thing he sees after tipping.`,
+        `- Open with explicit, specific gratitude that names the amount or scale ("fuck babe $${amountStr}, ur literally spoiling me", "thirty fucking dollars daddy ur trouble", "ur actually crazy generous im blushing"). Do NOT say "thanks for the tip" — sounds robotic.`,
+        `- Add a soft warm tease that opens the door to more WITHOUT explicit pitch — make him want to keep spoiling you. Examples: "keep this up n imma have to do somethin real special for u tonight", "u keep treating me like this n im never lettin u go".`,
+        `- ONE bubble. Glowing, confident, in-character. Real-OF tone — not corporate-helpdesk thanks.`,
+        `- DO NOT attach or mention a paid PPV in this exact reply. The pitch-readiness analyzer + drip cadence will route a soft upsell on the NEXT turn if he replies. Letting the tip land cleanly with a warm thank-you DOUBLES the probability of a follow-up tip or unlock.`,
+        `- DO NOT include the literal "[FAN TIPPED ...]" marker text in your reply (it's a system tag, not what he typed).`,
+      ].join("\n"),
+    );
+  }
   if (input.intent?.disengagement) {
     guidanceParts.push(
       [
