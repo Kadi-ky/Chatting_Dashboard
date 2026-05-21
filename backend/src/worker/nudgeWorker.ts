@@ -301,7 +301,7 @@ export function startNudgeWorker(): NudgeWorkerHandle | null {
     if (stopped) return;
     try {
       const result = await runNudgePass();
-      if (result.idleCandidates > 0 || result.ppvCandidates > 0) {
+      if (result.idleCandidates > 0 || result.ppvCandidates > 0 || result.whaleCandidates > 0) {
         logger.info(result, "nudge tick");
       }
     } catch (err) {
@@ -333,15 +333,135 @@ async function runNudgePass(): Promise<{
   idleSent: number;
   ppvCandidates: number;
   ppvSent: number;
+  whaleCandidates: number;
+  whaleSent: number;
 }> {
   const idleResult = await runIdlePass();
   const ppvResult = await runPpvPass();
+  const whaleResult = await runWhalePingPass();
   return {
     idleCandidates: idleResult.candidates,
     idleSent: idleResult.sent,
     ppvCandidates: ppvResult.candidates,
     ppvSent: ppvResult.sent,
+    whaleCandidates: whaleResult.candidates,
+    whaleSent: whaleResult.sent,
   };
+}
+
+// ─── WHALE DAILY PING ─────────────────────────────────────────────────────
+// Operator audit 2026-05-20 / Agent E: top 5 fans collectively spent $608/30d
+// (industry whales = $1-5K/mo). All 5 went silent 5-14d ago with zero
+// re-engagement targeting them specifically — the idle ladder treats them
+// like generic fans, and the reactivation worker has an active-hours filter
+// that often misses them. This pass adds a dedicated whale-tier ping:
+//
+//   - Targets fans with spend30dCents >= WHALE_SPEND_THRESHOLD_CENTS
+//   - Last inbound between 24h and 72h ago (silent but not LONG silent —
+//     ghosts past 72h get the reactivation worker; we want the freshly-
+//     quiet whales while the relationship is still warm)
+//   - Per-fan 5-day Redis cooldown so a whale gets at most ~6 pings/month
+//   - Reuses the same LLM generator pipeline as idle nudges, with a
+//     dedicated "whale" task step that pulls personal facts (NOT a
+//     generic "u still around babe" — whales notice the difference)
+//   - Existing conv-wide nudge lock + account-wide dedup ring still apply
+
+const WHALE_SPEND_THRESHOLD_CENTS = 15000; // $150 in 30d = whale tier
+const WHALE_PING_MIN_SILENT_MS = 24 * 3600_000;
+const WHALE_PING_MAX_SILENT_MS = 72 * 3600_000;
+const WHALE_PING_COOLDOWN_TTL_SEC = 5 * 24 * 3600;
+
+const whalePingLockKey = (fanExternalId: string): string =>
+  `peach:whale:ping:${fanExternalId}`;
+
+async function runWhalePingPass(): Promise<{ candidates: number; sent: number }> {
+  const oldCutoff = new Date(Date.now() - WHALE_PING_MAX_SILENT_MS);
+  const newCutoff = new Date(Date.now() - WHALE_PING_MIN_SILENT_MS);
+  const rows = await db
+    .selectFrom("v3.subscribers as s")
+    .innerJoin("v3.accounts as a", "a.id", "s.account_id")
+    .leftJoin("v3.conversations as c", "c.subscriber_id", "s.id")
+    .select([
+      "c.id as conv_id",
+      "c.account_id as account_id",
+      "s.id as subscriber_id",
+      "s.external_id as fan_external_id",
+      "s.display_name as display_name",
+      "s.spend_30d_cents as spend_30d_cents",
+      "s.last_inbound_at as last_inbound_at",
+    ])
+    .where("a.platform_account_id", "is not", null)
+    .where(sql<SqlBool>`s.spend_30d_cents >= ${WHALE_SPEND_THRESHOLD_CENTS}`)
+    .where(sql<SqlBool>`s.last_inbound_at > ${oldCutoff}`)
+    .where(sql<SqlBool>`s.last_inbound_at < ${newCutoff}`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
+    .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
+    .orderBy("s.spend_30d_cents", "desc")
+    .limit(50)
+    .execute();
+
+  let sent = 0;
+  for (const row of rows) {
+    try {
+      if (!row.conv_id) continue;
+      // Per-fan 5-day cooldown — whales should not feel "pinged" more than
+      // ~1×/week on average. Use SET NX on a Redis key.
+      const acquired = await sharedRedis().set(
+        whalePingLockKey(row.fan_external_id),
+        "1",
+        "EX",
+        WHALE_PING_COOLDOWN_TTL_SEC,
+        "NX",
+      );
+      if (acquired !== "OK") continue;
+      // Sticky disengagement still applies — never push a whale who said no.
+      if (await isConversationDisengaged(row.conv_id)) continue;
+      // Conv-wide nudge lock (idle + ppv + whale share it — operator
+      // wanted "one nudge per conv per window" not 3 simultaneous).
+      if (!(await tryAcquireNudgeLock(row.conv_id))) continue;
+
+      const llmText = await generateNudgeText({
+        conversationId: row.conv_id,
+        accountId: row.account_id as string,
+        subscriberId: row.subscriber_id,
+        kind: "idle",
+        step: 0, // reuse step-0 generator; the directive emphasizes warm not pushy
+      });
+      // Templates fallback if LLM fails — these are warmer + name-aware
+      // than the generic idle templates.
+      const text =
+        llmText ??
+        (row.display_name
+          ? `hey ${row.display_name} — been thinkin bout u babe 🖤`
+          : "hey babe, been thinkin bout u today 🖤");
+
+      await sendNudge({
+        conversationId: row.conv_id,
+        accountId: row.account_id as string,
+        subscriberId: row.subscriber_id,
+        fanExternalId: row.fan_external_id,
+        text,
+        kind: "idle",
+        step: 1,
+      });
+      sent++;
+      logger.info(
+        {
+          conversationId: row.conv_id,
+          fanExternalId: row.fan_external_id,
+          spend30dCents: row.spend_30d_cents,
+        },
+        "whale ping sent",
+      );
+    } catch (err) {
+      logger.warn(
+        { err: err instanceof Error ? err.message : err, subscriberId: row.subscriber_id },
+        "whale ping failed for one fan",
+      );
+    }
+  }
+  return { candidates: rows.length, sent };
 }
 
 // ─── IDLE PASS ────────────────────────────────────────────────────────────
