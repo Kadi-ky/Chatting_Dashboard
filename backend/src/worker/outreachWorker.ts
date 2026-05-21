@@ -190,6 +190,18 @@ async function loadRecentAccountColdTexts(accountId: string): Promise<string[]> 
   }
 }
 
+// Loose normalization for near-duplicate detection. Lowercase, strip emoji,
+// strip punctuation, collapse whitespace. Two texts whose normalized form
+// matches are treated as duplicates by the hard-reject gate below.
+function normalizeForDedup(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "")
+    .replace(/[^a-z0-9\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 async function recordRecentOutreachText(
   accountId: string,
   conversationId: string,
@@ -448,6 +460,22 @@ async function generateOutreachText(args: {
         "outreach LLM output rejected — falling back to template",
       );
       return null;
+    }
+    // Hard near-duplicate reject (cold pass only — react has per-fan history
+    // so the per-conv ring suffices). Mirrors the nudge generator's fix:
+    // even with "don't repeat" prompt context, grok-4 occasionally locks
+    // onto a phrase across many fans ("u been quiet since subbin..." was
+    // hit 15/35 cold step-2 sends in QA 2026-05-20). Null-out so caller
+    // falls back to the static template pool which IS varied.
+    if (args.kind === "cold") {
+      const norm = normalizeForDedup(text);
+      if (norm.length >= 6 && recentAccountCold.some((t) => normalizeForDedup(t) === norm)) {
+        logger.warn(
+          { conversationId: args.conversationId, text, accountId: args.accountId },
+          "outreach cold LLM output rejected — near-duplicate of recent account send",
+        );
+        return null;
+      }
     }
     await recordRecentOutreachText(args.accountId, args.conversationId, text, args.kind);
     return text;

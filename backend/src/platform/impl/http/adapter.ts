@@ -181,7 +181,14 @@ export class HttpPlatformAdapter implements PlatformAdapter {
       // Re-throw so the rest of the pipeline still records the failure normally.
       if (err instanceof PlatformHttpError) {
         const deadFan =
-          (err.status === 400 && err.body.includes("Cannot send message to this user")) ||
+          (err.status === 400 &&
+            (err.body.includes("Cannot send message to this user") ||
+              // Self-send: OFAPI's /fans/all occasionally returns the creator's
+              // own user id as a "fan". Without this catch, the same self-id
+              // gets retried by every nudge/voucher/outreach tick. Operator
+              // observed 2026-05-21 with fan 464635149 (Khlo's own account)
+              // getting both nudge + voucher fired, both failing.
+              err.body.includes("Cannot send message to yourself"))) ||
           err.status === 404;
         if (deadFan) {
           await markFanUnreachable(ctx.platformAccountId, req.subscriberExternalId).catch(() => undefined);
@@ -220,7 +227,14 @@ export class HttpPlatformAdapter implements PlatformAdapter {
       // this, every voucher tick re-attempts the same dead accounts.
       if (err instanceof PlatformHttpError) {
         const deadFan =
-          (err.status === 400 && err.body.includes("Cannot send message to this user")) ||
+          (err.status === 400 &&
+            (err.body.includes("Cannot send message to this user") ||
+              // Self-send: OFAPI's /fans/all occasionally returns the creator's
+              // own user id as a "fan". Without this catch, the same self-id
+              // gets retried by every nudge/voucher/outreach tick. Operator
+              // observed 2026-05-21 with fan 464635149 (Khlo's own account)
+              // getting both nudge + voucher fired, both failing.
+              err.body.includes("Cannot send message to yourself"))) ||
           err.status === 404;
         if (deadFan) {
           await markFanUnreachable(ctx.platformAccountId, req.subscriberExternalId).catch(() => undefined);
