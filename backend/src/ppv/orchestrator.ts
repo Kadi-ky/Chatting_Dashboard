@@ -288,32 +288,61 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     const recent = await listRecentAttempts(args.conversationId, 5);
     const lastPending = recent.find((a) => a.outcome === "pending");
     if (lastPending) {
-      const { loadCatalogItem } = await import("../db/repos/ppv_catalog.js");
-      const asset = await loadCatalogItem(lastPending.assetId);
-      if (asset) {
-        const discountedPrice = Math.max(
-          1,
-          Math.round(lastPending.priceCents * (1 - CANT_AFFORD_DISCOUNT_RATE)),
-        );
-        await clearFunnel(args.conversationId, lastPending.assetId);
+      // One-shot guard: cant_afford can only discount a given asset ONCE
+      // per conversation within 7d. Without this, a fan saying "broke"
+      // every reply triggers exponential price decay because each new
+      // pitch becomes the next "last pending" with an already-discounted
+      // price. Operator audit 2026-05-21: Danni's $69 cascaded
+      // $69 → $48 → $34 → $24 → $17 → $12 → $8 → $5.68 → $3.98 across
+      // 9 re-pitches in 25 minutes (compounded 30% off × 9). Mc Hekuli
+      // hit the same loop ($51.75 → $36.22). Fan unlocks at $3.98 on
+      // what should have been a $69 sale = $65 of margin destroyed
+      // per cascading conv.
+      const r = sharedRedis();
+      const firedKey = `peach:cant_afford:fired:${args.conversationId}:${lastPending.assetId}`;
+      const alreadyFired = await r.get(firedKey).catch(() => null);
+      if (alreadyFired) {
         logger.info(
-          {
-            conversationId: args.conversationId,
-            assetId: lastPending.assetId,
-            originalPrice: lastPending.priceCents,
-            discountedPrice,
-          },
-          "cant_afford detected — re-pitching last pending asset at 30% off",
+          { conversationId: args.conversationId, assetId: lastPending.assetId },
+          "cant_afford suppressed — already discounted this asset within 7d",
         );
-        return {
-          shouldPitch: true,
-          reason: `cant_afford (re-pitching last pending asset @ ${Math.round((1 - CANT_AFFORD_DISCOUNT_RATE) * 100)}% of original)`,
-          kind: "ppv",
-          asset,
-          priceCents: discountedPrice,
-          discountApplied: true,
-          cantAffordDiscount: true,
-        };
+        // Fall through to normal flow; do NOT re-discount.
+      } else {
+        const { loadCatalogItem } = await import("../db/repos/ppv_catalog.js");
+        const asset = await loadCatalogItem(lastPending.assetId);
+        if (asset) {
+          // Anchor discount to the asset's BASE price (catalog ceiling),
+          // NOT the prior pending attempt's price. Floor at the catalog's
+          // priceFloorCents so we don't undercut producer-defined minimums.
+          const baseCents = asset.priceCeilingCents;
+          const discountedPrice = Math.max(
+            asset.priceFloorCents,
+            Math.round(baseCents * (1 - CANT_AFFORD_DISCOUNT_RATE)),
+          );
+          await clearFunnel(args.conversationId, lastPending.assetId);
+          await r
+            .set(firedKey, "1", "EX", 7 * 24 * 3600)
+            .catch(() => undefined);
+          logger.info(
+            {
+              conversationId: args.conversationId,
+              assetId: lastPending.assetId,
+              baseCents,
+              lastPendingPriceCents: lastPending.priceCents,
+              discountedPrice,
+            },
+            "cant_afford detected — one-shot re-pitch at 30% off base",
+          );
+          return {
+            shouldPitch: true,
+            reason: `cant_afford (one-shot @ ${Math.round((1 - CANT_AFFORD_DISCOUNT_RATE) * 100)}% of base)`,
+            kind: "ppv",
+            asset,
+            priceCents: discountedPrice,
+            discountApplied: true,
+            cantAffordDiscount: true,
+          };
+        }
       }
     }
     // No pending pitch to discount — fall through to normal flow. The
