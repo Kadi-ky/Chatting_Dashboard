@@ -141,6 +141,13 @@ export interface PitchDecision {
    * without needing OFAPI multi-media PPV support.
    */
   loyaltyBundle?: boolean;
+  /**
+   * Whale-premium tier: top-rung pitch to a WHALE-phase fan, marked up
+   * 50%. Reply pipeline reads this to frame the caption as exclusive
+   * ("private drop only my top spenders see", "VIP tier — yours tonight").
+   * Pricing assumed to already reflect markup via priceCents.
+   */
+  whalePremiumTier?: boolean;
 }
 
 export interface DecidePitchArgs {
@@ -442,8 +449,16 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   // so it survives restarts; one-week TTL means bundle pitches are a real
   // moment, not a constant sale. Picker output is unchanged; we just adjust
   // price + flag for caption framing.
+  //
+  // 2026-05-21 — WHALE EXCLUSION: do NOT discount the biggest spenders.
+  // Operator audit found loyalty bundle was firing for Dan-tier fans
+  // ($200+ LTV, instantly-paying $99 unlocks) and giving them 25% off
+  // they obviously didn't need. WHALE phase or recent high spend gates
+  // the bundle off — those fans get the whale-tier premium markup
+  // below instead.
   let loyaltyBundleApplied = false;
-  if (!args.discountRequest && !args.cantAfford) {
+  const isWhaleTier = args.phase === "WHALE";
+  if (!args.discountRequest && !args.cantAfford && !isWhaleTier) {
     const recentForLoyalty = await listRecentAttempts(args.conversationId, 50);
     const unlockCount = recentForLoyalty.filter((a) => a.outcome === "unlocked").length;
     if (unlockCount >= LOYALTY_BUNDLE_MIN_UNLOCKS) {
@@ -461,6 +476,48 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
         );
       }
     }
+  } else if (isWhaleTier) {
+    logger.debug(
+      { conversationId: args.conversationId },
+      "loyalty bundle skipped — WHALE phase (no auto-discount for high spenders)",
+    );
+  }
+
+  // WHALE PREMIUM TIER (added 2026-05-21). Top-of-ladder pitches to WHALE-
+  // phase fans get a 50% markup ($99 → $149) and a premium-framing flag
+  // for the caption layer. Rationale (Agent E audit): top 5 fans collectively
+  // spent $608/30d when industry whales = $1K-5K/mo each. Hard $99 ceiling
+  // was capping us at 50-80% below benchmark for these fans. Bumping
+  // only the HIGHEST rung keeps the ladder intact (lower-rung repeats
+  // still buy at standard price); the markup signals "premium drop"
+  // framing to the LLM via whalePremiumTier flag.
+  //
+  // Triggers only when: phase=WHALE AND picker returned the top rung of
+  // the script (so it's a real "ladder completed" moment, not a mid-ladder
+  // upsell that would feel jarring). Re-applied each pitch; no per-conv
+  // cooldown — whales SHOULD see premium pricing every time at that tier.
+  let whalePremiumApplied = false;
+  if (isWhaleTier && !args.discountRequest && !args.cantAfford && args.creatorUuid) {
+    // picker returns the rung number; check if it's the script's max rung
+    const creatorUuid = args.creatorUuid;
+    const scripts = await import("../db/repos/content_inventory.js").then((m) =>
+      m.listScriptsForCreator(creatorUuid),
+    );
+    const script = scripts.find((s) => s.scriptNumber === picked.scriptNumber);
+    const maxRungForScript = script ? Math.max(...script.rungs.map((r) => r.rung)) : 0;
+    if (picked.rung === maxRungForScript && maxRungForScript > 0) {
+      whalePremiumApplied = true;
+      logger.info(
+        {
+          conversationId: args.conversationId,
+          scriptNumber: picked.scriptNumber,
+          rung: picked.rung,
+          basePrice: picked.priceCents,
+          premiumPrice: Math.round(picked.priceCents * 1.5),
+        },
+        "whale premium tier — top-rung pitch marked up 50%",
+      );
+    }
   }
 
   // Apply fan-requested discount AFTER picker has committed to an asset. We
@@ -468,11 +525,19 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   // already-selected pitch, framed as a one-time goodwill gesture by the bot.
   // The reply pipeline reads discountApplied to add a "knocked a lil off"
   // caption hint; the actual PPV bubble price comes from priceCents directly.
+  //
+  // Precedence: cant_afford >> loyalty bundle (whales excluded) >> discount
+  // request >> whale premium markup >> raw picker price. Whale premium fires
+  // only when none of the discount paths apply (loyalty already excluded
+  // for WHALE phase above; cant_afford/discountRequest are unusual on
+  // whales but still take precedence — fan explicitly asking wins).
   const finalPriceCents = loyaltyBundleApplied
     ? Math.max(1, Math.round(picked.priceCents * (1 - LOYALTY_BUNDLE_DISCOUNT_RATE)))
     : args.discountRequest
       ? Math.max(1, Math.round(picked.priceCents * (1 - DISCOUNT_RATE)))
-      : picked.priceCents;
+      : whalePremiumApplied
+        ? Math.round(picked.priceCents * 1.5)
+        : picked.priceCents;
 
   // Pitch-readiness analyzer — LLM reads the conversation in full and
   // decides whether this turn should pitch (and what kind), instead of the
@@ -576,13 +641,15 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
 
   return {
     shouldPitch: true,
-    reason: loyaltyBundleApplied
-      ? `loyalty_bundle (${Math.round(LOYALTY_BUNDLE_DISCOUNT_RATE * 100)}% off, repeat buyer) [${kind}]`
-      : dripPitch
-        ? `support_drip (every ${SUPPORT_DRIP_INTERVAL_TURNS} msgs after ${UNBOUGHT_LOOKBACK} unbought) [${kind}]`
-        : picked.reason === "continue"
-          ? `continue_script [${kind}]`
-          : `new_script [${kind}]`,
+    reason: whalePremiumApplied
+      ? `whale_premium (50% markup on rung ${picked.rung}, WHALE phase) [${kind}]`
+      : loyaltyBundleApplied
+        ? `loyalty_bundle (${Math.round(LOYALTY_BUNDLE_DISCOUNT_RATE * 100)}% off, repeat buyer) [${kind}]`
+        : dripPitch
+          ? `support_drip (every ${SUPPORT_DRIP_INTERVAL_TURNS} msgs after ${UNBOUGHT_LOOKBACK} unbought) [${kind}]`
+          : picked.reason === "continue"
+            ? `continue_script [${kind}]`
+            : `new_script [${kind}]`,
     kind,
     asset: picked.asset,
     priceCents: finalPriceCents,
@@ -591,6 +658,7 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     ...(args.discountRequest ? { discountApplied: true } : {}),
     ...(dripPitch ? { supportDripMode: true } : {}),
     ...(loyaltyBundleApplied ? { loyaltyBundle: true } : {}),
+    ...(whalePremiumApplied ? { whalePremiumTier: true } : {}),
     ...(picked.previewMediaRef ? { previewMediaRef: picked.previewMediaRef } : {}),
   };
 }

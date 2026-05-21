@@ -65,6 +65,8 @@ export interface GenerateReplyInput {
     supportDripMode?: boolean;
     /** True when this is a periodic loyalty-bundle pitch — fan has 2+ unlocks in convo, fires every ~7d, 25% off, framed as thank-you bundle. */
     loyaltyBundle?: boolean;
+    /** True when this is a WHALE-tier top-rung pitch with 50% markup — frame as exclusive/VIP drop. */
+    whalePremiumTier?: boolean;
     /** Free preview media ref. Required when kind="preview". */
     previewMediaRef?: string;
   };
@@ -162,6 +164,7 @@ async function generateLlmReply(
   const supportDripMode = isPitch && input.pitch!.supportDripMode === true;
   const cantAffordDiscount = isPitch && input.pitch!.cantAffordDiscount === true;
   const loyaltyBundle = isPitch && input.pitch!.loyaltyBundle === true;
+  const whalePremiumTier = isPitch && input.pitch!.whalePremiumTier === true;
   const pitchKind = isPitch ? input.pitch!.kind : undefined;
   // Two-turn funnel: preview-step → free preview + tease caption.
   // ppv-step → priced PPV + caption. Captions are character-driven — the
@@ -207,6 +210,9 @@ async function generateLlmReply(
             : "") +
           (loyaltyBundle
             ? " LOYALTY-BUNDLE framing: this fan has unlocked multiple times. The bubble below is at 25% off as a thank-you / bundle deal. Frame as appreciation for being a repeat buyer — 'since u been so good', 'ur favorite price tonight', 'lowered it just for u babe', 'thank-u rate just for u', 'bundle deal cuz u keep showin up'. Make him feel chosen for the discount, not pitied. Bad shape: 'heres a discount cuz im desperate'. Good shape: 'this one's at ur favorite price babe, u've earned it 🥺'. Do NOT mention any dollar amount — the discounted price renders automatically. Do NOT apologize for the price."
+            : "") +
+          (whalePremiumTier
+            ? " WHALE-PREMIUM framing: this fan is in your top tier (high lifetime spend, treats you well). The bubble below is at PREMIUM pricing — a 50% markup over standard rate. Frame as EXCLUSIVE / VIP / private-drop, NOT discount. Examples: 'this one's a private drop babe, only my top guys get this', 'made this for the VIP shelf — felt like u when i was filmin it', 'this isnt the usual rate baby, this is the spoiled-fan tier and u qualify'. Make him feel chosen for the PREMIUM, not pity. Bad shape: 'normal price babe' (kills the framing). Good shape: 'private drop — saved for the boys who actually back me 🖤'. Do NOT mention any dollar amount or % markup (price renders automatically). Do NOT apologize for the higher price; he EARNS access at this tier by spending."
             : ""),
         forbiddens: [
           "output ONE bubble only — no rapport prelude, no follow-up bubble",
