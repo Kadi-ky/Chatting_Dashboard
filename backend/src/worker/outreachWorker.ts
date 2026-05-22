@@ -191,12 +191,24 @@ async function loadRecentAccountColdTexts(accountId: string): Promise<string[]> 
 }
 
 // Loose normalization for near-duplicate detection. Lowercase, strip emoji,
-// strip punctuation, collapse whitespace. Two texts whose normalized form
-// matches are treated as duplicates by the hard-reject gate below.
+// strip leading "hey " + first capitalized word (the fan's name), strip
+// punctuation, collapse whitespace. Two texts whose normalized form matches
+// are treated as duplicates by the hard-reject gate below.
+//
+// Why strip the name: post-deploy monitoring 2026-05-22 found cold sends
+// like "Mike u got my attention already dms open whenever" and
+// "Hooblajax1, u got my attention already dms open whenever" — same
+// trailing phrase across 11 fans in one batch. Exact normalized match
+// failed because the leading name made each string unique. Stripping
+// the leading name forces dedup on the STRUCTURAL phrase.
 function normalizeForDedup(s: string): string {
   return s
     .toLowerCase()
     .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "")
+    // Strip leading "hey " greeting
+    .replace(/^hey\s+/i, "")
+    // Strip the first word (typically the fan's name) plus optional trailing comma
+    .replace(/^[a-z0-9_]+,?\s*/, "")
     .replace(/[^a-z0-9\s]/g, "")
     .replace(/\s+/g, " ")
     .trim();
@@ -325,6 +337,14 @@ async function generateOutreachText(args: {
   fanDisplayName: string | null;
   kind: "cold" | "react";
   step: number;
+  /**
+   * Additional recent sends from THIS tick — fed in by runColdPass so the
+   * dedup gate sees same-batch prior generations. Without this, all N sends
+   * in one tick race against the same Redis snapshot and get nearly identical
+   * text (operator-observed 2026-05-22: 11 step-3 cold sends in 13s all had
+   * "got my attention" / "dms open whenever").
+   */
+  extraRecentTexts?: string[];
 }): Promise<string | null> {
   try {
     const history = args.kind === "react"
@@ -335,8 +355,14 @@ async function generateOutreachText(args: {
     // always empty (brand-new conversation). Pull the last 20 cold sends
     // across ALL fans on this account so the LLM is told "you keep
     // shipping 'i see u lurkin 👀' on every cold send — vary it."
+    // Pull the Redis ring AND merge with any same-tick sends from
+    // extraRecentTexts so within-tick batches don't all race against the
+    // pre-tick snapshot.
     const recentAccountCold = args.kind === "cold"
-      ? await loadRecentAccountColdTexts(args.accountId)
+      ? [
+          ...(args.extraRecentTexts ?? []),
+          ...(await loadRecentAccountColdTexts(args.accountId)),
+        ]
       : [];
     const identity = loadIdentityLayer(args.accountId);
 
@@ -533,14 +559,18 @@ interface FireArgs {
   fanDisplayName: string | null;
   kind: "cold" | "react";
   step: number;
+  /** Sends generated earlier in this tick — used to dedup within a batch. */
+  tickRecentTexts?: string[];
 }
 
-async function fireOutreach(args: FireArgs): Promise<boolean> {
+interface FireResult { fired: boolean; text: string | null }
+
+async function fireOutreach(args: FireArgs): Promise<FireResult> {
   // Sticky disengagement flag (set by conversationWorker on explicit refusal).
   // Survives past the 3-inbound window of the keyword scan below.
   if (await isConversationDisengaged(args.conversationId)) {
     logger.info({ convId: args.conversationId }, "outreach skipped — sticky disengagement flag set");
-    return false;
+    return { fired: false, text: null };
   }
   // Disengagement guard
   const recentInbounds = await db
@@ -554,13 +584,13 @@ async function fireOutreach(args: FireArgs): Promise<boolean> {
   for (const r of recentInbounds) {
     if (DISENGAGE_PATTERNS.some((p) => p.test(r.text ?? ""))) {
       logger.info({ convId: args.conversationId }, "outreach skipped — disengagement keyword in recent inbound");
-      return false;
+      return { fired: false, text: null };
     }
   }
 
   if (!(await tryAcquireLock(args.conversationId))) {
     logger.debug({ convId: args.conversationId }, "outreach lock held — skipping");
-    return false;
+    return { fired: false, text: null };
   }
 
   const llmText = await generateOutreachText({
@@ -570,6 +600,7 @@ async function fireOutreach(args: FireArgs): Promise<boolean> {
     fanDisplayName: args.fanDisplayName,
     kind: args.kind,
     step: args.step,
+    ...(args.tickRecentTexts ? { extraRecentTexts: args.tickRecentTexts } : {}),
   });
   const variants = (args.kind === "cold" ? COLD_TEMPLATES : REACT_TEMPLATES)[args.step]!;
   const text = llmText ?? variants[Math.floor(Math.random() * variants.length)]!;
@@ -593,7 +624,7 @@ async function fireOutreach(args: FireArgs): Promise<boolean> {
 
   if (dryRunEffective) {
     logger.info(entry, "outreach dry-run (no send)");
-    return true;
+    return { fired: true, text };
   }
 
   const { id: messageId } = await insertOutboundDraft({
@@ -617,7 +648,7 @@ async function fireOutreach(args: FireArgs): Promise<boolean> {
     { jobId: `outreach-${messageId}` },
   );
   logger.info(entry, "outreach enqueued");
-  return true;
+  return { fired: true, text };
 }
 
 /**
@@ -691,6 +722,10 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
   // well within OFAPI's per-account rate envelope.
   const MAX_COLD_SENDS_PER_TICK = 40;
   let unreachableSkipped = 0;
+  // Track texts sent THIS tick so each subsequent generation in the same
+  // batch can dedup against same-tick sends (not just the Redis snapshot
+  // from before the tick started). Fixes 2026-05-22 batch-repeat bug.
+  const tickColdTexts: string[] = [];
   for (const row of rows) {
     if (sent >= MAX_COLD_SENDS_PER_TICK) break;
     try {
@@ -721,7 +756,7 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
         const sinceLast = Date.now() - new Date(state.lastColdAt).getTime();
         if (sinceLast < COLD_INTERVAL_MS) continue;
       }
-      const fired = await fireOutreach({
+      const result = await fireOutreach({
         conversationId: convId,
         accountId: row.account_id,
         subscriberId: row.subscriber_id,
@@ -729,8 +764,10 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
         fanDisplayName: row.display_name,
         kind: "cold",
         step: coldCount,
+        tickRecentTexts: tickColdTexts,
       });
-      if (!fired) continue;
+      if (!result.fired) continue;
+      if (result.text) tickColdTexts.unshift(result.text);
       await writeOutreachState(convId, {
         ...state,
         coldCount: coldCount + 1,
@@ -797,7 +834,7 @@ async function runReactivationPass(): Promise<{ candidates: number; sent: number
           continue;
         }
       }
-      const fired = await fireOutreach({
+      const result = await fireOutreach({
         conversationId: row.conv_id,
         accountId: row.account_id,
         subscriberId: row.subscriber_id,
@@ -806,7 +843,7 @@ async function runReactivationPass(): Promise<{ candidates: number; sent: number
         kind: "react",
         step: reactCount,
       });
-      if (!fired) continue;
+      if (!result.fired) continue;
       await writeOutreachState(row.conv_id, {
         ...state,
         reactCount: reactCount + 1,

@@ -393,6 +393,8 @@ async function handle(
       nudge_dry_run: env.NUDGE_DRY_RUN,
       outreach_enabled: env.OUTREACH_ENABLED,
       outreach_dry_run: env.OUTREACH_DRY_RUN,
+      voucher_enabled: env.VOUCHER_ENABLED,
+      voucher_dry_run: env.VOUCHER_DRY_RUN,
       sub_sync_enabled: env.SUB_SYNC_ENABLED,
       node_env: env.NODE_ENV,
       booted_at: process.env.PEACHBOT_BOOTED_AT ?? "(unknown)",
