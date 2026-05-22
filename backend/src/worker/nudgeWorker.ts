@@ -366,9 +366,15 @@ async function runNudgePass(): Promise<{
 //     generic "u still around babe" — whales notice the difference)
 //   - Existing conv-wide nudge lock + account-wide dedup ring still apply
 
-const WHALE_SPEND_THRESHOLD_CENTS = 15000; // $150 in 30d = whale tier
+// Thresholds re-calibrated 2026-05-22 against live top-fan data: only Dan
+// cleared the original $150/30d threshold, and he was 5+ days silent so
+// the 72h ceiling excluded him too. Real top-spender shape on this
+// account: 6-8 fans in the $50-$200/30d range, most 3-14 days silent.
+// Lowered threshold to capture the loyalty cohort, extended window to
+// catch mid-disengaged whales the reactivation worker is missing.
+const WHALE_SPEND_THRESHOLD_CENTS = 5000; // $50/30d — top-fan cohort, not just $150+ whales
 const WHALE_PING_MIN_SILENT_MS = 24 * 3600_000;
-const WHALE_PING_MAX_SILENT_MS = 72 * 3600_000;
+const WHALE_PING_MAX_SILENT_MS = 14 * 24 * 3600_000; // 14d — catch mid-disengaged
 const WHALE_PING_COOLDOWN_TTL_SEC = 5 * 24 * 3600;
 
 const whalePingLockKey = (fanExternalId: string): string =>
