@@ -32,6 +32,26 @@ import { CONTRACT_LAYER, CONTRACT_VERSION } from "../prompt/layers/contract.js";
 const RECENT_VOUCHER_RING_MAX = 12;
 const RECENT_VOUCHER_TTL_SEC = 30 * 24 * 3600;
 
+/**
+ * Normalize a voucher caption's BODY (skip the unicode-bold header line)
+ * for near-duplicate detection. Operator audit 2026-05-24 found 4 vouchers
+ * in one tick all reading "picked u cuz [verb-ing] just for/thinkin of
+ * fans like u" — same body across different headers, all sent same minute.
+ * Cause: per-account dedup ring fed to prompt but no hard-reject, and
+ * grok-4 locks on "picked u cuz / fans like u" template.
+ */
+function normalizeVoucherBody(caption: string): string {
+  // Drop the first line (header is unicode-bold and varies more than body).
+  const lines = caption.split(/\n/);
+  const body = lines.length > 1 ? lines.slice(1).join(" ") : caption;
+  return body
+    .toLowerCase()
+    .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "")
+    .replace(/[^a-z0-9\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export async function generateVoucherCaption(args: {
   accountId: string;
   subscriberId: string;
@@ -124,6 +144,19 @@ export async function generateVoucherCaption(args: {
       logger.warn(
         { rawLength: result.content.length, extractedLength: text.length },
         "voucher caption rejected — too short/long or unparseable",
+      );
+      return null;
+    }
+    // Hard near-duplicate reject on BODY (ignoring header). Stops the
+    // "picked u cuz [body verb] fans like u" template-clone the LLM
+    // keeps emitting across fans. Returns null → caller skips voucher
+    // for this fan this tick (lock rolls back; will retry next tick
+    // when ring has new content).
+    const norm = normalizeVoucherBody(text);
+    if (norm.length >= 8 && args.recentTexts.some((t) => normalizeVoucherBody(t) === norm)) {
+      logger.warn(
+        { accountId: args.accountId, caption: text },
+        "voucher caption rejected — near-duplicate body of recent send",
       );
       return null;
     }
