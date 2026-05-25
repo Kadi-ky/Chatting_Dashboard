@@ -147,7 +147,13 @@ const envSchema = z.object({
   BURST_WINDOW_MS: z.coerce.number().int().positive().default(4000),
   CONVERSATION_LOCK_TTL_MS: z.coerce.number().int().positive().default(60_000),
   OUTBOUND_MIN_GAP_MS: z.coerce.number().int().nonnegative().default(20_000),
-  WHALE_SPEND_30D_CENTS: z.coerce.number().int().nonnegative().default(50_000),
+  // Recalibrated 2026-05-25 from $500 → $100/30d after whale audit found
+  // all 10 actual top-spenders below the old threshold. Old default
+  // meant the WHALE phase transition never fired in production, so
+  // whale_premium pricing tier, loyalty-bundle exclusion, and per-fan
+  // daily ping all sat dormant. $100/30d matches the observed top
+  // cohort (6 of 10 audit fans qualify).
+  WHALE_SPEND_30D_CENTS: z.coerce.number().int().nonnegative().default(10_000),
   PPV_COOLDOWN_DAYS: z.coerce.number().int().positive().default(14),
 
   ADMIN_PORT: z.coerce.number().int().positive().default(8787),

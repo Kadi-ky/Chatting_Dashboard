@@ -13,6 +13,7 @@ import { routeLlmCall } from "../llm/router.js";
 import type { LlmMessage } from "../llm/types.js";
 import { isFanUnreachable } from "../platform/impl/http/unreachable.js";
 import { isConversationDisengaged } from "./disengagement.js";
+import { isConversationBotFlagged } from "./botDetection.js";
 
 /**
  * Outreach worker — proactive DMs to subs the chat-reply pipeline can't reach.
@@ -570,6 +571,10 @@ async function fireOutreach(args: FireArgs): Promise<FireResult> {
   // Survives past the 3-inbound window of the keyword scan below.
   if (await isConversationDisengaged(args.conversationId)) {
     logger.info({ convId: args.conversationId }, "outreach skipped — sticky disengagement flag set");
+    return { fired: false, text: null };
+  }
+  if (await isConversationBotFlagged(args.conversationId)) {
+    logger.info({ convId: args.conversationId }, "outreach skipped — conversation flagged as bot");
     return { fired: false, text: null };
   }
   // Disengagement guard

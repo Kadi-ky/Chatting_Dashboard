@@ -7,6 +7,7 @@ import { sharedRedis } from "../queue/redis.js";
 import { insertOutboundDraft, loadRecentMessages } from "../db/repos/messages.js";
 import { loadLatestArchetype } from "../db/repos/archetypes.js";
 import { isConversationDisengaged } from "./disengagement.js";
+import { isConversationBotFlagged } from "./botDetection.js";
 import { loadIdentityLayer } from "../prompt/layers/identity.js";
 import { HUMANNESS_LAYER, HUMANNESS_VERSION } from "../prompt/layers/humanness.js";
 import { CONTRACT_LAYER, CONTRACT_VERSION } from "../prompt/layers/contract.js";
@@ -423,6 +424,7 @@ async function runWhalePingPass(): Promise<{ candidates: number; sent: number }>
       if (acquired !== "OK") continue;
       // Sticky disengagement still applies — never push a whale who said no.
       if (await isConversationDisengaged(row.conv_id)) continue;
+      if (await isConversationBotFlagged(row.conv_id)) continue;
       // Conv-wide nudge lock (idle + ppv + whale share it — operator
       // wanted "one nudge per conv per window" not 3 simultaneous).
       if (!(await tryAcquireNudgeLock(row.conv_id))) continue;
@@ -530,6 +532,7 @@ async function runIdlePass(): Promise<{ candidates: number; sent: number }> {
       // refusal). Survives past the 3-inbound window of fanIsDisengaging
       // — checked first because it's the cheapest gate.
       if (await isConversationDisengaged(row.conv_id)) continue;
+      if (await isConversationBotFlagged(row.conv_id)) continue;
       // Skip if the most recent inbound text contains disengagement signals.
       if (await fanIsDisengaging(row.conv_id)) continue;
 
@@ -625,6 +628,7 @@ async function runPpvPass(): Promise<{ candidates: number; sent: number }> {
 
       // Sticky disengagement flag — set by conversationWorker on explicit "no".
       if (await isConversationDisengaged(row.conv_id)) continue;
+      if (await isConversationBotFlagged(row.conv_id)) continue;
       // Skip if disengaged
       if (await fanIsDisengaging(row.conv_id)) continue;
 

@@ -48,6 +48,19 @@ const EXPLICIT_NO_PATTERNS: RegExp[] = [
   /\bcan'?t afford\b/i, // also triggers cant_afford intent — flag is additive
   /\bblock(?:ed|ing)?\b/i,
   /\bcanc(?:el|elled|elling)\b/i,
+  // Temporal refusals — added 2026-05-25 after disengagement-audit agent
+  // found 0 sticky_disengagement_flag firings in 50 decisions. Conv
+  // 0923274f said "ILL TALK TO YOU SNOTHRR TIME" + "no money UNTIL TUE OR
+  // WED" and got 2 drip PPVs ~hours later. These phrases are clear
+  // "leave me alone for now" signals distinct from "broke" alone (which
+  // we deliberately keep out of the freeze list so cant_afford can fire
+  // a discount-recovery pitch).
+  /\btalk to (?:you|u) (?:later|another time|next time|some other time|tomorrow|next week)\b/i,
+  /\b(?:catch|hit) (?:you|u|ya) (?:later|up later|another time|next week|tomorrow)\b/i,
+  /\bnot (?:until|till) (?:next week|payday|monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun|tomorrow)\b/i,
+  /\bsee (?:you|u|ya) (?:later|tomorrow|next week)\b/i,
+  /\bhmu (?:later|tomorrow|next week)\b/i,
+  /\bdone for (?:now|today|tonight|the day|the night)\b/i,
 ];
 
 const disengageFlagKey = (conversationId: string): string =>

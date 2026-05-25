@@ -8,6 +8,7 @@ import { insertOutboundDraft } from "../db/repos/messages.js";
 import { ensureConversation } from "../db/repos/conversations.js";
 import { isFanUnreachable } from "../platform/impl/http/unreachable.js";
 import { isConversationDisengaged } from "./disengagement.js";
+import { isConversationBotFlagged } from "./botDetection.js";
 import { pickVoucherAsset } from "../voucher/picker.js";
 import { calculateVoucherPriceCents, impliedRegularPriceCents } from "../voucher/pricing.js";
 import { generateVoucherCaption, RECENT_VOUCHER_RING_MAX, RECENT_VOUCHER_TTL_SEC } from "../voucher/captionGenerator.js";
@@ -256,6 +257,10 @@ async function runForAccount(account: {
       // Sticky disengagement flag (set by conversationWorker on explicit "no").
       // Survives past the 3-inbound window of fanIsDisengaging — checked first.
       if (await isConversationDisengaged(convId)) {
+        result.skippedDisengage++;
+        continue;
+      }
+      if (await isConversationBotFlagged(convId)) {
         result.skippedDisengage++;
         continue;
       }

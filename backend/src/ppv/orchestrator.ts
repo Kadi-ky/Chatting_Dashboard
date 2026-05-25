@@ -14,6 +14,7 @@ import { sql, type SqlBool } from "kysely";
 import { db } from "../db/client.js";
 import { sharedRedis } from "../queue/redis.js";
 import { isConversationDisengaged } from "../worker/disengagement.js";
+import { isConversationBotFlagged } from "../worker/botDetection.js";
 
 // Asset cooldown was REMOVED 2026-04-29. Old behavior: don't pitch the same
 // asset_id (per-rung paywalled bubble) to a fan within 14 days. Reasoning at
@@ -276,6 +277,14 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   // (maybeClearDisengageOnRetEngage) or 14d TTL.
   if (await isConversationDisengaged(args.conversationId)) {
     return { shouldPitch: false, reason: "sticky_disengagement_flag" };
+  }
+  // Bot-on-bot flag — set by conversationWorker when an inbound matches
+  // chatter-bot signals (#ad / onlyfans.com promo URLs). 1y TTL. Without
+  // this check in the orchestrator, bot-flagged convs still get pitched
+  // via the chat-reply path. Disengagement-audit agent 2026-05-25 found
+  // conv c59fd276 (the known chatter-bot) still receiving nudges/pitches.
+  if (await isConversationBotFlagged(args.conversationId)) {
+    return { shouldPitch: false, reason: "bot_flagged_conversation" };
   }
   // Same-turn intent hard-block. The intent classifier returns objection /
   // disengagement / emotional_disclosure flags PER TURN; previously these
