@@ -393,6 +393,17 @@ async function generateLlmReply(
       a.outcome === "pending" &&
       Date.now() - a.pitchedAt.getTime() < PENDING_WINDOW_MS,
   );
+  // Post-PPV close-focus suppression list — added 2026-05-25 after Reaper
+  // case (conv cbbc4416): fan asked "do you make personalized videos?" 15+
+  // times in a row, bot kept firing "whats holdin u up daddy / i picked
+  // this for u" 8+ times verbatim because close-focus FORBIDS chat-pivots
+  // even when the fan is asking a real substantive question. Fan churned
+  // with "Goodbye, I was stupid to pay." Direct interrogatives MUST get
+  // an honest answer; the close can wait one turn.
+  const lastInboundText = input.incomingText ?? "";
+  const lastInboundIsDirectQuestion =
+    /\?\s*$/.test(lastInboundText.trim()) ||
+    /^\s*(do|does|did|how|what|when|where|why|who|which|can|could|will|would|are|is|am)\b/i.test(lastInboundText.trim());
   const isPostPpvReinforcement =
     hasRecentPendingPpv &&
     !isPitch &&
@@ -400,7 +411,8 @@ async function generateLlmReply(
     !input.intent?.objection &&                       // any objection routes elsewhere
     !input.intent?.disengagement &&
     !input.intent?.emotional_disclosure &&
-    !input.intent?.cant_afford;                       // cant_afford routes to discount path next turn
+    !input.intent?.cant_afford &&                     // cant_afford routes to discount path next turn
+    !lastInboundIsDirectQuestion;                     // Reaper-case fix: answer real questions first, close next turn
   if (isPostPpvReinforcement) {
     guidanceParts.push(
       [
@@ -459,11 +471,19 @@ async function generateLlmReply(
   // never trips it). We DO suppress when the fan just objected or went
   // emotional/disengaged, since pushing through those is worse than waiting.
   const lastFanMsgs = history.filter((m) => m.direction === "inbound").slice(-3);
-  const justUnlockedRecent = await listRecentAttempts(input.conversationId, 1)
-    .then((r) => r[0]?.outcome === "unlocked" && r[0]?.unlockedAt
-      ? Date.now() - r[0].unlockedAt.getTime() < 5 * 60_000   // 5min window
-      : false)
-    .catch(() => false);
+  // Widened 2026-05-25 (MONETIZING-win agent): pre-fix this looked at
+  // attempts[0] only, which meant a freshly-pitched PENDING attempt
+  // would hide a slightly older UNLOCKED attempt → bot stayed in
+  // close-focus framing after a real unlock (conv 0923274f: fired
+  // "U still thinkin babe..." AFTER the unlock landed). Now scan the
+  // 5 most recent attempts for an unlocked-within-10-min and bias
+  // toward post-unlock framing on ambiguity. 10 min covers OFAPI
+  // webhook lag spikes that 5 min couldn't.
+  const recentAttemptsForUnlockCheck = await listRecentAttempts(input.conversationId, 5).catch(() => []);
+  const justUnlockedRecent = recentAttemptsForUnlockCheck.some(
+    (a) => a.outcome === "unlocked" && a.unlockedAt &&
+      Date.now() - a.unlockedAt.getTime() < 10 * 60_000,
+  );
   const fanLanguageSignalsBuying = lastFanMsgs.some((m) =>
     /unlock|bought|got it|okay i'?ll buy|paid|tip(?:ped|ping|s)?\s+(?:\$?\d+|big|heavy|more)|ill tip|drop(?:ping)?\s+(?:\$|\d)|send (?:fire|more|the (?:vid|pic|exclusive))|bump(?: it)? to \$?\d+|\$\s?\d+/i.test(m.text ?? ''),
   );

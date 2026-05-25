@@ -714,22 +714,46 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
 const EXCLUDE_AFTER_EXPIRES = 3;
 
 /**
- * Pull this conversation's recent attempts, count expires per asset, and
- * resolve to source_ref strings (`of:<creator>:<scriptN>:<rung>`) for the
- * subset that has crossed EXCLUDE_AFTER_EXPIRES. Cheap: one ppv_attempts
- * query + one catalog query per offending asset (usually 0-2).
+ * Pull this conversation's recent attempts, count expires per asset AND
+ * count "rapid-fire" attempts (2+ in last 6h with no unlock) per asset,
+ * and resolve to source_ref strings (`of:<creator>:<scriptN>:<rung>`) for
+ * the subset to exclude.
+ *
+ * Two exclusion criteria, either fires:
+ *   - 3+ EXPIRED attempts on same asset in this conv (slow-burn rejection,
+ *     original picker exclusion bug fix from 2026-05-21)
+ *   - 2+ attempts of any non-unlocked outcome on same asset within the
+ *     last 6 hours (drip-saturation case from 2026-05-25 audit: conv
+ *     7c62ae6c got 3 fires of ca306a72 at $15 in 40 minutes; conv
+ *     0923274f got 2 fires of 83c29885 right after objection veto)
  */
+const DRIP_SATURATION_WINDOW_MS = 6 * 3600_000;
+const DRIP_SATURATION_THRESHOLD = 2;
+
 async function buildExcludedSourceRefs(conversationId: string): Promise<Set<string>> {
   const recent = await listRecentAttempts(conversationId, 50);
   const expiresPerAsset = new Map<string, number>();
+  const recentNonUnlockPerAsset = new Map<string, number>();
+  const cutoff = Date.now() - DRIP_SATURATION_WINDOW_MS;
   for (const a of recent) {
-    if (a.outcome !== "expired") continue;
-    expiresPerAsset.set(a.assetId, (expiresPerAsset.get(a.assetId) ?? 0) + 1);
+    if (a.outcome === "expired") {
+      expiresPerAsset.set(a.assetId, (expiresPerAsset.get(a.assetId) ?? 0) + 1);
+    }
+    if (a.outcome !== "unlocked" && a.pitchedAt.getTime() >= cutoff) {
+      recentNonUnlockPerAsset.set(
+        a.assetId,
+        (recentNonUnlockPerAsset.get(a.assetId) ?? 0) + 1,
+      );
+    }
   }
-  const offenders = [...expiresPerAsset.entries()]
-    .filter(([, count]) => count >= EXCLUDE_AFTER_EXPIRES)
-    .map(([assetId]) => assetId);
-  if (offenders.length === 0) return new Set();
+  const offenders = new Set<string>();
+  for (const [assetId, count] of expiresPerAsset) {
+    if (count >= EXCLUDE_AFTER_EXPIRES) offenders.add(assetId);
+  }
+  for (const [assetId, count] of recentNonUnlockPerAsset) {
+    if (count >= DRIP_SATURATION_THRESHOLD) offenders.add(assetId);
+  }
+  if (offenders.size === 0) return new Set();
 
   const { loadCatalogItem } = await import("../db/repos/ppv_catalog.js");
   const sourceRefs = new Set<string>();
@@ -739,8 +763,8 @@ async function buildExcludedSourceRefs(conversationId: string): Promise<Set<stri
   }
   if (sourceRefs.size > 0) {
     logger.info(
-      { conversationId, excludedCount: sourceRefs.size, offenders },
-      "picker exclusion: source-refs poisoned by 3+ expires in this conv",
+      { conversationId, excludedCount: sourceRefs.size, offenders: [...offenders] },
+      "picker exclusion: source-refs poisoned (3+ expires OR 2+ rapid-fire-no-unlock in 6h)",
     );
   }
   return sourceRefs;
