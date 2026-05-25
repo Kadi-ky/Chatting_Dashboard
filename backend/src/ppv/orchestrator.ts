@@ -51,8 +51,12 @@ const MIN_TURNS_BETWEEN_PITCHES: Record<Phase, number> = {
   // actually owns the decision. Funnel state still enforces preview→ppv
   // ordering so the first thing they see is a free preview, not a priced
   // bubble.
-  RAPPORT: 4,           // Once in rapport, allow analyzer-gated soft pitch
-                        //   every 4 messages. Preview-first via funnel.
+  RAPPORT: 6,           // Was 4 (2026-05-21). Bumped 2026-05-25 after
+                        //   audit: ~40% of RAPPORT fires landed on turns
+                        //   3-5 with cold or objection lastMessages.
+                        //   Analyzer catches most but turn-floor reduces
+                        //   premature pitches and saves analyzer cost on
+                        //   doomed early attempts. Preview-first via funnel.
   SEXTING: 2,           // Sexting fans are already hot — pitch fast.
   QUALIFYING: 1,        // First pitch lands here. After that, 1 msg between pitches
                         //   (preview turn → wait → ppv turn = naturally spaced).
