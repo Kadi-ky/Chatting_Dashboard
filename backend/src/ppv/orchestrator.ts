@@ -273,6 +273,32 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   if (await isConversationDisengaged(args.conversationId)) {
     return { shouldPitch: false, reason: "sticky_disengagement_flag" };
   }
+  // Same-turn intent hard-block. The intent classifier returns objection /
+  // disengagement / emotional_disclosure flags PER TURN; previously these
+  // were passed only as a soft hint to the pitch-readiness LLM analyzer
+  // (which is biased toward pitching) and could be flipped on the very
+  // next turn after a fresh inbound. Plus drip mode (further down) bypassed
+  // the analyzer entirely, so a fan saying "too expensive" got re-pitched
+  // ~10 messages later via support_drip.
+  //
+  // Agent audit 2026-05-25 (funnel sequencing bug) confirmed: 3 explicit
+  // <5-min re-pitch-after-veto cases in last 50 decisions + drip overriding
+  // objection vetoes (e.g. conv 0923274f). Hard-block aligns this with
+  // turnWorker.ts:182 which already suppresses explicitRequest on objection.
+  //
+  // cant_afford is INTENTIONALLY separate (it's an objection-recovery path
+  // with its own logic + 7d Redis floor below). intent.objection alone
+  // without cant_afford = "too expensive / maybe later / not for me" =
+  // genuine refusal that should not auto-recover.
+  if (
+    !args.cantAfford &&
+    (args.intent?.objection || args.intent?.disengagement || args.intent?.emotional_disclosure)
+  ) {
+    return {
+      shouldPitch: false,
+      reason: `intent_suppression (obj=${!!args.intent.objection} dis=${!!args.intent.disengagement} emo=${!!args.intent.emotional_disclosure})`,
+    };
+  }
   const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
   // BUG FIX 2026-05-07: previously the code did `if (Number.isFinite(minTurns))`
   // which SKIPPED the gate entirely when minTurns was Infinity — meaning

@@ -97,7 +97,7 @@ export async function generateVoucherCaption(args: {
         ``,
         `## CAPTION STRUCTURE (mandatory):`,
         `1. **Header line** — short, bold-feel, signals the deal. Examples: "50% OFF DROP", "LIMITED VOUCHER", "TONIGHT ONLY", "MY FAVES GET THIS". Use bold-looking ALL CAPS or unicode bold (𝐎𝐅𝐅𝐄𝐑). ONE line, 3-6 words.`,
-        `2. **Body** — 1-2 short sentences in your character voice. Reference what's in the asset description in YOUR voice (don't recite the description verbatim). Add a sense of personal selection ("only sending to a few of u", "picked u for this", "thinkin of fans like u").`,
+        `2. **Body** — 1-2 short sentences in your character voice. Reference what's in the asset description in YOUR voice (don't recite the description verbatim). Add a sense of personal selection IN YOUR OWN WORDS. CRITICAL: do NOT use the phrases "picked u", "picked u cuz", "picked u for this", "for fans like u", or "thinkin of fans like u" — these are overused template phrases the model keeps emitting and they read as bot-generated to fans. Find a fresh way to signal scarcity + personal pick each time (e.g. "wasn't gonna share this one but u crossed my mind", "savin this one for the few i wanna spoil", "only droppin this for the ones who actually back me").`,
         `3. **Urgency/scarcity beat** — short, time-limited. "few hours only", "before midnight", "only a handful gettin this".`,
         ``,
         `## CRITICAL RULES`,
@@ -159,6 +159,25 @@ export async function generateVoucherCaption(args: {
         "voucher caption rejected — near-duplicate body of recent send",
       );
       return null;
+    }
+    // Opener lock-in reject (agent audit 2026-05-25): exact-body dedup
+    // missed the "picked u cuz [X] fans like u" template family because
+    // the verb in [X] varies across sends. Catch the template by checking
+    // the first 4 normalized words — if 2+ of the recent ~12 sends start
+    // with the same opener, the LLM is locked. Return null and let
+    // caller retry with a thinner ring.
+    const opener = norm.split(" ").slice(0, 4).join(" ");
+    if (opener.length >= 6) {
+      const sameOpenerCount = args.recentTexts.filter(
+        (t) => normalizeVoucherBody(t).startsWith(opener),
+      ).length;
+      if (sameOpenerCount >= 2) {
+        logger.warn(
+          { accountId: args.accountId, caption: text, opener, sameOpenerCount },
+          "voucher caption rejected — opener template repeats across recent sends",
+        );
+        return null;
+      }
     }
     return text;
   } catch (err) {
