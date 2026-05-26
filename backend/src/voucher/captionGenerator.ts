@@ -52,6 +52,47 @@ function normalizeVoucherBody(caption: string): string {
     .trim();
 }
 
+// ─── Sam-Taylor-style mass-message patterns ──────────────────────────────
+// Operator export 2026-05-26: analyzed Sam Taylor's mass-message export +
+// confirmed the patterns that move money in the OF mass-send game. Captions
+// are now structured to match that playbook (day-of-week themes, anchored
+// price slashes, reluctance theater, photo-number teases, N-for-$N gimmicks,
+// itemized manifests). Voice still loads per-account persona — only the
+// mass-message STRUCTURE is borrowed, not the conversational tone.
+
+const DAY_THEMES: Record<number, { label: string; hooks: string[] }> = {
+  0: { label: "SUNDAY",    hooks: ["SUNDAY 🦋 DAY SPECIAL", "lazy sunday treat", "sunday spoil"] },
+  1: { label: "MONDAY",    hooks: ["MONDAY BLUES CURED", "monday again??", "monday pick-me-up"] },
+  2: { label: "TUESDAY",   hooks: ["TITTY TUESDAY", "TUESDAY DROP", "cherry tuesday"] },
+  3: { label: "WEDNESDAY", hooks: ["HUMP DAY SPOIL", "midweek 🦋", "wednesday treat"] },
+  4: { label: "THURSDAY",  hooks: ["THIRSTY THURSDAY", "THURSDAY TEASE", "almost-friday gift"] },
+  5: { label: "FRIDAY",    hooks: ["FRIDAY BIG TREAT", "MADE-IT-TO-FRIDAY drop", "weekend opener"] },
+  6: { label: "SATURDAY",  hooks: ["WEEKEND CHAOS", "saturday FLASH SALE", "weekend special"] },
+};
+
+// Reluctance theater bank — sampled per send to vary across the batch and
+// create "stealing a deal" psychology. Sam Taylor uses these constantly.
+const RELUCTANCE_BANK = [
+  "my hands were literally shaking",
+  "these were supposed to stay private",
+  "i never do stuff like this",
+  "in that screw-it mood",
+  "wasn't supposed to send this",
+  "i officially lost my mind",
+  "really shouldn't be sending this so cheap",
+  "this was supposed to be VIP-only",
+  "took my bra off for this",
+  "before i remember i wasn't supposed to send this",
+];
+
+function pickReluctance(seed: string): string {
+  // Stable per-send variety: hash the seed (fan id + day) to an index so
+  // the same fan doesn't get the same reluctance phrase twice in a row.
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;
+  return RELUCTANCE_BANK[Math.abs(h) % RELUCTANCE_BANK.length]!;
+}
+
 export async function generateVoucherCaption(args: {
   accountId: string;
   subscriberId: string;
@@ -79,49 +120,86 @@ export async function generateVoucherCaption(args: {
 
     const messages: LlmMessage[] = [{ role: "system", content: prefix }];
 
-    const voucherDollars = (args.voucherPriceCents / 100).toFixed(0);
-    const impliedDollars = (args.impliedRegularPriceCents / 100).toFixed(0);
+    const voucherDollars = Math.round(args.voucherPriceCents / 100);
+    const impliedDollars = Math.round(args.impliedRegularPriceCents / 100);
+    const discountPct = impliedDollars > 0
+      ? Math.round(((impliedDollars - voucherDollars) / impliedDollars) * 100)
+      : 0;
+    const dayInfo = DAY_THEMES[new Date().getUTCDay()]!;
+    const reluctance = pickReluctance(`${args.fanExternalId}:${dayInfo.label}`);
+
+    // Tier-aware framing — cheap voucher gets N-for-$N gimmick, premium
+    // gets itemized manifest, mid stays simple. Mirrors what Sam Taylor
+    // does naturally based on price tier.
+    const tier: "cheap" | "mid" | "premium" =
+      voucherDollars <= 20 ? "cheap"
+      : voucherDollars >= 69 ? "premium"
+      : "mid";
 
     messages.push({
       role: "system",
       content: [
-        `# Task — VOUCHER MASS SEND`,
+        `# Task — VOUCHER MASS SEND (day-themed, Sam-Taylor style)`,
         ``,
-        `You're sending an UNPROMPTED priced PPV to a sub who's been quiet. The frame is a "limited drop / 50% off voucher" — a tripwire designed to convert silent fans.`,
+        `You're sending an UNPROMPTED priced PPV to a sub who's been quiet. This is a MASS MESSAGE — same caption structure goes to many fans, fan does NOT expect a conversational reply. Structure has to do the selling.`,
         ``,
-        `## Voucher details (for caption framing only — DO NOT mention the dollar amount in your caption, the price renders automatically in the PPV bubble):`,
+        `## Today's context`,
+        `- Day-of-week: ${dayInfo.label}`,
+        `- Day theme options (PICK ONE for the header, or invent a fresh ${dayInfo.label}-specific hook): ${dayInfo.hooks.map((h) => `"${h}"`).join(", ")}`,
         `- Voucher price: $${voucherDollars}`,
-        `- Implied regular price: $${impliedDollars} (this is the "50% off" math the caption hints at)`,
+        `- Implied regular price: $${impliedDollars}`,
+        `- Discount: ${discountPct}% off`,
+        `- Tier: ${tier} (drives header style + body length below)`,
         `- Asset description: ${args.assetDescription || "(no description)"}`,
         args.scriptName ? `- Script name: ${args.scriptName}` : ``,
         ``,
-        `## CAPTION STRUCTURE (mandatory):`,
-        `1. **Header line** — short, bold-feel, signals the deal. Examples: "50% OFF DROP", "LIMITED VOUCHER", "TONIGHT ONLY", "MY FAVES GET THIS". Use bold-looking ALL CAPS or unicode bold (𝐎𝐅𝐅𝐄𝐑). ONE line, 3-6 words.`,
-        `2. **Body** — 1-2 short sentences in your character voice. Reference what's in the asset description in YOUR voice (don't recite the description verbatim). Add a sense of personal selection IN YOUR OWN WORDS. CRITICAL: do NOT use the phrases "picked u", "picked u cuz", "picked u for this", "for fans like u", or "thinkin of fans like u" — these are overused template phrases the model keeps emitting and they read as bot-generated to fans. Find a fresh way to signal scarcity + personal pick each time (e.g. "wasn't gonna share this one but u crossed my mind", "savin this one for the few i wanna spoil", "only droppin this for the ones who actually back me").`,
-        `3. **Urgency/scarcity beat** — short, time-limited. "few hours only", "before midnight", "only a handful gettin this".`,
+        `## REQUIRED CAPTION STRUCTURE (4 parts, in order, separated by \\n line breaks)`,
+        ``,
+        `1. **HEADER LINE** — bold-feel, day-themed, includes price anchor when there's a real discount.`,
+        `   - For ${tier === "cheap" ? "CHEAP tier ($≤20)" : tier === "premium" ? "PREMIUM tier ($≥69)" : "MID tier"}:`,
+        tier === "cheap"
+          ? `     Use a "N-for-$N" or sharp anchor format. Examples: "${dayInfo.hooks[0]} 🦋 ${voucherDollars} PICS FOR $${voucherDollars}", "${dayInfo.label} SPECIAL — $${voucherDollars}", "BARE 🍒 FOR $${voucherDollars}". Bold ALL CAPS or unicode bold (𝐎𝐅𝐅𝐄𝐑).`
+          : tier === "premium"
+            ? `     Use a clear price-slash anchor. Examples: "${dayInfo.hooks[0]} 🦋 $${impliedDollars} → $${voucherDollars}", "WEEKEND FLASH SALE $${impliedDollars} → $${voucherDollars}", "${discountPct}% OFF ${dayInfo.label}". Bold ALL CAPS.`
+            : `     Use a day-themed hook. Examples: "${dayInfo.hooks[0]}", "${dayInfo.hooks[1] ?? dayInfo.hooks[0]} 🍒", "${dayInfo.label} TEASE — $${impliedDollars} → $${voucherDollars}". Bold ALL CAPS or unicode bold.`,
+        `   - ONE line, 3-7 words plus optional emoji.`,
+        ``,
+        `2. **HOOK BODY** — 1-2 sentences in YOUR character voice. Reference what's in the asset description in YOUR words (don't recite verbatim). Set the scene with sensory detail.`,
+        `   FORBIDDEN PHRASES (overused template clones): "picked u", "picked u cuz", "for fans like u", "thinkin of fans like u", "just for u tonight". Find a fresh way to set the scene each time.`,
+        ``,
+        `3. **RELUCTANCE THEATER** — exactly ONE reluctance phrase that creates a "stealing a deal" feeling. USE: "${reluctance}". (Or paraphrase the same VIBE — creator acting against her own interest, signals the deal is special.)`,
+        ``,
+        tier === "premium"
+          ? `4. **ITEMIZED TEASE** (premium-only required) — 2-3 bullets with 🍒 / 🍑 / 🦋 prefix listing what's IN the bundle. Pull from the asset description. Each bullet should be a specific scene/angle/act (paraphrased, not invented). Format example:\n     "🍒 squeezing topless views\n     🍑 ass shaking in doggy\n     🦋 POV positions usually behind VIP"`
+          : `4. **SPECIFIC PHOTO TEASE** — one short callout like "pic #5 will have you shaking", "the 7th angle is unreal", "wait til you see pic #3". Pick a number 2-9. Creates curiosity about ONE specific item.`,
+        ``,
+        `## EMOJI CODE (Sam-Taylor style)`,
+        `- 🍒 = tits / chest`,
+        `- 🍑 = ass / booty`,
+        `- 🦋 = "the deal" / "the drop" — use sparingly in headers`,
+        `- 😳 / 🥵 / 🥹 = reaction emojis, max ONE per caption`,
         ``,
         `## CRITICAL RULES`,
-        `- Total caption: 35-55 words across the 3 sections.`,
-        `- The HEADER LINE should literally be a separate first line (use \\n line break).`,
-        `- DO NOT mention any dollar amount in the caption text — the PPV bubble shows it automatically.`,
-        `- DO NOT explicitly say "voucher" or "code" or "redemption" — this is the actual PPV, just framed urgent.`,
-        `- The fan has been quiet — don't reference past convo, this is a fresh broadcast.`,
-        `- Stay in CHARACTER (persona above tells you who you are — Khlo = playful brat / Ari = sex demon, etc).`,
-        `- Don't echo the asset description literally — paraphrase in your voice.`,
-        `- One emoji max in the body (from humanness palette).`,
+        `- Total caption: ${tier === "premium" ? "60-110 words" : tier === "cheap" ? "25-45 words" : "35-65 words"}.`,
+        `- HEADER on its own first line (use literal \\n).`,
+        `- DO NOT mention any dollar amount IN THE BODY (only the header anchor shows $X → $Y). The PPV bubble renders the price itself.`,
+        `- DO NOT explicitly say "voucher" / "code" / "redemption" — frame as the actual drop.`,
+        `- Stay in CHARACTER (persona above — Khlo / Ari).`,
+        `- Don't echo the asset description literally — paraphrase.`,
+        `- The fan has been quiet — this is a fresh broadcast, no prior-convo references.`,
         ``,
         ...(args.recentTexts.length > 0
           ? [
-              `RECENT VOUCHER SENDS (last ~12 across all fans on this account) — DO NOT repeat the header, body shape, or urgency phrasing of these. Each fan should feel they got a unique drop, not a templated blast:`,
+              `RECENT VOUCHER SENDS (last ~12 across all fans on this account) — DO NOT repeat the header, body shape, reluctance phrase, or urgency phrasing of these. Each fan should feel they got a unique drop, not a templated blast:`,
               ...args.recentTexts.slice(0, 10).map((t, i) => `  ${i + 1}. ${t}`),
               ``,
             ]
           : []),
         ...(args.fanDisplayName
-          ? [`Fan's display name: "${args.fanDisplayName}". Optional: address by name if it's a real first name (not username with digits).`, ``]
+          ? [`Fan's display name: "${args.fanDisplayName}". Optional: address by name once if it's a real first name (not username with digits).`, ``]
           : []),
         `OUTPUT FORMAT — STRICT JSON. Return a single JSON object exactly like:`,
-        `  {"caption": "the full caption with newline between header and body"}`,
+        `  {"caption": "the full caption with newlines between each of the 4 parts"}`,
         `Rules: no markdown fences, no prose around the JSON, no placeholder values.`,
       ].filter(Boolean).join("\n"),
     });
@@ -129,7 +207,10 @@ export async function generateVoucherCaption(args: {
     const result = await routeLlmCall({
       task: "CHAT_GENERATE",
       messages,
-      maxTokens: 350,
+      // Premium-tier captions with itemized manifest can hit ~700 chars
+      // ≈ ~250-300 tokens. Header (~30) + body (~120) + reluctance (~30)
+      // + manifest (~100) = ~280. Headroom for JSON overhead + emoji.
+      maxTokens: 600,
       temperature: 0.95,
       responseFormat: "json_object",
       meta: {
@@ -140,7 +221,10 @@ export async function generateVoucherCaption(args: {
     });
 
     const text = extractCaption(result.content);
-    if (!text || text.length < 15 || text.length > 400) {
+    // Widened upper bound 2026-05-26: premium tier captions with itemized
+    // manifest can legitimately run 600-800 chars (Sam-Taylor-style). Lower
+    // bound stays tight to reject one-word junk.
+    if (!text || text.length < 15 || text.length > 800) {
       logger.warn(
         { rawLength: result.content.length, extractedLength: text.length },
         "voucher caption rejected — too short/long or unparseable",
