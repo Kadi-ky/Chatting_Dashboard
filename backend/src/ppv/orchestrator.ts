@@ -307,10 +307,37 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
     !args.cantAfford &&
     (args.intent?.objection || args.intent?.disengagement || args.intent?.emotional_disclosure)
   ) {
+    // Set a 6h cooldown flag so the objection sticks past the current turn.
+    // Audit 2026-05-27 found conv 6cdd9ca9 got 5 PPVs in 90 min AFTER fan
+    // said "Way too much" + "I already told you" — the intent_suppression
+    // gate only blocked the CURRENT turn, then the objection scrolled out
+    // of the 10-message context window and the analyzer's "lean toward
+    // pitching" bias re-opened firing. Sticky flag blocks all pitches
+    // for 6h regardless of how the next inbound classifies.
+    await sharedRedis()
+      .set(`peach:objection:cooldown:${args.conversationId}`, "1", "EX", 6 * 3600)
+      .catch(() => undefined);
     return {
       shouldPitch: false,
-      reason: `intent_suppression (obj=${!!args.intent.objection} dis=${!!args.intent.disengagement} emo=${!!args.intent.emotional_disclosure})`,
+      reason: `intent_suppression (obj=${!!args.intent.objection} dis=${!!args.intent.disengagement} emo=${!!args.intent.emotional_disclosure}) + 6h cooldown set`,
     };
+  }
+  // Check for an active 6h objection cooldown from a PRIOR turn.
+  // Cleared by sticky-disengagement maybe-clear path OR by TTL expiry.
+  // Note: this does NOT clear on fan re-engagement (unlike sticky
+  // disengagement) because objection signals are temporal — fan may
+  // come back warm after 1-2 hours and we don't want to pitch immediately;
+  // 6h gives a clean breather.
+  if (!args.cantAfford && !args.explicitRequest) {
+    const objCooldown = await sharedRedis()
+      .get(`peach:objection:cooldown:${args.conversationId}`)
+      .catch(() => null);
+    if (objCooldown) {
+      return {
+        shouldPitch: false,
+        reason: "objection_cooldown_active (6h post-objection)",
+      };
+    }
   }
   const minTurns = MIN_TURNS_BETWEEN_PITCHES[args.phase];
   // BUG FIX 2026-05-07: previously the code did `if (Number.isFinite(minTurns))`
@@ -454,7 +481,18 @@ export async function decidePitch(args: DecidePitchArgs): Promise<PitchDecision>
   // rung had been rejected 9 times prior. Same shape on facial-fan +
   // Sam Kraft. Threshold = 3 expires (give the rung a couple chances
   // for a slow fan, then move on).
-  const excludedSourceRefs = await buildExcludedSourceRefs(args.conversationId);
+  //
+  // WHALE BYPASS (2026-05-27): for WHALE-phase fans, the exclusion set
+  // is empty. Audit found Hyalio (the only WHALE) hit "no eligible
+  // scripts after filtering" 15+ times in 90 minutes because his
+  // entire vault was excluded. Whales who've shown they pay should
+  // get re-pitched at premium markup with VIP framing — the
+  // whalePremiumTier directive frames it as exclusive re-release,
+  // not a re-pitch of rejected content. Letting whales see more
+  // assets > strict anti-spam.
+  const excludedSourceRefs = args.phase === "WHALE"
+    ? new Set<string>()
+    : await buildExcludedSourceRefs(args.conversationId);
 
   const picked = await pickNextForFan({
     accountId: args.accountId,
