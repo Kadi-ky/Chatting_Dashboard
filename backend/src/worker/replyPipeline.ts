@@ -493,19 +493,36 @@ async function generateLlmReply(
     && !input.intent?.disengagement
     && !input.intent?.emotional_disclosure;
   if (postUnlockWindow && okToPush) {
-    guidanceParts.push(
-      [
-        `Post-unlock push window (ALWAYS PUSH, this turn):`,
-        `The fan just unlocked content. Do NOT get cozy and pivot to "hows your day" — the window for the next sale closes fast. Your next reply MUST monetize this moment. Rules:`,
-        `- React to the unlock in ONE short bubble ("mmm glad u liked that" / "u ate that up daddy") then IMMEDIATELY do ONE of:`,
-        `  (a) **Tip-ask** (default unless system handed you a pitch this turn): casually ask for a tip on what he just bought. Frame as a reaction to HIS reaction, not a request for charity. Examples: "if u liked it throw me a lil somethin daddy 🥺", "tip me $5 if i made u finish n i'll send the next one rn", "show me u liked it babe, ill send another if u tip a lil". The tip-ask CAN go in the same bubble as the reaction. ALWAYS the most direct play after an unlock — fan has cash on hand and just demonstrated they pay.`,
-        `  (b) **Tease the next** (use when system handed you a fresh pitch this turn, OR when fan asks for more): immediately tee up what's next. The asset description tells you EXACTLY what's in the video — your caption must reflect ONLY what that description says.`,
-        `  (c) **Vague tease** (only when system did NOT hand a pitch AND a tip-ask doesn't fit the moment): "i got somethin even hotter cued up", "the next one is way more intense", "wait til u see what i filmed after". Do NOT invent specific acts / toys / positions / personalizations not in the asset description.`,
-        `- Pick ONE of (a)/(b)/(c). Don't stack them. Tip-ask + tease in the same reply reads pushy.`,
-        `- Act like there is ALWAYS better content coming. Never "thats all for now" energy.`,
-        `- Do NOT ask biographical small-talk questions this turn — save those for slower stretches.`,
-      ].join("\n"),
-    );
+    // Restructured 2026-05-27 after MONETIZING-win audit: pre-fix, 0 tip-asks
+    // fired in 24h despite tip-ask being declared the "default" option. The
+    // LLM was picking (b) tease-next or (c) vague-tease instead, leaving
+    // money on the table in the highest-leverage moment (fan has card open,
+    // just demonstrated willingness to pay). Forcing tip-ask as the
+    // mandatory path unless a fresh pitch was handed THIS turn.
+    const pitchHandedThisTurn = isPitch;
+    if (pitchHandedThisTurn) {
+      guidanceParts.push(
+        [
+          `Post-unlock + fresh pitch attached (this turn):`,
+          `The fan just unlocked and the system handed you a fresh pitch to attach. Frame the caption as the next drop teeing up off his unlock — NOT a tip-ask (that conflicts with the priced PPV bubble). The pitch caption rules above govern the caption text; this directive just confirms the unlock context is fresh so tone runs warm/celebratory rather than cold-start.`,
+        ].join("\n"),
+      );
+    } else {
+      guidanceParts.push(
+        [
+          `Post-unlock TIP-ASK (this turn, REQUIRED — no pitch handed):`,
+          `The fan just unlocked content. Card is open. Card is warm. This is the single highest-EV moment in the entire funnel and IT MUST BE A TIP-ASK. Tip-ask = direct ask for a $5-20 tip on top of the unlock he just paid for. Frame as reaction to HIS reaction, not charity.`,
+          `MUST do (one bubble, max two):`,
+          `  - React to unlock in ONE short beat ("mmm glad u liked that" / "u ate that up daddy" / "fuck that was a fun one to film").`,
+          `  - Tip-ask immediately after: "if u liked it throw me a lil somethin daddy 🥺", "tip me $5 if i made u finish n ill send the next one rn", "show me u liked it babe, ill film one specifically for u if u tip a lil more".`,
+          `MUST NOT:`,
+          `  - Skip the tip-ask. "Vague tease" / "wait til u see what's next" / "i got somethin hotter cued up" — these are FORBIDDEN this turn. They feel like soft-sell and lose the moment. The tip-ask IS the right play.`,
+          `  - Pivot to "hows your day" / generic small-talk.`,
+          `  - Mention any specific dollar amount the fan didn't suggest (just "a lil somethin" / "a fiver" / "tip me 5").`,
+          `Tone: confident, glowing, in-character — like a girl who knows what she did to him and is collecting on it.`,
+        ].join("\n"),
+      );
+    }
   }
 
   // Dryness detector — fires when the bot has gone 2+ outbound turns without
