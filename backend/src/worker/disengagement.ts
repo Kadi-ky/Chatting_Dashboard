@@ -61,6 +61,21 @@ const EXPLICIT_NO_PATTERNS: RegExp[] = [
   /\bsee (?:you|u|ya) (?:later|tomorrow|next week)\b/i,
   /\bhmu (?:later|tomorrow|next week)\b/i,
   /\bdone for (?:now|today|tonight|the day|the night)\b/i,
+  // Novel "soft no" phrasings — added 2026-05-27 after inbound-mining
+  // agent found these in real fan refusals that previously slipped
+  // through into more pitches. Polite-but-firm signals.
+  /\bappreciate it but (?:i\s*)?(?:can'?t|cant|just can'?t)\b/i,
+  /\bwon'?t waste (?:ur|your|u r) time\b/i,
+  /\bnot gonna (?:work|happen)(?: out)?\b/i,
+  // Risky-context — fan wants the content but can't open right now (wife,
+  // work, kids in the room). Distinct from objection: don't discount, just
+  // hold off. Caught by disengagement flag for now; future iteration could
+  // add a dedicated risky_context intent for scheduled follow-up.
+  /\b(?:my|with my) (?:wife|husband|partner|gf|girlfriend|bf|boyfriend|kids?|daughter|son|family)\b/i,
+  /\b(?:laying|lying|sitting|standing|driving) (?:next to|with|near)\s+(?:my|the)\b/i,
+  /\bat work (?:rn|right now)?\b/i,
+  /\bin (?:a |the )?meeting\b/i,
+  /\bdriving (?:right now|rn|atm)?\b/i,
 ];
 
 const disengageFlagKey = (conversationId: string): string =>

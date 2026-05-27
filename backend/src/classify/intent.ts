@@ -105,6 +105,24 @@ const SYSTEM = [
  * Classify the fan's latest inbound text. Returns EMPTY_INTENT on any
  * failure — the pipeline treats "no signal" as safe default.
  */
+// Deterministic regex pre-classifier — runs BEFORE the LLM call. Catches
+// patterns the LLM occasionally misses on low-confidence calls. Sets
+// intent flags directly; LLM call can still add to / refine these flags
+// (we OR with LLM output). Added 2026-05-27 after inbound-mining agent
+// found 4 AI accusations where 2/4 bot responses ignored the accusation
+// entirely (canned nudges fired instead of the deflection directive).
+// The phrase "God are you real." (no question mark) was missed by the
+// LLM in one case.
+const AI_ACCUSATION_RE = /\b(?:are\s*(?:you|u)\s*(?:real|ai|a\s*bot|human|fake|chat\s*bot|robot)|prove.*(?:real|human)|chat\s*bot|this\s*is\s*(?:an?\s*)?(?:ai|bot))\b/i;
+const TIPPING_INTENT_RE = /\b(?:i'?ll|ill|im\s*gonna|gonna)\s*tip\b|\btip(?:ping)?\s*(?:u|you|her)?\s*\$?\d+|\bdrop(?:ping)?\s*\$?\d+|\bsend(?:ing)?\s*\$?\d+\s*(?:tip|over|ur way)/i;
+
+function applyRegexPreClassify(text: string, base: IntentFlags): IntentFlags {
+  const out = { ...base };
+  if (AI_ACCUSATION_RE.test(text)) out.ai_question = true;
+  if (TIPPING_INTENT_RE.test(text)) out.tipping_intent = true;
+  return out;
+}
+
 export async function classifyIntent(inboundText: string): Promise<IntentFlags> {
   const text = inboundText.trim();
   if (!text) return EMPTY_INTENT;
@@ -121,19 +139,21 @@ export async function classifyIntent(inboundText: string): Promise<IntentFlags> 
       maxTokens: 200,
     });
     const parsed = safeJson(result.content);
-    if (!parsed.ok) return EMPTY_INTENT;
+    if (!parsed.ok) return applyRegexPreClassify(text, EMPTY_INTENT);
     const validated = IntentSchema.safeParse(parsed.data);
     if (!validated.success) {
       logger.debug({ err: validated.error.message }, "intent classify — schema mismatch");
-      return EMPTY_INTENT;
+      return applyRegexPreClassify(text, EMPTY_INTENT);
     }
-    return validated.data;
+    // OR the LLM output with regex pre-classify (deterministic fallback for
+    // high-signal patterns the LLM occasionally misses).
+    return applyRegexPreClassify(text, validated.data);
   } catch (err) {
     logger.debug(
       { err: err instanceof Error ? err.message : err },
       "intent classify failed; defaulting to empty",
     );
-    return EMPTY_INTENT;
+    return applyRegexPreClassify(text, EMPTY_INTENT);
   }
 }
 
