@@ -75,7 +75,32 @@ const DISENGAGE_PATTERNS = [
   /\b(?:money|funds?|cash)\s+(?:so|too|are|is)?\s*low\b/i,
   /\bnext (?:paycheck|payday|paydate|check)\b/i,
   /\bsave\s+up\b/i,
+  // Emotional disclosure / grief — added 2026-05-27 after audit found
+  // conv 804c5605 got a voucher PPV 90 seconds after fan said "got two
+  // funerals this week… you bring me joy". Pitching at grieving fans
+  // burns trust catastrophically.
+  /\bfuneral(?:s)?\b/i,
+  /\b(?:passed|died|death|dying|grief|loss|lost)\b/i,
+  /\b(?:hospital|surgery|chemo|cancer|sick|illness)\b/i,
+  /\b(?:depression|depressed|anxiety|breakdown|panic attack)\b/i,
+  /\b(?:divorce|breakup|broke up|cheated on)\b/i,
 ];
+
+// Hour-gate (UTC) — voucher tick fires every 30 min but only SENDS when
+// the current UTC hour is in the conversion-optimised window. Time-of-day
+// audit 2026-05-27: 85% of unlocks happen UTC 01-11 (US ET 21-07,
+// late-night-horny + late-evening overlap). UTC 12-21 = 0-8.7% unlock
+// rate across 29 PPV attempts in sample. Sending vouchers in dead hours
+// wastes OFAPI credits + LLM cost + fan-attention budget. Keep UTC 04-12
+// (peak) + UTC 22-23 (ramp-up). Skip UTC 13-21 (dead).
+const VOUCHER_SEND_HOURS_UTC = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22, 23]);
+
+// Phases where voucher mass-sends are appropriate. WARMUP/RAPPORT/SEXTING
+// fans haven't earned the priced PPV yet — chat-quality audit 2026-05-27
+// found 47 voucher PPVs landing in WARMUP/RAPPORT (~17% of sends) with
+// ~0% conversion. Voucher targets the warm-but-quiet cohort, not cold
+// fans pre-rapport-build.
+const VOUCHER_ELIGIBLE_PHASES = new Set(["QUALIFYING", "MONETIZING", "WHALE"]);
 
 const voucherLockKey = (accountId: string, fanExternalId: string): string =>
   `peach:voucher:lock:${accountId}:${fanExternalId}`;
@@ -179,12 +204,14 @@ async function runForAccount(account: {
   const rows = await db
     .selectFrom("v3.subscribers as s")
     .innerJoin("v3.accounts as a", "a.id", "s.account_id")
+    .leftJoin("v3.conversations as c", "c.subscriber_id", "s.id")
     .select([
       "s.id as subscriber_id",
       "s.external_id as fan_external_id",
       "s.display_name as display_name",
       "s.last_inbound_at as last_inbound_at",
       "a.platform_account_id as platform_account_id",
+      "c.phase as conv_phase",
     ])
     .where("s.account_id", "=", account.id)
     .where("a.platform_account_id", "is not", null)
@@ -205,6 +232,12 @@ async function runForAccount(account: {
     .where("s.last_inbound_at", "is not", null)
     .where(sql<SqlBool>`s.last_inbound_at < ${inboundCutoff}`)
     .where(sql<SqlBool>`s.last_inbound_at > ${dormantCutoff}`)
+    // Phase gate (2026-05-27): voucher mass-sends only fire at fans who've
+    // earned the priced PPV by reaching QUALIFYING+. Chat-quality audit
+    // found 47 priced PPVs landing in WARMUP/RAPPORT (~17% of voucher
+    // volume) with ~0% conversion. Voucher-target = warm-but-quiet, NOT
+    // never-engaged-past-rapport.
+    .where(sql<SqlBool>`c.phase IN ('QUALIFYING', 'MONETIZING', 'WHALE')`)
     .orderBy(sql`random()`)
     .limit(150)
     .execute();
@@ -239,6 +272,16 @@ async function runForAccount(account: {
         continue;
       }
 
+      // Objection cooldown — set by orchestrator when fan signals objection /
+      // disengagement / emotional disclosure in chat. 6h Redis flag.
+      // Critical: voucher worker bypasses the orchestrator entirely, so
+      // without this check the mass-send path can re-pitch a fan who just
+      // said "Way too much" or "got two funerals this week" minutes ago.
+      // Need conv_id for the lookup; use ensureConversation pattern.
+      // We do the lookup later (after asset pick) for efficiency — but
+      // pre-fetch the row's conv via the existing query's c.phase JOIN.
+      // For now the check happens inside the conv-resolution block below.
+
       // Pick an asset the fan hasn't bought
       const pick = await pickVoucherAsset({
         fanExternalId: row.fan_external_id,
@@ -261,6 +304,18 @@ async function runForAccount(account: {
         continue;
       }
       if (await isConversationBotFlagged(convId)) {
+        result.skippedDisengage++;
+        continue;
+      }
+      // Objection cooldown — orchestrator sets a 6h Redis flag when fan
+      // signals objection / disengagement / emotional_disclosure during
+      // a chat-reply turn. Voucher worker honors it so a mass-send
+      // doesn't fire 30 minutes after a fan said "Way too much" or
+      // "got two funerals this week" in a chat-reply path.
+      const objCooldown = await sharedRedis()
+        .get(`peach:objection:cooldown:${convId}`)
+        .catch(() => null);
+      if (objCooldown) {
         result.skippedDisengage++;
         continue;
       }
@@ -407,6 +462,17 @@ export function startVoucherWorker(): VoucherWorkerHandle | null {
 
   const tick = async (): Promise<void> => {
     if (stopped) return;
+    // Hour-gate: only send during the conversion-optimised UTC window.
+    // Time-of-day audit 2026-05-27: 85% of unlocks happen UTC 01-11
+    // (US ET 21-07, late-night-horny + US PT late-evening). UTC 12-21 =
+    // 0-8.7% conversion in 29 PPV-attempt sample. Skipping dead hours
+    // saves OFAPI credit + LLM cost + fan-attention budget.
+    const hourUtc = new Date().getUTCHours();
+    if (!VOUCHER_SEND_HOURS_UTC.has(hourUtc)) {
+      logger.debug({ hourUtc }, "voucher tick skipped — outside send window");
+      if (!stopped) timer = setTimeout(tick, TICK_MS);
+      return;
+    }
     try {
       const accounts = await allowlistedAccounts();
       const results: VoucherPassResult[] = [];

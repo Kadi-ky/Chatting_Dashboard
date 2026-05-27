@@ -125,7 +125,13 @@ export async function generateVoucherCaption(args: {
     const discountPct = impliedDollars > 0
       ? Math.round(((impliedDollars - voucherDollars) / impliedDollars) * 100)
       : 0;
-    const dayInfo = DAY_THEMES[new Date().getUTCDay()]!;
+    // US-ET-aware day-of-week (UTC - 4 hours, EDT). Without this offset,
+    // captions show "THIRSTY THURSDAY" to fans whose phones still read
+    // Wednesday for the first 4 UTC hours of Thursday morning. Time-of-day
+    // audit 2026-05-27 found this misalignment. EDT used year-round here
+    // since OF traffic peaks in US evening regardless of standard/daylight.
+    const etNow = new Date(Date.now() - 4 * 3600_000);
+    const dayInfo = DAY_THEMES[etNow.getUTCDay()]!;
     const reluctance = pickReluctance(`${args.fanExternalId}:${dayInfo.label}`);
 
     // Tier-aware framing — cheap voucher gets N-for-$N gimmick, premium
