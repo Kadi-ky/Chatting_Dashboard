@@ -66,7 +66,13 @@ const STARTUP_DELAY_MS = 60_000;         // 1 min cold-start so DB connections s
 
 const COLD_FIRST_DELAY_MS = 24 * 3600_000;       // first cold attempt only after 24h sub age
 const COLD_INTERVAL_MS = 5 * 24 * 3600_000;      // 5 days between cold attempts
-const COLD_MAX_ATTEMPTS = 3;
+// Lowered 3 -> 2 on 2026-05-27 after cold-outreach effectiveness audit:
+// step-3 was the most templated tier (4× duplicate "hope ur good, dms
+// open whenever" verbatim across different fans) AND produced 0 replies
+// in the sample window. Steps 1+2 still allowed; step-3 retired so the
+// dedup pool isn't depleted by a third opener sourced from the same
+// pre-baked template bank.
+const COLD_MAX_ATTEMPTS = 2;
 
 const REACT_FIRST_DELAY_MS = 14 * 24 * 3600_000; // first reactivation after 14 days silent
 const REACT_INTERVAL_MS = 16 * 24 * 3600_000;    // ~30 day total at attempt 2

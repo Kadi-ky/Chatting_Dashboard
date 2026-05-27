@@ -214,6 +214,26 @@ export function startSendWorker(deps: SendWorkerDeps): Worker<OutboundJobData> {
         if (err instanceof PlatformHttpError && (err.status === 401 || err.status === 403)) {
           throw new UnrecoverableError(err.message);
         }
+        // Dead-fan + content-filter classes — non-retryable. Pre-fix these
+        // burned 3 BullMQ retry attempts per occurrence (~210 wasted OFAPI
+        // credits/day per dead-fan audit 2026-05-27). The dead-fan flag is
+        // already set by the adapter; subsequent workers will skip. The
+        // content-filter case (e.g. "incest" word in a refusal) won't
+        // succeed on retry either — the bot output is the problem, not
+        // the network.
+        if (err instanceof PlatformHttpError && err.status === 400) {
+          const body = err.body ?? "";
+          if (
+            body.includes("Cannot send message to this user") ||
+            body.includes("Cannot send message to yourself") ||
+            body.includes("Input contains restricted words")
+          ) {
+            throw new UnrecoverableError(`non-retryable 400: ${body.slice(0, 120)}`);
+          }
+        }
+        if (err instanceof PlatformHttpError && err.status === 404) {
+          throw new UnrecoverableError(`non-retryable 404 (user not found)`);
+        }
         // 429: honor OFAPI's Retry-After guidance.
         //   - Use Retry-After header value if present (server tells us exactly
         //     when to retry; retrying sooner triggers stricter back-off).

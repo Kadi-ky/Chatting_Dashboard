@@ -373,16 +373,37 @@ async function runNudgePass(): Promise<{
 // account: 6-8 fans in the $50-$200/30d range, most 3-14 days silent.
 // Lowered threshold to capture the loyalty cohort, extended window to
 // catch mid-disengaged whales the reactivation worker is missing.
-const WHALE_SPEND_THRESHOLD_CENTS = 5000; // $50/30d — top-fan cohort, not just $150+ whales
-const WHALE_PING_MIN_SILENT_MS = 24 * 3600_000;
-const WHALE_PING_MAX_SILENT_MS = 14 * 24 * 3600_000; // 14d — catch mid-disengaged
+const WHALE_SPEND_THRESHOLD_CENTS = 5000; // $50/30d — top-fan cohort
+// Lowered 24h → 6h on 2026-05-27 — Hyalio (the only WHALE) was always
+// inside 24h so never qualified for the whale ping, even though he was
+// chatting daily and getting flooded with generic idle nudges instead.
+// 6h still avoids "pinging mid-conversation" while catching same-day
+// silent whales.
+const WHALE_PING_MIN_SILENT_MS = 6 * 3600_000;
+// Tiered max-silent (2026-05-27): $80+ spenders get 21d window (catches
+// Mc Hekuli at 16d, 502772657 stale-inbound cases). $50-$80 stay at 14d.
+const WHALE_PING_MAX_SILENT_BIG_SPENDER_MS = 21 * 24 * 3600_000;
+const WHALE_PING_MAX_SILENT_MS = 14 * 24 * 3600_000;
+const WHALE_PING_BIG_SPENDER_CENTS = 8000; // $80/30d
 const WHALE_PING_COOLDOWN_TTL_SEC = 5 * 24 * 3600;
 
 const whalePingLockKey = (fanExternalId: string): string =>
   `peach:whale:ping:${fanExternalId}`;
+// Dedicated whale conv-lock (2026-05-27) — separate from the idle+ppv
+// shared lock at peach:nudge:lock:any. The per-fan 5d Redis cooldown is
+// the real spam-floor for whales; the conv-wide any-nudge lock was
+// silently swallowing whale pings whenever an idle/ppv nudge fired
+// recently on the same conv (Patrick case).
+const whaleConvLockKey = (convId: string): string =>
+  `peach:nudge:lock:whale:${convId}`;
 
 async function runWhalePingPass(): Promise<{ candidates: number; sent: number }> {
-  const oldCutoff = new Date(Date.now() - WHALE_PING_MAX_SILENT_MS);
+  // Tiered max-silent: big spenders ($80+) get a longer window so we don't
+  // forfeit them to the (less-effective) reactivation worker just because
+  // they went silent past 14d. Mc Hekuli case ($86, 16d silent) is the
+  // motivating example.
+  const oldCutoffStandard = new Date(Date.now() - WHALE_PING_MAX_SILENT_MS);
+  const oldCutoffBigSpender = new Date(Date.now() - WHALE_PING_MAX_SILENT_BIG_SPENDER_MS);
   const newCutoff = new Date(Date.now() - WHALE_PING_MIN_SILENT_MS);
   const rows = await db
     .selectFrom("v3.subscribers as s")
@@ -399,7 +420,11 @@ async function runWhalePingPass(): Promise<{ candidates: number; sent: number }>
     ])
     .where("a.platform_account_id", "is not", null)
     .where(sql<SqlBool>`s.spend_30d_cents >= ${WHALE_SPEND_THRESHOLD_CENTS}`)
-    .where(sql<SqlBool>`s.last_inbound_at > ${oldCutoff}`)
+    // Tiered window: big spenders use 21d ceiling, others use 14d.
+    .where(sql<SqlBool>`(
+      (s.spend_30d_cents >= ${WHALE_PING_BIG_SPENDER_CENTS} AND s.last_inbound_at > ${oldCutoffBigSpender})
+      OR (s.spend_30d_cents < ${WHALE_PING_BIG_SPENDER_CENTS} AND s.last_inbound_at > ${oldCutoffStandard})
+    )`)
     .where(sql<SqlBool>`s.last_inbound_at < ${newCutoff}`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
@@ -425,9 +450,18 @@ async function runWhalePingPass(): Promise<{ candidates: number; sent: number }>
       // Sticky disengagement still applies — never push a whale who said no.
       if (await isConversationDisengaged(row.conv_id)) continue;
       if (await isConversationBotFlagged(row.conv_id)) continue;
-      // Conv-wide nudge lock (idle + ppv + whale share it — operator
-      // wanted "one nudge per conv per window" not 3 simultaneous).
-      if (!(await tryAcquireNudgeLock(row.conv_id))) continue;
+      // Whale-specific conv-lock (NOT the shared any-nudge lock). The
+      // per-fan 5d cooldown above is the real spam floor; the shared
+      // lock was silently swallowing whale pings whenever idle/ppv
+      // nudge fired recently on the same conv (Patrick case 2026-05-26).
+      const whaleConvLock = await sharedRedis().set(
+        whaleConvLockKey(row.conv_id),
+        "1",
+        "EX",
+        24 * 3600,
+        "NX",
+      );
+      if (whaleConvLock !== "OK") continue;
 
       const llmText = await generateNudgeText({
         conversationId: row.conv_id,
@@ -436,10 +470,50 @@ async function runWhalePingPass(): Promise<{ candidates: number; sent: number }>
         kind: "idle",
         step: 0, // reuse step-0 generator; the directive emphasizes warm not pushy
       });
-      // Templates fallback if LLM fails — these are warmer + name-aware
-      // than the generic idle templates.
-      const text =
-        llmText ??
+      // Name-hallucination guard: agent audit 2026-05-27 found Nad (fan
+      // 529804625) addressed as "daniel" in 2/3 whale pings — wrong
+      // personal-fact pulled from facts table. If LLM output contains
+      // a likely first-name token that isn't this fan's display_name
+      // (or a safe pet-name), reject and use the template fallback.
+      const SAFE_TOKENS = new Set(["babe", "baby", "daddy", "papi", "hun", "honey"]);
+      const fanName = (row.display_name ?? "").trim().toLowerCase();
+      const containsForeignName = (txt: string): boolean => {
+        if (!txt) return false;
+        // Look for capitalized-or-lowercase first-name-shape tokens (3-10
+        // alpha chars). If any token isn't the fan's name + isn't a safe
+        // pet-name + isn't a common word, flag as foreign.
+        const COMMON_WORDS = new Set([
+          "hey", "still", "thinkin", "thinking", "miss", "been", "around",
+          "good", "ok", "babe", "u", "ur", "im", "wanna", "got", "love",
+          "want", "see", "more", "less", "feel", "vibe", "mood", "want",
+        ]);
+        const tokens = txt.toLowerCase().match(/\b[a-z]{3,10}\b/g) ?? [];
+        for (const t of tokens) {
+          if (t === fanName) continue;
+          if (SAFE_TOKENS.has(t)) continue;
+          if (COMMON_WORDS.has(t)) continue;
+          // If the token is at sentence start and capitalized in original
+          // text, it MIGHT be a name. Conservative check: only reject if
+          // it looks name-shaped (first char would be upper in original).
+          const idx = txt.toLowerCase().indexOf(t);
+          if (idx >= 0 && /[A-Z]/.test(txt[idx] ?? "")) {
+            // Likely a name token. If it's not the fan's name, foreign.
+            return true;
+          }
+        }
+        return false;
+      };
+      let text = llmText ?? null;
+      if (text && containsForeignName(text)) {
+        logger.warn(
+          { conversationId: row.conv_id, llmText: text, fanName },
+          "whale ping rejected — LLM output contains foreign name (hallucinated personal fact)",
+        );
+        text = null;
+      }
+      // Templates fallback if LLM fails OR was rejected for foreign-name.
+      text =
+        text ??
         (row.display_name
           ? `hey ${row.display_name} — been thinkin bout u babe 🖤`
           : "hey babe, been thinkin bout u today 🖤");
