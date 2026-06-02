@@ -71,11 +71,20 @@ const envSchema = z.object({
   // 2026-06-02 — OpenRouter is now the PRIMARY provider (router chain flipped).
   // Grok-4.1-fast became unavailable + too expensive; every CHAT_GENERATE call
   // had been silently failing since ~2026-05-25, so the bot stopped replying
-  // (nudges/vouchers kept working via their static template fallbacks). Now the
-  // chat generator + nudge generator run on Hermes-4-70b via OpenRouter.
+  // (nudges/vouchers kept working via their static template fallbacks).
+  //
+  // NOTE: the legacy OPENROUTER_FALLBACK_MODEL / OPENROUTER_CLASSIFIER_FALLBACK_MODEL
+  // vars are pinned to DEAD models on Railway (nous-hermes-2-mixtral and
+  // mistral-small both 404 on OpenRouter as of 2026-06-02). Rather than have
+  // the operator clear stale Railway env vars, the live models are read from
+  // NEW var names below that the stale Railway vars cannot override. The
+  // legacy vars are retained only so config validation doesn't break.
   OPENROUTER_FALLBACK_MODEL: z.string().default("nousresearch/hermes-4-70b"),
-  // Classifier stays on a cheap, JSON-reliable model — highest-volume task.
-  OPENROUTER_CLASSIFIER_FALLBACK_MODEL: z.string().default("mistralai/mistral-small"),
+  OPENROUTER_CLASSIFIER_FALLBACK_MODEL: z.string().default("meta-llama/llama-3.1-8b-instruct"),
+  // ACTIVE models (new names — not overridden by stale Railway vars).
+  // Verified live on OpenRouter 2026-06-02.
+  OPENROUTER_CHAT_MODEL: z.string().default("nousresearch/hermes-4-70b"),
+  OPENROUTER_CLASSIFY_MODEL: z.string().default("meta-llama/llama-3.1-8b-instruct"),
 
   // "mock" — in-memory adapter (outbound sends captured, no real I/O).
   //          Use for local testing via the V3 Testing tab.

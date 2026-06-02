@@ -400,7 +400,8 @@ async function handle(
       // swap is actually serving. If openrouter_key_present is false, the
       // router silently falls back to (dead) grok and the bot won't reply.
       openrouter_key_present: Boolean(env.OPENROUTER_API_KEY),
-      openrouter_model: env.OPENROUTER_FALLBACK_MODEL,
+      openrouter_chat_model: env.OPENROUTER_CHAT_MODEL,
+      openrouter_classify_model: env.OPENROUTER_CLASSIFY_MODEL,
       grok_generator_model: env.GROK_MODEL_GENERATOR,
       node_env: env.NODE_ENV,
       booted_at: process.env.PEACHBOT_BOOTED_AT ?? "(unknown)",

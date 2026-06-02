@@ -19,16 +19,15 @@ export class OpenRouterProvider implements LlmProvider {
     if (!env.OPENROUTER_API_KEY) return null;
     switch (task) {
       case "CHAT_GENERATE":
-        return env.OPENROUTER_FALLBACK_MODEL;
+        return env.OPENROUTER_CHAT_MODEL;
       case "CLASSIFY":
       case "EXTRACT":
       case "MODERATE":
-        return env.OPENROUTER_CLASSIFIER_FALLBACK_MODEL;
+        return env.OPENROUTER_CLASSIFY_MODEL;
       case "NUDGE_GENERATE":
-        // 2026-06-02: nudges now use the generator model (Hermes-4-70b) so
-        // they stay in-voice with chat replies. Previously used the cheap
-        // classifier model when OpenRouter was only a fallback.
-        return env.OPENROUTER_FALLBACK_MODEL;
+        // Nudges use the generator model (Hermes-4-70b) so they stay
+        // in-voice with chat replies.
+        return env.OPENROUTER_CHAT_MODEL;
     }
   }
 
