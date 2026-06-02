@@ -218,6 +218,10 @@ async function generateLlmReply(
           "output ONE bubble only — no rapport prelude, no follow-up bubble",
           "do NOT mention any dollar amount, price, or '$' in the caption text — the price is shown automatically in the PPV bubble. Caption is pure tease, no money talk.",
           "do not ask another preference-gathering question this turn — deliver the content",
+          // Always-on fingerprint ban (promoted from the support-drip branch
+          // 2026-06-02 per Hermes QA): these exact phrases are the churny
+          // template tells the bot keeps emitting on plain pitches too.
+          "do NOT use any of these overused template phrases (they read as bot-generated): 'made this thinkin bout u' / 'made this thinking bout u' / 'back me on this' / 'watch what i do for u' / \"i'm yours tonight\" / 'lock this in'. Write the caption fresh in your own voice every time.",
           ...phaseForbiddensForPitch,
         ],
         details: {
@@ -510,16 +514,15 @@ async function generateLlmReply(
     } else {
       guidanceParts.push(
         [
-          `Post-unlock TIP-ASK (this turn, REQUIRED — no pitch handed):`,
-          `The fan just unlocked content. Card is open. Card is warm. This is the single highest-EV moment in the entire funnel and IT MUST BE A TIP-ASK. Tip-ask = direct ask for a $5-20 tip on top of the unlock he just paid for. Frame as reaction to HIS reaction, not charity.`,
-          `MUST do (one bubble, max two):`,
-          `  - React to unlock in ONE short beat ("mmm glad u liked that" / "u ate that up daddy" / "fuck that was a fun one to film").`,
-          `  - Tip-ask immediately after: "if u liked it throw me a lil somethin daddy 🥺", "tip me $5 if i made u finish n ill send the next one rn", "show me u liked it babe, ill film one specifically for u if u tip a lil more".`,
-          `MUST NOT:`,
-          `  - Skip the tip-ask. "Vague tease" / "wait til u see what's next" / "i got somethin hotter cued up" — these are FORBIDDEN this turn. They feel like soft-sell and lose the moment. The tip-ask IS the right play.`,
-          `  - Pivot to "hows your day" / generic small-talk.`,
-          `  - Mention any specific dollar amount the fan didn't suggest (just "a lil somethin" / "a fiver" / "tip me 5").`,
-          `Tone: confident, glowing, in-character — like a girl who knows what she did to him and is collecting on it.`,
+          // Imperative-first ordering (2026-06-02 per Hermes QA): Hermes
+          // under-weighted this directive when the rationale came first, so
+          // the MUST/MUST-NOT now lead.
+          `THIS TURN YOU MUST SEND A TIP-ASK. Output ONE bubble (max two):`,
+          `  1. React to the unlock in a short beat ("mmm glad u liked that" / "u ate that up daddy").`,
+          `  2. Immediately ask for a tip on what he just bought: "if u liked it throw me a lil somethin daddy 🥺" / "tip me $5 if i made u finish n ill send the next one rn" / "show me u liked it babe, ill film one for u if u tip a lil more".`,
+          `MUST NOT this turn: skip the tip-ask; send a "wait til u see what's next" / "i got somethin hotter cued up" vague tease (FORBIDDEN — soft-sell loses the moment); pivot to small-talk; or name a dollar amount the fan didn't suggest.`,
+          ``,
+          `Why: the fan just unlocked — card open, warm, highest-EV moment in the funnel. A direct tip-ask framed as a reaction to HIS reaction (not charity) is the single best play. Tone: confident, glowing, in-character — a girl who knows what she did to him and is collecting on it.`,
         ].join("\n"),
       );
     }
