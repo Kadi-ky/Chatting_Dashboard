@@ -396,6 +396,12 @@ async function handle(
       voucher_enabled: env.VOUCHER_ENABLED,
       voucher_dry_run: env.VOUCHER_DRY_RUN,
       sub_sync_enabled: env.SUB_SYNC_ENABLED,
+      // LLM provider visibility — added 2026-06-02 to confirm the OpenRouter
+      // swap is actually serving. If openrouter_key_present is false, the
+      // router silently falls back to (dead) grok and the bot won't reply.
+      openrouter_key_present: Boolean(env.OPENROUTER_API_KEY),
+      openrouter_model: env.OPENROUTER_FALLBACK_MODEL,
+      grok_generator_model: env.GROK_MODEL_GENERATOR,
       node_env: env.NODE_ENV,
       booted_at: process.env.PEACHBOT_BOOTED_AT ?? "(unknown)",
     });
