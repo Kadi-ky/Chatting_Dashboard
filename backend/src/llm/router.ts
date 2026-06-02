@@ -37,9 +37,15 @@ export async function routeLlmCall(
   const retries = routerOpts.retries ?? 2;
   const backoffMs = routerOpts.backoffMs ?? 500;
 
+  // 2026-06-02 — OpenRouter is PRIMARY (was grok). Grok-4.1-fast went
+  // unavailable + too expensive; chat replies silently failed for ~a week
+  // because the chat-generate path has no template fallback (unlike
+  // nudges/vouchers). OpenRouter/Hermes-4-70b now serves all tasks; grok
+  // is kept as a 1-shot last-resort only (fires only if OpenRouter is fully
+  // down AND the grok key still works).
   const chain: Array<{ provider: LlmProvider; breaker: CircuitBreaker; attempts: number }> = [
-    { provider: grok, breaker: grokBreaker, attempts: retries + 1 },
-    { provider: openrouter, breaker: openrouterBreaker, attempts: 1 },
+    { provider: openrouter, breaker: openrouterBreaker, attempts: retries + 1 },
+    { provider: grok, breaker: grokBreaker, attempts: 1 },
   ];
 
   let lastErr: Error | null = null;

@@ -68,9 +68,13 @@ const envSchema = z.object({
 
   OPENROUTER_API_KEY: z.string().optional(),
   OPENROUTER_API_BASE: z.string().url().default("https://openrouter.ai/api/v1"),
-  OPENROUTER_FALLBACK_MODEL: z
-    .string()
-    .default("nousresearch/nous-hermes-2-mixtral-8x7b-dpo"),
+  // 2026-06-02 — OpenRouter is now the PRIMARY provider (router chain flipped).
+  // Grok-4.1-fast became unavailable + too expensive; every CHAT_GENERATE call
+  // had been silently failing since ~2026-05-25, so the bot stopped replying
+  // (nudges/vouchers kept working via their static template fallbacks). Now the
+  // chat generator + nudge generator run on Hermes-4-70b via OpenRouter.
+  OPENROUTER_FALLBACK_MODEL: z.string().default("nousresearch/hermes-4-70b"),
+  // Classifier stays on a cheap, JSON-reliable model — highest-volume task.
   OPENROUTER_CLASSIFIER_FALLBACK_MODEL: z.string().default("mistralai/mistral-small"),
 
   // "mock" — in-memory adapter (outbound sends captured, no real I/O).
