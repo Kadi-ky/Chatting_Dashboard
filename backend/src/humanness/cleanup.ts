@@ -260,8 +260,20 @@ const ASCII_EMOTICON_RE = /\s*<\/?3|\s*:\)|\s*:3|\s*:-\)/g;
  * stray spaces before punctuation ("word ," → "word,"). Durable safety net
  * because Hermes disregards the prompt-level palette ban.
  */
+// Lone (unpaired) UTF-16 surrogate halves. Hermes emoji occasionally get
+// split at a JSON-string or max-token boundary, leaving an orphan low/high
+// surrogate that renders as "�" in the fan's app. Strip them. (Khlo cert
+// 2026-06-03: 4/12 replies shipped a lone \uDC8F.)
+const LONE_SURROGATE_RE = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g;
+// Markdown emphasis asterisks — fans see raw "*word*"; Hermes emits them.
+const MD_ASTERISK_RE = /\*+([^*\n]+?)\*+/g;
+
 export function stripBannedArtifacts(text: string): string {
   let out = text;
+  // Strip orphaned emoji surrogate halves first (fan-visible "�" bug).
+  out = out.replace(LONE_SURROGATE_RE, "");
+  // Unwrap markdown emphasis ("*soft one*" → "soft one"), then drop strays.
+  out = out.replace(MD_ASTERISK_RE, "$1").replace(/\*/g, "");
   // Remove banned emoji code points.
   out = out.replace(EMOJI_RE, (match) => {
     let kept = "";
