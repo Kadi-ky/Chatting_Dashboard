@@ -237,6 +237,20 @@ export async function generateVoucherCaption(args: {
       );
       return null;
     }
+    // Malformed-output guard (2026-06-03 per recovery audit): Hermes
+    // occasionally emits (a) trailing JSON-envelope residue that
+    // extractCaption didn't fully strip (e.g. `bare"°}`) or (b)
+    // non-Latin scripts mid-caption (one shipped with Chinese
+    // characters). Both reached real fans. Reject rather than send junk
+    // — the worker rolls back the lock + retries next tick.
+    if (/["'`}\]]\s*[°•]?\s*[}\]]\s*$/.test(text) || /[{}]\s*$/.test(text.trim())) {
+      logger.warn({ accountId: args.accountId, caption: text }, "voucher caption rejected — JSON-residue artifact");
+      return null;
+    }
+    if (/[　-鿿぀-ヿ가-힯Ѐ-ӿ؀-ۿ]/.test(text)) {
+      logger.warn({ accountId: args.accountId, caption: text }, "voucher caption rejected — non-Latin script (CJK/Cyrillic/Arabic) injected");
+      return null;
+    }
     // Hard near-duplicate reject on BODY (ignoring header). Stops the
     // "picked u cuz [body verb] fans like u" template-clone the LLM
     // keeps emitting across fans. Returns null → caller skips voucher
