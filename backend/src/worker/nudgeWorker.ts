@@ -382,9 +382,18 @@ const WHALE_SPEND_THRESHOLD_CENTS = 5000; // $50/30d — top-fan cohort
 const WHALE_PING_MIN_SILENT_MS = 6 * 3600_000;
 // Tiered max-silent (2026-05-27): $80+ spenders get 21d window (catches
 // Mc Hekuli at 16d, 502772657 stale-inbound cases). $50-$80 stay at 14d.
-const WHALE_PING_MAX_SILENT_BIG_SPENDER_MS = 21 * 24 * 3600_000;
+// Widened 21d → 30d on 2026-06-03: the 7-day reply outage cooled the
+// top-10 whales (Dan 18d, Nad 20d, Mc Hekuli 23d silent). 30d window
+// catches all of them for an LLM win-back now that replies work.
+const WHALE_PING_MAX_SILENT_BIG_SPENDER_MS = 30 * 24 * 3600_000;
 const WHALE_PING_MAX_SILENT_MS = 14 * 24 * 3600_000;
 const WHALE_PING_BIG_SPENDER_CENTS = 8000; // $80/30d
+// Lifetime-spend eligibility (2026-06-03). Recovery audit found 3 of 5
+// cooled whales (J, Nad, Dan) were INVISIBLE to the whale-ping because
+// their 30-DAY spend decayed below $50 during the outage — even though
+// they're $100-200 LIFETIME buyers. Include high lifetime spenders so
+// proven wallets get re-engaged regardless of recent-window decay.
+const WHALE_PING_LIFETIME_CENTS = 8000; // $80 lifetime
 const WHALE_PING_COOLDOWN_TTL_SEC = 5 * 24 * 3600;
 
 const whalePingLockKey = (fanExternalId: string): string =>
@@ -416,20 +425,25 @@ async function runWhalePingPass(): Promise<{ candidates: number; sent: number }>
       "s.external_id as fan_external_id",
       "s.display_name as display_name",
       "s.spend_30d_cents as spend_30d_cents",
+      "s.total_spend_cents as total_spend_cents",
       "s.last_inbound_at as last_inbound_at",
     ])
     .where("a.platform_account_id", "is not", null)
-    .where(sql<SqlBool>`s.spend_30d_cents >= ${WHALE_SPEND_THRESHOLD_CENTS}`)
-    // Tiered window: big spenders use 21d ceiling, others use 14d.
+    // Eligibility — THREE paths (OR), each with its own silent window:
+    //   1. Lifetime whale ($80+ ever): 30d window — catches the cooled
+    //      top-10 whose 30d-spend decayed during the outage (Dan, J, Nad).
+    //   2. Recent big spender ($80+/30d): 30d window.
+    //   3. Recent small whale ($50+/30d): 14d window.
     .where(sql<SqlBool>`(
-      (s.spend_30d_cents >= ${WHALE_PING_BIG_SPENDER_CENTS} AND s.last_inbound_at > ${oldCutoffBigSpender})
-      OR (s.spend_30d_cents < ${WHALE_PING_BIG_SPENDER_CENTS} AND s.last_inbound_at > ${oldCutoffStandard})
+      (s.total_spend_cents >= ${WHALE_PING_LIFETIME_CENTS} AND s.last_inbound_at > ${oldCutoffBigSpender})
+      OR (s.spend_30d_cents >= ${WHALE_PING_BIG_SPENDER_CENTS} AND s.last_inbound_at > ${oldCutoffBigSpender})
+      OR (s.spend_30d_cents >= ${WHALE_SPEND_THRESHOLD_CENTS} AND s.last_inbound_at > ${oldCutoffStandard})
     )`)
     .where(sql<SqlBool>`s.last_inbound_at < ${newCutoff}`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
     .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
-    .orderBy("s.spend_30d_cents", "desc")
+    .orderBy("s.total_spend_cents", "desc")
     .limit(50)
     .execute();
 

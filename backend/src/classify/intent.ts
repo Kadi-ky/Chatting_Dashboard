@@ -115,11 +115,24 @@ const SYSTEM = [
 // LLM in one case.
 const AI_ACCUSATION_RE = /\b(?:are\s*(?:you|u)\s*(?:real|ai|a\s*bot|human|fake|chat\s*bot|robot)|prove.*(?:real|human)|chat\s*bot|this\s*is\s*(?:an?\s*)?(?:ai|bot))\b/i;
 const TIPPING_INTENT_RE = /\b(?:i'?ll|ill|im\s*gonna|gonna)\s*tip\b|\btip(?:ping)?\s*(?:u|you|her)?\s*\$?\d+|\bdrop(?:ping)?\s*\$?\d+|\bsend(?:ing)?\s*\$?\d+\s*(?:tip|over|ur way)/i;
+// Deterministic floors for objection + cant_afford — added 2026-06-03.
+// The cheap llama-3.1-8b classifier can miss these (false negatives →
+// bot pitches at a fan who objected/can't-pay = the most expensive
+// error). High-precision patterns only; OR'd with the LLM so they can
+// only CATCH missed signals, never invent false ones. Kept distinct per
+// schema: cant_afford = financial inability; objection = price complaint
+// / deflection.
+const CANT_AFFORD_RE = /\b(?:i'?m|im|i am)\s+broke\b|\bno money\b|\bcan'?t afford\b|\bnext (?:paycheck|payday|check)\b|\b(?:wait|til|until)\s+payday\b|\btapped out\b|\bbetween paychecks\b|\bouta?\s+(?:cash|money)\b|\b(?:low|short) on (?:cash|money|funds)\b|\bno funds\b/i;
+const OBJECTION_RE = /\btoo expensive\b|\btoo much\b|\bkinda steep\b|\bway too (?:much|pricey)\b|\bnot interested\b|\bnot my (?:thing|vibe)\b|\bnot into (?:that|this)\b|\bmaybe later\b|\bnot right now\b|\bnah i'?m good\b|\bpass\b/i;
 
 function applyRegexPreClassify(text: string, base: IntentFlags): IntentFlags {
   const out = { ...base };
   if (AI_ACCUSATION_RE.test(text)) out.ai_question = true;
   if (TIPPING_INTENT_RE.test(text)) out.tipping_intent = true;
+  // cant_afford takes precedence over objection on economic phrases —
+  // it routes to retention (hold the fan) rather than just skip-pitch.
+  if (CANT_AFFORD_RE.test(text)) out.cant_afford = true;
+  if (OBJECTION_RE.test(text)) out.objection = true;
   return out;
 }
 
