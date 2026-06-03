@@ -176,12 +176,12 @@ async function generateLlmReply(
   // character-rich + minimal task instruction produces a real voice.
   const previewObjective =
     "PREVIEW STEP — you're sending him a FREE preview image right now. Output ONE bubble: the caption that goes with the preview. No priced PPV this turn — that lands NEXT turn after he reacts.\n\n" +
-    "Write the caption like Khlo really sending him this peek. Why this one for him. What you were thinking when you filmed it. What makes the rest worth waiting for. The humanness layer above tells you who she is — write as her.\n\n" +
+    "Write the caption as YOURSELF — the creator the Identity layer above defines (it tells you who you are + your emoji palette). Why this one for him. What you were thinking when you filmed it. What makes the rest worth waiting for.\n\n" +
     "Asset anchor: paraphrase what's IN the preview description in your voice. Don't invent acts / durations / personalizations not in the description.\n\n" +
     "Don't echo his exact words back ('u said X, here's X') — reads reverse-engineered. Don't ship banned palette emojis (🥵 💦 😈 🫦 🔥 💋). One bubble. Max 35 words.";
   const ppvObjective =
     "PPV STEP — you're sending him the PRICED PPV right now. Output ONE bubble: the caption that goes with it.\n\n" +
-    "Write it like Khlo really sending him this clip. What you were thinking when you filmed it. Why he's the one getting it. What makes it worth the unlock. The humanness layer above tells you who she is and what her captions usually contain — write as her.\n\n" +
+    "Write it as YOURSELF — the creator the Identity layer above defines (it tells you who you are, your voice, and your emoji palette). What you were thinking when you filmed it. Why he's the one getting it. What makes it worth the unlock.\n\n" +
     "Tone: match his last-message register (sweet → soft heat, dominant → submit-eager, demanding → tease-back) but always feel like SHE'S buzzing about this drop.\n\n" +
     "Asset anchor (HARD RULE — operator-observed lying 2026-05-08): paraphrase what's IN the asset description. Do NOT invent acts / positions / personalizations / body-attribute claims not in the description. If the fan ASKED a specific question in his last message about what's in the content (e.g. 'is that with bigger tits?', 'do u have feet stuff?', 'is it solo or with a guy?'), the caption MUST answer TRUTHFULLY based ONLY on the asset description. If the answer is NO or unclear, write a chat-reply not a PPV caption — i.e. acknowledge honestly and tease ALTERNATIVE content the catalog actually has. Lying about content to push a sale destroys trust on unlock and is the single most expensive AI-tell.\n\n" +
     "Don't echo his exact words back ('u said X, here's X'). Don't ship banned palette emojis (🥵 💦 😈 🫦 🔥 💋). One bubble. Max 45 words.";
@@ -519,7 +519,7 @@ async function generateLlmReply(
           // the MUST/MUST-NOT now lead.
           `THIS TURN YOU MUST SEND A TIP-ASK. Output ONE bubble (max two):`,
           `  1. React to the unlock in a short beat ("mmm glad u liked that" / "u ate that up daddy").`,
-          `  2. Immediately ask for a tip on what he just bought: "if u liked it throw me a lil somethin daddy 🥺" / "tip me $5 if i made u finish n ill send the next one rn" / "show me u liked it babe, ill film one for u if u tip a lil more".`,
+          `  2. Immediately ask for a tip on what he just bought: "if u liked it throw me a lil somethin daddy 🥺" / "tip me $5 if i made u finish" / "show me u liked it babe, a lil tip goes a long way". Do NOT promise to film or send anything new in exchange — just ask him to reward what he already got.`,
           `MUST NOT this turn: skip the tip-ask; send a "wait til u see what's next" / "i got somethin hotter cued up" vague tease (FORBIDDEN — soft-sell loses the moment); pivot to small-talk; or name a dollar amount the fan didn't suggest.`,
           ``,
           `Why: the fan just unlocked — card open, warm, highest-EV moment in the funnel. A direct tip-ask framed as a reaction to HIS reaction (not charity) is the single best play. Tone: confident, glowing, in-character — a girl who knows what she did to him and is collecting on it.`,

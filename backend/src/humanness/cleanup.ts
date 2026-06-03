@@ -199,6 +199,10 @@ export function applyCleanup(input: CleanupInput): string[] {
   if (bubbles.length > 0 && bubbles[0]) {
     bubbles[0] = stripLazyOpener(bubbles[0]);
   }
+  // Strip banned friend-zone emoji + ASCII emoticons + punctuation spacing
+  // BEFORE the count-cap, so a banned emoji doesn't consume the "1 emoji"
+  // budget and crowd out a valid one.
+  bubbles = bubbles.map((b) => stripBannedArtifacts(b));
   bubbles = bubbles.map((b) => capEmojisPerBubble(b, 2));
   bubbles = dedupeEmojiAcrossBubbles(bubbles, recentEmojis);
 
@@ -243,6 +247,38 @@ export function maybeStripTrailingQuestion(
 
   out[lastIdx] = withoutQuestion;
   return out.filter((b) => b.trim().length > 0);
+}
+
+// Friend-zone / corporate emoji that break the flirty register. Hermes
+// emits these despite the prompt ban (observed 👍 🙄 inside a sext, 2026-06-03).
+// Prompt-level bans don't stick on Hermes, so strip them deterministically.
+const BANNED_EMOJI = new Set(["👍", "👌", "🙏", "💯", "🙌", "😂", "🙄", "🤝", "✌️", "✌"]);
+const ASCII_EMOTICON_RE = /\s*<\/?3|\s*:\)|\s*:3|\s*:-\)/g;
+
+/**
+ * Strip banned friend-zone/corporate emoji + ASCII emoticons + normalize
+ * stray spaces before punctuation ("word ," → "word,"). Durable safety net
+ * because Hermes disregards the prompt-level palette ban.
+ */
+export function stripBannedArtifacts(text: string): string {
+  let out = text;
+  // Remove banned emoji code points.
+  out = out.replace(EMOJI_RE, (match) => {
+    let kept = "";
+    for (const ch of Array.from(match)) {
+      if (/\p{Extended_Pictographic}/u.test(ch)) {
+        if (!BANNED_EMOJI.has(ch)) kept += ch;
+      } else if (kept.length > 0) {
+        kept += ch; // keep ZWJ/variation selectors with a surviving emoji
+      }
+    }
+    return kept;
+  });
+  // ASCII emoticons.
+  out = out.replace(ASCII_EMOTICON_RE, "");
+  // Stray space before punctuation + collapse doubles.
+  out = out.replace(/\s+([.,!?])/g, "$1").replace(/\s{2,}/g, " ");
+  return out.trim();
 }
 
 /** Utility for other modules: pull the first emoji out of each bubble for the emoji-history log. */
