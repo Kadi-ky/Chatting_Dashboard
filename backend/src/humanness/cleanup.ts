@@ -272,6 +272,16 @@ export function stripBannedArtifacts(text: string): string {
   let out = text;
   // Strip orphaned emoji surrogate halves first (fan-visible "�" bug).
   out = out.replace(LONE_SURROGATE_RE, "");
+  // Strip angle-bracket pseudo-tokens. Hermes sometimes TYPES the literal
+  // text "<EMOJI_EYES>" / "<EMOJI_HEART>" / "<...>" as its idea of an emoji
+  // placeholder — these reached real fans (skeptic conv-test 2026-06-03).
+  // Drop any <ALL_CAPS_OR_WORD> token that isn't real prose.
+  out = out.replace(/<\/?[A-Za-z][A-Za-z0-9 _-]{0,30}>/g, "");
+  // Strip trailing JSON-envelope residue that escaped the parser (e.g. a
+  // caption ending in `"}` or `"]}` — GFE conv-test found one shipped to a
+  // fan). A real flirty message never ends in a brace/bracket, so a trailing
+  // run of quote+brace/bracket chars is always junk.
+  out = out.replace(/\s*["'`]*[}\]]+["'`]*\s*$/g, "");
   // Unwrap markdown emphasis ("*soft one*" → "soft one"), then drop strays.
   out = out.replace(MD_ASTERISK_RE, "$1").replace(/\*/g, "");
   // Remove banned emoji code points.

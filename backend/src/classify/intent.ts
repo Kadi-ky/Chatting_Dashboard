@@ -124,6 +124,12 @@ const TIPPING_INTENT_RE = /\b(?:i'?ll|ill|im\s*gonna|gonna)\s*tip\b|\btip(?:ping
 // / deflection.
 const CANT_AFFORD_RE = /\b(?:i'?m|im|i am)\s+broke\b|\bno money\b|\bcan'?t afford\b|\bnext (?:paycheck|payday|check)\b|\b(?:wait|til|until)\s+payday\b|\btapped out\b|\bbetween paychecks\b|\bouta?\s+(?:cash|money)\b|\b(?:low|short) on (?:cash|money|funds)\b|\bno funds\b/i;
 const OBJECTION_RE = /\btoo expensive\b|\btoo much\b|\bkinda steep\b|\bway too (?:much|pricey)\b|\bnot interested\b|\bnot my (?:thing|vibe)\b|\bnot into (?:that|this)\b|\bmaybe later\b|\bnot right now\b|\bnah i'?m good\b|\bpass\b/i;
+// Emotional disclosure floor — added 2026-06-03 after a GFE conv-test:
+// Khlo gag-deflected "i've been feeling pretty alone lately" because the
+// llama-8b classifier missed it as emotional_disclosure (so the soften-
+// tone directive never fired). High-precision phrases for loneliness /
+// low mood / hardship that MUST route to warm-hold, not flirt/pitch.
+const EMOTIONAL_DISCLOSURE_RE = /\b(?:feeling|been|feel|so|really|pretty|kinda)\s+(?:lonely|alone|depressed|down|sad|empty|isolated)\b|\blonely\b|\bdepress(?:ed|ion)\b|\b(?:rough|hard|bad|tough|shit|terrible)\s+(?:day|week|month|time)\b|\bgoing through (?:a lot|some\w*|it)\b|\bnobody (?:cares|to talk to|around)\b|\bno one (?:cares|to talk to)\b|\b(?:lost|passed away|died|funeral)\b|\bbroke up\b|\bdivorce\b|\banxiety\b|\bstruggling\b/i;
 
 function applyRegexPreClassify(text: string, base: IntentFlags): IntentFlags {
   const out = { ...base };
@@ -133,6 +139,7 @@ function applyRegexPreClassify(text: string, base: IntentFlags): IntentFlags {
   // it routes to retention (hold the fan) rather than just skip-pitch.
   if (CANT_AFFORD_RE.test(text)) out.cant_afford = true;
   if (OBJECTION_RE.test(text)) out.objection = true;
+  if (EMOTIONAL_DISCLOSURE_RE.test(text)) out.emotional_disclosure = true;
   return out;
 }
 
