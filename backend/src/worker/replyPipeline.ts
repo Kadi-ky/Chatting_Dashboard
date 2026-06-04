@@ -787,6 +787,34 @@ async function generateLlmReply(
     humanized.bubbles = scrubbed;
   }
 
+  // Input-echo guard (skeptic conv-test 2026-06-04): Hermes sometimes returns
+  // the fan's OWN message back verbatim as its reply ("how much for a vid" →
+  // "how much for a vid"). scrubMirrorOpeners only strips echo OPENERS, not a
+  // whole-message echo. Drop any bubble that's ~the same as the fan's last
+  // inbound. Normalized Jaccard-ish: if >70% of the bubble's words are the
+  // fan's words AND lengths are close, it's an echo.
+  if (input.incomingText && input.incomingText.trim().length > 0) {
+    const norm = (s: string): string[] =>
+      s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ").split(/\s+/).filter(Boolean);
+    const fanWords = new Set(norm(input.incomingText));
+    if (fanWords.size >= 3) {
+      humanized.bubbles = humanized.bubbles.filter((b) => {
+        const bw = norm(b);
+        if (bw.length < 3) return true;
+        const overlap = bw.filter((w) => fanWords.has(w)).length / bw.length;
+        const lenRatio = Math.min(bw.length, fanWords.size) / Math.max(bw.length, fanWords.size);
+        const isEcho = overlap > 0.7 && lenRatio > 0.6;
+        if (isEcho) {
+          logger.warn({ ...ctx, bubble: b.slice(0, 80) }, "dropped input-echo bubble (parroted fan)");
+        }
+        return !isEcho;
+      });
+      if (humanized.bubbles.length === 0) {
+        humanized.bubbles = ["mmm c'mere"]; // safe non-echo filler; next turn recovers
+      }
+    }
+  }
+
   // Drop bubbles whose n-gram shingles overlap with recent outbound for this
   // conversation. Protects against the model looping phrases across turns.
   let deduped = await filterNonRepeating(input.conversationId, humanized.bubbles);

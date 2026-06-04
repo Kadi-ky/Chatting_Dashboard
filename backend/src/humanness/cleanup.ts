@@ -277,6 +277,12 @@ export function stripBannedArtifacts(text: string): string {
   // placeholder — these reached real fans (skeptic conv-test 2026-06-03).
   // Drop any <ALL_CAPS_OR_WORD> token that isn't real prose.
   out = out.replace(/<\/?[A-Za-z][A-Za-z0-9 _-]{0,30}>/g, "");
+  // Strip leaked internal scaffolding labels (spender conv-test 2026-06-04:
+  // "Script 1 · rung 1", "Tease:", "Preview:" appeared in sent captions —
+  // these are the asset's internal title/step labels the model echoed).
+  out = out.replace(/\bscript\s*\d+\s*[·•\-–]\s*rung\s*\d+\b/gi, "");
+  out = out.replace(/\brung\s*\d+\b/gi, "");
+  out = out.replace(/^\s*(?:tease|preview|caption|ppv|pitch|step\s*\d*)\s*:\s*/gi, "");
   // Strip trailing JSON-envelope residue that escaped the parser (e.g. a
   // caption ending in `"}` or `"]}` — GFE conv-test found one shipped to a
   // fan). A real flirty message never ends in a brace/bracket, so a trailing
