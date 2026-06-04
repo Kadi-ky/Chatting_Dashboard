@@ -248,6 +248,32 @@ async function generateLlmReply(
   // emotional disclosure) attach on top.
   const guidanceParts: string[] = [];
   if (antiMirror) guidanceParts.push(antiMirror);
+
+  // Global anti-repeat guard (2026-06-03, all 3 conv-testers): Hermes locks
+  // onto close-focus / drip lines and re-sends them verbatim ("u still
+  // thinkin babe or u tryna make me wait", "u left me on read with the lock
+  // still up" — 3-4x each). The model sees its own history but doesn't
+  // self-vary, so list the last few sends explicitly and forbid reuse.
+  const recentOutboundTexts = history
+    .filter((m) => m.direction === "outbound" && m.text && m.text.trim().length > 0)
+    .slice(-5)
+    .map((m) => (m.text as string).trim());
+  if (recentOutboundTexts.length > 0) {
+    guidanceParts.push(
+      [
+        `DO NOT REPEAT YOURSELF. You already sent these in this conversation — do NOT reuse the same line, opener, or hook from ANY of them. Say something genuinely new this turn:`,
+        ...recentOutboundTexts.map((t) => `  - "${t.slice(0, 120)}"`),
+        `If your instinct is to send a close/tease line you've used before ("u still thinkin", "one tap away", "left me on read"), STOP and phrase it completely differently or take a new angle.`,
+      ].join("\n"),
+    );
+  }
+
+  // Never insult or demean the fan (2026-06-03: Ari called a paying fan
+  // "ugly ass liar"). Hard rule regardless of persona/heat.
+  guidanceParts.push(
+    `NEVER insult, demean, or call the fan names (no "liar", "ugly", "pathetic", "loser", "idiot", etc.) — even if he seems to be lying about a purchase or pushing back. Stay warm/dominant in-character but never hostile. A paying fan must never be attacked.`,
+  );
+
   if (input.intent?.ai_question) {
     guidanceParts.push(
       [
