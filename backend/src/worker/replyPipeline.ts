@@ -432,8 +432,11 @@ async function generateLlmReply(
   // an honest answer; the close can wait one turn.
   const lastInboundText = input.incomingText ?? "";
   const lastInboundIsDirectQuestion =
-    /\?\s*$/.test(lastInboundText.trim()) ||
-    /^\s*(do|does|did|how|what|when|where|why|who|which|can|could|will|would|are|is|am)\b/i.test(lastInboundText.trim());
+    /\?/.test(lastInboundText) ||
+    // Match interrogatives incl. apostrophe-dropped forms (whats / hows /
+    // wheres) — the old \bwhat\b missed "whats your name" so name/price
+    // questions slipped into close-focus and got dodged (spender R2).
+    /\b(do|does|did|how|hows|what|whats|when|wheres?|why|who|which|can|could|will|would|are|is|am|price|cost|how much)\b/i.test(lastInboundText.trim());
   const isPostPpvReinforcement =
     hasRecentPendingPpv &&
     !isPitch &&
@@ -454,18 +457,12 @@ async function generateLlmReply(
         `- The PHASE directive "YOU lead escalation every turn" (SEXTING) — SUSPENDED this turn. The pitch on the table IS the escalation.`,
         `- The HUMANNESS "ask 1 personal question every 3 turns" — IS satisfied by asking why he hasn't unlocked (option 1 below). Do NOT add a SECOND chat-pivot question on top.`,
         ``,
-        `MUST do ONE of (pick whichever fits the moment):`,
-        `1. **Ask why he hasn't unlocked yet** — direct, warm, confident. Not begging. THIS COUNTS as your "personal question" requirement for this turn.`,
-        `   - "u still thinkin babe or u tryna make me wait? 😏"`,
-        `   - "whats holdin u up daddy, i picked this for u"`,
-        `   - "u left me on read with the lock still up, tell me whats up"`,
-        `2. **Remind him what he's missing** — confident tease, not pleading.`,
-        `   - "babe ur literally one tap away from seein the rest"`,
-        `   - "u really gonna sleep on this one? trust me u want it"`,
-        `   - "told u this one was worth it, dont let it sit"`,
-        `3. **Reinforce the value / scarcity** — tie back to what's IN the asset or the offer's exclusivity.`,
-        `   - "i picked this for fans who actually pay attention, dont prove me wrong daddy"`,
-        `   - "this comes down soon babe, last call"`,
+        `MUST do ONE of (pick whichever fits the moment) — phrased FRESH in your own voice, NOT a canned line:`,
+        `1. **Ask why he hasn't unlocked yet** — direct, warm, confident, not begging. Reference the SPECIFIC content or this exact moment so it sounds new.`,
+        `2. **Remind him what he's missing** — confident tease about what's behind the lock, tied to what's actually IN the asset.`,
+        `3. **Reinforce value / scarcity** — exclusivity or "this comes down soon," in a way that fits this conversation.`,
+        ``,
+        `CRITICAL — VARY IT: you have been looping the SAME close lines over and over ("u still thinkin... make me wait", "left me on read with the lock still up", "one tap away from seein the rest"). These are BANNED now — do NOT use any of them or anything close. Look at your recent sends (listed earlier in this prompt) and say something you have NOT said. If you can't think of a fresh close, just react warmly to his actual last message instead — a stale repeat is worse than easing off.`,
         ``,
         `FORBIDDEN this turn (these kill the close):`,
         `- DO NOT ask "what r u up to" / "how's ur day" / any chat-pivot question. The "why u haven't unlocked" question replaces it.`,
