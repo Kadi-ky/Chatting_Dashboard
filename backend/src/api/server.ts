@@ -28,6 +28,7 @@ import { getRecentOutreach } from "../worker/outreachWorker.js";
 import { getRecentSubSyncs, triggerSubSyncNow } from "../worker/subSyncWorker.js";
 import { triggerOutreachNow } from "../worker/outreachWorker.js";
 import { getRecentVouchers, triggerVoucherNow } from "../worker/voucherWorker.js";
+import { getRecentTripwires, triggerColdTripwireNow } from "../worker/coldTripwireWorker.js";
 import { getRecentPitchDecisions, turnsSinceLastPitch as ppvTurnsSinceLastPitch } from "../ppv/orchestrator.js";
 import { listRecentAttempts, countUnboughtRecentPitches } from "../db/repos/ppv_attempts.js";
 import { listPurchasesByFan, parseLegacySourceRef } from "../db/repos/purchases.js";
@@ -142,6 +143,13 @@ async function handle(
   // skipping already-bought assets per fan.
   if (method === "GET" && path === "/diag/recent-vouchers") {
     return json(res, 200, { vouchers: getRecentVouchers() });
+  }
+
+  // Recent cold-tripwire fires — the cheap ($3.69) first-dollar PPV blasts to
+  // never-replied lurkers. Inspect caption quality + asset pick + price here
+  // (esp. in dry-run) before flipping COLD_TRIPWIRE_DRY_RUN off.
+  if (method === "GET" && path === "/diag/recent-tripwires") {
+    return json(res, 200, { tripwires: getRecentTripwires() });
   }
 
   // Engagement dashboard — aggregate funnel metrics for the last N hours.
@@ -395,6 +403,10 @@ async function handle(
       outreach_dry_run: env.OUTREACH_DRY_RUN,
       voucher_enabled: env.VOUCHER_ENABLED,
       voucher_dry_run: env.VOUCHER_DRY_RUN,
+      cold_tripwire_enabled: env.COLD_TRIPWIRE_ENABLED,
+      cold_tripwire_dry_run: env.COLD_TRIPWIRE_DRY_RUN,
+      cold_tripwire_price_cents: env.COLD_TRIPWIRE_PRICE_CENTS,
+      cold_tripwire_max_per_tick: env.COLD_TRIPWIRE_MAX_PER_TICK,
       sub_sync_enabled: env.SUB_SYNC_ENABLED,
       // LLM provider visibility — added 2026-06-02 to confirm the OpenRouter
       // swap is actually serving. If openrouter_key_present is false, the
@@ -844,6 +856,24 @@ async function handle(
     if (method === "POST" && path === "/admin/outreach-now") {
       try {
         const result = await triggerOutreachNow();
+        return json(res, 200, result);
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+          stack: err instanceof Error ? err.stack?.slice(0, 1000) : undefined,
+        });
+      }
+    }
+
+    // POST /admin/cold-tripwire-now — force an immediate cold-tripwire pass
+    // across all allowlisted accounts (the cheap first-dollar PPV to
+    // never-replied lurkers). Returns per-account candidate/sent + skip
+    // breakdown. Workflow: set COLD_TRIPWIRE_DRY_RUN=true on Railway, hit this,
+    // inspect /diag/recent-tripwires for caption/price/asset quality + both
+    // personas, then flip dry-run off to go live.
+    if (method === "POST" && path === "/admin/cold-tripwire-now") {
+      try {
+        const result = await triggerColdTripwireNow();
         return json(res, 200, result);
       } catch (err) {
         return json(res, 500, {

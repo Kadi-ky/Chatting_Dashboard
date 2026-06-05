@@ -142,6 +142,21 @@ const envSchema = z.object({
   // bought so each send is fresh.
   VOUCHER_ENABLED: stringBool(false),
   VOUCHER_DRY_RUN: stringBool(true),
+  // COLD TRIPWIRE worker — cheap (~$3.69) priced-PPV mass-unlock aimed at
+  // COLD lurkers (last_inbound_at IS NULL) who the warm-quiet voucher path
+  // deliberately skips. The thesis is "first-dollar / low-friction impulse",
+  // NOT the $50-99 discount frame — a separate worker so the proven voucher
+  // logic is untouched. Default OFF + DRY_RUN ON (logs would-send, no
+  // enqueue) so a dry-run inspection happens before any real blast. Fresh
+  // var names so stale Railway env can't override (SEXTING-enum lesson).
+  COLD_TRIPWIRE_ENABLED: stringBool(false),
+  COLD_TRIPWIRE_DRY_RUN: stringBool(true),
+  // Flat tripwire price in cents (default $3.69). Implied "regular" = 2× for
+  // the "50% off" caption math.
+  COLD_TRIPWIRE_PRICE_CENTS: z.coerce.number().int().positive().default(369),
+  // Per-account per-tick send cap. Tick is 30min; this paces the ~3K-fan
+  // pool into a soft multi-hour drain that stays under OFAPI's rate envelope.
+  COLD_TRIPWIRE_MAX_PER_TICK: z.coerce.number().int().positive().default(40),
   // Soft-resume ramp-up. When set to an ISO timestamp in the future, the
   // per-account token bucket runs at HALF its normal refill rate until that
   // time passes. Use this when un-pausing after a long 429 cooldown to

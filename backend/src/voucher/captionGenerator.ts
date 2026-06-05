@@ -293,6 +293,146 @@ export async function generateVoucherCaption(args: {
   }
 }
 
+/**
+ * Cold-tripwire caption — a SEPARATE, cheaper psychological device from the
+ * $50-99 voucher above. Aimed at COLD lurkers (never replied) where the goal
+ * is the FIRST DOLLAR, not a discount: an impulse-priced (~$3.69) "first
+ * taste / only for my quiet ones" unlock. Reuses the persona prefix + the
+ * exact rejection gates (length / JSON residue / non-Latin / near-dup body /
+ * opener lock) so junk never reaches a fan, but the framing is impulse-first,
+ * not the reluctance-heavy premium voucher pitch.
+ */
+export async function generateTripwireCaption(args: {
+  accountId: string;
+  subscriberId: string;
+  fanExternalId: string;
+  fanDisplayName: string | null;
+  scriptName: string | null;
+  assetDescription: string | null;
+  tripwirePriceCents: number;
+  impliedRegularPriceCents: number;
+  recentTexts: string[];
+}): Promise<string | null> {
+  try {
+    const identity = loadIdentityLayer(args.accountId);
+    const prefix = [
+      `# Identity`,
+      identity,
+      ``,
+      `# Contract (v${CONTRACT_VERSION})`,
+      CONTRACT_LAYER,
+      ``,
+      `# Humanness (v${HUMANNESS_VERSION})`,
+      HUMANNESS_LAYER,
+    ].join("\n");
+
+    const messages: LlmMessage[] = [{ role: "system", content: prefix }];
+
+    const priceDollars = (args.tripwirePriceCents / 100).toFixed(2).replace(/\.00$/, "");
+    const impliedDollars = (args.impliedRegularPriceCents / 100).toFixed(2).replace(/\.00$/, "");
+    const reluctance = pickReluctance(`tripwire:${args.fanExternalId}`);
+
+    messages.push({
+      role: "system",
+      content: [
+        `# Task — COLD TRIPWIRE (cheap first-taste unlock for a quiet lurker)`,
+        ``,
+        `You're sending an UNPROMPTED, cheap priced PPV to a sub who SUBSCRIBED but has NEVER said a word to you. This is a MASS MESSAGE — the caption alone has to make a stranger spend their first dollar. The whole point is LOW FRICTION: it's pocket-change cheap, an easy yes, a way to finally break the ice.`,
+        ``,
+        `## Context`,
+        `- Tripwire price: $${priceDollars} (deliberately tiny — "less than a coffee" cheap)`,
+        `- Implied regular price: $${impliedDollars} (so it reads as ~50% off)`,
+        `- Asset description: ${args.assetDescription || "(no description)"}`,
+        args.scriptName ? `- Script name: ${args.scriptName}` : ``,
+        ``,
+        `## REQUIRED CAPTION STRUCTURE (3 parts, in order, separated by \\n line breaks)`,
+        ``,
+        `1. **HEADER LINE** — bold-feel, cheap-and-sweet, with a price anchor. Examples: "JUST FOR MY QUIET ONES 🦋 $${impliedDollars} → $${priceDollars}", "FIRST TASTE — $${priceDollars}", "$${priceDollars} TO FINALLY SEE ME 🍒". Bold ALL CAPS or unicode bold. ONE line, 3-7 words + optional emoji.`,
+        ``,
+        `2. **HOOK BODY** — 1-2 sentences in YOUR character voice. Call out that you noticed them lurking and made this their easy first hello. Reference what's in the asset (YOUR words, don't recite). Make it feel low-stakes and inviting — NOT a hard sell.`,
+        `   FORBIDDEN PHRASES (overused clones): "picked u", "picked u cuz", "for fans like u", "thinkin of fans like u", "just for u tonight".`,
+        ``,
+        `3. **REASON IT'S THIS CHEAP** — exactly ONE short beat that justifies the tiny price so it reads as a genuine deal, not desperation. Use this vibe: "${reluctance}" — OR frame it as "wanted to make it impossible to say no" / "ur first one's basically free". Then ONE specific curiosity tease ("pic #${2 + (Math.abs(args.fanExternalId.length) % 7)} is the one"). Keep it confident.`,
+        ``,
+        `## EMOJI CODE`,
+        `- 🍒 = tits / chest · 🍑 = ass / booty · 🦋 = "the drop" (use sparingly) · 😳/🥵/🥹 = max ONE reaction emoji`,
+        ``,
+        `## CRITICAL RULES`,
+        `- Total caption: 25-45 words. Punchy.`,
+        `- HEADER on its own first line (literal \\n between the 3 parts).`,
+        `- The header may show $X → $Y. DO NOT state any other dollar amount in the body — the PPV bubble renders the real price.`,
+        `- DO NOT say "voucher" / "code" / "redemption" — this IS the drop.`,
+        `- Stay in CHARACTER (persona above — Khlo / Ari).`,
+        `- No prior-convo references — they've never spoken to you.`,
+        `- Confident and warm, never begging or "please".`,
+        ``,
+        ...(args.recentTexts.length > 0
+          ? [
+              `RECENT TRIPWIRE SENDS (last ~12 across all fans on this account) — DO NOT repeat the header, body shape, or tease of these. Each fan should feel they got a unique drop:`,
+              ...args.recentTexts.slice(0, 10).map((t, i) => `  ${i + 1}. ${t}`),
+              ``,
+            ]
+          : []),
+        ...(args.fanDisplayName
+          ? [`Fan's display name: "${args.fanDisplayName}". Optional: address by name once if it's a real first name (not username with digits).`, ``]
+          : []),
+        `OUTPUT FORMAT — STRICT JSON. Return a single JSON object exactly like:`,
+        `  {"caption": "the full caption with newlines between each of the 3 parts"}`,
+        `Rules: no markdown fences, no prose around the JSON, no placeholder values.`,
+      ].filter(Boolean).join("\n"),
+    });
+
+    const result = await routeLlmCall({
+      task: "CHAT_GENERATE",
+      messages,
+      maxTokens: 400,
+      temperature: 0.95,
+      responseFormat: "json_object",
+      meta: {
+        subscriberId: args.subscriberId,
+        accountId: args.accountId,
+        kind: "tripwire_send",
+      },
+    });
+
+    const text = extractCaption(result.content);
+    // Same rejection gates as voucher — tripwire captions are shorter, so
+    // tighten the upper bound to 400 (a tripwire running 800 chars = junk).
+    if (!text || text.length < 15 || text.length > 400) {
+      logger.warn(
+        { rawLength: result.content.length, extractedLength: text.length },
+        "tripwire caption rejected — too short/long or unparseable",
+      );
+      return null;
+    }
+    if (/["'`}\]]\s*[°•]?\s*[}\]]\s*$/.test(text) || /[{}]\s*$/.test(text.trim())) {
+      logger.warn({ accountId: args.accountId, caption: text }, "tripwire caption rejected — JSON-residue artifact");
+      return null;
+    }
+    if (/[　-鿿぀-ヿ가-힯Ѐ-ӿ؀-ۿ]/.test(text)) {
+      logger.warn({ accountId: args.accountId, caption: text }, "tripwire caption rejected — non-Latin script injected");
+      return null;
+    }
+    const norm = normalizeVoucherBody(text);
+    if (norm.length >= 8 && args.recentTexts.some((t) => normalizeVoucherBody(t) === norm)) {
+      logger.warn({ accountId: args.accountId, caption: text }, "tripwire caption rejected — near-duplicate body of recent send");
+      return null;
+    }
+    const opener = norm.split(" ").slice(0, 4).join(" ");
+    if (opener.length >= 6) {
+      const sameOpenerCount = args.recentTexts.filter((t) => normalizeVoucherBody(t).startsWith(opener)).length;
+      if (sameOpenerCount >= 2) {
+        logger.warn({ accountId: args.accountId, caption: text, opener, sameOpenerCount }, "tripwire caption rejected — opener template repeats");
+        return null;
+      }
+    }
+    return text;
+  } catch (err) {
+    logger.warn({ err: err instanceof Error ? err.message : err }, "tripwire caption generation failed");
+    return null;
+  }
+}
+
 function extractCaption(raw: string): string {
   const trimmed = raw.trim();
   try {

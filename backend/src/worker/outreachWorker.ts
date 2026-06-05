@@ -65,14 +65,25 @@ const TICK_MS = 30 * 60_000;             // 30 min — outreach is much rarer th
 const STARTUP_DELAY_MS = 60_000;         // 1 min cold-start so DB connections settle
 
 const COLD_FIRST_DELAY_MS = 24 * 3600_000;       // first cold attempt only after 24h sub age
-const COLD_INTERVAL_MS = 5 * 24 * 3600_000;      // 5 days between cold attempts
-// Lowered 3 -> 2 on 2026-05-27 after cold-outreach effectiveness audit:
-// step-3 was the most templated tier (4× duplicate "hope ur good, dms
-// open whenever" verbatim across different fans) AND produced 0 replies
-// in the sample window. Steps 1+2 still allowed; step-3 retired so the
-// dedup pool isn't depleted by a third opener sourced from the same
-// pre-baked template bank.
-const COLD_MAX_ATTEMPTS = 2;
+const COLD_INTERVAL_MS = 4 * 24 * 3600_000;      // 4 days between cold attempts (4 steps span ~16d)
+// History: lowered 3 -> 2 on 2026-05-27 because the OLD step-3 was a
+// pre-baked template ("hope ur good, dms open whenever") duplicated
+// verbatim across fans with 0 replies. Raised 2 -> 4 on 2026-06-05 as
+// part of the dormant-base activation push: the prior cap meant a lurker
+// got exactly 2 pokes then was frozen forever, which is the root cause of
+// ~3,300 fans dying in WARMUP. The duplication problem is solved
+// differently now — per-step ANGLE BANDS (see objectiveByKind below) force
+// each step to pull from a DIFFERENT set of hooks, so step 3/4 aren't
+// recycled openers from the same bank. Combined with the 60-day recycle
+// (runColdPass), no fan is abandoned permanently.
+const COLD_MAX_ATTEMPTS = 4;
+// After a fan exhausts all cold attempts, freeze them — but only until
+// this window passes, then reset coldCount for ONE more fresh ladder.
+// Capped by RECYCLE_MAX so we never harass: at most RECYCLE_MAX recycles
+// ever, i.e. a hard lifetime ceiling of COLD_MAX_ATTEMPTS*(RECYCLE_MAX+1)
+// cold touches spread over many months.
+const COLD_RECYCLE_AFTER_MS = 60 * 24 * 3600_000; // 60 days frozen before a recycle
+const RECYCLE_MAX = 2;                            // ≤2 recycles per fan, ever
 
 const REACT_FIRST_DELAY_MS = 14 * 24 * 3600_000; // first reactivation after 14 days silent
 const REACT_INTERVAL_MS = 16 * 24 * 3600_000;    // ~30 day total at attempt 2
@@ -271,6 +282,10 @@ interface OutreachState {
   lastColdAt?: string;
   reactCount?: number;
   lastReactAt?: string;
+  // How many times this fan's cold ladder has been recycled (reset to 0
+  // after COLD_RECYCLE_AFTER_MS of silence). Capped at RECYCLE_MAX so a
+  // permanent lurker is never harassed indefinitely.
+  recycleCount?: number;
 }
 
 function readOutreachState(stateCtx: unknown): OutreachState {
@@ -406,7 +421,18 @@ async function generateOutreachText(args: {
           ? `STEP 1 vibe: light, playful, "i see u lurking 👀 / what got u in here". Curious, warm, not begging. ONE line, max 18 words.`
           : args.step === 1
             ? `STEP 2 vibe: a touch more deliberate. Acknowledge the silence, invite low-stakes reply. "still shy on me babe / lemme know what u like". ONE line, max 22 words.`
-            : `STEP 3 (final) vibe: warm, no-pressure close. "last check-in babe, dms open whenever". Leave the door open without begging. ONE line, max 25 words.`,
+            : args.step === 2
+              ? `STEP 3 vibe: change the pace from steps 1-2. Be more personal/direct — single specific question or a confident claim. "bet ur the type that watches and never says hi 😏". ONE line, max 22 words.`
+              : `STEP 4 (final) vibe: warm, no-pressure close. "last check-in babe, dms open whenever". Leave the door open without begging. ONE line, max 25 words.`,
+        // ANGLE BAND — each step pulls from a DIFFERENT slice of the angle
+        // list below so a 4-step ladder never recycles the same hook shape.
+        args.step === 0
+          ? `STEP 1 — pick your hook from angles 1-4 (hunger / possessive / taunt / curiosity). Hold the scarcity + callback angles for later steps.`
+          : args.step === 1
+            ? `STEP 2 — pick from angles 5-8 (confident invite / casual-with-edge / observation / compliment-bait). Different SHAPE than step 1.`
+            : args.step === 2
+              ? `STEP 3 — pick from angles 9-12 (insider tease / challenge / scarcity / personal callback). Go more personal/pointed.`
+              : `STEP 4 — soft close, any angle that leaves the door open warmly. Do NOT reuse the opener shape of steps 1-3.`,
       ],
       react: [
         `STEP ${args.step + 1} of ${REACT_MAX_ATTEMPTS} — REACTIVATION. This fan chatted with you before but went silent 14+ days ago. Pull from the past convo above.`,
@@ -456,7 +482,11 @@ async function generateOutreachText(args: {
               `  6. Casual hi with edge ("hey, dont be shy on me")`,
               `  7. Observation ("u been quiet — that mean trouble?")`,
               `  8. Compliment-bait ("u got my attention, now what")`,
-              `Each fan deserves a UNIQUE-feeling message. If the recent sends are all aggressive, try a softer one (vice versa). The persona character holds — just rotate the angle.`,
+              `  9. Insider tease ("ur in on something most of them dont get to see")`,
+              `  10. Challenge ("bet u cant handle what id actually send u")`,
+              `  11. Scarcity play ("i dont keep quiet ones around long babe")`,
+              `  12. Personal callback ("somethin about u made me stop scrolling")`,
+              `Each fan deserves a UNIQUE-feeling message. Honor the per-step ANGLE BAND above (step 1 → angles 1-4, step 2 → 5-8, step 3 → 9-12). If the recent sends are all aggressive, try a softer one (vice versa). The persona character holds — just rotate the angle.`,
               ``,
             ]
           : []),
@@ -761,9 +791,22 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
         .where("id", "=", convId)
         .executeTakeFirst();
       const state = readOutreachState(convRow?.state_ctx ?? null);
-      const coldCount = state.coldCount ?? 0;
-      if (coldCount >= COLD_MAX_ATTEMPTS) continue;
-      if (state.lastColdAt) {
+      let coldCount = state.coldCount ?? 0;
+      let recycleCount = state.recycleCount ?? 0;
+      // Recycle: a fully-exhausted lurker is frozen, but only until
+      // COLD_RECYCLE_AFTER_MS passes — then reset the ladder for ONE more
+      // pass (up to RECYCLE_MAX times ever). This is the fix for the fans
+      // that used to die in WARMUP after 2 pokes and were never touched
+      // again. A real reply still clears everything via clearOutreachState.
+      if (coldCount >= COLD_MAX_ATTEMPTS) {
+        if (recycleCount >= RECYCLE_MAX) continue; // lifetime ceiling — leave them be
+        const sinceLast = state.lastColdAt
+          ? Date.now() - new Date(state.lastColdAt).getTime()
+          : COLD_RECYCLE_AFTER_MS; // no timestamp → eligible immediately
+        if (sinceLast < COLD_RECYCLE_AFTER_MS) continue; // still in the freeze window
+        coldCount = 0; // fresh ladder
+        recycleCount += 1;
+      } else if (state.lastColdAt) {
         const sinceLast = Date.now() - new Date(state.lastColdAt).getTime();
         if (sinceLast < COLD_INTERVAL_MS) continue;
       }
@@ -783,6 +826,7 @@ async function runColdPass(): Promise<{ candidates: number; sent: number }> {
         ...state,
         coldCount: coldCount + 1,
         lastColdAt: new Date().toISOString(),
+        recycleCount,
       });
       sent++;
     } catch (err) {
