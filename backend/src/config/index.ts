@@ -157,6 +157,21 @@ const envSchema = z.object({
   // Per-account per-tick send cap. Tick is 30min; this paces the ~3K-fan
   // pool into a soft multi-hour drain that stays under OFAPI's rate envelope.
   COLD_TRIPWIRE_MAX_PER_TICK: z.coerce.number().int().positive().default(40),
+  // When true, the cold tripwire sends a real VAULT PHOTO (sourced live from
+  // OnlyFansAPI's media vault) instead of a curated script asset. A single
+  // cheap photo is the ideal impulse first-buy. Default OFF — flip on to A/B
+  // images vs scripts for the cold blast.
+  COLD_TRIPWIRE_USE_VAULT_IMAGES: stringBool(false),
+  // IMAGE PPV worker — sells individual vault photos to WARM-but-quiet fans
+  // (engaged before, gone quiet) as a standalone path, separate from the cold
+  // tripwire. Same safety shape as voucher: default OFF + DRY_RUN ON.
+  IMAGE_PPV_ENABLED: stringBool(false),
+  IMAGE_PPV_DRY_RUN: stringBool(true),
+  // Price for a single-photo PPV in cents (default $5.99 — warm fans bear a
+  // bit more than the $3.69 cold tripwire). Implied "regular" = 2× for the
+  // "50% off" caption math.
+  IMAGE_PPV_PRICE_CENTS: z.coerce.number().int().positive().default(599),
+  IMAGE_PPV_MAX_PER_TICK: z.coerce.number().int().positive().default(25),
   // Soft-resume ramp-up. When set to an ISO timestamp in the future, the
   // per-account token bucket runs at HALF its normal refill rate until that
   // time passes. Use this when un-pausing after a long 429 cooldown to

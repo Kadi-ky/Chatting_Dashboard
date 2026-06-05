@@ -29,6 +29,8 @@ import { getRecentSubSyncs, triggerSubSyncNow } from "../worker/subSyncWorker.js
 import { triggerOutreachNow } from "../worker/outreachWorker.js";
 import { getRecentVouchers, triggerVoucherNow } from "../worker/voucherWorker.js";
 import { getRecentTripwires, triggerColdTripwireNow } from "../worker/coldTripwireWorker.js";
+import { getRecentImagePpv, triggerImagePpvNow } from "../worker/imagePpvWorker.js";
+import { getVaultPhotoIds, refreshVaultPhotoCache } from "../vault/vaultImages.js";
 import { getRecentPitchDecisions, turnsSinceLastPitch as ppvTurnsSinceLastPitch } from "../ppv/orchestrator.js";
 import { listRecentAttempts, countUnboughtRecentPitches } from "../db/repos/ppv_attempts.js";
 import { listPurchasesByFan, parseLegacySourceRef } from "../db/repos/purchases.js";
@@ -150,6 +152,29 @@ async function handle(
   // (esp. in dry-run) before flipping COLD_TRIPWIRE_DRY_RUN off.
   if (method === "GET" && path === "/diag/recent-tripwires") {
     return json(res, 200, { tripwires: getRecentTripwires() });
+  }
+
+  // Recent image-PPV fires — single vault photos sold to warm-but-quiet fans.
+  if (method === "GET" && path === "/diag/recent-image-ppv") {
+    return json(res, 200, { imagePpv: getRecentImagePpv() });
+  }
+
+  // Vault photo inventory for an account: GET /diag/vault-photos?account=acct_xxx
+  // Returns the cached sellable photo-id count + a sample. ?refresh=1 forces a
+  // live re-fetch from OnlyFansAPI. Use to confirm the vault source before a blast.
+  if (method === "GET" && path === "/diag/vault-photos") {
+    try {
+      const url = new URL(req.url ?? "", `http://${req.headers.host ?? "localhost"}`);
+      const acct = url.searchParams.get("account");
+      if (!acct) return json(res, 400, { error: "account query param required (acct_...)" });
+      const count = url.searchParams.get("refresh") === "1"
+        ? await refreshVaultPhotoCache(acct)
+        : (await getVaultPhotoIds(acct)).length;
+      const sample = (await getVaultPhotoIds(acct)).slice(0, 10);
+      return json(res, 200, { account: acct, photoCount: count, sampleIds: sample });
+    } catch (err) {
+      return json(res, 500, { error: err instanceof Error ? err.message : String(err) });
+    }
   }
 
   // Engagement dashboard — aggregate funnel metrics for the last N hours.
@@ -407,6 +432,11 @@ async function handle(
       cold_tripwire_dry_run: env.COLD_TRIPWIRE_DRY_RUN,
       cold_tripwire_price_cents: env.COLD_TRIPWIRE_PRICE_CENTS,
       cold_tripwire_max_per_tick: env.COLD_TRIPWIRE_MAX_PER_TICK,
+      cold_tripwire_use_vault_images: env.COLD_TRIPWIRE_USE_VAULT_IMAGES,
+      image_ppv_enabled: env.IMAGE_PPV_ENABLED,
+      image_ppv_dry_run: env.IMAGE_PPV_DRY_RUN,
+      image_ppv_price_cents: env.IMAGE_PPV_PRICE_CENTS,
+      image_ppv_max_per_tick: env.IMAGE_PPV_MAX_PER_TICK,
       sub_sync_enabled: env.SUB_SYNC_ENABLED,
       // LLM provider visibility — added 2026-06-02 to confirm the OpenRouter
       // swap is actually serving. If openrouter_key_present is false, the
@@ -874,6 +904,22 @@ async function handle(
     if (method === "POST" && path === "/admin/cold-tripwire-now") {
       try {
         const result = await triggerColdTripwireNow();
+        return json(res, 200, result);
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+          stack: err instanceof Error ? err.stack?.slice(0, 1000) : undefined,
+        });
+      }
+    }
+
+    // POST /admin/image-ppv-now — force an immediate image-PPV pass (single
+    // vault photos to warm-but-quiet fans). Same dry-run workflow as the
+    // tripwire: set IMAGE_PPV_DRY_RUN=true, hit this, inspect
+    // /diag/recent-image-ppv, then flip dry-run off.
+    if (method === "POST" && path === "/admin/image-ppv-now") {
+      try {
+        const result = await triggerImagePpvNow();
         return json(res, 200, result);
       } catch (err) {
         return json(res, 500, {

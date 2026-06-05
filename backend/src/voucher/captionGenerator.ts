@@ -464,6 +464,126 @@ function scrubTripwireArtifacts(input: string): string {
   return out.trim();
 }
 
+/**
+ * Caption for a single VAULT IMAGE PPV. Unlike the script-asset paths there's
+ * no asset description (a vault photo is just an id), so the caption sells the
+ * vibe of "one hot pic" rather than a described clip. Two modes:
+ *   - "cold": a never-replied lurker — first-dollar / "first taste" framing.
+ *   - "warm": an engaged fan gone quiet — familiar, "thought of you" framing.
+ * Reuses the same scrub + rejection gates as the tripwire caption.
+ */
+export async function generateImagePpvCaption(args: {
+  accountId: string;
+  subscriberId: string;
+  fanExternalId: string;
+  fanDisplayName: string | null;
+  priceCents: number;
+  impliedRegularPriceCents: number;
+  mode: "cold" | "warm";
+  recentTexts: string[];
+}): Promise<string | null> {
+  try {
+    const identity = loadIdentityLayer(args.accountId);
+    const prefix = [
+      `# Identity`,
+      identity,
+      ``,
+      `# Contract (v${CONTRACT_VERSION})`,
+      CONTRACT_LAYER,
+      ``,
+      `# Humanness (v${HUMANNESS_VERSION})`,
+      HUMANNESS_LAYER,
+    ].join("\n");
+
+    const messages: LlmMessage[] = [{ role: "system", content: prefix }];
+
+    const priceDollars = (args.priceCents / 100).toFixed(2).replace(/\.00$/, "");
+    const impliedDollars = (args.impliedRegularPriceCents / 100).toFixed(2).replace(/\.00$/, "");
+    const reluctance = pickReluctance(`image:${args.mode}:${args.fanExternalId}`);
+    const cold = args.mode === "cold";
+
+    messages.push({
+      role: "system",
+      content: [
+        `# Task — SINGLE IMAGE PPV (${cold ? "cold lurker" : "warm but quiet fan"})`,
+        ``,
+        cold
+          ? `You're sending an UNPROMPTED, cheap priced PHOTO to a sub who SUBSCRIBED but has NEVER messaged you. Low-friction first taste — an easy first dollar to break the ice.`
+          : `You're sending an UNPROMPTED priced PHOTO to a fan who's chatted before but gone quiet. Warm, familiar "been thinking of u" energy — re-open the conversation with one hot pic.`,
+        `It is ONE photo (not a clip, not a bundle) — sell the single image: a glimpse, a tease, one frame they'll want.`,
+        ``,
+        `## Context`,
+        `- Price: $${priceDollars}${cold ? " (deliberately tiny — easy yes)" : ""}`,
+        `- Implied regular price: $${impliedDollars} (reads as ~50% off)`,
+        ``,
+        `## REQUIRED CAPTION STRUCTURE (3 parts, \\n line breaks between)`,
+        `1. **HEADER** — bold-feel, with the price anchor. e.g. "${cold ? "FIRST PIC" : "JUST FOR U"} 🍒 $${impliedDollars} → $${priceDollars}". ONE line, 3-7 words + optional emoji.`,
+        `2. **HOOK** — 1-2 sentences in YOUR voice selling this ONE pic. ${cold ? "Note you saw them lurking; make it their easy first hello." : "Reference that it's been a minute; make them feel missed."} Tease what the photo shows in YOUR words — DON'T claim it's a video.`,
+        `   FORBIDDEN: "picked u", "for fans like u", "just for u tonight".`,
+        `3. **NUDGE** — ONE short beat: "${reluctance}" OR ${cold ? `"ur first one's basically free"` : `"missed talkin to u"`} + one curiosity line about the pic ("this is the one i almost didn't post 😳"). Confident, no begging.`,
+        ``,
+        `## RULES`,
+        `- Total: 20-40 words. Punchy.`,
+        `- HEADER on its own first line (literal \\n between parts).`,
+        `- It's a PHOTO — never imply video/clip length.`,
+        `- Header may show $X → $Y; no other dollar amount in the body.`,
+        `- No "voucher"/"code"/"redemption" — this IS the pic.`,
+        `- Stay in CHARACTER (persona above — Khlo / Ari).`,
+        cold ? `- No prior-convo references — they've never spoken to u.` : `- Light callback is fine; don't invent specifics you can't know.`,
+        ``,
+        ...(args.recentTexts.length > 0
+          ? [
+              `RECENT IMAGE SENDS (last ~12 on this account) — do NOT repeat the header, shape, or tease:`,
+              ...args.recentTexts.slice(0, 10).map((t, i) => `  ${i + 1}. ${t}`),
+              ``,
+            ]
+          : []),
+        ...(args.fanDisplayName
+          ? [`Fan's display name: "${args.fanDisplayName}". Optional: address by name once if it's a real first name (not a handle with digits).`, ``]
+          : []),
+        `OUTPUT FORMAT — STRICT JSON: {"caption": "the full caption with newlines between the 3 parts"}`,
+        `No markdown fences, no prose around the JSON, no placeholder values.`,
+      ].filter(Boolean).join("\n"),
+    });
+
+    const result = await routeLlmCall({
+      task: "CHAT_GENERATE",
+      messages,
+      maxTokens: 350,
+      temperature: 0.95,
+      responseFormat: "json_object",
+      meta: { subscriberId: args.subscriberId, accountId: args.accountId, kind: "image_ppv_send" },
+    });
+
+    const text = scrubTripwireArtifacts(extractCaption(result.content));
+    if (/\{[a-z_]{2,}\}/i.test(text)) {
+      logger.warn({ accountId: args.accountId, caption: text }, "image caption rejected — leaked placeholder");
+      return null;
+    }
+    if (!text || text.length < 12 || text.length > 360) {
+      logger.warn({ rawLength: result.content.length, extractedLength: text.length }, "image caption rejected — too short/long");
+      return null;
+    }
+    if (/["'`}\]]\s*[°•]?\s*[}\]]\s*$/.test(text) || /[{}]\s*$/.test(text.trim())) {
+      logger.warn({ accountId: args.accountId, caption: text }, "image caption rejected — JSON residue");
+      return null;
+    }
+    if (/[　-鿿぀-ヿ가-힯Ѐ-ӿ؀-ۿ]/.test(text)) {
+      logger.warn({ accountId: args.accountId, caption: text }, "image caption rejected — non-Latin script");
+      return null;
+    }
+    const norm = normalizeVoucherBody(text);
+    if (norm.length >= 8 && args.recentTexts.some((t) => normalizeVoucherBody(t) === norm)) {
+      logger.warn({ accountId: args.accountId, caption: text }, "image caption rejected — near-duplicate body");
+      return null;
+    }
+    return text;
+  } catch (err) {
+    logger.warn({ err: err instanceof Error ? err.message : err }, "image caption generation failed");
+    return null;
+  }
+}
+
 function extractCaption(raw: string): string {
   const trimmed = raw.trim();
   try {

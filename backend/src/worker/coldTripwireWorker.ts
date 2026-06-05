@@ -10,7 +10,8 @@ import { isFanUnreachable } from "../platform/impl/http/unreachable.js";
 import { isConversationDisengaged } from "./disengagement.js";
 import { isConversationBotFlagged } from "./botDetection.js";
 import { pickVoucherAsset } from "../voucher/picker.js";
-import { generateTripwireCaption, RECENT_VOUCHER_RING_MAX, RECENT_VOUCHER_TTL_SEC } from "../voucher/captionGenerator.js";
+import { generateTripwireCaption, generateImagePpvCaption, RECENT_VOUCHER_RING_MAX, RECENT_VOUCHER_TTL_SEC } from "../voucher/captionGenerator.js";
+import { pickVaultImageForFan, recordVaultImageSent } from "../vault/vaultImages.js";
 
 /**
  * Cold-tripwire mass-unlock worker. Part of the dormant-base activation push
@@ -111,6 +112,7 @@ interface RecentTripwire {
   tripwirePriceCents: number;
   caption: string;
   dryRun: boolean;
+  vaultImageId?: string;
 }
 const RECENT_TRIPWIRES: RecentTripwire[] = [];
 const RECENT_TRIPWIRES_MAX = 50;
@@ -242,22 +244,12 @@ async function runForAccount(account: {
         continue;
       }
 
-      // Pick an asset the fan hasn't bought — picker prefers untouched rung-1
-      // scripts, which is exactly the cheap teaser a tripwire wants.
-      const pick = await pickVoucherAsset({
-        fanExternalId: row.fan_external_id,
-        creatorUuid: account.creatorUuid,
-      });
-      if (!pick) {
-        result.skippedNoAsset++;
-        continue;
-      }
-
-      // Ensure conversation + disengagement guards (a cold fan can still have
-      // sent a one-off "stop"/"broke" that set last_inbound_at... actually no
-      // — last_inbound_at IS NULL means zero inbounds — but we keep the full
-      // guard stack anyway for the sticky-flag + bot-flag + objection cases
-      // that can be set out-of-band).
+      // Ensure conversation + disengagement guards FIRST (before asset
+      // selection) — vault-image dedup is keyed on convId, and skipping a
+      // disengaged fan before the asset/caption work is cheaper anyway.
+      // A cold fan has last_inbound_at IS NULL (zero inbounds) so the
+      // keyword scan rarely fires, but the sticky-flag / bot-flag / objection
+      // cooldown can be set out-of-band, so keep the full guard stack.
       const { id: convId } = await ensureConversation({
         subscriberId: row.subscriber_id,
         accountId: account.id,
@@ -285,19 +277,65 @@ async function runForAccount(account: {
       // Flat tripwire price (NOT the $50-99 voucher tier function).
       const tripwirePriceCents = env.COLD_TRIPWIRE_PRICE_CENTS;
       const impliedRegularCents = tripwirePriceCents * 2; // for "50% off" math
-
       const recentTexts = await loadRecentTripwireTexts(account.id);
-      const caption = await generateTripwireCaption({
-        accountId: account.id,
-        subscriberId: row.subscriber_id,
-        fanExternalId: row.fan_external_id,
-        fanDisplayName: realFirstName(row.display_name, row.fan_external_id),
-        scriptName: pick.scriptName,
-        assetDescription: pick.description,
-        tripwirePriceCents,
-        impliedRegularPriceCents: impliedRegularCents,
-        recentTexts,
-      });
+
+      // Asset: either a live VAULT PHOTO (when the flag is on) or a curated
+      // script asset. Vault image = ideal cheap impulse buy; needs no asset
+      // description (the image caption sells the single pic). diag* fields
+      // describe the asset for the recent-fires ring.
+      let mediaRef: string;
+      let assetIdForJob: string;
+      let caption: string | null;
+      let diagScriptNumber = 0;
+      let diagRung = 0;
+      let diagBasePrice = 0;
+      let isVaultImage = false;
+
+      if (env.COLD_TRIPWIRE_USE_VAULT_IMAGES) {
+        const imageId = await pickVaultImageForFan(platformAccountId, convId);
+        if (!imageId) {
+          result.skippedNoAsset++;
+          continue;
+        }
+        isVaultImage = true;
+        mediaRef = imageId;
+        assetIdForJob = `vault:${imageId}`;
+        caption = await generateImagePpvCaption({
+          accountId: account.id,
+          subscriberId: row.subscriber_id,
+          fanExternalId: row.fan_external_id,
+          fanDisplayName: realFirstName(row.display_name, row.fan_external_id),
+          priceCents: tripwirePriceCents,
+          impliedRegularPriceCents: impliedRegularCents,
+          mode: "cold",
+          recentTexts,
+        });
+      } else {
+        const pick = await pickVoucherAsset({
+          fanExternalId: row.fan_external_id,
+          creatorUuid: account.creatorUuid,
+        });
+        if (!pick) {
+          result.skippedNoAsset++;
+          continue;
+        }
+        mediaRef = pick.mediaId;
+        assetIdForJob = pick.scriptId;
+        diagScriptNumber = pick.scriptNumber;
+        diagRung = pick.rung;
+        diagBasePrice = pick.basePriceCents;
+        caption = await generateTripwireCaption({
+          accountId: account.id,
+          subscriberId: row.subscriber_id,
+          fanExternalId: row.fan_external_id,
+          fanDisplayName: realFirstName(row.display_name, row.fan_external_id),
+          scriptName: pick.scriptName,
+          assetDescription: pick.description,
+          tripwirePriceCents,
+          impliedRegularPriceCents: impliedRegularCents,
+          recentTexts,
+        });
+      }
       if (!caption) {
         result.skippedNoCaption++;
         continue;
@@ -313,12 +351,13 @@ async function runForAccount(account: {
         at: new Date().toISOString(),
         conversationId: convId,
         fanExternalId: row.fan_external_id,
-        scriptNumber: pick.scriptNumber,
-        rung: pick.rung,
-        basePriceCents: pick.basePriceCents,
+        scriptNumber: diagScriptNumber,
+        rung: diagRung,
+        basePriceCents: diagBasePrice,
         tripwirePriceCents,
         caption,
         dryRun: dryRunEffective,
+        ...(isVaultImage ? { vaultImageId: mediaRef } : {}),
       };
       RECENT_TRIPWIRES.unshift(entry);
       if (RECENT_TRIPWIRES.length > RECENT_TRIPWIRES_MAX) RECENT_TRIPWIRES.length = RECENT_TRIPWIRES_MAX;
@@ -336,7 +375,7 @@ async function runForAccount(account: {
           conversationId: convId,
           text: caption,
           kind: "ppv",
-          attachments: [{ assetRef: pick.mediaId, priceCents: tripwirePriceCents }],
+          attachments: [{ assetRef: mediaRef, priceCents: tripwirePriceCents }],
         });
         await outboundQueue().add(
           "tripwire",
@@ -349,8 +388,8 @@ async function runForAccount(account: {
             messageId,
             text: caption,
             ppv: {
-              assetId: pick.scriptId,
-              assetRef: pick.mediaId,
+              assetId: assetIdForJob,
+              assetRef: mediaRef,
               priceCents: tripwirePriceCents,
             },
             bubbleIndex: 0,
@@ -359,6 +398,7 @@ async function runForAccount(account: {
           { jobId: `tripwire-${messageId}` },
         );
         await recordRecentTripwireText(account.id, caption);
+        if (isVaultImage) await recordVaultImageSent(convId, mediaRef);
         logger.info(entry, "tripwire enqueued");
         result.sent++;
       } catch (enqErr) {
