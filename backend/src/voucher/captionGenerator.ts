@@ -395,7 +395,15 @@ export async function generateTripwireCaption(args: {
       },
     });
 
-    const text = extractCaption(result.content);
+    const text = scrubTripwireArtifacts(extractCaption(result.content));
+    // Placeholder-residue reject: the prompt's structural tokens ({header},
+    // {body}, {final}) occasionally leak into the output verbatim. scrub
+    // strips known ones; if any {label} survives, the caption is malformed —
+    // reject rather than ship "{body}finally got u..." to a fan.
+    if (/\{[a-z_]{2,}\}/i.test(text)) {
+      logger.warn({ accountId: args.accountId, caption: text }, "tripwire caption rejected — leaked structural placeholder");
+      return null;
+    }
     // Same rejection gates as voucher — tripwire captions are shorter, so
     // tighten the upper bound to 400 (a tripwire running 800 chars = junk).
     if (!text || text.length < 15 || text.length > 400) {
@@ -431,6 +439,29 @@ export async function generateTripwireCaption(args: {
     logger.warn({ err: err instanceof Error ? err.message : err }, "tripwire caption generation failed");
     return null;
   }
+}
+
+/**
+ * Scrub tripwire captions of the artifacts Hermes leaks that the JSON/
+ * non-Latin gates miss — caught in the 2026-06-05 dry-run of 80 captions:
+ *   - literal "\n" (backslash-n) instead of a real line break
+ *   - markdown bold/italic asterisks ("**$3.69**")
+ *   - structural placeholders bleeding from the prompt ("{body}finally...")
+ *   - a trailing standalone "UNLOCK" / "UNSEND" label
+ *   - stray off-palette symbols (🍴, "‥") and 3+ blank lines
+ * Pure string-in/string-out; the caller then re-validates (and rejects on
+ * any surviving {placeholder}).
+ */
+function scrubTripwireArtifacts(input: string): string {
+  let out = input;
+  out = out.replace(/\\n/g, "\n");                       // literal backslash-n → newline
+  out = out.replace(/\{\s*(?:header|body|final|hook|tease|caption|reluctance|step\s*\d*)\s*\}/gi, ""); // structural placeholders
+  out = out.replace(/\*\*([^*]+)\*\*/g, "$1");           // **bold** → bold
+  out = out.replace(/\*([^*\n]+)\*/g, "$1");             // *italic* → italic
+  out = out.replace(/\n\s*(?:UNLOCK|UNSEND|CAPTION|HEADER|BODY)\s*$/i, ""); // trailing scaffolding label
+  out = out.replace(/[🍴‥]/gu, "");                       // off-palette / stray symbols
+  out = out.replace(/\n{3,}/g, "\n\n");                  // collapse blank-line runs
+  return out.trim();
 }
 
 function extractCaption(raw: string): string {

@@ -136,6 +136,24 @@ async function allowlistedAccounts(): Promise<{ id: string; creatorUuid: string 
     .map((r) => ({ id: r.id, creatorUuid: r.creator_uuid as string }));
 }
 
+/**
+ * Only pass a display name into the caption if it's plausibly a real first
+ * name. The 2026-06-05 dry-run showed Hermes happily addressing fans as
+ * "u467803395" / handles-with-digits when handed garbage display names.
+ * Filter anything with digits, the literal external_id, or implausible
+ * length — a wrong-but-name-shaped value is acceptable; a numeric handle is
+ * jarring. Returns null to let the caption skip the name entirely.
+ */
+function realFirstName(name: string | null, externalId: string): string | null {
+  if (!name) return null;
+  const n = name.trim();
+  if (n.length < 2 || n.length > 14) return null;
+  if (/\d/.test(n)) return null;                    // names with digits = handles
+  if (!/^[\p{L}][\p{L}\s'’-]*$/u.test(n)) return null; // letters/space/apostrophe/hyphen only
+  if (n.toLowerCase() === externalId.toLowerCase()) return null;
+  return n;
+}
+
 async function fanIsDisengaging(conversationId: string | null): Promise<boolean> {
   if (!conversationId) return false;
   const recent = await db
@@ -273,7 +291,7 @@ async function runForAccount(account: {
         accountId: account.id,
         subscriberId: row.subscriber_id,
         fanExternalId: row.fan_external_id,
-        fanDisplayName: row.display_name,
+        fanDisplayName: realFirstName(row.display_name, row.fan_external_id),
         scriptName: pick.scriptName,
         assetDescription: pick.description,
         tripwirePriceCents,
