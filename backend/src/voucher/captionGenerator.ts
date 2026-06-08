@@ -456,10 +456,19 @@ function scrubTripwireArtifacts(input: string): string {
   let out = input;
   out = out.replace(/\\n/g, "\n");                       // literal backslash-n → newline
   out = out.replace(/\{\s*(?:header|body|final|hook|tease|caption|reluctance|step\s*\d*)\s*\}/gi, ""); // structural placeholders
+  out = out.replace(/<[^>]*>/g, "");                     // strip HTML fragments (<img src=...>, <a rel=...>)
+  out = out.replace(/\brel\s*=\s*["']?\w+["']?/gi, "");  // residual rel=nofollow etc.
   out = out.replace(/\*\*([^*]+)\*\*/g, "$1");           // **bold** → bold
   out = out.replace(/\*([^*\n]+)\*/g, "$1");             // *italic* → italic
+  out = out.replace(/\*+/g, "");                         // residual/unpaired asterisks
+  // Handle/username leaks the model occasionally weaves in (2026-06-08 dry-run
+  // found "mau5trip_READY2137"). Captions never legitimately contain an
+  // underscore-bearing token or a 4+-digit run glued to letters — strip them.
+  out = out.replace(/\b[\p{L}0-9]*_[\p{L}0-9_]*\b/gu, ""); // any token with an underscore
+  out = out.replace(/\b[\p{L}][\p{L}0-9]*\d{4,}[\p{L}0-9]*\b/gu, ""); // letters glued to 4+ digits
   out = out.replace(/\n\s*(?:UNLOCK|UNSEND|CAPTION|HEADER|BODY)\s*$/i, ""); // trailing scaffolding label
   out = out.replace(/[🍴‥]/gu, "");                       // off-palette / stray symbols
+  out = out.replace(/[ \t]{2,}/g, " ");                  // collapse double-spaces left by removals
   out = out.replace(/\n{3,}/g, "\n\n");                  // collapse blank-line runs
   return out.trim();
 }
