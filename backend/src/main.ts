@@ -10,8 +10,11 @@ import { startConversationWorker } from "./worker/conversationWorker.js";
 import { startTurnWorker } from "./worker/turnWorker.js";
 import { startSendWorker } from "./worker/sendWorker.js";
 import { startBroadcastRunner, type BroadcastRunnerHandle } from "./worker/broadcastWorker.js";
-import { startNudgeWorker, type NudgeWorkerHandle } from "./worker/nudgeWorker.js";
-import { startOutreachWorker, type OutreachWorkerHandle } from "./worker/outreachWorker.js";
+// nudgeWorker + outreachWorker intentionally NOT started (removed 2026-06-08
+// per operator). The files remain because helpers are still imported elsewhere
+// (e.g. clearOutreachState from conversationWorker, admin triggers in server),
+// but neither scheduled worker boots — so no auto idle-nudges or cold/react
+// outreach run, regardless of NUDGE_ENABLED/OUTREACH_ENABLED on Railway.
 import { startSubSyncWorker, type SubSyncWorkerHandle } from "./worker/subSyncWorker.js";
 import { startVoucherWorker, type VoucherWorkerHandle } from "./worker/voucherWorker.js";
 import { startColdTripwireWorker, type ColdTripwireWorkerHandle } from "./worker/coldTripwireWorker.js";
@@ -29,8 +32,6 @@ let worker: Worker<InboundJobData> | null = null;
 let turnWorkerRef: Worker<TurnJobData> | null = null;
 let sendWorker: Worker<OutboundJobData> | null = null;
 let broadcastRunner: BroadcastRunnerHandle | null = null;
-let nudgeWorker: NudgeWorkerHandle | null = null;
-let outreachWorker: OutreachWorkerHandle | null = null;
 let subSyncWorker: SubSyncWorkerHandle | null = null;
 let voucherWorker: VoucherWorkerHandle | null = null;
 let coldTripwireWorker: ColdTripwireWorkerHandle | null = null;
@@ -61,8 +62,6 @@ async function shutdown(signal: string): Promise<void> {
   try {
     if (poller) await poller.stop();
     if (broadcastRunner) await broadcastRunner.stop();
-    if (nudgeWorker) await nudgeWorker.stop();
-    if (outreachWorker) await outreachWorker.stop();
     if (subSyncWorker) await subSyncWorker.stop();
     if (voucherWorker) await voucherWorker.stop();
     if (coldTripwireWorker) await coldTripwireWorker.stop();
@@ -94,8 +93,7 @@ async function boot(): Promise<void> {
   turnWorkerRef = startTurnWorker();
   sendWorker = startSendWorker({ adapter: getPlatformAdapter() });
   broadcastRunner = startBroadcastRunner();
-  nudgeWorker = startNudgeWorker();
-  outreachWorker = startOutreachWorker();
+  // nudgeWorker + outreachWorker removed 2026-06-08 (operator) — not started.
   subSyncWorker = startSubSyncWorker();
   voucherWorker = startVoucherWorker();
   coldTripwireWorker = startColdTripwireWorker();
