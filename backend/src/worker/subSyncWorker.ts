@@ -26,14 +26,19 @@ import { loadAccountById } from "../db/repos/accounts.js";
  *
  * Safety:
  *   - SUB_SYNC_ENABLED env defaults false (master kill).
- *   - SUB_SYNC_INTERVAL_MS configurable; default 6h.
+ *   - SUB_SYNC_INTERVAL_MS configurable; default 24h (daily — credit-saving).
  *   - Per-account run lock with 1h TTL (sync should complete in <5 min;
  *     lock auto-expires if process dies).
  *   - Skips accounts without a real OFAPI acct_* id.
  *   - upsertSubscriber is idempotent — re-runs are safe.
  */
 
-const TICK_MS = Number(process.env.SUB_SYNC_INTERVAL_MS) || 6 * 3600_000;
+// Default 24h (was 6h). The full fan-list export costs ~1 credit per 20 fans,
+// so re-pulling ~4K fans every 6h burned ~25K OnlyFansAPI credits/month for
+// data that barely changes day-to-day. Daily is plenty; new subs still arrive
+// via the subscriptions.new webhook in real time. Override with
+// SUB_SYNC_INTERVAL_MS on Railway if a different cadence is needed.
+const TICK_MS = Number(process.env.SUB_SYNC_INTERVAL_MS) || 24 * 3600_000;
 const STARTUP_DELAY_MS = 2 * 60_000;
 // Lock prevents two concurrent syncs from racing. Sync should complete in
 // <5 min for a typical 2K-fan account; 10-min TTL is plenty without
