@@ -30,6 +30,7 @@ import { triggerOutreachNow } from "../worker/outreachWorker.js";
 import { getRecentVouchers, triggerVoucherNow } from "../worker/voucherWorker.js";
 import { getRecentTripwires, triggerColdTripwireNow } from "../worker/coldTripwireWorker.js";
 import { getRecentImagePpv, triggerImagePpvNow } from "../worker/imagePpvWorker.js";
+import { getRecentRecoveries, triggerReplyRecoveryNow } from "../worker/replyRecoveryWorker.js";
 import { getVaultPhotoIds, refreshVaultPhotoCache } from "../vault/vaultImages.js";
 import { getRecentPitchDecisions, turnsSinceLastPitch as ppvTurnsSinceLastPitch } from "../ppv/orchestrator.js";
 import { listRecentAttempts, countUnboughtRecentPitches } from "../db/repos/ppv_attempts.js";
@@ -157,6 +158,13 @@ async function handle(
   // Recent image-PPV fires — single vault photos sold to warm-but-quiet fans.
   if (method === "GET" && path === "/diag/recent-image-ppv") {
     return json(res, 200, { imagePpv: getRecentImagePpv() });
+  }
+
+  // Recent reply-recovery fires — dropped fan messages that the safety-net
+  // sweep re-answered. Should normally be a slow trickle; a spike here means
+  // turns are failing upstream and warrants a look at why.
+  if (method === "GET" && path === "/diag/recent-recoveries") {
+    return json(res, 200, { recoveries: getRecentRecoveries() });
   }
 
   // Vault photo inventory for an account: GET /diag/vault-photos?account=acct_xxx
@@ -437,6 +445,7 @@ async function handle(
       image_ppv_dry_run: env.IMAGE_PPV_DRY_RUN,
       image_ppv_price_cents: env.IMAGE_PPV_PRICE_CENTS,
       image_ppv_max_per_tick: env.IMAGE_PPV_MAX_PER_TICK,
+      reply_recovery_enabled: env.REPLY_RECOVERY_ENABLED,
       sub_sync_enabled: env.SUB_SYNC_ENABLED,
       // LLM provider visibility — added 2026-06-02 to confirm the OpenRouter
       // swap is actually serving. If openrouter_key_present is false, the
@@ -920,6 +929,21 @@ async function handle(
     if (method === "POST" && path === "/admin/image-ppv-now") {
       try {
         const result = await triggerImagePpvNow();
+        return json(res, 200, result);
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+          stack: err instanceof Error ? err.stack?.slice(0, 1000) : undefined,
+        });
+      }
+    }
+
+    // POST /admin/reply-recovery-now — force an immediate reply-recovery sweep
+    // (re-answer fan messages whose turn was dropped). Returns candidates /
+    // recovered / skippedCooldown.
+    if (method === "POST" && path === "/admin/reply-recovery-now") {
+      try {
+        const result = await triggerReplyRecoveryNow();
         return json(res, 200, result);
       } catch (err) {
         return json(res, 500, {

@@ -172,6 +172,12 @@ const envSchema = z.object({
   // "50% off" caption math.
   IMAGE_PPV_PRICE_CENTS: z.coerce.number().int().positive().default(599),
   IMAGE_PPV_MAX_PER_TICK: z.coerce.number().int().positive().default(25),
+  // REPLY RECOVERY worker — re-answers fan messages whose turn was silently
+  // dropped (turn queue uses removeOnFail:true, so a failed turn loses the
+  // message with no retry). Default ON: it's a reliability safety net that only
+  // replies to already-received messages, never proactive outreach. Kill with
+  // REPLY_RECOVERY_ENABLED=false.
+  REPLY_RECOVERY_ENABLED: stringBool(true),
   // Soft-resume ramp-up. When set to an ISO timestamp in the future, the
   // per-account token bucket runs at HALF its normal refill rate until that
   // time passes. Use this when un-pausing after a long 429 cooldown to
