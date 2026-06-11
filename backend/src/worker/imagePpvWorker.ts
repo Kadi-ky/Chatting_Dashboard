@@ -5,6 +5,7 @@ import { db } from "../db/client.js";
 import { sharedRedis } from "../queue/redis.js";
 import { outboundQueue } from "../queue/outbound.js";
 import { insertOutboundDraft } from "../db/repos/messages.js";
+import { insertPpvAttempt } from "../db/repos/ppv_attempts.js";
 import { ensureConversation } from "../db/repos/conversations.js";
 import { isFanUnreachable } from "../platform/impl/http/unreachable.js";
 import { isConversationDisengaged } from "./disengagement.js";
@@ -268,6 +269,14 @@ async function runForAccount(account: { id: string; platformAccountId: string })
           text: caption,
           kind: "ppv",
           attachments: [{ assetRef: imageId, priceCents }],
+        });
+        // Tracked attempt (2026-06-10) — "image:" prefix marks the source so
+        // the dashboard can split image-PPV conversion from chat pitches.
+        await insertPpvAttempt({
+          conversationId: convId,
+          assetId: `image:vault:${imageId}`,
+          priceCents,
+          messageId,
         });
         await outboundQueue().add(
           "image-ppv",

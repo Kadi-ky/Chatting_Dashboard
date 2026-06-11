@@ -42,8 +42,10 @@ import { env } from "../config/index.js";
  *
  * Set above the sum of expected LLM timeouts (intent 30 + readiness 30 +
  * generator 90 = 150s) plus comfortable headroom for queue/DB ops.
+ * Raised 240s → 300s 2026-06-10 alongside router retries 2→3 so the extra
+ * generator attempt fits inside the ceiling instead of tripping it.
  */
-const TURN_HARD_TIMEOUT_MS = 240_000;
+const TURN_HARD_TIMEOUT_MS = 300_000;
 
 export function startTurnWorker(): Worker<TurnJobData> {
   const w = makeTurnWorker(async (job) => {

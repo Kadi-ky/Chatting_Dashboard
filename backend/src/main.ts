@@ -20,6 +20,7 @@ import { startVoucherWorker, type VoucherWorkerHandle } from "./worker/voucherWo
 import { startColdTripwireWorker, type ColdTripwireWorkerHandle } from "./worker/coldTripwireWorker.js";
 import { startImagePpvWorker, type ImagePpvWorkerHandle } from "./worker/imagePpvWorker.js";
 import { startReplyRecoveryWorker, type ReplyRecoveryWorkerHandle } from "./worker/replyRecoveryWorker.js";
+import { startPpvReminderWorker, type PpvReminderWorkerHandle } from "./worker/ppvReminderWorker.js";
 import { expireStaleAttempts } from "./db/repos/ppv_attempts.js";
 import { startAdminServer, type AdminServerHandle } from "./api/server.js";
 import { getPlatformAdapter } from "./platform/index.js";
@@ -38,6 +39,7 @@ let voucherWorker: VoucherWorkerHandle | null = null;
 let coldTripwireWorker: ColdTripwireWorkerHandle | null = null;
 let imagePpvWorker: ImagePpvWorkerHandle | null = null;
 let replyRecoveryWorker: ReplyRecoveryWorkerHandle | null = null;
+let ppvReminderWorker: PpvReminderWorkerHandle | null = null;
 let attemptExpirySweep: NodeJS.Timeout | null = null;
 let adminServer: AdminServerHandle | null = null;
 
@@ -69,6 +71,7 @@ async function shutdown(signal: string): Promise<void> {
     if (coldTripwireWorker) await coldTripwireWorker.stop();
     if (imagePpvWorker) await imagePpvWorker.stop();
     if (replyRecoveryWorker) await replyRecoveryWorker.stop();
+    if (ppvReminderWorker) await ppvReminderWorker.stop();
     if (attemptExpirySweep) clearInterval(attemptExpirySweep);
     if (adminServer) await adminServer.stop();
     if (worker) await worker.close();
@@ -102,6 +105,7 @@ async function boot(): Promise<void> {
   coldTripwireWorker = startColdTripwireWorker();
   imagePpvWorker = startImagePpvWorker();
   replyRecoveryWorker = startReplyRecoveryWorker();
+  ppvReminderWorker = startPpvReminderWorker();
   // PPV attempt expiry sweeper. Marks pending attempts older than 72h as
   // 'expired' so cant_afford detection (finds last pending) doesn't latch
   // onto ancient pitches and discount-recover them, and so analytics show

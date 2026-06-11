@@ -5,6 +5,7 @@ import { db } from "../db/client.js";
 import { sharedRedis } from "../queue/redis.js";
 import { outboundQueue } from "../queue/outbound.js";
 import { insertOutboundDraft } from "../db/repos/messages.js";
+import { insertPpvAttempt } from "../db/repos/ppv_attempts.js";
 import { ensureConversation } from "../db/repos/conversations.js";
 import { isFanUnreachable } from "../platform/impl/http/unreachable.js";
 import { isConversationDisengaged } from "./disengagement.js";
@@ -376,6 +377,15 @@ async function runForAccount(account: {
           text: caption,
           kind: "ppv",
           attachments: [{ assetRef: mediaRef, priceCents: tripwirePriceCents }],
+        });
+        // Tracked attempt (2026-06-10) — "tripwire:" prefix marks the source
+        // so the dashboard can split tripwire conversion from chat pitches.
+        // Unlock marking works via the message-external-id path.
+        await insertPpvAttempt({
+          conversationId: convId,
+          assetId: `tripwire:${assetIdForJob}`,
+          priceCents: tripwirePriceCents,
+          messageId,
         });
         await outboundQueue().add(
           "tripwire",

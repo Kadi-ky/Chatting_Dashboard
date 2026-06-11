@@ -27,8 +27,12 @@ export function turnQueue(): Queue<TurnJobData> {
     queueInstance = new Queue<TurnJobData>(TURN_QUEUE, {
       connection: createRedis(),
       defaultJobOptions: {
-        attempts: 3,
-        backoff: { type: "exponential", delay: 2_000 },
+        // 3 → 5 attempts (2026-06-10 hardening): with removeOnFail:true a job
+        // that exhausts its attempts silently drops the fan's message, and the
+        // reply-recovery sweep was catching ~44 drops/day. More attempts +
+        // faster first retry make transient LLM slowness survivable.
+        attempts: 5,
+        backoff: { type: "exponential", delay: 1_000 },
         // Free the jobId immediately so a new inbound can schedule the next turn.
         // CRITICAL: also remove on FAILURE — observed in production that a
         // failed turn job (e.g. LLM call timed out across 3 attempts) was

@@ -31,6 +31,7 @@ import { getRecentVouchers, triggerVoucherNow } from "../worker/voucherWorker.js
 import { getRecentTripwires, triggerColdTripwireNow } from "../worker/coldTripwireWorker.js";
 import { getRecentImagePpv, triggerImagePpvNow } from "../worker/imagePpvWorker.js";
 import { getRecentRecoveries, triggerReplyRecoveryNow } from "../worker/replyRecoveryWorker.js";
+import { getRecentPpvReminders, triggerPpvReminderNow } from "../worker/ppvReminderWorker.js";
 import { getVaultPhotoIds, refreshVaultPhotoCache } from "../vault/vaultImages.js";
 import { getRecentPitchDecisions, turnsSinceLastPitch as ppvTurnsSinceLastPitch } from "../ppv/orchestrator.js";
 import { listRecentAttempts, countUnboughtRecentPitches } from "../db/repos/ppv_attempts.js";
@@ -167,6 +168,12 @@ async function handle(
     return json(res, 200, { recoveries: getRecentRecoveries() });
   }
 
+  // Recent single PPV reminders (the gentle 2h "still there for u" — one per
+  // attempt ever, chat pitches only).
+  if (method === "GET" && path === "/diag/recent-ppv-reminders") {
+    return json(res, 200, { reminders: getRecentPpvReminders() });
+  }
+
   // Vault photo inventory for an account: GET /diag/vault-photos?account=acct_xxx
   // Returns the cached sellable photo-id count + a sample. ?refresh=1 forces a
   // live re-fetch from OnlyFansAPI. Use to confirm the vault source before a blast.
@@ -246,7 +253,7 @@ async function handle(
       // the conversion rate + revenue numbers reflect real customers
       // only — operator caught this 2026-04-30 ("are you sure the $60 is
       // not from test?").
-      const [windowMessages, windowPitches, windowPitchesAll] = await Promise.all([
+      const [windowMessages, windowPitches, windowPitchesAll, windowPitchesBySource] = await Promise.all([
         db
           .selectFrom("v3.messages")
           .select([
@@ -284,6 +291,26 @@ async function handle(
           ])
           .where(sql<SqlBool>`pitched_at >= ${cutoff}`)
           .executeTakeFirst(),
+        // Per-source split (2026-06-10): mass-send attempts carry a prefixed
+        // asset_id (voucher:/tripwire:/image:); plain ids are chat pitches.
+        // This is the "did the 50%-off blast actually convert" view.
+        db
+          .selectFrom("v3.ppv_attempts as a")
+          .innerJoin("v3.conversations as c", "c.id", "a.conversation_id")
+          .innerJoin("v3.subscribers as s", "s.id", "c.subscriber_id")
+          .select([
+            sql<string>`case when a.asset_id like 'voucher:%' then 'voucher' when a.asset_id like 'tripwire:%' then 'tripwire' when a.asset_id like 'image:%' then 'image' else 'chat' end`.as("source"),
+            sql<string>`count(*)`.as("total"),
+            sql<string>`count(*) filter (where a.outcome='unlocked')`.as("unlocked"),
+            sql<string>`count(*) filter (where a.outcome='pending')`.as("pending"),
+            sql<string>`coalesce(sum(a.price_cents) filter (where a.outcome='unlocked'), 0)`.as("revenue_cents"),
+          ])
+          .where(sql<SqlBool>`a.pitched_at >= ${cutoff}`)
+          .where(sql<SqlBool>`s.external_id NOT LIKE 'loop-%'`)
+          .where(sql<SqlBool>`s.external_id NOT LIKE 'longtime-%'`)
+          .where(sql<SqlBool>`s.external_id NOT LIKE '%-probe-%'`)
+          .groupBy(sql`case when a.asset_id like 'voucher:%' then 'voucher' when a.asset_id like 'tripwire:%' then 'tripwire' when a.asset_id like 'image:%' then 'image' else 'chat' end`)
+          .execute(),
       ]);
 
       return json(res, 200, {
@@ -319,6 +346,13 @@ async function handle(
           revenueCents: Number(windowPitchesAll?.revenue_window_cents ?? 0),
           note: "ALL pitches (test fans included). Compare to windowPitches above to see how much is synthetic.",
         },
+        windowPitchesBySource: windowPitchesBySource.map((r) => ({
+          source: r.source,
+          total: Number(r.total),
+          unlocked: Number(r.unlocked),
+          pending: Number(r.pending),
+          revenueCents: Number(r.revenue_cents),
+        })),
         phaseDistribution: phases.map((p) => ({
           phase: p.phase,
           count: Number(p.count),
@@ -446,6 +480,7 @@ async function handle(
       image_ppv_price_cents: env.IMAGE_PPV_PRICE_CENTS,
       image_ppv_max_per_tick: env.IMAGE_PPV_MAX_PER_TICK,
       reply_recovery_enabled: env.REPLY_RECOVERY_ENABLED,
+      ppv_reminder_enabled: env.PPV_REMINDER_ENABLED,
       sub_sync_enabled: env.SUB_SYNC_ENABLED,
       // LLM provider visibility — added 2026-06-02 to confirm the OpenRouter
       // swap is actually serving. If openrouter_key_present is false, the
@@ -929,6 +964,19 @@ async function handle(
     if (method === "POST" && path === "/admin/image-ppv-now") {
       try {
         const result = await triggerImagePpvNow();
+        return json(res, 200, result);
+      } catch (err) {
+        return json(res, 500, {
+          error: err instanceof Error ? err.message : String(err),
+          stack: err instanceof Error ? err.stack?.slice(0, 1000) : undefined,
+        });
+      }
+    }
+
+    // POST /admin/ppv-reminder-now — force an immediate PPV-reminder pass.
+    if (method === "POST" && path === "/admin/ppv-reminder-now") {
+      try {
+        const result = await triggerPpvReminderNow();
         return json(res, 200, result);
       } catch (err) {
         return json(res, 500, {

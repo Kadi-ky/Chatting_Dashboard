@@ -56,7 +56,11 @@ export const PHASE_DIRECTIVES: Record<Phase, PhaseDirective> = {
     forbiddens: [
       "do not use cold template language",
       "do not make him wait without a reason",
-      "do not promise to film new content for him — customs are catalog-matched at $99 only when system-handed",
+      // 2026-06-10 whale-ladder: customs are now ALLOWED for qualified
+      // whales via the whale directive replyPipeline injects (tip-paid,
+      // $150-300 anchor). The old blanket ban ("customs are catalog-matched
+      // at $99 only") capped the top of the funnel at catalog prices.
+      "do not price a custom below $150 — customs are premium; the whale directive sets the anchor",
     ],
     contextWindow: 24,
   },

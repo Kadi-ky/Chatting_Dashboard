@@ -645,9 +645,43 @@ async function generateLlmReply(
   // Replace it with a pitch-friendly version that still reads the phase's
   // tone cue — we don't want to turn a WARMUP pitch into a WHALE pitch in
   // voice, just permit the offer itself.
-  const stateDirective = isPitch
+  let stateDirective = isPitch
     ? `Phase: ${input.phase} (buying-signal override). The fan asked for content this turn, so a pitch is authorised. Keep the tone appropriate to ${input.phase} (${input.phase === "WARMUP" ? "still getting to know each other — warm, playful, not deep" : input.phase === "RAPPORT" ? "familiar but not yet whale-intimate" : "standard flirty register"}) but deliver the asset. Do not stall.`
     : directive.directive;
+
+  // Whale ladder v1 (2026-06-10): the top spender ever was ~$200 lifetime —
+  // there was no path to spend MORE than catalog prices. For proven spenders
+  // ($80+ lifetime or $80+/30d, matching the whale-ping thresholds), unlock a
+  // customs/VIP upsell lane. Customs are paid VIA TIP up-front so payment
+  // flows through the existing tip webhook + transactions table and the
+  // operator sees exactly what to film. Appended to the state directive (not
+  // a new assemblePrompt field) to keep the injection surface minimal.
+  try {
+    const spender = await db
+      .selectFrom("v3.subscribers")
+      .select(["total_spend_cents", "spend_30d_cents"])
+      .where("id", "=", input.subscriberId)
+      .executeTakeFirst();
+    const lifetime = Number(spender?.total_spend_cents ?? 0);
+    const last30 = Number(spender?.spend_30d_cents ?? 0);
+    if (lifetime >= 8000 || last30 >= 8000) {
+      stateDirective += [
+        ``,
+        ``,
+        `WHALE LADDER (this fan is a proven spender — $${(lifetime / 100).toFixed(0)} lifetime):`,
+        `- He's earned VIP treatment: extra personal, remember his details, never canned.`,
+        `- You MAY offer a CUSTOM video made just for him — his name said in it, his exact fantasy — anchored at $150-$300 depending on the ask (never below $150; simple solo = $150, specific/longer = $200-300).`,
+        `- Custom flow: he tells you exactly what he wants → he TIPS the agreed amount up front → you film it within a couple of days and send it to him locked-free. Payment is the tip — do not send a priced PPV for a custom.`,
+        `- Offer a custom ONLY when he's hot/engaged or asks for something specific you don't have — at most once per conversation session, never as a cold opener, and drop it instantly if he hesitates.`,
+        `- Otherwise, anchor confidently — he is not a $10 buyer, do not undersell.`,
+      ].join("\n");
+    }
+  } catch (err) {
+    logger.warn(
+      { conversationId: input.conversationId, err: err instanceof Error ? err.message : err },
+      "whale-ladder spend lookup failed — continuing without",
+    );
+  }
 
   const assembled = assemblePrompt({
     accountId: input.accountId,

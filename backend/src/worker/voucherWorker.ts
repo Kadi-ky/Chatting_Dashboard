@@ -5,6 +5,7 @@ import { db } from "../db/client.js";
 import { sharedRedis } from "../queue/redis.js";
 import { outboundQueue } from "../queue/outbound.js";
 import { insertOutboundDraft } from "../db/repos/messages.js";
+import { insertPpvAttempt } from "../db/repos/ppv_attempts.js";
 import { ensureConversation } from "../db/repos/conversations.js";
 import { isFanUnreachable } from "../platform/impl/http/unreachable.js";
 import { isConversationDisengaged } from "./disengagement.js";
@@ -385,6 +386,18 @@ async function runForAccount(account: {
           text: caption,
           kind: "ppv",
           attachments: [{ assetRef: pick.mediaId, priceCents: voucherPriceCents }],
+        });
+        // Tracked attempt (2026-06-10): without this, voucher unlocks were
+        // invisible — the unlock webhook found no attempt for the message and
+        // either misattributed to a stale chat pitch or vanished. The
+        // "voucher:" prefix marks the source (asset_id has no FK) so the
+        // dashboard can split mass-send vs chat conversion; unlock marking
+        // works via the existing message-external-id path.
+        await insertPpvAttempt({
+          conversationId: convId,
+          assetId: `voucher:${pick.scriptId}`,
+          priceCents: voucherPriceCents,
+          messageId,
         });
         await outboundQueue().add(
           "voucher",

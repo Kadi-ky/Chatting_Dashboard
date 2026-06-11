@@ -34,8 +34,14 @@ export async function routeLlmCall(
   opts: LlmCallOptions,
   routerOpts: RouterOptions = {},
 ): Promise<LlmCallResult> {
-  const retries = routerOpts.retries ?? 2;
-  const backoffMs = routerOpts.backoffMs ?? 500;
+  // 2 → 3 retries, 500 → 250ms base backoff (2026-06-10 hardening): a failed
+  // CHAT_GENERATE makes generateReply return null and the fan's message is
+  // silently dropped (the turn "succeeds" with no outbound), so the router is
+  // the layer that must absorb transient provider slowness. 4 attempts on the
+  // primary at 250/500/1000ms spread fits inside the per-call 90s timeout
+  // budget and the 300s turn hard-timeout.
+  const retries = routerOpts.retries ?? 3;
+  const backoffMs = routerOpts.backoffMs ?? 250;
 
   // 2026-06-02 — OpenRouter is PRIMARY (was grok). Grok-4.1-fast went
   // unavailable + too expensive; chat replies silently failed for ~a week

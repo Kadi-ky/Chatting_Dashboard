@@ -32,7 +32,7 @@ import { turnQueue } from "../queue/turns.js";
 
 const TICK_MS = 10 * 60_000;            // sweep every 10 min
 const STARTUP_DELAY_MS = 100_000;       // ~100s — let other workers settle first
-const MIN_AGE_MS = 5 * 60_000;          // ignore convs stuck < 5 min (normal reply still in flight)
+const MIN_AGE_MS = 3 * 60_000;          // ignore convs stuck < 3 min (normal reply still in flight; jobId dedup protects against racing an active turn)
 const MAX_AGE_MS = 90 * 60_000;         // ignore convs stuck > 90 min (aged out — stop retrying)
 const RECOVERY_COOLDOWN_SEC = 30 * 60;  // re-fire a given conv at most once per 30 min
 const MAX_PER_TICK = 200;               // safety cap

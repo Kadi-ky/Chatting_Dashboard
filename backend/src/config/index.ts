@@ -83,7 +83,13 @@ const envSchema = z.object({
   OPENROUTER_CLASSIFIER_FALLBACK_MODEL: z.string().default("meta-llama/llama-3.1-8b-instruct"),
   // ACTIVE models (new names — not overridden by stale Railway vars).
   // Verified live on OpenRouter 2026-06-02.
-  OPENROUTER_CHAT_MODEL: z.string().default("nousresearch/hermes-4-70b"),
+  // Chat generator (CHAT_GENERATE + NUDGE_GENERATE). Switched 2026-06-10:
+  // hermes-4-70b → skyfall-36b-v2 (TheDrummer's RP-tuned Mistral). Operator
+  // asked for cydonia-24b but its only OpenRouter provider (Parasail) has a
+  // broken tokenizer (Ġ instead of spaces / spaces dropped) — verified live;
+  // skyfall is the same creator's bigger successor and tested 3/3 clean with
+  // response_format json_object.
+  OPENROUTER_CHAT_MODEL: z.string().default("thedrummer/skyfall-36b-v2"),
   OPENROUTER_CLASSIFY_MODEL: z.string().default("meta-llama/llama-3.1-8b-instruct"),
 
   // "mock" — in-memory adapter (outbound sends captured, no real I/O).
@@ -165,8 +171,11 @@ const envSchema = z.object({
   // IMAGE PPV worker — sells individual vault photos to WARM-but-quiet fans
   // (engaged before, gone quiet) as a standalone path, separate from the cold
   // tripwire. Same safety shape as voucher: default OFF + DRY_RUN ON.
-  IMAGE_PPV_ENABLED: stringBool(false),
-  IMAGE_PPV_DRY_RUN: stringBool(true),
+  // Flipped to ON 2026-06-10 (operator: "do the 4") — captions were verified
+  // in two dry-run rounds + artifact-hardened (54b64d2). Railway can still
+  // override / kill via env.
+  IMAGE_PPV_ENABLED: stringBool(true),
+  IMAGE_PPV_DRY_RUN: stringBool(false),
   // Price for a single-photo PPV in cents (default $5.99 — warm fans bear a
   // bit more than the $3.69 cold tripwire). Implied "regular" = 2× for the
   // "50% off" caption math.
@@ -178,6 +187,11 @@ const envSchema = z.object({
   // replies to already-received messages, never proactive outreach. Kill with
   // REPLY_RECOVERY_ENABLED=false.
   REPLY_RECOVERY_ENABLED: stringBool(true),
+  // PPV REMINDER worker — ONE gentle reminder ~2h after a CHAT-pitched PPV
+  // goes unanswered, once per attempt ever (not the removed 6-step nudge
+  // ladder). Chat pitches only — mass-send attempts (voucher:/tripwire:/
+  // image: prefixed) are excluded so cold fans aren't chased. Default ON.
+  PPV_REMINDER_ENABLED: stringBool(true),
   // Soft-resume ramp-up. When set to an ISO timestamp in the future, the
   // per-account token bucket runs at HALF its normal refill rate until that
   // time passes. Use this when un-pausing after a long 429 cooldown to
